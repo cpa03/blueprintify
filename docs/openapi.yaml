@@ -1,0 +1,1066 @@
+openapi: 3.1.0
+info:
+  title: Blueprint Generator API
+  version: 1.0.0
+  description: |
+    Cloudflare Workers backend for AI-powered project architecture documentation generation.
+    Provides streaming SSE endpoints for generating blueprints and tasks, content refinement,
+    data export/import, storage tracking, and blueprint sharing.
+  contact:
+    name: Blueprintify Team
+    url: https://github.com/cpa03/blueprintify
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://blueprintify.cpa03-cmz.workers.dev
+    description: Production Cloudflare Workers Edge
+  - url: http://localhost:8787
+    description: Local API Development Server
+  - url: http://localhost:3000/api
+    description: Local Web Proxy Server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /:
+    get:
+      summary: Service Metadata
+      description: Returns API metadata including service name, version, status, runtime platform, and available endpoints.
+      security: []
+      operationId: getApiMetadata
+      responses:
+        "200":
+          description: Successful metadata retrieval
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: public, max-age=3600, stale-while-revalidate=86400
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiMetadataResponse"
+
+  /health:
+    get:
+      summary: Health Check
+      description: Checks service vitality and AI service circuit breaker state. Returns 200 when healthy, 503 when circuit breaker is open.
+      security: []
+      operationId: getHealthStatus
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+        "503":
+          description: Service unhealthy (e.g., AI Circuit Breaker is OPEN)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /warmup:
+    get:
+      summary: Circuit Breaker Warmup
+      description: Pre-warms the circuit breaker on worker startup and returns current resilience metrics.
+      security: []
+      operationId: getWarmup
+      responses:
+        "200":
+          description: Warmup status and metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WarmupResponse"
+
+  /generate:
+    post:
+      summary: Generate Blueprint
+      description: Generates comprehensive project architecture documentation (`blueprint.md`) from project configuration using OpenAI streaming (SSE).
+      operationId: generateBlueprint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlueprintRequest"
+      responses:
+        "200":
+          description: Server-Sent Events stream containing generated markdown chunks
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: text/event-stream
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/StreamChunk"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "429":
+          $ref: "#/components/responses/RateLimitError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailableError"
+
+  /tasks:
+    post:
+      summary: Generate Task Breakdown
+      description: Generates structured, prioritized task lists (`task.md`) from a generated blueprint using AI streaming (SSE).
+      operationId: generateTasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskGenerationRequest"
+      responses:
+        "200":
+          description: Server-Sent Events stream containing generated task markdown chunks
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: text/event-stream
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/StreamChunk"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "429":
+          $ref: "#/components/responses/RateLimitError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailableError"
+
+  /refine:
+    post:
+      summary: Refine Section Content
+      description: Selectively refines and polishes specific blueprint sections based on user instructions using AI streaming (SSE).
+      operationId: refineContent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefineRequest"
+      responses:
+        "200":
+          description: Server-Sent Events stream of refined text content
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/StreamChunk"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "429":
+          $ref: "#/components/responses/RateLimitError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailableError"
+
+  /export:
+    post:
+      summary: Export Project
+      description: Exports project architecture artifacts formatted as JSON, Markdown, or ZIP manifest.
+      operationId: exportProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExportRequest"
+      responses:
+        "200":
+          description: Export payload with filename and formatted content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExportResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /import:
+    post:
+      summary: Import Project
+      description: Imports previously exported project data with structure validation and sanitization.
+      operationId: importProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImportRequest"
+      responses:
+        "200":
+          description: Successfully parsed and sanitized project payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImportResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /storage/quota:
+    get:
+      summary: Get Storage Quota
+      description: Returns storage quota allocation, bytes consumed, and project count for the authenticated user.
+      operationId: getStorageQuota
+      responses:
+        "200":
+          description: Quota details
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: private, no-cache, no-store, must-revalidate
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorageQuotaResponse"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /storage/report:
+    post:
+      summary: Report Storage Usage
+      description: Client reports local storage metrics to the edge cache for quota tracking.
+      operationId: reportStorageUsage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StorageReportRequest"
+      responses:
+        "200":
+          description: Usage recorded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      stored:
+                        type: boolean
+                        example: true
+                      timestamp:
+                        type: string
+                        format: date-time
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /storage/clear:
+    delete:
+      summary: Clear Storage Data
+      description: Clears stored quota tracking metrics. Requires `confirm=true` query parameter.
+      operationId: clearStorage
+      parameters:
+        - name: confirm
+          in: query
+          required: true
+          description: Explicit confirmation flag (must be 'true')
+          schema:
+            type: string
+            enum: ["true"]
+      responses:
+        "200":
+          description: Data cleared confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      cleared:
+                        type: boolean
+                        example: true
+                      message:
+                        type: string
+                      timestamp:
+                        type: string
+                        format: date-time
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /share:
+    post:
+      summary: Create Shared Blueprint Link
+      description: Stores blueprint in database and returns unique URL with 30-day expiration. Optionally protects with SHA-256 passphrase hash.
+      operationId: createShare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateShareRequest"
+      responses:
+        "200":
+          description: Share link created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShareCreatedResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /share/{id}:
+    get:
+      summary: Retrieve Shared Blueprint
+      description: Retrieves a shared blueprint by its cryptographically random ID. Content is hidden if passphrase-protected unless a valid verify token is provided.
+      operationId: getShareById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 12-character alphanumeric share ID
+          schema:
+            type: string
+            pattern: "^[a-zA-Z0-9]{12}$"
+            example: "abc123def456"
+        - name: token
+          in: query
+          required: false
+          description: HMAC verification token for passphrase-protected shares
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Shared blueprint details
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: public, max-age=86400, stale-while-revalidate=604800
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShareDetailResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      summary: Delete Shared Blueprint
+      description: Deletes a shared blueprint. Enforces creator ownership validation.
+      operationId: deleteShareById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 12-character alphanumeric share ID
+          schema:
+            type: string
+            pattern: "^[a-zA-Z0-9]{12}$"
+      responses:
+        "200":
+          description: Share deletion confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Share deleted successfully
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthenticationError"
+        "403":
+          $ref: "#/components/responses/AuthorizationError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /share/{id}/verify:
+    post:
+      summary: Verify Passphrase for Share
+      description: Verifies passphrase against stored SHA-256 hash. On success, returns full blueprint content and a short-lived HMAC verify token.
+      operationId: verifySharePassphrase
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 12-character alphanumeric share ID
+          schema:
+            type: string
+            pattern: "^[a-zA-Z0-9]{12}$"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - passphrase
+              properties:
+                passphrase:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+      responses:
+        "200":
+          description: Verification successful, returns content and verify token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShareVerifiedResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "403":
+          $ref: "#/components/responses/AuthorizationError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API Key authentication header. Default role is 'user'; key matching ADMIN_API_KEY provides 'admin' role.
+
+  responses:
+    ValidationError:
+      description: Request validation failed (400 Bad Request)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    AuthenticationError:
+      description: Missing or invalid API key credentials (401 Unauthorized)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    AuthorizationError:
+      description: Lacks sufficient permissions or invalid passphrase (403 Forbidden)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    NotFoundError:
+      description: Resource not found or expired (404 Not Found)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    RateLimitError:
+      description: Rate limit exceeded (429 Too Many Requests)
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+            description: Seconds until rate limit window resets
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    InternalError:
+      description: Internal server error (500 Internal Server Error)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    ServiceUnavailableError:
+      description: Service temporarily unavailable or configuration error (503 Service Unavailable)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          type: object
+          required:
+            - type
+            - message
+            - timestamp
+          properties:
+            type:
+              type: string
+              enum:
+                - validation
+                - authentication
+                - authorization
+                - not_found
+                - configuration
+                - network
+                - ai_service
+                - service_unavailable
+                - internal
+            message:
+              type: string
+            code:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+            timestamp:
+              type: string
+              format: date-time
+            requestId:
+              type: string
+
+    TechStackItem:
+      type: object
+      required:
+        - name
+        - category
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        category:
+          type: string
+          enum:
+            - frontend
+            - backend
+            - database
+            - hosting
+            - ai
+            - testing
+            - styling
+            - other
+        subcategory:
+          type: string
+          enum:
+            - relational
+            - nosql
+            - vector
+            - graph
+            - edge
+            - search
+            - cache
+            - serverless
+        version:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+          maxLength: 2000
+        features:
+          type: array
+          items:
+            type: string
+            maxLength: 200
+
+    BlueprintRequest:
+      type: object
+      required:
+        - projectName
+        - description
+        - techStack
+      properties:
+        projectName:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: "E-Commerce Microservices"
+        description:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          example: "A high-performance modular e-commerce architecture with real-time cart synchronization."
+        techStack:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/TechStackItem"
+        features:
+          type: array
+          maxItems: 30
+          items:
+            type: string
+            maxLength: 200
+        targetAudience:
+          type: string
+          maxLength: 500
+        constraints:
+          type: string
+          maxLength: 1000
+
+    TaskGenerationRequest:
+      type: object
+      required:
+        - blueprint
+        - projectName
+      properties:
+        blueprint:
+          type: string
+          minLength: 1
+          maxLength: 50000
+        projectName:
+          type: string
+          minLength: 1
+          maxLength: 100
+
+    RefineRequest:
+      type: object
+      required:
+        - content
+        - instruction
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 50000
+        instruction:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        context:
+          type: string
+          maxLength: 2000
+
+    ExportRequest:
+      type: object
+      required:
+        - projectName
+        - blueprint
+      properties:
+        projectName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        blueprint:
+          type: string
+          minLength: 1
+          maxLength: 500000
+        tasks:
+          type: string
+          maxLength: 500000
+        format:
+          type: string
+          enum: [json, zip, markdown]
+          default: markdown
+        includeMetadata:
+          type: boolean
+          default: true
+
+    ExportResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        filename:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+
+    ImportRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: string
+          minLength: 1
+          maxLength: 1000000
+        format:
+          type: string
+          enum: [json, markdown]
+          default: json
+        overwrite:
+          type: boolean
+          default: false
+
+    ImportResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required:
+            - projectName
+            - blueprint
+            - importedAt
+          properties:
+            projectName:
+              type: string
+            blueprint:
+              type: string
+            tasks:
+              type: string
+            importedAt:
+              type: string
+              format: date-time
+            overwrite:
+              type: boolean
+            warnings:
+              type: array
+              items:
+                type: string
+
+    StorageReportRequest:
+      type: object
+      required:
+        - used
+        - total
+        - projects
+      properties:
+        used:
+          type: integer
+          minimum: 0
+          description: Used storage in bytes
+        total:
+          type: integer
+          minimum: 0
+          description: Total quota in bytes
+        projects:
+          type: integer
+          minimum: 0
+          description: Number of stored projects
+
+    StorageQuotaResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required:
+            - used
+            - total
+            - percentage
+            - projects
+          properties:
+            used:
+              type: integer
+            total:
+              type: integer
+            percentage:
+              type: number
+            projects:
+              type: integer
+            note:
+              type: string
+
+    CreateShareRequest:
+      type: object
+      required:
+        - title
+        - blueprint
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        blueprint:
+          type: string
+          minLength: 1
+          maxLength: 50000
+        metadata:
+          type: object
+          properties:
+            projectName:
+              type: string
+            techStack:
+              type: array
+              items:
+                type: string
+            author:
+              type: string
+        passphraseHash:
+          type: string
+          minLength: 64
+          maxLength: 64
+          description: Hex SHA-256 hash of passphrase
+
+    ShareCreatedResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required:
+            - id
+            - url
+            - expiresAt
+            - passphraseRequired
+          properties:
+            id:
+              type: string
+            url:
+              type: string
+            expiresAt:
+              type: string
+              format: date-time
+            passphraseRequired:
+              type: boolean
+
+    ShareDetailResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required:
+            - id
+            - title
+            - passphraseRequired
+            - createdAt
+            - expiresAt
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+            blueprint:
+              type: string
+            passphraseRequired:
+              type: boolean
+            metadata:
+              type: object
+              additionalProperties: true
+            createdAt:
+              type: string
+              format: date-time
+            expiresAt:
+              type: string
+              format: date-time
+
+    ShareVerifiedResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          required:
+            - id
+            - title
+            - blueprint
+            - passphraseRequired
+            - createdAt
+            - expiresAt
+            - verifyToken
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+            blueprint:
+              type: string
+            metadata:
+              type: object
+              additionalProperties: true
+            createdAt:
+              type: string
+              format: date-time
+            expiresAt:
+              type: string
+              format: date-time
+            verifyToken:
+              type: string
+
+    StreamChunk:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [content, error, done]
+        content:
+          type: string
+        error:
+          type: string
+
+    ApiMetadataResponse:
+      type: object
+      required:
+        - name
+        - version
+        - status
+        - runtime
+        - endpoints
+      properties:
+        name:
+          type: string
+          example: "Blueprint Generator API"
+        version:
+          type: string
+          example: "1.0.0"
+        status:
+          type: string
+          example: "healthy"
+        runtime:
+          type: object
+          properties:
+            platform:
+              type: string
+              example: "cloudflare-workers"
+            region:
+              type: string
+              example: "US"
+        endpoints:
+          type: object
+          additionalProperties:
+            type: string
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - checks
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, error]
+        checks:
+          type: object
+          properties:
+            api:
+              type: string
+              example: "healthy"
+            aiService:
+              type: string
+              example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+
+    WarmupResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+        - circuitBreaker
+        - recommendation
+      properties:
+        status:
+          type: string
+          example: "ok"
+        timestamp:
+          type: string
+          format: date-time
+        circuitBreaker:
+          type: object
+          properties:
+            state:
+              type: string
+              example: "closed"
+            failures:
+              type: integer
+            successes:
+              type: integer
+            isColdStart:
+              type: boolean
+            coldStartRemainingMs:
+              type: integer
+        recommendation:
+          type: string

@@ -4,7 +4,7 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
-### ✅ Flexy Iteration 187: Centralize SVG Icon Rendering Defaults
+### ✅ Flexy Iteration 187b: Centralize SVG Icon Rendering Defaults
 
 **Problem**: `apps/web/src/components/Icon.tsx` rendered `<svg>` with hardcoded `fill="none"`, `stroke="currentColor"`, `strokeLinecap/Linejoin="round"`, default `className="w-5 h-5"` and `strokeWidth=2`; `apps/web/src/config/icons.ts` repeated `viewBox: "0 0 24 24"` 25× across every icon. Flexy says: no hardcoded SVG icon literals!
 
@@ -32,6 +32,38 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `flexy/iteration-187-svg-icon-defaults` | refactor(flexy): centralize SVG icon rendering defaults into shared config (Iteration 187) |
+
+### ✅ Flexy Iteration 187: Centralize E2E Visibility Timeouts, SR Announce Interval & Test Mock Timeouts
+
+**Problem**: Sisa magic numbers: `3000`/`2000` di `isVisible({ timeout })` e2e (5 lokasi), `30000` di `ELAPSED_ANNOUNCEMENT_INTERVAL_MS` web constants, dan `30000`/`5000` di mock `TIMEOUTS` `api.test.ts` — semua bypass shared config. Flexy says: no hardcoded timeouts!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS` (`30000`) — SR live-region throttle |
+| `packages/shared/src/config/core.ts` | Added `PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS` (`3000`) + `SHORT_VISIBILITY_TIMEOUT_MS` (`2000`) |
+| `apps/web/src/config/constants/ui.ts` | `ELAPSED_ANNOUNCEMENT_INTERVAL_MS = 30000` → `SHARED_UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS` |
+| `apps/web/e2e/brocula-console-check.spec.ts` | `isVisible({ timeout: 3000/2000 })` → `PLAYWRIGHT_DEFAULTS.VISIBILITY/SHORT_VISIBILITY_TIMEOUT_MS` |
+| `apps/web/e2e/brocula-console-audit.spec.ts` | 3× `isVisible({ timeout: 3000 })` → `PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS` |
+| `apps/web/src/lib/api.test.ts` | Mock `TIMEOUTS` `30000`/`5000` → `shared.UI_TIMEOUTS.API_CONNECTION`/`API_HEALTH_CHECK` |
+| `packages/shared/src/config.test.ts` | Added `ELAPSED_ANNOUNCEMENT_INTERVAL_MS` expectation + visibility timeouts test; count `22` → `23` |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run typecheck` — clean (shared/api/web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test --workspace=packages/shared` — **869 tests passing** (was 868; +1)
+- ✅ `npm run test --workspace=apps/web -- --run src/lib/api.test.ts` — **5 tests passing**
+- ✅ `npm run test --workspace=apps/web -- --run src/components/wizard/StepGenerating.test.tsx` — **7 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `flexy/iteration-187-e2e-ui-timeouts` | refactor(flexy): centralize e2e visibility timeouts, SR announce interval & test mock timeouts (Iteration 187) |
 
 ### ✅ Flexy Iteration 186: Centralize Deployment Origins, Proxy Routing & API-Key Fallback
 

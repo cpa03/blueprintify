@@ -352,6 +352,10 @@ export const UI_TIMEOUTS = {
   /** Interval for elapsed time counter tick in StepGenerating (1s).
    * Used as the setInterval period for the MM:SS elapsed time display during AI generation. */
   ELAPSED_TIMER_INTERVAL_MS: 1000,
+  /** Interval for throttled screen-reader announcements of elapsed time in StepGenerating (30s).
+   * Announcing every second is an a11y anti-pattern — only the SR live region is throttled,
+   * the on-screen timer still ticks at ELAPSED_TIMER_INTERVAL_MS. */
+  ELAPSED_ANNOUNCEMENT_INTERVAL_MS: 30000,
 } as const;
 
 /**
