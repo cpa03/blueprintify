@@ -2,7 +2,17 @@
 import typography from "@tailwindcss/typography";
 
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    // @blueprint/shared exports literal Tailwind class strings (TOAST_STYLES,
+    // CHAR_COUNTER_COLORS) that are interpolated into className at runtime.
+    // JIT purges classes it cannot find in scanned source, so this glob is
+    // load-bearing — without it WARNING toasts ship unstyled.
+    "../../packages/shared/src/**/*.{js,ts,jsx,tsx}",
+    // Keep test fixtures out of the scan so they cannot inflate the stylesheet.
+    "!../../packages/shared/src/**/*.test.ts",
+  ],
   darkMode: "class",
   theme: {
     extend: {
