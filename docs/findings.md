@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR AST import-graph guard (25789190) vs convoy head (2026-10-01)
+
+**Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head`=eee24cee → `25789190` (1 commit `fix(web): read the import graph from the AST, not a regex`; 1 file: `apps/web/src/config/tailwindContent.test.ts` +75/-14).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a correctness FIX for the purge guard (regex missed `lazy(() => import("./x"))` dynamic imports and false-matched JSDoc example imports; replaced with `ts.createSourceFile` walk over static imports, `export ... from`, and dynamic `import()`). Test-only file: `ts.createSourceFile`/`isImportDeclaration`/`isExportDeclaration`/`isStringLiteral`/`isCallExpression`/`forEachChild`/`SyntaxKind.ImportKeyword` are all current APIs (not deprecated); `fs.readFileSync`/`fg.sync`/`postcss([tailwindcss(config)])` operate on config-derived constants and bounded repo files (no attacker input → no injection/traversal); regexes (`/\.[cm]?[jt]sx?$/`, `toPosixGlob` lookahead) are linear (no ReDoS); `resolveSpecifier` handles only relative + `@/` alias on constants; `typescript@6.0.3` already a devDep of `apps/web` + root (no new dep → no new CVEs). No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`.
+**Scans**: new-file secrets CLEAN · new-file XSS/injection CLEAN · deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities · added-lines secrets CLEAN in apps/packages (convoy-diff `API_KEY` hits are REMOVALS: `wrangler.toml` drops hardcoded prod+staging keys, shared drops `PUBLIC_ACCESS_KEY`, `env.ts` fail-closed).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
 ## Security Audit — PR recover-lost-web-frontend-fixes-companio 5-file state vs head (2026-10-01)
 
 **Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head`=da76892c → head `44a8214e` (4 commits; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `apps/web/src/config/tailwindContent.test.ts` +154 new, `apps/web/tailwind.config.d.ts` +5 new, `apps/web/tailwind.config.js` +45/-1, `package-lock.json` +1).
