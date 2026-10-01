@@ -280,38 +280,71 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-label={ariaLabel}
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
-              whileHover={HOVER_SCALE.STRONG}
-              whileTap={TAP_SCALE.STANDARD}
+              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              whileHover={shouldReduceMotion ? undefined : HOVER_SCALE.STRONG}
+              whileTap={shouldReduceMotion ? undefined : TAP_SCALE.STANDARD}
             >
-              <motion.svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                initial={false}
-                animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
-                transition={{
-                  duration: ANIMATION.FLOAT,
-                  repeat: Infinity,
-                  ease: EASING.easeInOut,
-                }}
-              >
-                {isToTop ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 10l7-7m0 0l7 7m-7-7v18"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                  />
-                )}
-              </motion.svg>
+              {/* Floating arrow — gentle y bob that signals "jump" affordance.
+                  Skipped when reduced motion is preferred (WCAG 2.3.3): the
+                  infinite repeat would otherwise animate forever for
+                  vestibular-sensitive users while every other pulse in this
+                  file is already gated. Static arrow keeps full function. */}
+              {shouldReduceMotion ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  {isToTop ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  )}
+                </svg>
+              ) : (
+                <motion.svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  initial={false}
+                  animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
+                  transition={{
+                    duration: ANIMATION.FLOAT,
+                    repeat: Infinity,
+                    ease: EASING.easeInOut,
+                  }}
+                >
+                  {isToTop ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  )}
+                </motion.svg>
+              )}
             </motion.button>
           </KeyboardShortcutTooltip>
         </motion.div>

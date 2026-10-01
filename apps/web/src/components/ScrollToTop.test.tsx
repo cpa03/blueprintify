@@ -145,6 +145,26 @@ describe("ScrollToTop", () => {
 
     expect(scrollTo).not.toHaveBeenCalled();
   });
+
+  it("renders a static arrow without infinite float when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const scrollTo = vi.fn();
+    window.scrollTo = scrollTo;
+
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const button = screen.getByLabelText(topLabel());
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute("data-reduced-motion", "true");
+
+    fireEvent.click(button);
+    expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: 0 }));
+  });
 });
 
 describe("ScrollToBottom", () => {
