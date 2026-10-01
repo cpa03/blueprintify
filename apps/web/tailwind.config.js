@@ -1,17 +1,39 @@
 /** @type {import('tailwindcss').Config} */
 import typography from "@tailwindcss/typography";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// Tailwind resolves `content` globs against process.cwd(). Deriving them from this
+// config file's own location makes the scan working-directory independent: a build run
+// from the repo root or a container with a different cwd would otherwise match nothing
+// and silently ship a purged stylesheet.
+const appDir = path.dirname(fileURLToPath(import.meta.url));
+const webSrc = path.join(appDir, "src");
+const sharedSrc = path.join(appDir, "../../packages/shared/src");
+
+// Test files are not class sources. Excluding them from BOTH roots keeps the stylesheet
+// honest: fixtures add rules no user ever hits, and English prose in test names collides
+// with real utilities (e.g. "isolate failures" emits a spurious `.isolate`).
+const TEST_FILE_GLOB = "**/*.{test,spec}.{js,ts,jsx,tsx}";
+const TEST_DIR_GLOB = "**/__tests__/**";
 
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    path.join(appDir, "index.html"),
+    path.join(webSrc, "**/*.{js,ts,jsx,tsx}"),
     // @blueprint/shared exports literal Tailwind class strings (TOAST_STYLES,
     // CHAR_COUNTER_COLORS) that are interpolated into className at runtime.
     // JIT purges classes it cannot find in scanned source, so this glob is
-    // load-bearing — without it WARNING toasts ship unstyled.
-    "../../packages/shared/src/**/*.{js,ts,jsx,tsx}",
-    // Keep test fixtures out of the scan so they cannot inflate the stylesheet.
-    "!../../packages/shared/src/**/*.test.ts",
+    // load-bearing — without it WARNING toasts ship unstyled. It is also the only
+    // production source for some shared tokens (e.g. CHAR_COUNTER_COLORS.WARNING),
+    // so do not "clean this up" by narrowing it to a subset of files.
+    path.join(sharedSrc, "**/*.{js,ts,jsx,tsx}"),
+    // Negations must stay as broad as the positive globs they filter, otherwise a new
+    // naming convention (.test.tsx, .spec.ts, __tests__/) quietly re-enters the scan.
+    `!${path.join(webSrc, TEST_FILE_GLOB)}`,
+    `!${path.join(webSrc, TEST_DIR_GLOB)}`,
+    `!${path.join(sharedSrc, TEST_FILE_GLOB)}`,
+    `!${path.join(sharedSrc, TEST_DIR_GLOB)}`,
   ],
   darkMode: "class",
   theme: {
