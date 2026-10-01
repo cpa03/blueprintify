@@ -104,17 +104,22 @@ const importSpecifiers = (file: string): string[] => {
   );
   const specifiers: string[] = [];
   const visit = (node: ts.Node): void => {
-    // `import type` / `export type` are erased at build time, so the imported module is never
-    // bundled and cannot contribute — or lose — a Tailwind class.
-    const typeOnly =
-      (ts.isImportDeclaration(node) && node.importClause?.isTypeOnly) ||
-      (ts.isExportDeclaration(node) && node.isTypeOnly);
-    if (!typeOnly && ts.isImportDeclaration(node) && node.importClause?.name) return;
+    // Only a type-only statement is erased at build time, so only it can neither contribute nor
+    // lose a Tailwind class. Everything else — default, named, namespace, and side-effect
+    // imports — loads the module at runtime and must count, so no other form is skipped here.
     if (
-      !typeOnly &&
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      ts.isImportDeclaration(node) &&
       node.moduleSpecifier &&
-      ts.isStringLiteral(node.moduleSpecifier)
+      ts.isStringLiteral(node.moduleSpecifier) &&
+      !isErasedImport(node)
+    ) {
+      specifiers.push(node.moduleSpecifier.text);
+    }
+    if (
+      ts.isExportDeclaration(node) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteral(node.moduleSpecifier) &&
+      !node.isTypeOnly
     ) {
       specifiers.push(node.moduleSpecifier.text);
     }
@@ -127,6 +132,20 @@ const importSpecifiers = (file: string): string[] => {
   visit(source);
   return specifiers;
 };
+
+/**
+ * True when every binding in the statement is type-only and the compiler therefore drops the
+ * whole declaration. Covers both `import type { A }` (statement-level) and `import { type A }`
+ * (inline), where only `importClause.namedBindings.elements[].isTypeOnly` distinguishes them.
+ */
+function isErasedImport(node: ts.ImportDeclaration): boolean {
+  const clause = node.importClause;
+  if (!clause) return false;
+  if (clause.isTypeOnly) return true;
+  const { namedBindings } = clause;
+  if (!namedBindings || !ts.isNamedImports(namedBindings)) return false;
+  return namedBindings.elements.length > 0 && namedBindings.elements.every((e) => e.isTypeOnly);
+}
 
 /**
  * TypeScript rewrites an ESM `.js` specifier to its `.ts` source, so a specifier ending in a
@@ -150,16 +169,21 @@ const resolveSpecifier = (fromFile: string, specifier: string): string => {
     fs.existsSync(candidate) && fs.statSync(candidate).isFile();
   for (const base of bases) {
     const extension = path.extname(base);
-    const stems =
-      TS_REWRITES[extension]?.map((rewrite) => base.slice(0, -extension.length) + rewrite) ?? [];
-    for (const candidate of [base, ...stems]) {
-      for (const suffix of RESOLVABLE_SUFFIXES) {
-        if (isFile(candidate + suffix)) return candidate + suffix;
-      }
-      for (const suffix of RESOLVABLE_SUFFIXES.filter(Boolean)) {
-        if (isFile(path.join(candidate, `index${suffix}`)))
-          return path.join(candidate, `index${suffix}`);
-      }
+    // Stems are probed before the literal path because that is what TypeScript and Node ESM
+    // do: when both `core.js` and `core.ts` exist, `./core.js` resolves to `core.ts`. A stem
+    // already carries its own extension, so it is probed as-is rather than with suffixes.
+    const stems = (TS_REWRITES[extension] ?? []).map(
+      (rewrite) => base.slice(0, -extension.length) + rewrite
+    );
+    for (const stem of stems) {
+      if (isFile(stem)) return stem;
+    }
+    for (const suffix of RESOLVABLE_SUFFIXES) {
+      if (isFile(base + suffix)) return base + suffix;
+    }
+    for (const suffix of RESOLVABLE_SUFFIXES.filter(Boolean)) {
+      const candidate = path.join(base, `index${suffix}`);
+      if (isFile(candidate)) return candidate;
     }
   }
   return "";
@@ -246,18 +270,16 @@ describe("tailwind content globs", () => {
 
     // The excluded modules are not themselves production code, so they must not count as
     // importers of each other.
-    // The excluded modules are not themselves production code, so they must not count as
-    // importers of each other.
     const excludedSet = new Set(excluded);
     const production = inScope.filter(
       (file) => !/\.(test|spec)\./.test(file) && !excludedSet.has(toRepoPosix(file))
     );
     for (const file of production) {
       for (const specifier of importSpecifiers(file)) {
-        // Bare specifiers resolve through package exports, not through a scanned root.
-        // @blueprint/shared exposes only four fixed subpaths and no wildcard, so no bare
-        // specifier can name a file under a negated directory; `unresolvable` below is the
-        // backstop if a wildcard export is ever added.
+        // Bare specifiers resolve through package exports rather than a scanned root, so this
+        // loop cannot see them. That is safe only while no workspace package exposes a
+        // wildcard subpath, which `exports` below asserts rather than assumes — a `./*` entry
+        // would let a bare specifier name an excluded file and turn this skip into a blind spot.
         if (!specifier.startsWith(".") && !specifier.startsWith("@/")) continue;
         // Assert on the raw resolution, not its repo-relative form: toRepoPosix("") is
         // path.relative(repoRoot, cwd), a real-looking path that compares unequal to every
@@ -272,6 +294,21 @@ describe("tailwind content globs", () => {
         ).not.toContain(toRepoPosix(resolvedPath));
       }
     }
+  });
+
+  it("exposes no wildcard subpath that a bare specifier could use to skip this guard", () => {
+    // The reachability check skips bare specifiers, so a wildcard export would let a bare
+    // specifier name an excluded module and bypass it entirely. Assert that rather than
+    // assume it; a wildcard here means the check above needs a real bare-specifier resolver.
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(repoRoot, "packages/shared/package.json"), "utf8")
+    ) as { exports?: Record<string, unknown> };
+    const subpaths = Object.keys(manifest.exports ?? {});
+    expect(subpaths.length, "@blueprint/shared exposes no subpath exports").toBeGreaterThan(0);
+    expect(
+      subpaths.filter((subpath) => subpath.includes("*")),
+      "a wildcard export makes the bare-specifier skip in this file unsafe"
+    ).toEqual([]);
   });
 
   it("scans no test-only module that lacks a test filename suffix", () => {
