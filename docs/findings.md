@@ -2,6 +2,29 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions)
+
+**Scope**: `agent/janitor` (synced with `origin/main`, merge clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.51s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over first-party `apps/*/src`, `packages/*/src`, `scripts/` → zero hits (only third-party `node_modules/zod` test comments).
+- **No production `console.log`**: remaining hits are intentional only — Workers structured logging (`apps/api/src/middleware/logger.ts:217,263`, `apps/api/src/utils/secureLog.ts:256` sanitized), e2e console-capture specs, JSDoc `@example` snippets (`apps/web/src/lib/api.ts`), generated-project template strings (`apps/web/src/lib/templates/node.ts`, `static.ts`), and a docs comment (`apps/web/src/config/security.ts:164`). `console.warn/error` kept per policy (error handling + test mocks).
+- **No orphan/empty files**: 129 first-party source files, zero empty; no `*.bak`/`*.orig`/`*~`/`.DS_Store`; no `.only`/`.skip`/`debugger`; no `TODO|FIXME|HACK` in source; no merge markers; root `*.log` + `task_plan.md`/`notes.md` are gitignored transients — left alone, never committed.
+- **No unused deps**: all `apps/web`, `apps/api`, root deps import-verified (`framer-motion` 49 files, `clsx`/`jszip`/`zustand`/`dompurify`/`react-markdown` all live; `hono` 32 files, `openai`/`zod` live).
+- **No duplicate `formatDate`**: zero hits; `createDebouncedSaver` is now single-sourced in `packages/shared` and IS consumed (`apps/web/src/hooks/usePersistedStore.ts:16`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] Dual `createPersistedStore` implementations: LIVE `apps/web/src/store/persistence.ts:69` (used by `store/editor.ts` + `store/wizard.ts`, hand-rolled debounce) vs `apps/web/src/hooks/usePersistedStore.ts:98` (uses shared `createDebouncedSaver`, has `reset`/error callbacks, zero production importers — only its own test + `hooks/index.ts:35` barrel re-export). Recommend unifying on one (prefer the shared-debounce hooks version) and deleting the other with its test — flagged, not executed, to keep this pre-merge diff behavior-untouched.
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils` ×6, `apps/web/src/lib` ×10 incl. `templates/`, `apps/web/src/utils` ×3, `packages/shared/src/utils` ×1). No cross-boundary consolidation per safety rule; `web/src/lib` vs `web/src/utils` boundary is undocumented — recommend a one-line ownership note in `apps/web/README.md`.
+
 ## Janitor — Pre-merge cleanup scan (2026-10-01)
 
 **Scope**: `agent/janitor` vs `origin/main` (already in sync — merge clean, 0-behind); 697 tracked files.
