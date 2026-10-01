@@ -24,8 +24,12 @@ const SHARED_ONLY_CLASSES = [
   "text-yellow-500",
 ];
 
-/** Utilities reachable only from test fixtures or test prose. */
-const TEST_ONLY_CLASSES = ["isolate", "text-red-500"];
+/** Markers the config's negation patterns are expected to carry, per scanned root. */
+const TEST_FILE_PATTERN_MARKER = "{test,spec}";
+const TEST_DIR_MARKER = "__tests__";
+
+/** Roots a positive content pattern is expected to scan. */
+const EXPECTED_ROOTS = ["apps/web/src", "packages/shared/src"];
 
 function readContentPatterns(tailwindConfig: Config): string[] {
   const { content } = tailwindConfig;
@@ -37,6 +41,13 @@ function readContentPatterns(tailwindConfig: Config): string[] {
 }
 
 const contentPatterns = readContentPatterns(config);
+// Patterns are matched as POSIX regardless of the platform that produced them.
+const normalizedPatterns = contentPatterns.map((pattern) => pattern.replace(/\\/g, "/"));
+const positivePatterns = normalizedPatterns.filter((pattern) => !pattern.startsWith("!"));
+const negationPatterns = normalizedPatterns
+  .filter((pattern) => pattern.startsWith("!"))
+  .map((pattern) => pattern.slice(1));
+
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
 const scannedFiles = fg.sync(contentPatterns).map((file) => path.relative(repoRoot, file));
 
@@ -50,36 +61,49 @@ describe("tailwind content globs", () => {
     css = result.css;
   }, 60_000);
 
+  // Neither tsconfig (allowJs/checkJs are off, include is src/**/*) nor ESLint
+  // (ignores **/*.config.js) type-checks the .js that tailwind.config.d.ts describes, so
+  // this is the only cheap check that the declaration has not drifted from the real export.
+  it("loads the config with the shape the declaration promises", () => {
+    expect(config.darkMode).toBe("class");
+    expect(Array.isArray(config.plugins)).toBe(true);
+    expect(readContentPatterns(config)).toEqual(contentPatterns);
+  });
+
   it("emits classes whose only production source is @blueprint/shared", () => {
     for (const selector of SHARED_ONLY_CLASSES) {
       expect(css).toContain(`.${selector}`);
     }
   });
 
-  it("does not emit rules sourced from test fixtures or test prose", () => {
-    for (const selector of TEST_ONLY_CLASSES) {
-      expect(css).not.toContain(`.${selector}`);
-    }
+  it("supplies shared tokens from source, not from web test fixtures", () => {
+    // CHAR_COUNTER_COLORS.WARNING is also spelled out in CharacterCounter.test.tsx and
+    // StepInfo.test.tsx. While those fixtures are in the scan the class is still emitted,
+    // so only the scanned file set distinguishes the two states.
+    expect(scannedFiles).toContain("packages/shared/src/config/validation.ts");
+    expect(scannedFiles).toContain("packages/shared/src/config/ui.ts");
   });
 
-  it("scans @blueprint/shared source so shared tokens are not fixture-dependent", () => {
-    // CHAR_COUNTER_COLORS.WARNING is also spelled out in CharacterCounter.test.tsx and
-    // StepInfo.test.tsx. If those fixtures become the only thing keeping the class
-    // alive, the character counter silently loses its warning colour in production.
-    expect(scannedFiles).toContain("packages/shared/src/config/validation.ts");
+  it("scans no test files", () => {
     expect(scannedFiles.filter((file) => /\.(test|spec)\./.test(file))).toEqual([]);
   });
 
-  it("excludes test files from every scanned root", () => {
-    expect(contentPatterns).toEqual(
-      expect.arrayContaining([expect.stringContaining("packages/shared/src")])
-    );
-
-    const negations = contentPatterns.filter((pattern) => pattern.startsWith("!"));
-    for (const root of ["apps/web/src", "packages/shared/src"]) {
-      const rootNegations = negations.filter((pattern) => pattern.includes(root));
-      expect(rootNegations.some((pattern) => pattern.includes(".{test,spec}."))).toBe(true);
-      expect(rootNegations.some((pattern) => pattern.includes("__tests__"))).toBe(true);
+  it("declares test-file and __tests__ exclusions for every scanned root", () => {
+    for (const root of EXPECTED_ROOTS) {
+      const forRoot = negationPatterns.filter((pattern) => pattern.includes(`/${root}/`));
+      expect(forRoot.some((pattern) => pattern.includes(TEST_FILE_PATTERN_MARKER))).toBe(true);
+      expect(forRoot.some((pattern) => pattern.includes(TEST_DIR_MARKER))).toBe(true);
     }
+  });
+
+  it("scans no __tests__ directory", () => {
+    // Vacuous while no __tests__ directory exists in either tree, which is why the
+    // declaration above is asserted structurally and not only through this check.
+    expect(scannedFiles.filter((file) => file.includes(TEST_DIR_MARKER))).toEqual([]);
+  });
+
+  it("has exclusions that actually shrink the scanned set", () => {
+    // Refutes a negation that reads correctly but is a no-op at glob time.
+    expect(scannedFiles.length).toBeLessThan(fg.sync(positivePatterns).length);
   });
 });
