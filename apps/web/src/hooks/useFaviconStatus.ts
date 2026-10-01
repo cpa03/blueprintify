@@ -7,7 +7,7 @@ import { FAVICON_CONFIG, GENERATION_MESSAGES } from "../config/constants";
  * keeps the effect dependency to a single primitive, so the favicon only swaps
  * on genuine state transitions instead of on every streaming progress update.
  */
-export type FaviconStatus = "idle" | "generating" | "complete";
+type FaviconStatus = "idle" | "generating" | "complete";
 
 function getFaviconStatus(isGenerating: boolean, generationProgress: string): FaviconStatus {
   if (isGenerating) return "generating";

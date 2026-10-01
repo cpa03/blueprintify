@@ -2,6 +2,29 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — import-graph scan: 1 over-exported type unexported, build+typecheck+lint+tests green)
+
+**Scope**: `agent/janitor` atop prior janitor commits (branch already net −243 lines vs `origin/main` across 43 files). Fresh full-tree scan: 787 exported symbols import-graph checked, commented-code / TODO / `debugger` / `.only` / `console.log` / dep-wiring sweeps.
+
+### Removed / changed
+
+- `apps/web/src/hooks/useFaviconStatus.ts`: unexported `FaviconStatus` type (internal-only — sole consumer is `getFaviconStatus` in the same file; hook `useFaviconStatus` itself is live via `Wizard.tsx` + 8 tests). One-word change, no behavior impact.
+
+**Verification**: `npm run typecheck --workspace=apps/web` ✅ · `useFaviconStatus.test.ts` 8/8 ✅ · `eslint` on touched file ✅ · `npm run build --workspace=apps/web` ✅.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: zero `// <code-keyword>` hits in `apps/`; remaining comments are JSDoc, 7 justified eslint-disables, and explanatory prose.
+- **No production `console.log` to remove**: hits are logger transports (`middleware/logger.ts`, `utils/secureLog.ts`), CLI scripts, generated-template strings, docs/e2e examples.
+- **No duplicate utils**: no `formatDate` dups; 4 util homes (`api/utils`, `web/lib`, `web/utils`, `shared/utils`) have disjoint concerns.
+- **No unused deps**: all root devDeps wired to source/scripts/config.
+- **Untracked artifacts** (`build.log`, `lint.log`, `typecheck.log`, `task_plan.md`, `notes.md`, `dist/`) are gitignored, not committed.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] Dual `createPersistedStore` implementations persist (live `apps/web/src/store/persistence.ts` vs test-only `apps/web/src/hooks/usePersistedStore.ts`) — flagged in prior cycles, still open; recommend unifying on one.
+
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
