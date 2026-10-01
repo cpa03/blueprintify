@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR app-functionality-fixes-round-2 full 4-file state + birch tip hardening (2026-10-01)
+
+**Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → PR head `b5786a81` (4 files: `apps/api/src/config/constants/logger.ts` +20/-1, `apps/api/src/index.ts` -9, `apps/api/src/index.test.ts`, `apps/api/src/middleware/logger.test.ts` +153) plus local tip `convoy/.../gt/birch/6a11d188` (3 commits `a75cec70/e96bbc68/11c5928c`, `index.test.ts` leak-assertion hardening).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a net security FIX. `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (= `x-api-key`, the `apiKeyAuth` default) to `SANITIZED_HEADER_EXCLUDE`, closing CWE-532 credential-into-Workers-logs on every authenticated request; case-insensitive substring matcher (`middleware/logger.ts:186`) deliberately covers gateway/SDK aliases (`Proxy-X-Api-Key`, `x-api-key-id`) and tests pin redaction + non-over-redaction. `index.ts` deletes the 2nd `env.ASSETS.fetch(request)` SPA fallback, fixing the consumed-body "Cannot reconstruct a Request" crash path; unknown paths now return structured JSON 404 (no unintended asset exposure, no open redirect). Test-only hardening (`stripEchoedPaths` with `escapeRegExp`-escaped `new RegExp` + bounded lookahead, per-field envelope scan, anchored `FILESYSTEM_ROOTS`, `STACK_FRAME`) correctly separates echoed request paths from real leaks; regexes linear (no ReDoS); `expect.unreachable` is current Vitest 4.1.11 API. Canaries (`CANARY-bug052-*`) are synthetic markers, never real secrets; `Bearer secret-token-12345` is a pre-existing fixture (not in PR diff). No `eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`; no `substr`/`unescape`/`Math.random`/`md5`/`sha1`.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities · no `package.json`/lockfile change → no new CVEs.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
 ## Security Audit — PR recover-lost-web-frontend-fixes-companio/2527e45b/head @0933fd61 (2026-10-01)
 
 **Scope**: `origin/main`=da76892c → head `0933fd61` (2 commits: `eee24cee` shared-scan + `0933fd61` AST guard; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new 244 lines, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1).
