@@ -144,6 +144,66 @@ describe("requestLogger middleware", () => {
         expect(hasSensitive).toBe(false);
       }
     });
+
+    it("should not leak the x-api-key credential into the serialized log payload", async () => {
+      const CREDENTIAL_CANARY = "CANARY-bug052-never-log-this-credential-9f3a1c7e2b4d";
+      const app = new Hono();
+      app.use("*", requestLogger({ logRequestBody: true }));
+      app.post("/api/data", (c) => c.json({ received: true }));
+
+      const callsBefore = consoleLogSpy.mock.calls.length;
+      await app.request("/api/data", {
+        method: HTTP_METHODS.POST,
+        headers: {
+          [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON,
+          [API_HEADERS.CUSTOM.API_KEY]: CREDENTIAL_CANARY,
+          "X-Correlation-Note": "safe-header-value",
+        },
+        body: JSON.stringify({ key: "value" }),
+      });
+
+      const serialized = consoleLogSpy.mock.calls
+        .slice(callsBefore)
+        .map((call: unknown[]) => call[0] as string)
+        .join("\n");
+
+      expect(serialized).toContain('"type":"request"');
+      expect(serialized).not.toContain(CREDENTIAL_CANARY);
+      expect(serialized).not.toContain(HTTP_HEADER_NAMES.X_API_KEY);
+      expect(serialized).toContain("x-correlation-note");
+    });
+
+    it("should keep logging unrelated headers when x-api-key is present", async () => {
+      const app = new Hono();
+      app.use("*", requestLogger());
+      app.get("/api/data", (c) => c.json({ ok: true }));
+
+      const callsBefore = consoleLogSpy.mock.calls.length;
+      await app.request("/api/data", {
+        headers: {
+          [API_HEADERS.CUSTOM.API_KEY]: "CANARY-bug052-second-case-keepothers-4a7d1e",
+          "X-Correlation-Note": "safe-header-value",
+          [HTTP_HEADER_NAMES.USER_AGENT]: "vitest",
+        },
+      });
+
+      const requestLogs = consoleLogSpy.mock.calls
+        .slice(callsBefore)
+        .filter(
+          (call: unknown[]) =>
+            typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
+        );
+      expect(requestLogs.length).toBeGreaterThanOrEqual(1);
+
+      const loggedHeaders =
+        (JSON.parse(requestLogs[0][0] as string) as { headers?: Record<string, string> }).headers ||
+        {};
+      const loggedHeaderKeys = Object.keys(loggedHeaders).map((key) => key.toLowerCase());
+
+      expect(loggedHeaderKeys).toContain("x-correlation-note");
+      expect(loggedHeaders["x-correlation-note"]).toBe("safe-header-value");
+      expect(loggedHeaderKeys).toContain(HTTP_HEADER_NAMES.USER_AGENT_LC);
+    });
   });
 
   describe("logRequestBody option", () => {
