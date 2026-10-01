@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR toast credential-redaction vs head (2026-10-01)
+
+**Scope**: `origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/gt/toast/271503c9` vs `.../head` (2-file diff: `apps/api/src/config/constants/logger.ts` +18, `apps/api/src/middleware/logger.test.ts` +124/-1).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a security FIX. `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (`x-api-key`, the `apiKeyAuth` default header verified in `auth.ts:110`; sole prod call site `src/index.ts:104` does not override) to `SANITIZED_HEADER_EXCLUDE`, closing a credential leak into Workers logs on every authenticated request. Substring matching (`key.toLowerCase().includes(h)`) deliberately covers gateway/SDK aliases (`Proxy-X-Api-Key`, `x-api-key-id`); tests pin both redaction and non-over-redaction (`x-correlation-note` preserved). Canaries are fake `CANARY-bug052-*` values, `scan:secrets` clean. No `eval`/`innerHTML`/`Math.random`/weak hashing; uses `.includes` (not deprecated `.substr`).
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + prod) · added-lines XSS/injection/deprecated CLEAN · toast overlay tests ✅ 15/15 (baseline 11/11) · shared `X_API_KEY="x-api-key"` invariant confirmed.
+**Pre-existing (not introduced, for follow-up)**: `origin/main` + `agent/security-engineer` still log `x-api-key` until toast merges — no action taken here to avoid duplicating toast's fix and diverging. No rotation needed (leak is log-storage exposure, canaries never real secrets).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`.
+
 ## Security Audit — PR introduced-defect removal vs origin/main (2026-10-01)
 
 **Scope**: `agent/security-engineer` vs `origin/main` (6-file diff). Intent is secret hardening (wrangler.toml drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; `env.ts` fail-closed `""`; shared drops `PUBLIC_ACCESS_KEY` with fail-closed test).
