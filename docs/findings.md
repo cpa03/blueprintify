@@ -2,6 +2,32 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.39s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 1 prose false positive only (`App.tsx:105`, explanatory sentence); zero hits in `packages/`.
+- **No production `console.log`**: 13 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets (`secureLog.ts:97/141`, `lib/api.ts:21/23`), generated-project template strings (`templates/node.ts:141/169`, `templates/static.ts:193`), test expectations (`secureLog.test.ts:229`, `logger.test.ts:88`), docs comment (`config/security.ts:164`).
+- **No dead unused exports**: prior removals hold — `functions/api/[[path]].ts` stays deleted, 2 test relocations intact; `FaviconStatus` stays module-private (hook live via `Wizard.tsx` + 8 tests).
+- **No orphan/empty/duplicate files**: zero `.bak`/`.orig`/`.tmp`/`.DS_Store`; zero tracked `*.log`; first-party `md5sum` sweep → zero identical pairs; zero `formatDate` hits.
+- **No unused deps**: web/api/shared deps all import-verified in prior cycles, `package.json` surface unchanged since.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (single hit is `apps/api/README.md:306` grep-example prose); 0 `.only`/`.skip`/`debugger`; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; 0 merge markers; eslint-disables remain the 6 legitimate targeted suppressions.
+- **Branch stays lean**: diff vs `origin/main` = 43 files, +901/−1096 (net −195; `findings.md` +873 docs history, source net strongly negative, prior removals intact).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] Dual `createPersistedStore` implementations persist (live `apps/web/src/store/persistence.ts` vs test-only `apps/web/src/hooks/usePersistedStore.ts`) — flagged in prior cycles, still open; recommend unifying on one, not executed to keep pre-merge diff behavior-untouched.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files post-#3693) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep diff minimal.
+
 ## Janitor Cleanup (2026-10-01 — import-graph scan: 1 over-exported type unexported, build+typecheck+lint+tests green)
 
 **Scope**: `agent/janitor` atop prior janitor commits (branch already net −243 lines vs `origin/main` across 43 files). Fresh full-tree scan: 787 exported symbols import-graph checked, commented-code / TODO / `debugger` / `.only` / `console.log` / dep-wiring sweeps.
