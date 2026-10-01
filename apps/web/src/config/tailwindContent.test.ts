@@ -14,6 +14,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import fg from "fast-glob";
 import postcss from "postcss";
 import tailwindcss, { type Config } from "tailwindcss";
+import ts from "typescript";
 
 import config from "../../tailwind.config";
 
@@ -73,19 +74,70 @@ const toRepoPosix = (file: string): string =>
   path.relative(repoRoot, file).split(path.sep).join("/");
 const scannedFiles = fg.sync(contentPatterns).map(toRepoPosix);
 
-const RESOLVABLE_EXTENSIONS = ["", ".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx"];
+const RESOLVABLE_SUFFIXES = [
+  "",
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".cts",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  ".json",
+];
 
-const resolveRelative = (fromFile: string, specifier: string): string =>
-  RESOLVABLE_EXTENSIONS.map((extension) =>
-    path.resolve(path.dirname(fromFile), specifier + extension)
-  ).find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()) ?? "";
-
+/**
+ * Module specifiers a file actually pulls in, read from the AST rather than a regex: this repo
+ * lazily imports local modules via `import("./x")` in ~18 production sites, and its JSDoc
+ * convention writes example imports inside comments. A regex over raw source misses the former
+ * and matches the latter, either of which makes this guard lie. TypeScript is already a
+ * devDependency of this workspace.
+ */
 const importSpecifiers = (file: string): string[] => {
-  if (!/\.[jt]sx?$/.test(file)) return [];
-  const source = fs.readFileSync(file, "utf8");
-  return [...source.matchAll(/(?:from|import)\s+["'](\.[^"']*)["']/g)].map(
-    (match) => match[1] ?? ""
+  if (!/\.[cm]?[jt]sx?$/.test(file)) return [];
+  const source = ts.createSourceFile(
+    file,
+    fs.readFileSync(file, "utf8"),
+    ts.ScriptTarget.Latest,
+    false
   );
+  const specifiers: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteral(node.moduleSpecifier)
+    ) {
+      specifiers.push(node.moduleSpecifier.text);
+    }
+    if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+      const [argument] = node.arguments;
+      if (argument && ts.isStringLiteral(argument)) specifiers.push(argument.text);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  return specifiers;
+};
+
+const resolveSpecifier = (fromFile: string, specifier: string): string => {
+  const bases = specifier.startsWith("@/")
+    ? [path.join(appDir, "src", specifier.slice(2))]
+    : specifier.startsWith(".")
+      ? [path.resolve(path.dirname(fromFile), specifier)]
+      : [];
+  for (const base of bases) {
+    for (const suffix of RESOLVABLE_SUFFIXES) {
+      const candidate = base + suffix;
+      if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+    }
+    for (const suffix of RESOLVABLE_SUFFIXES.filter(Boolean)) {
+      const candidate = path.join(base, `index${suffix}`);
+      if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+    }
+  }
+  return "";
 };
 
 describe("tailwind content globs", () => {
@@ -161,13 +213,22 @@ describe("tailwind content globs", () => {
     const excluded = inScope
       .map(toRepoPosix)
       .filter((file) => !scannedFiles.includes(file) && !/\.(test|spec)\./.test(file));
-    expect(excluded.length).toBeGreaterThan(0);
+    // Canary: an empty exclusion set means the directory negation was dropped or went inert and
+    // this check would pass forever without testing anything.
+    expect(excluded, "no test-only module is being excluded, so this guard is vacuous").not.toEqual(
+      []
+    );
 
-    const production = inScope.filter((file) => !/\.(test|spec)\./.test(file));
+    // The excluded modules are not themselves production code, so they must not count as
+    // importers of each other.
+    const excludedSet = new Set(excluded);
+    const production = inScope.filter(
+      (file) => !/\.(test|spec)\./.test(file) && !excludedSet.has(toRepoPosix(file))
+    );
     for (const module of excluded) {
       const importers = production.filter((file) =>
         importSpecifiers(file).some(
-          (specifier) => toRepoPosix(resolveRelative(file, specifier)) === module
+          (specifier) => toRepoPosix(resolveSpecifier(file, specifier)) === module
         )
       );
       expect(importers, `${module} is imported by production code`).toEqual([]);
