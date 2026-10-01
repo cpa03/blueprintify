@@ -119,7 +119,7 @@ const importSpecifiers = (file: string): string[] => {
       ts.isExportDeclaration(node) &&
       node.moduleSpecifier &&
       ts.isStringLiteral(node.moduleSpecifier) &&
-      !node.isTypeOnly
+      !isErasedExport(node)
     ) {
       specifiers.push(node.moduleSpecifier.text);
     }
@@ -134,17 +134,28 @@ const importSpecifiers = (file: string): string[] => {
 };
 
 /**
- * True when every binding in the statement is type-only and the compiler therefore drops the
- * whole declaration. Covers both `import type { A }` (statement-level) and `import { type A }`
- * (inline), where only `importClause.namedBindings.elements[].isTypeOnly` distinguishes them.
+ * True when the compiler erases the whole declaration, i.e. every binding it introduces is
+ * type-only. Both the statement-level (`import type { A }`) and inline (`import { type A }`)
+ * spellings are covered, and any surviving *value* binding disqualifies the statement — that
+ * is what would load the module, so it must be counted.
  */
 function isErasedImport(node: ts.ImportDeclaration): boolean {
   const clause = node.importClause;
-  if (!clause) return false;
+  if (!clause) return false; // `import "./x"` loads the module
+  if (clause.name) return false; // default binding is a value binding
   if (clause.isTypeOnly) return true;
   const { namedBindings } = clause;
-  if (!namedBindings || !ts.isNamedImports(namedBindings)) return false;
+  if (!namedBindings) return false; // `import * as ns from "./x"`
+  if (!ts.isNamedImports(namedBindings)) return false;
   return namedBindings.elements.length > 0 && namedBindings.elements.every((e) => e.isTypeOnly);
+}
+
+/** Mirror of isErasedImport for `export … from`, so `export { type A } from "./x"` is skipped too. */
+function isErasedExport(node: ts.ExportDeclaration): boolean {
+  if (node.isTypeOnly) return true;
+  const clause = node.exportClause;
+  if (!clause || !ts.isNamedExports(clause)) return false; // `export * from "./x"` is runtime
+  return clause.elements.length > 0 && clause.elements.every((e) => e.isTypeOnly);
 }
 
 /**
