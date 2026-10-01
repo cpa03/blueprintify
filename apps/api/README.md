@@ -223,16 +223,20 @@ All errors return consistent JSON responses:
     "details": {
       "issues": [
         {
-          "path": "projectName",
+          "path": ["projectName"],
           "message": "Project name is required"
         }
       ]
     },
     "timestamp": "<ISO-8601>",
-    "requestId": "<uuid>"
+    "requestId": "<epoch-ms>-<random>"
   }
 }
 ```
+
+`requestId` is present on every error body and matches the `X-Request-ID` response header and the server-side log line for the same request. Its format is `<epoch-ms>-<random>` (e.g. `1790884637380-om7wd1rqu`), not a UUID.
+
+Each entry in `details.issues[].path` is an ordered array of path segments, not a dotted string: object keys are strings and array indices are integers, so a bad `techStack[2].category` value yields `["techStack", 2, "category"]`.
 
 ### Security
 

@@ -219,16 +219,20 @@ curl -X POST http://localhost:8787/generate \
     "details": {
       "issues": [
         {
-          "path": "projectName",
+          "path": ["projectName"],
           "message": "Project name is required"
         }
       ]
     },
     "timestamp": "<ISO-8601>",
-    "requestId": "<uuid>"
+    "requestId": "<epoch-ms>-<random>"
   }
 }
 ```
+
+`requestId` is present on every error body and matches the `X-Request-ID` response header and the server-side log line for the same request. Its format is `<epoch-ms>-<random>` (for example `1790884637380-om7wd1rqu`), not a UUID.
+
+Each entry in `details.issues[].path` is an ordered array of path segments, not a dotted string: object keys are strings and array indices are integers, so a bad `techStack[2].category` value yields `["techStack", 2, "category"]`.
 
 ### POST /tasks
 
@@ -677,15 +681,22 @@ All endpoints return consistent error responses using structured JSON format:
     "message": "Error description",
     "code": "ERROR_CODE",
     "details": {
-      "field": ["Validation error messages"]
+      "issues": [
+        {
+          "path": ["techStack", 2, "category"],
+          "message": "Validation error message"
+        }
+      ]
     },
     "timestamp": "2026-02-11T20:00:00.000Z",
-    "requestId": "req_abc123def456"
+    "requestId": "1790884637380-om7wd1rqu"
   }
 }
 ```
 
-The `requestId` field provides a unique identifier for each request, enabling efficient debugging and log correlation across distributed systems.
+The `requestId` field provides a unique identifier for each request, enabling efficient debugging and log correlation across distributed systems. It is formatted as `{epochMilliseconds}-{random}` (not a UUID) and is emitted on every error body, matching the `X-Request-ID` response header and the server-side log line for the same request.
+
+`details.issues[].path` is an ordered array of path segments, not a dotted string: object keys are strings and array indices are integers.
 
 ### Error Types
 

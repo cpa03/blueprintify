@@ -577,12 +577,44 @@ components:
               type: string
             details:
               type: object
+              description: >-
+                Error-specific context. For 400 validation failures this carries an
+                `issues` array of ValidationIssue objects; prompt-injection rejections
+                carry `field` and `message`.
               additionalProperties: true
             timestamp:
               type: string
               format: date-time
             requestId:
               type: string
+              description: >-
+                Correlation id for this request. Present on every error body produced by
+                the API (400, 401, 503, 504, 404) and identical to the value logged for
+                the same request and to the `X-Request-ID` response header. Format is
+                `{epochMilliseconds}-{random}`, NOT a UUID.
+              pattern: '^\d+-[a-z0-9]+$'
+              example: "1790884637380-om7wd1rqu"
+
+    ValidationIssue:
+      type: object
+      required:
+        - path
+        - message
+      properties:
+        path:
+          type: array
+          description: >-
+            Path to the offending value as an ordered array of segments, NOT a dotted
+            string. Object keys appear as strings and array indices as integers, so a
+            bad `techStack[2].category` value yields ["techStack", 2, "category"].
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+          example: ["techStack", 2, "category"]
+        message:
+          type: string
+          example: "Expected 'frontend' | 'backend' | ..."
 
     TechStackItem:
       type: object
