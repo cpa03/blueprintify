@@ -253,9 +253,11 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
   /**
    * Requires a source-location marker between `at` and the `:line:col` tail, so
    * a clock time or bare ISO timestamp after the word "at" is not read as a
-   * frame. `[^\n]` keeps a match inside one frame of a multi-line trace.
+   * frame. The gap after `at` is horizontal whitespace only: `\s` would cross a
+   * line break and conflate a trailing `at` with a path on the next line, and
+   * V8 always keeps the reference on the same line as `at`.
    */
-  const STACK_FRAME = /\bat\s+[^\n]*[/\\.][^\n]*:\d+:\d+/;
+  const STACK_FRAME = /\bat[^\S\n]+[^\n]*[/\\.][^\n]*:\d+:\d+/;
 
   const collectStrings = (value: unknown): string[] => {
     if (typeof value === "string") return [value];
@@ -315,12 +317,14 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     // frame visible at all — on the wire it carries an escaped newline.
     for (const field of collectStrings(parseErrorEnvelope(raw))) {
       const scanned = stripEchoedPaths(field, requestPath);
+      const shown = field.length > 120 ? `${field.slice(0, 120)}…` : field;
       for (const [label, pattern] of FILESYSTEM_ROOTS) {
-        expect(scanned, `response body leaked a filesystem path under ${label}`).not.toMatch(
-          pattern
-        );
+        expect(
+          scanned,
+          `response body leaked a filesystem path under ${label} in: ${shown}`
+        ).not.toMatch(pattern);
       }
-      expect(scanned, "response body leaked a stack frame").not.toMatch(STACK_FRAME);
+      expect(scanned, `response body leaked a stack frame in: ${shown}`).not.toMatch(STACK_FRAME);
     }
   };
 
@@ -498,7 +502,11 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
       await expectStructuredNotFound(res);
       // Without this the case also passes via an auth short-circuit or an
       // earlier return, never reaching the ASSETS fall-through it documents.
-      expect(assets.fetch).toHaveBeenCalledWith(expect.anything());
+      // `last` and the URL matter: the mock is only cleared in beforeEach, so
+      // a plain "called with anything" would be satisfied by iteration 1.
+      expect(assets.fetch).toHaveBeenLastCalledWith(
+        expect.objectContaining({ url: `https://example.com${requestPath}` })
+      );
       expectNoLeakedInternals(raw, requestPath);
     }
   });
@@ -518,6 +526,11 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     );
     expect(() =>
       expectNoLeakedInternals(body("Shared blueprint not found or expired"), requestPath)
+    ).not.toThrow();
+    // A trailing "at" plus a source location on the next line is not one frame.
+    // Rootless, so a path assertion cannot throw first and mask the result.
+    expect(() =>
+      expectNoLeakedInternals(body("retry scheduled at\nindex.js:1:2"), requestPath)
     ).not.toThrow();
   });
 
