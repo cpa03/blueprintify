@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — verification scan: on-branch removals confirmed safe, full gates green)
+
+**Scope**: `agent/janitor` branch, hygiene verification per cleanup request. Branch already contains the requested removals (`2e392f75` 16 unused exports + dead test blocks, `9ecfb9d2` duplicate `functions/api/[[path]].ts`, 2 test co-locations); this run verified zero residue and re-ran full gates. Net branch diff vs `origin/main`: 604+/1095- (net -491 lines).
+
+### Removed (this run)
+
+- None new. All candidates verified live or already removed (see below). Zero source changes this run.
+
+### Verified clean (no action needed)
+
+- **On-branch removals safe**: zero remaining references to all 16 deleted/de-exported names (`fadeIn`/`scaleIn`/`slideInRight`/`slideInLeft`, `useShallow` store re-export, `generateCompletion`, `validateXssSafe`, `isXssSafe`, `secureLogDebug`, `createTimeoutWrapper`, `withTimeoutAndRetry`, `getStorageErrorMessage`, `withStorageRecovery`, `CreateShareRequest`, `VerifySharePassphraseRequest`, `StreamCallbacks`); `StorageHealth`/`StorageMetrics` correctly module-private with 8 live internal usages.
+- **No commented-out dead code**: `// <code-keyword>` grep over first-party `apps/` → zero hits.
+- **No production `console.log`**: hits remain template-generator output strings, e2e specs, JSDoc examples, and intentional Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts`).
+- **No merge markers / TODOs / focused tests**: marker grep → zero; no `TODO|FIXME|HACK` in source; no `.only`/`.skip`/`debugger`.
+- **No orphan/empty files**: no empty first-party source files; no `*.tmp`/`*.bak`/`*.orig`.
+- **No duplicate utils**: single `createDebouncedSaver`; no `formatDate`-style forks.
+- **No unused deps**: `concurrently`/`lighthouse`/`chrome-launcher`/`jest-axe` all referenced in scripts/tests.
+- **Transient logs**: root `build.log`/`lint.log`/`typecheck.log` + `task_plan.md`/`notes.md` are gitignored — left alone, never committed.
+
+**Verification (fresh, current tree)**: build ✅ (11.53s) · typecheck ✅ exit 0 (shared/api/web) · lint ✅ exit 0 · tests **2598/2598** ✅ (web 1213/84 + api 507/33 + shared 878/5) · `test:all` exit 0.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- None new this run. Prior 2026-10-01 entries already cover the open items (`safeLocalStorage` DRY follow-up to #3693; documenting the 4-way util-home split).
+
 ## Janitor Cleanup (2026-10-01 — post-merge resync: zero safe deletions, build green)
 
 **Scope**: `agent/janitor` branch, hygiene scan per cleanup request. Merged `origin/main` @ `da76892c` (#3683 a11y announcements + #3692/#3693 dep bumps & localStorage hardening) then scanned: commented-out dead code, production `console.log`, unused exports, orphan files, duplicate utils, unused deps, merge markers.
