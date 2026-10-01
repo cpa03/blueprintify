@@ -404,6 +404,15 @@ Build/typecheck verified green after removal.
 - `PREVIEW_DEFAULTS`, `OBSERVABILITY_DEFAULTS`, `QUEUE_DEFAULTS` in `packages/shared/src/config/core.ts` have **zero code consumers** but are the documented single source of truth for `apps/api/wrangler.toml` (header comment references shared config; values match: `max_batch_size=10`, `max_batch_timeout=30`, `head_sampling_rate=0.1`). Keep — they are documentation-as-code; consider adding a test asserting parity with wrangler.toml.
 - Shared type exports `GenerationResult`, `ImportResult`, `StorageReportRequest`, `ExportRequest`, `ImportRequest` have zero live consumers in apps but are referenced in `docs/findings.md`/`packages/shared/README.md` as documented API surface. Keep.
 - Root devDependency `@emnapi/core` (1.11.3) has no code references and no dependents in `package-lock.json` beyond the root entry, but `@img/sharp-wasm32` (used for ARM CI sharp support) pulls in `@emnapi/runtime`. Verify on `ubuntu-24.04-arm` CI before removing; flagged for human disposition.
+---
+
+## ULW Loop Cycle 602 (2026-09-30 — REPOKEEPER DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20260930-sisyphus-loop` from `origin/main` (`3ae464da`), clean tree, 0-behind.
+**Hygiene**: 698 tracked files; 0 redundant/temp/unused (temp-artifact grep empty); 0 empty tracked dirs; 28/28 agents + 25/25 skills match README; 5/5 workflows `ubuntu-24.04-arm`; audits 99 top-level + 14 archived (retention: no purge, append-only per header).
+**Doc-sync**: README tree missing `ocr-review-summary-2026-09-26.md` → added; README index missing `issue-manager-plan-cycle-368.md` + `ocr-review-summary-2026-09-26.md` → added. TODO/FIXME 0; console.log only intentional (logger/secureLog).
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ exit 0 · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 335 files · audit ✅ 0 vulns.
+**Stray state**: 20+ open PRs (incl. #3684/#3681/#3676/#3672 repokeeper) left untouched — human disposition pending; this cycle adds minimal docs-only PR.
 
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
