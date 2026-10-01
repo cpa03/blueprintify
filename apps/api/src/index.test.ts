@@ -233,35 +233,79 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
   /**
    * Absolute filesystem roots a leaked path would realistically sit under on
    * the platforms this repo is checked out on: Linux CI runners and dev
-   * containers, macOS dev machines, and the Workers sandbox. `C:\` is
-   * unambiguous on its own — a drive letter cannot occur in a URL path.
+   * containers, macOS dev machines, and the Workers sandbox.
    *
-   * The Unix roots cannot: `/users`, `/home`, `/workspace`, `/var/task`, `/app`
-   * and `/root` are all plausible request paths, and the 404 message embeds
-   * the request path, so a bare prefix would trip on its own output. Each
-   * therefore also requires a source file extension — a request path does not
-   * carry one under a filesystem root, a leaked build path does. The trade-off
-   * is that an extension-less leak (`open '/app/dist'`) is not caught.
+   * The anchor rejects word characters and `-` only, so a V8 stack frame's
+   * `file:///app/dist/index.js` still matches while a URL path nested one
+   * segment in (`/api/app/...`) does not. `/Users` accepts either case because
+   * the default macOS APFS volume is case-insensitive.
    */
   const FILESYSTEM_ROOTS: ReadonlyArray<readonly [label: string, pattern: RegExp]> = [
-    ["/Users/<user>", /(?:^|[^\w./-])\/Users\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
-    ["/home/<user>", /(?:^|[^\w./-])\/home\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
-    ["/workspace", /(?:^|[^\w./-])\/workspace\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
-    ["/var/task", /(?:^|[^\w./-])\/var\/task\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
-    ["/root", /(?:^|[^\w./-])\/root\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
-    ["/app", /(?:^|[^\w./-])\/app\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
-    ["C:\\", /(?:^|[^\w./-])[A-Za-z]:\\[^\s"']+/],
+    ["/Users/<user>", /(?:^|[^\w-])\/[Uu]sers\/[^\s"'\\]+/],
+    ["/home/<user>", /(?:^|[^\w-])\/home\/[^\s"'\\]+/],
+    ["/workspace", /(?:^|[^\w-])\/workspace\/[^\s"'\\]+/],
+    ["/var/task", /(?:^|[^\w-])\/var\/task\/[^\s"'\\]+/],
+    ["/root", /(?:^|[^\w-])\/root\/[^\s"'\\]+/],
+    ["/app", /(?:^|[^\w-])\/app\/[^\s"'\\]+/],
+    ["C:\\", /(?:^|[^\w-])[A-Za-z]:\\[^\s"']+/],
   ];
 
-  const expectNoLeakedInternals = (raw: string): void => {
-    expect(raw).not.toContain("Cannot reconstruct a Request");
-    for (const [label, pattern] of FILESYSTEM_ROOTS) {
-      expect(raw, `response body leaked a filesystem path under ${label}`).not.toMatch(pattern);
+  /** Anchors on the frame tail so single-line and multi-line traces both match. */
+  const STACK_FRAME = /\bat\s+\S+:\d+:\d+/;
+
+  const collectStrings = (value: unknown): string[] => {
+    if (typeof value === "string") return [value];
+    if (Array.isArray(value)) return value.flatMap(collectStrings);
+    if (value !== null && typeof value === "object") {
+      return Object.values(value).flatMap(collectStrings);
     }
-    // A serialised stack frame reaches the wire as an escaped newline
-    // ("\\n    at ..."), so no raw-text pattern can see it. Decode first.
-    const { error } = JSON.parse(raw) as ErrorBody;
-    expect(error.message).not.toMatch(/(?:^|\n)\s+at\s+\S/);
+    return [];
+  };
+
+  /**
+   * `notFoundHandler` echoes the caller-controlled request path into the
+   * message, so `GET /app/src/index.ts` arrives lexically indistinguishable from
+   * a leaked build path. Stripping that echo — not a path-shape heuristic — is
+   * what makes these patterns safe; any path-shaped text left is a real leak.
+   * The `/api`-stripped form is removed too, because `index.ts` rewrites that
+   * prefix before routing, so it is the form the handler actually echoes.
+   */
+  const stripEchoedPaths = (text: string, requestPath: string): string =>
+    [requestPath, requestPath.replace(/^\/api/, "")]
+      .filter((p) => p.length > 1)
+      .reduce((acc, p) => acc.split(p).join(" "), text);
+
+  const parseErrorEnvelope = (raw: string): ErrorBody => {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return expect.unreachable(
+        `error body was not JSON, so no envelope could be asserted: ${raw}`
+      );
+    }
+    expect(parsed, "error body is not a structured envelope").toMatchObject({
+      success: false,
+      error: { message: expect.any(String) },
+    });
+    return parsed as ErrorBody;
+  };
+
+  const expectNoLeakedInternals = (raw: string, requestPath: string): void => {
+    expect(raw).not.toContain("Cannot reconstruct a Request");
+
+    // Scan the decoded body, not the raw text: a serialised stack frame
+    // reaches the wire with an escaped newline, and `details`/`code` are free
+    // text that the wire form would not match either.
+    const scanned = stripEchoedPaths(
+      collectStrings(parseErrorEnvelope(raw)).join("\n"),
+      requestPath
+    );
+
+    for (const [label, pattern] of FILESYSTEM_ROOTS) {
+      expect(scanned, `response body leaked a filesystem path under ${label}`).not.toMatch(pattern);
+    }
+    expect(scanned, "response body leaked a stack frame").not.toMatch(STACK_FRAME);
   };
 
   const expectStructuredNotFound = async (res: Response): Promise<void> => {
@@ -293,7 +337,7 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     await expectStructuredNotFound(res);
     expect(assets.fetch).not.toHaveBeenCalled();
 
-    expectNoLeakedInternals(raw);
+    expectNoLeakedInternals(raw, VERIFY_PATH.replace(":id", MISSING_SHARE_ID));
   });
 
   it("keeps a structured NOT_FOUND_ERROR for GET requests carrying a JSON Accept header", async () => {
@@ -345,8 +389,32 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     expect(assets.fetch).toHaveBeenCalledTimes(1);
   });
 
-  it("separates leaked filesystem paths from legitimate request paths", () => {
-    const leaked = [
+  it("separates leaked filesystem paths from request paths the 404 message echoes", () => {
+    const matches = (text: string, requestPath: string): string[] =>
+      FILESYSTEM_ROOTS.filter(([, pattern]) =>
+        pattern.test(stripEchoedPaths(text, requestPath))
+      ).map(([label]) => label);
+
+    // Request paths that are themselves shaped like build paths. `notFoundHandler`
+    // echoes these verbatim, so they must not read as leaks.
+    for (const requestPath of [
+      "/app/src/index.ts",
+      "/var/task/index.js",
+      "/home/runner/x.json",
+      "/root/dist/index.js",
+      "/api/app/things/42",
+      "/workspace/build/out.js",
+      "/share/abc123def456/verify",
+      "/assets/index-abc123.js",
+      "/favicon.svg",
+    ]) {
+      expect(
+        matches(`Route not found: GET ${requestPath}`, requestPath),
+        `request path ${requestPath} was read as a leak`
+      ).toEqual([]);
+    }
+
+    for (const sample of [
       "/Users/alice/dev/blueprintify/apps/api/src/index.ts",
       "/home/runner/work/blueprintify/apps/api/src/index.ts",
       "/root/blueprintify/apps/api/src/index.ts",
@@ -354,31 +422,54 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
       "/app/src/index.ts",
       "/var/task/src/index.ts",
       "C:\\Users\\alice\\blueprintify\\apps\\api\\src\\index.ts",
-      "failed at /app/dist/index.js",
-    ];
-    for (const sample of leaked) {
+      "at file:///app/dist/index.js",
+      "at file:///workspace/blueprintify/apps/api/src/index.ts",
+    ]) {
       expect(
-        FILESYSTEM_ROOTS.some(([, pattern]) => pattern.test(sample)),
+        matches(sample, "/share/abc123def456/verify"),
         `no FILESYSTEM_ROOTS entry matches the leaked path ${sample}`
-      ).toBe(true);
+      ).not.toEqual([]);
     }
+  });
 
-    const legitimate = [
-      "Route not found: POST /share/abc123def456/verify",
-      "Route not found: GET /app/things/42",
-      "Route not found: GET /api/app/things/42",
-      "Route not found: GET /root/things/42",
-      "Route not found: GET /var/task/abc",
-      "Route not found: GET /Users/bob",
-      "Route not found: GET /assets/index-abc123.js",
-      "Route not found: GET /favicon.svg",
-    ];
-    for (const sample of legitimate) {
-      expect(
-        FILESYSTEM_ROOTS.filter(([, pattern]) => pattern.test(sample)).map(([label]) => label),
-        `a FILESYSTEM_ROOTS entry matched the legitimate request path ${sample}`
-      ).toEqual([]);
+  it("does not read a build-path-shaped request as a leak when routed end to end", async () => {
+    const requestPaths = ["/app/src/index.ts", "/var/task/index.js", "/home/runner/x.json"];
+    // These 404 at the binding so the request reaches notFoundHandler, which is
+    // what echoes the path back.
+    const { env } = createEnv(new Set(requestPaths.map((p) => `https://example.com${p}`)));
+
+    for (const requestPath of requestPaths) {
+      const res = await worker.fetch(
+        new Request(`https://example.com${requestPath}`, {
+          method: HTTP_METHODS.GET,
+          headers: authedHeaders(),
+        }),
+        env,
+        mockCtx
+      );
+
+      const raw = await res.clone().text();
+      await expectStructuredNotFound(res);
+      expectNoLeakedInternals(raw, requestPath);
     }
+  });
+
+  it("catches a stack frame whether or not it also carries a filesystem root", () => {
+    const body = (message: string): string =>
+      JSON.stringify({ success: false, error: { message } });
+    const requestPath = "/share/abc123def456/verify";
+
+    // A frame under a root trips the path assertion first; either way it fails.
+    expect(() =>
+      expectNoLeakedInternals(body("at file:///app/dist/index.js:1:2"), requestPath)
+    ).toThrow(/leaked a filesystem path/);
+    // A frame with no root is only reachable through the stack-frame check.
+    expect(() => expectNoLeakedInternals(body("Error: boom at index.js:1:2"), requestPath)).toThrow(
+      /leaked a stack frame/
+    );
+    expect(() =>
+      expectNoLeakedInternals(body("Shared blueprint not found or expired"), requestPath)
+    ).not.toThrow();
   });
 
   it("falls through to the structured API 404 when a bundled asset is missing from the ASSETS binding", async () => {
