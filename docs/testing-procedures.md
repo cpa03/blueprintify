@@ -438,12 +438,28 @@ npm run test
 # Run API tests
 npm run test:api
 
-# Run all tests (frontend + API)
+# Run all tests (frontend + API + shared)
 npm run test:all
 
 # Run tests for specific file
 npm run test -- path/to/test.ts
 ```
+
+`npm run test` is a **one-shot** run: both the web and API workspaces invoke
+Vitest with `--run` so the command exits when the suite finishes instead of
+dropping into watch mode. For an interactive feedback loop, run watch mode from
+the workspace itself:
+
+```bash
+# Frontend watch mode
+npm run test:watch --workspace=apps/web
+
+# API watch mode
+npm run test:watch --workspace=apps/api
+```
+
+There is no root-level watch script, and `npm run test -- --watch` does not work
+— Vitest forces `watch = false` whenever `run` is set.
 
 ### CI/CD Testing
 

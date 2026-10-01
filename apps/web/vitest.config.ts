@@ -12,10 +12,6 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     isolate: true,
     pool: "forks",
-    // Sized for a loaded 4-core runner, not a warm laptop: lazy component
-    // imports plus the framer-motion transform overrun the 5s defaults.
-    testTimeout: 20000,
-    hookTimeout: 20000,
     exclude: ["node_modules/", "e2e/", "dist/"],
     coverage: {
       provider: "v8",
