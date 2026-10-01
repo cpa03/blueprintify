@@ -2,6 +2,28 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — post-merge resync: zero safe deletions, build green)
+
+**Scope**: `agent/janitor` branch, hygiene scan per cleanup request. Merged `origin/main` @ `da76892c` (#3683 a11y announcements + #3692/#3693 dep bumps & localStorage hardening) then scanned: commented-out dead code, production `console.log`, unused exports, orphan files, duplicate utils, unused deps, merge markers.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npx eslint` on the three newly-changed source files ✅ clean; `npm run build` ✅ green (9.51s, exit 0).
+
+### Verified clean (no action needed)
+
+- **New main changes all live**: #3683 added `role="status"`/`aria-live` loading announcements in `App.tsx` (uses pre-existing `ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP`, `UI_CONTENT.EDITOR.LOADING` constants — no new exports); #3693 wrapped `localStorage` access in try/catch in `App.tsx`, `StepGenerating.tsx`, `ReducedMotionContext.tsx` (empty-catch explanatory comments are intentional, not dead code). Dep bumps (#3692: hono/openai/codemirror/framer-motion/react-error-boundary patch versions) are all already-imported packages — no unused deps introduced.
+- **No commented-out dead code**: `// <code-keyword>` grep over first-party `apps/`/`packages/`/`scripts/`/`functions/` → zero hits (only third-party `node_modules/zod` test comments).
+- **No production `console.log`**: unchanged from prior cycle — hits remain template-generator output strings, e2e specs, JSDoc examples, and intentional Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts`).
+- **No merge markers**: `^<<<<<<< / ^>>>>>>> / ^||||||| ` grep → zero hits (`=====...` matches are section-header comments, not conflict markers).
+- **Transient logs**: root `build.log`/`lint.log`/`typecheck.log` remain gitignored untracked files — left alone per prior-cycle decision.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] `try { localStorage... } catch { // privacy mode }` pattern now copy-pasted in 3 files (`App.tsx` ×2, `StepGenerating.tsx` ×2, `ReducedMotionContext.tsx` ×4) after #3693. Recommend a tiny `safeLocalStorage` helper in `apps/web/src/lib/storage.ts` or `packages/shared` to DRY it — flagged, not executed, to keep this pre-merge diff minimal and behavior-untouched.
+
 ## Janitor Cleanup (2026-10-01 — misplaced-test relocation; pre-existing main breakage noted)
 
 **Scope**: `agent/janitor` branch, hygiene scan per cleanup request. Merged `origin/main` @ `550f47ff` (flexy iteration-187) then scanned: commented-out dead code, production `console.log`, unused exports/components/hooks, orphan files, duplicate utils, unused deps.
