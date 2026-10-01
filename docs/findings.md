@@ -4,6 +4,31 @@
 
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build green)
 
+**Scope**: `agent/janitor` (fresh checkout tracking `origin/agent/janitor`, merge from `origin/main` clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.09s, exit 0).
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep → 4 prose false positives only (`App.tsx:105/300`, `OfflineBanner.tsx:178`, `motion.test.ts:110`); single `/*` hit is a live route string (`authorize.test.ts:31`), not dead code.
+- **No production `console.log`**: remaining hits intentional only — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets (`secureLog.ts:97/141`, `lib/api.ts:21/23`), generated-project template strings (`templates/node.ts:141/169`, `templates/static.ts:193`), docs comment (`config/security.ts:164`). `console.warn/error` kept per policy.
+- **No dead unused exports**: sampled util surface (sanitize 309 refs, motion 860, scroll 538, stream 157, retry 108, debounce 102, slug 30, circuitBreaker 16) — all live.
+- **No orphan/empty files**: zero empty first-party sources; no `*.bak`/`*.orig`/`*~`/`.DS_Store`; no `.only`/`.skip`/`debugger`; no `TODO|FIXME|HACK` in source; no merge markers; no `as any`/`@ts-ignore`/`@ts-expect-error` in prod source.
+- **No duplicate utils / files**: first-party `md5sum` sweep → zero identical pairs (node_modules dupes excluded); zero `formatDate` hits.
+- **No unused deps**: all root/web/api deps import-verified (`framer-motion`/`clsx`/`jszip`/`zustand`/`dompurify`/`react-markdown`/`openai`/`zod` live in source; `hono` live in `apps/api/src`; `concurrently`/`lighthouse`/`chrome-launcher`/`jest-axe` wired via scripts/tests).
+- **Branch stays leaner**: diff vs `origin/main` = 42 files, +707/−1095 (net −388 lines, prior removals intact). Root `*.log` + `task_plan.md`/`notes.md` are gitignored transients — left alone, never committed.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] Dual `createPersistedStore` implementations persist (live `apps/web/src/store/persistence.ts` vs test-only `apps/web/src/hooks/usePersistedStore.ts`) — flagged in prior cycles, still open; recommend unifying on one, not executed to keep pre-merge diff behavior-untouched.
+
+## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build green)
+
 **Scope**: `agent/janitor` (already in sync with `origin/agent/janitor`, merge from `origin/main` clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers.
 
 ### Removed
