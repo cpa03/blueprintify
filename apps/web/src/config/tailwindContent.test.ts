@@ -7,6 +7,7 @@
  * production source is @blueprint/shared survive JIT's purge.
  */
 
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { beforeAll, describe, expect, it } from "vitest";
@@ -26,7 +27,10 @@ const SHARED_ONLY_CLASSES = [
 
 /** Markers the config's negation patterns are expected to carry, per scanned root. */
 const TEST_FILE_PATTERN_MARKER = "{test,spec}";
-const TEST_DIR_MARKER = "__tests__";
+const TEST_DIR_MARKER = "{test,tests,__tests__,integration}";
+
+/** Matches the test-only directories that marker negates, in a repo-relative scanned path. */
+const TEST_DIR_SEGMENTS = /(^|\/)(test|tests|__tests__|integration)\//;
 
 /** Roots a positive content pattern is expected to scan. */
 const EXPECTED_ROOTS = ["apps/web/src", "packages/shared/src"];
@@ -40,16 +44,34 @@ function readContentPatterns(tailwindConfig: Config): string[] {
   return content.filter((pattern): pattern is string => typeof pattern === "string");
 }
 
+/**
+ * Characters fast-glob treats as escapable, so a `\` before one of them is an escape rather
+ * than a separator. Mirrors the escape sets in fast-glob's escapePath/convertPathToPattern.
+ */
+const ESCAPABLE = "()[]{}!*+?@|\\/<>";
+
+// The lookahead captures the next character without consuming it, so a separator backslash
+// becomes "/" and the character after it survives (`\P` -> `/P`, not `/`).
+const toPosixGlob = (pattern: string): string =>
+  pattern.replace(/\\(?=(.))/g, (_match, next: string) => (ESCAPABLE.includes(next) ? "\\" : "/"));
+
+// Do not simplify this to replace(/\\/g, "/"): that also rewrites the escape backslashes
+// escapePath adds for glob metacharacters, so on a checkout under "Program Files (x86)" the
+// prefix `…/\(x\)/apps/web/src` becomes `…/(x/)/apps/web/src` and fg.sync below would count
+// a file set the config does not actually scan.
+
 const contentPatterns = readContentPatterns(config);
-// Patterns are matched as POSIX regardless of the platform that produced them.
-const normalizedPatterns = contentPatterns.map((pattern) => pattern.replace(/\\/g, "/"));
+const normalizedPatterns = contentPatterns.map(toPosixGlob);
 const positivePatterns = normalizedPatterns.filter((pattern) => !pattern.startsWith("!"));
 const negationPatterns = normalizedPatterns
   .filter((pattern) => pattern.startsWith("!"))
   .map((pattern) => pattern.slice(1));
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../..");
-const scannedFiles = fg.sync(contentPatterns).map((file) => path.relative(repoRoot, file));
+const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const repoRoot = path.resolve(appDir, "../..");
+const scannedFiles = fg
+  .sync(contentPatterns)
+  .map((file) => path.relative(repoRoot, file).split(path.sep).join("/"));
 
 describe("tailwind content globs", () => {
   let css: string;
@@ -63,11 +85,14 @@ describe("tailwind content globs", () => {
 
   // Neither tsconfig (allowJs/checkJs are off, include is src/**/*) nor ESLint
   // (ignores **/*.config.js) type-checks the .js that tailwind.config.d.ts describes, so
-  // this is the only cheap check that the declaration has not drifted from the real export.
-  it("loads the config with the shape the declaration promises", () => {
+  // this is the only check that the declaration has not drifted from the real export.
+  it("matches the hand-written declaration shipped beside it", () => {
     expect(config.darkMode).toBe("class");
     expect(Array.isArray(config.plugins)).toBe(true);
-    expect(readContentPatterns(config)).toEqual(contentPatterns);
+    const declaration = fs.readFileSync(path.join(appDir, "tailwind.config.d.ts"), "utf8");
+    expect(declaration).toContain('import type { Config } from "tailwindcss"');
+    expect(declaration).toContain("declare const config: Config");
+    expect(declaration).toContain("export default config");
   });
 
   it("emits classes whose only production source is @blueprint/shared", () => {
@@ -84,11 +109,12 @@ describe("tailwind content globs", () => {
     expect(scannedFiles).toContain("packages/shared/src/config/ui.ts");
   });
 
-  it("scans no test files", () => {
+  it("scans no test files or test-only directories", () => {
     expect(scannedFiles.filter((file) => /\.(test|spec)\./.test(file))).toEqual([]);
+    expect(scannedFiles.filter((file) => TEST_DIR_SEGMENTS.test(file))).toEqual([]);
   });
 
-  it("declares test-file and __tests__ exclusions for every scanned root", () => {
+  it("declares test-file and test-directory exclusions for every scanned root", () => {
     for (const root of EXPECTED_ROOTS) {
       const forRoot = negationPatterns.filter((pattern) => pattern.includes(`/${root}/`));
       expect(forRoot.some((pattern) => pattern.includes(TEST_FILE_PATTERN_MARKER))).toBe(true);
@@ -96,14 +122,33 @@ describe("tailwind content globs", () => {
     }
   });
 
-  it("scans no __tests__ directory", () => {
-    // Vacuous while no __tests__ directory exists in either tree, which is why the
-    // declaration above is asserted structurally and not only through this check.
-    expect(scannedFiles.filter((file) => file.includes(TEST_DIR_MARKER))).toEqual([]);
-  });
-
   it("has exclusions that actually shrink the scanned set", () => {
     // Refutes a negation that reads correctly but is a no-op at glob time.
     expect(scannedFiles.length).toBeLessThan(fg.sync(positivePatterns).length);
+  });
+
+  it("normalises separators without destroying escape sequences", () => {
+    const native = "C:\\Program Files (x86)\\repo\\apps\\web\\src";
+    expect(toPosixGlob(native)).toBe("C:/Program Files (x86)/repo/apps/web/src");
+    // Escape pairs escapePath emits must survive normalisation intact.
+    const escaped = "/repo/Program Files \\(x86\\)/apps/web/src/**/*.{js,ts}";
+    expect(toPosixGlob(escaped)).toBe(escaped);
+    expect(toPosixGlob("/repo/\\[id\\]/**")).toBe("/repo/\\[id\\]/**");
+  });
+
+  it("reports the scanned file set with POSIX separators on every platform", () => {
+    // path.relative() emits path.sep, so these are the assertions that break on Windows
+    // unless the scanned paths — not just the pattern strings — are normalised.
+    expect(scannedFiles.length).toBeGreaterThan(0);
+    for (const file of scannedFiles) {
+      expect(file).not.toContain("\\");
+    }
+  });
+
+  it("scans no test-only module that lacks a test filename suffix", () => {
+    // Would be vacuous without the directory negations: setup.ts and factories.ts are the
+    // only such files today, so dropping the glob puts exactly these two back in the scan.
+    expect(scannedFiles).not.toContain("apps/web/src/test/setup.ts");
+    expect(scannedFiles).not.toContain("apps/web/src/integration/factories.ts");
   });
 });

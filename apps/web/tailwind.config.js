@@ -20,8 +20,13 @@ const sharedSrc = toGlobPrefix(path.join(appDir, "../../packages/shared/src"));
 // Test files are not class sources. Excluding them from BOTH roots keeps the stylesheet
 // honest: fixtures add rules no user ever hits, and English prose in test names collides
 // with real utilities (e.g. "isolate failures" emits a spurious `.isolate`).
+//
+// The directory form also covers members with no test suffix (src/test/setup.ts,
+// src/integration/factories.ts) — the files a factory would start emitting className from.
+// Measured: built index-*.css is byte-identical with and without this form (sha256
+// 58dd5915…, 74710 bytes), so this is gap-closing only, not a purge fix.
 const TEST_FILE_GLOB = "**/*.{test,spec}.{js,ts,jsx,tsx}";
-const TEST_DIR_GLOB = "**/__tests__/**";
+const TEST_DIR_GLOB = "**/{test,tests,__tests__,integration}/**";
 
 export default {
   content: [
