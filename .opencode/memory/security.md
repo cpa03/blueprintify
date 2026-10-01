@@ -258,6 +258,25 @@
 - **Fix**: Created `secureLog.ts` utility with pattern-based sanitization for sensitive data
 - **Lesson**: All error logging should sanitize output to prevent OWASP A09:2021 (Security Logging and Monitoring Failures)
 
+### 2026-10-01 20:20 UTC: Security Engineer Audit — PR Tailwind content-glob hardening (fast-glob + test guard)
+
+- **Finding**: PR adds `fast-glob@3.3.3` (dev-only), hardens `apps/web/tailwind.config.js` with absolute
+  cwd-independent glob prefixes + test-file/`__tests__` negations, adds `tailwind.config.d.ts` and
+  `apps/web/src/config/tailwindContent.test.ts` guard. No introduced vulnerabilities, secrets, or deprecated functions.
+- **Code Scanned**: `apps/web/package.json`, `apps/web/tailwind.config.js`, `apps/web/tailwind.config.d.ts`,
+  `apps/web/src/config/tailwindContent.test.ts`, `package-lock.json`
+  (diff vs `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head` = 5 files).
+- **Scans performed**: npm audit (0 vulns ✅), `npm run scan:secrets` (337 files clean ✅),
+  secrets grep (only false-positive "tokens" = design tokens ✅), injection/XSS grep
+  (no eval/innerHTML/dangerouslySetInnerHTML/child_process ✅), deprecated-API grep (none ✅),
+  fast-glob API check (`convertPathToPattern`/`escapePath` present in 3.3.3, no @deprecated ✅),
+  targeted vitest run (7/7 pass ✅).
+- **Action**: No code changes required. Named ESM import from CJS `fast-glob` relies on Vite/Vitest
+  interop (verified passing); leaving as-is per no-unasked-rewrite.
+- **Lesson**: Glob-building from `__dirname`-derived constants with `escapePath(convertPathToPattern())`
+  is the safe pattern for cwd-independent Tailwind content scans — inputs are never user-controlled,
+  so no path-traversal risk.
+
 ## Security Checklist
 
 - [x] No hardcoded secrets in codebase
