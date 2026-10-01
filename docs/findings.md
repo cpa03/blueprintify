@@ -2,6 +2,28 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build green)
+
+**Scope**: `agent/janitor` (already tracking `origin/agent/janitor`, merge from `origin/main` clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, backup/empty files, merge markers.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (~9s, exit 0).
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → zero hits; consecutive-`//` runs are prose explanations (`App.tsx`, `main.tsx`); `/*` hits are JSX comments + JSDoc only. Zero TODO/FIXME/HACK in source.
+- **No production `console.log`**: 16 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets, generated-project template strings (`templates/node.ts:141/169`, `templates/static.ts:193`), e2e console-capture specs, docs comment (`config/security.ts:164`).
+- **No dead unused exports**: `createDebouncedSaver` IS consumed (`hooks/usePersistedStore.ts:16`); `STARTER_TEMPLATES` consumed (`TemplateGrid`); web/api/shared deps all import-verified (`framer-motion`/`jszip`/`hono`/`openai`/`zod` live).
+- **No orphan/empty/duplicate files**: zero `.bak`/`.orig`/`.tmp`/`.DS_Store`; root `*.log` gitignored untracked; 6 targeted eslint-disables legitimate (5× `react-hooks/*`, 1× `require-yield`); zero `formatDate` hits; utils homes disjoint (api×6, web `lib`+`utils`, shared×1).
+- **Branch stays lean**: diff vs `origin/main` = 37 files, +24/−1057 (net −1033 lines, prior removals intact).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
