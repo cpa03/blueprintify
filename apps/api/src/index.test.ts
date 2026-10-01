@@ -250,8 +250,12 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     ["C:\\", /(?:^|[^\w-])[A-Za-z]:\\[^\s"']+/],
   ];
 
-  /** Anchors on the frame tail so single-line and multi-line traces both match. */
-  const STACK_FRAME = /\bat\s+\S+:\d+:\d+/;
+  /**
+   * Requires a source-location marker between `at` and the `:line:col` tail, so
+   * a clock time or bare ISO timestamp after the word "at" is not read as a
+   * frame. `[^\n]` keeps a match inside one frame of a multi-line trace.
+   */
+  const STACK_FRAME = /\bat\s+[^\n]*[/\\.][^\n]*:\d+:\d+/;
 
   const collectStrings = (value: unknown): string[] => {
     if (typeof value === "string") return [value];
@@ -262,6 +266,8 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     return [];
   };
 
+  const escapeRegExp = (literal: string): string => literal.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
   /**
    * `notFoundHandler` echoes the caller-controlled request path into the
    * message, so `GET /app/src/index.ts` arrives lexically indistinguishable from
@@ -269,11 +275,20 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
    * what makes these patterns safe; any path-shaped text left is a real leak.
    * The `/api`-stripped form is removed too, because `index.ts` rewrites that
    * prefix before routing, so it is the form the handler actually echoes.
+   *
+   * The trailing lookahead is load-bearing: it only removes the echoed
+   * occurrence when no further path character follows, so a request for `/app`
+   * does not also erase the `/app` prefix of an unrelated leak such as
+   * `open '/app/dist/index.js'`. `/` counts as a path character here, so a
+   * longer leaked path sharing the prefix survives.
    */
   const stripEchoedPaths = (text: string, requestPath: string): string =>
     [requestPath, requestPath.replace(/^\/api/, "")]
       .filter((p) => p.length > 1)
-      .reduce((acc, p) => acc.split(p).join(" "), text);
+      .reduce(
+        (acc, p) => acc.replace(new RegExp(`${escapeRegExp(p)}(?![\\w.~%/-])`, "g"), " "),
+        text
+      );
 
   const parseErrorEnvelope = (raw: string): ErrorBody => {
     let parsed: unknown;
@@ -294,18 +309,19 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
   const expectNoLeakedInternals = (raw: string, requestPath: string): void => {
     expect(raw).not.toContain("Cannot reconstruct a Request");
 
-    // Scan the decoded body, not the raw text: a serialised stack frame
-    // reaches the wire with an escaped newline, and `details`/`code` are free
-    // text that the wire form would not match either.
-    const scanned = stripEchoedPaths(
-      collectStrings(parseErrorEnvelope(raw)).join("\n"),
-      requestPath
-    );
-
-    for (const [label, pattern] of FILESYSTEM_ROOTS) {
-      expect(scanned, `response body leaked a filesystem path under ${label}`).not.toMatch(pattern);
+    // Scanned per field, not over the joined body: a joined haystack lets a
+    // pattern match halves from two different fields and name a leak that is
+    // not present in any one of them. Decoding first is what makes a stack
+    // frame visible at all — on the wire it carries an escaped newline.
+    for (const field of collectStrings(parseErrorEnvelope(raw))) {
+      const scanned = stripEchoedPaths(field, requestPath);
+      for (const [label, pattern] of FILESYSTEM_ROOTS) {
+        expect(scanned, `response body leaked a filesystem path under ${label}`).not.toMatch(
+          pattern
+        );
+      }
+      expect(scanned, "response body leaked a stack frame").not.toMatch(STACK_FRAME);
     }
-    expect(scanned, "response body leaked a stack frame").not.toMatch(STACK_FRAME);
   };
 
   const expectStructuredNotFound = async (res: Response): Promise<void> => {
@@ -430,13 +446,43 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
         `no FILESYSTEM_ROOTS entry matches the leaked path ${sample}`
       ).not.toEqual([]);
     }
+
+    // A leak that *contains* the request path must survive stripping: the
+    // echoed occurrence is removed, not every path sharing that prefix.
+    for (const [requestPath, leak] of [
+      ["/app", "ENOENT: no such file, open '/app/dist/index.js'"],
+      ["/app/src/index.ts", "ENOENT: open '/app/src/index.ts.map'"],
+      ["/api/app", "ENOENT: open '/app/dist/index.js'"],
+      ["/workspace", "failed reading /workspace/dist/out.js"],
+    ] as ReadonlyArray<readonly [requestPath: string, leak: string]>) {
+      expect(
+        matches(leak, requestPath),
+        `stripping ${requestPath} also erased the unrelated leak ${leak}`
+      ).not.toEqual([]);
+    }
+  });
+
+  it("does not read a timestamped or clock-time string as a stack frame", () => {
+    const body = JSON.stringify({
+      success: false,
+      error: {
+        type: "not_found",
+        code: "NOT_FOUND_ERROR",
+        message: "Generated at 12:34:56",
+        timestamp: "2026-10-01T22:53:31.479Z",
+        requestId: "1790895211475-1wyag471vcz",
+        details: { retryAt: "2026-10-01T10:00:00Z", finishedAt: "23:59:59" },
+      },
+    });
+
+    expect(() => expectNoLeakedInternals(body, "/share/abc123def456/verify")).not.toThrow();
   });
 
   it("does not read a build-path-shaped request as a leak when routed end to end", async () => {
     const requestPaths = ["/app/src/index.ts", "/var/task/index.js", "/home/runner/x.json"];
     // These 404 at the binding so the request reaches notFoundHandler, which is
     // what echoes the path back.
-    const { env } = createEnv(new Set(requestPaths.map((p) => `https://example.com${p}`)));
+    const { env, assets } = createEnv(new Set(requestPaths.map((p) => `https://example.com${p}`)));
 
     for (const requestPath of requestPaths) {
       const res = await worker.fetch(
@@ -450,6 +496,9 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
 
       const raw = await res.clone().text();
       await expectStructuredNotFound(res);
+      // Without this the case also passes via an auth short-circuit or an
+      // earlier return, never reaching the ASSETS fall-through it documents.
+      expect(assets.fetch).toHaveBeenCalledWith(expect.anything());
       expectNoLeakedInternals(raw, requestPath);
     }
   });
