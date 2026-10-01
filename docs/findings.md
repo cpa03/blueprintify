@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor — Pre-merge cleanup scan (2026-10-01)
+
+**Scope**: `agent/janitor` vs `origin/main` (already in sync — merge clean, 0-behind); 697 tracked files.
+**Scan**: redundant/temp artifacts 0 (root `*.log` gitignored, not tracked); empty dirs 0; TODO/FIXME/HACK 0; commented-out code blocks 0 (only JSDoc `@example` snippets + 3 explanatory comments); `console.log` intentional only (Workers request/response structured logging in `middleware/logger.ts`, sanitized `secureLog`, e2e console-capture specs, generated-project template strings, `fix-esm.mjs` build output) — 0 debug logs removed; duplicate `formatDate` 0 (`formatSSE`/`formatShortcut`/`formatForIDE` are distinct domains); utils folders domain-separated by runtime (`api/src/utils` ×6, `web/src/utils` + `web/src/lib` ×10, `shared/src/utils` ×1) — no cross-boundary consolidation per safety rule; unused dependencies 0 (all root/web/api/shared deps import-verified, incl. eslint plugins via `eslint.config.js` and `concurrently`/`lint-staged` via `package.json` scripts).
+**Observation (no deletion)**: `createDebouncedSaver` (`packages/shared`) has 0 app consumers (only its own test) but is tested + README-documented public API — kept; recommend architect decision: adopt in web persistence or keep as public utility.
+**Result**: 0 safe deletions. Build ✅ · typecheck ✅ · lint ✅ (0 errors). No code changes; verification record only.
+
 ## Janitor Cleanup (2026-10-01 — verification scan: on-branch removals confirmed safe, full gates green)
 
 **Scope**: `agent/janitor` branch, hygiene verification per cleanup request. Branch already contains the requested removals (`2e392f75` 16 unused exports + dead test blocks, `9ecfb9d2` duplicate `functions/api/[[path]].ts`, 2 test co-locations); this run verified zero residue and re-ran full gates. Net branch diff vs `origin/main`: 604+/1095- (net -491 lines).
