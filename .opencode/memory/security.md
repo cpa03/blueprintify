@@ -31,6 +31,14 @@
 
 ## Lessons Learned
 
+### 2026-10-01: Security Engineer Audit — PR app-functionality-fixes-round-2 (4-file state)
+
+- **Finding**: PR (`origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head` vs `origin/main`: `logger.ts` +20, `index.ts` -9, `index.test.ts` +258, `logger.test.ts` +153) introduces 0 vulnerabilities, secrets, or deprecated usage — it is a net security FIX.
+- **Fix 1 (CWE-532)**: `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (= `x-api-key`, the `apiKeyAuth` default) to `SANITIZED_HEADER_EXCLUDE`, closing credential-into-Workers-logs. Verified import from `./network` with no import cycle; shared-derivation anti-drift.
+- **Fix 2**: `index.ts` deletes the `env.ASSETS.fetch(request)` SPA fallback, fixing the consumed-body "Cannot reconstruct a Request" crash; unknown paths now return structured JSON 404.
+- **Verification**: Secret scan (PR-head versions), added-lines secret regex, dangerous-pattern scan (`eval`/`innerHTML`/`Math.random`/`substr`/`max_tokens`) all clean; test canaries (`CANARY-bug052-*`, `TEST_API_KEY="test-key"`) are synthetic fixtures, not secrets; `npm audit` 0 vulnerabilities; no `package.json`/lockfile change → no new CVEs. Independently confirms the existing `docs/findings.md` audit entry for this PR scope.
+- **Lesson**: Bare `git diff --name-only <pr-head>` from another branch compares PR-head→working-tree (reversed); true PR scope is `origin/main..head`. Always verify diff direction before scoping an audit.
+
 ### 2026-02-22 06:15 UTC: Cloudflare Workers Environment File in .gitignore
 
 - **Finding**: `.dev.vars` (Cloudflare Workers environment file) was not in `.gitignore`
