@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR app-functionality-fixes-round-2 (a6674c16/head) vs merge-base (2026-10-01)
+
+**Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → head `801a04a4` (1 commit `fix(api): redact x-api-key header from Workers request logs (#3696)`; 2 files: `apps/api/src/config/constants/logger.ts` +20, `apps/api/src/middleware/logger.test.ts` +153).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a security FIX (consistent with prior toast-entry audit). `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (verified `= HTTP_HEADER_NAMES.X_API_KEY = "x-api-key"`, the `apiKeyAuth` default at `auth.ts:110`; sole prod call site `src/index.ts` does not override) to `SANITIZED_HEADER_EXCLUDE`. Substring case-insensitive matching covers alias forms; tests pin redaction + non-over-redaction. Canaries (`CANARY-bug052-*` ×5) are fake test markers, never real secrets. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `.substr`/`max_tokens`; uses `.includes`. No `.env`/`.dev.vars`/keys in diff; no `package.json` change → no new CVEs.
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns · added-lines secrets/injection/XSS/deprecated CLEAN · shared/API header invariant confirmed (`packages/shared/src/config/http.ts:147`, `apps/api/src/config/constants/network.ts:41`).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
 ## Security Audit — PR tailwind content-glob fix vs head (2026-10-01)
 
 **Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/gt/maple/1b8aca4a` vs `.../head` (3-file diff: `apps/web/tailwind.config.js` content-glob hardening, `apps/web/tailwind.config.d.ts` +5 new, `apps/web/src/config/tailwindContent.test.ts` +85 new).
