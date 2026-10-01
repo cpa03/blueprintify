@@ -4,6 +4,30 @@
 
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build green)
 
+**Scope**: `agent/janitor` (tracking `origin/agent/janitor`, merge from `origin/main` clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, backup/empty files, merge markers.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.4s) · `npm run lint` ✅ exit 0 (prior log) · `npm run typecheck` ✅ exit 0 (prior log).
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep → 1 prose false positive only (`App.tsx:105`, explanatory sentence); `/*` hits are JSDoc only; no TODO/FIXME/HACK in first-party source (only `XXX` inside zod currency-regex in node_modules).
+- **No production `console.log`**: all hits intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets, generated-project template strings (`templates/node.ts`, `templates/static.ts`), e2e console-capture specs, docs comment (`config/security.ts:164`), build script output (`fix-esm.mjs`). `console.warn/error` kept per policy.
+- **No dead unused exports**: orphan-stem sweep → 0 orphans; shared `index.ts` surface is public API (not deletion-eligible); sampled utils all live.
+- **No orphan/empty/duplicate files**: 0 empty tracked files; 0 `.bak`/`.orig`/temp artifacts; 0 merge markers; first-party `md5sum` sweep → zero identical pairs; 0 `formatDate` hits (only `formatSSE`/`formatShortcut`/`formatForIDE`, distinct domains).
+- **No unused deps**: root/web/api/shared deps import-verified (eslint plugins via `eslint.config.js`, `concurrently`/`lint-staged` via scripts, `playwright`/`lighthouse`/`jest-axe` via e2e/tests).
+- **Targeted `eslint-disable` only**: 6 single-line/hook-deps suppressions (`GenerationCelebration`, `CircularProgress`, `ShowEditorButton`, `useLastSaved`, `useAutoSaveToast`, `stream.test.ts` require-yield) — all justified, none hiding rot.
+- **Utils domain-separated by design**: `api/src/utils` ×6, `web/src/lib` + `web/src/utils`, `shared/src/utils` ×1 — disjoint modules, no cross-boundary consolidation per safety rule.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+
+## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build green)
+
 **Scope**: `agent/janitor` (fresh checkout tracking `origin/agent/janitor`, merge from `origin/main` clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/debugger, backup/empty files, merge markers.
 
 ### Removed
