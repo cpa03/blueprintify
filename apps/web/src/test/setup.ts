@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach, beforeEach, vi } from "vitest";
+
+// findBy* polls with a 1s default, which a dynamic import plus the
+// framer-motion transform blows past under load (1177ms on 4 busy cores).
+configure({ asyncUtilTimeout: 5000 });
 
 afterEach(() => {
   cleanup();

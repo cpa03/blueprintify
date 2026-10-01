@@ -22,7 +22,7 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "test": "npm run test --workspace=apps/web",
     "test:api": "npm run test --workspace=apps/api",
-    "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
+    "test:all": "npm run test --workspace=apps/web && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "scan:secrets": "node scripts/scan-secrets.mjs",
     "check": "npm run typecheck && npm run lint && npm run scan:secrets && npm run audit && npm run test:all",
@@ -42,7 +42,7 @@
     "clean": "npm run clean --workspaces --if-present",
     "clean:dist": "rm -rf apps/*/dist packages/*/dist",
     "reset": "npm run clean && rm -rf node_modules apps/*/node_modules packages/*/node_modules",
-    "test:coverage": "npm run test:coverage --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
+    "test:coverage": "npm run test:coverage --workspace=apps/web && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
     "preview": "npm run build && npm run dev:all"
   },
   "devDependencies": {
