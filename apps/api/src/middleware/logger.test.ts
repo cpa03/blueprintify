@@ -12,8 +12,23 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Hono } from "hono";
 import { HTTP_HEADERS, HTTP_HEADER_NAMES, HTTP_METHODS, HTTP_STATUS } from "@blueprint/shared";
-import { API_HEADERS } from "../config/constants";
+import { API_HEADERS, LOGGER_CONFIG } from "../config/constants";
 import { requestLogger } from "./logger";
+
+const CREDENTIAL_CANARY = "CANARY-bug052-never-log-this-credential-9f3a1c7e2b4d";
+const SECOND_CANARY = "CANARY-bug052-second-case-keepothers-4a7d1e";
+const ALIAS_CANARY_PROXY = "CANARY-bug052-proxy-alias-6b2e8f0a";
+const ALIAS_CANARY_SUFFIX = "CANARY-bug052-suffix-alias-c14d7b3e";
+
+/** Lowercased header keys of the `"type":"request"` log entry inside `serialized`. */
+const loggedHeaderKeysFrom = (serialized: string): string[] => {
+  const requestLine = serialized.split("\n").find((line) => line.includes('"type":"request"'));
+  if (!requestLine) {
+    throw new Error("No request log entry found in captured output");
+  }
+  const entry = JSON.parse(requestLine) as { headers?: Record<string, string> };
+  return Object.keys(entry.headers ?? {}).map((key) => key.toLowerCase());
+};
 
 describe("requestLogger middleware", () => {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -146,7 +161,6 @@ describe("requestLogger middleware", () => {
     });
 
     it("should not leak the x-api-key credential into the serialized log payload", async () => {
-      const CREDENTIAL_CANARY = "CANARY-bug052-never-log-this-credential-9f3a1c7e2b4d";
       const app = new Hono();
       app.use("*", requestLogger({ logRequestBody: true }));
       app.post("/api/data", (c) => c.json({ received: true }));
@@ -168,12 +182,16 @@ describe("requestLogger middleware", () => {
         .join("\n");
 
       expect(serialized).toContain('"type":"request"');
+      // Scoped to the WHOLE output so a leak via body or query is caught too.
       expect(serialized).not.toContain(CREDENTIAL_CANARY);
-      expect(serialized).not.toContain(HTTP_HEADER_NAMES.X_API_KEY);
-      expect(serialized).toContain("x-correlation-note");
+      // The name is checked on parsed header keys, not on `serialized`: an unrelated body or
+      // query mentioning "x-api-key" would otherwise fail with a misleading message.
+      const loggedHeaderKeys = loggedHeaderKeysFrom(serialized);
+      expect(loggedHeaderKeys.some((key) => key.includes(HTTP_HEADER_NAMES.X_API_KEY))).toBe(false);
+      expect(loggedHeaderKeys).toContain("x-correlation-note");
     });
 
-    it("should keep logging unrelated headers when x-api-key is present", async () => {
+    it("should redact vendor alias forms of the credential header via substring matching", async () => {
       const app = new Hono();
       app.use("*", requestLogger());
       app.get("/api/data", (c) => c.json({ ok: true }));
@@ -181,7 +199,38 @@ describe("requestLogger middleware", () => {
       const callsBefore = consoleLogSpy.mock.calls.length;
       await app.request("/api/data", {
         headers: {
-          [API_HEADERS.CUSTOM.API_KEY]: "CANARY-bug052-second-case-keepothers-4a7d1e",
+          "Proxy-X-Api-Key": ALIAS_CANARY_PROXY,
+          "X-Api-Key-Id": ALIAS_CANARY_SUFFIX,
+          "X-Correlation-Note": "safe-header-value",
+        },
+      });
+
+      const serialized = consoleLogSpy.mock.calls
+        .slice(callsBefore)
+        .map((call: unknown[]) => call[0] as string)
+        .join("\n");
+
+      // Pins the case-insensitive SUBSTRING semantics; an exact-match matcher would leak these.
+      expect(serialized).toContain('"type":"request"');
+      expect(serialized).not.toContain(ALIAS_CANARY_PROXY);
+      expect(serialized).not.toContain(ALIAS_CANARY_SUFFIX);
+
+      const loggedHeaderKeys = loggedHeaderKeysFrom(serialized);
+      expect(loggedHeaderKeys).not.toContain("proxy-x-api-key");
+      expect(loggedHeaderKeys).not.toContain("x-api-key-id");
+      // Guard against the opposite failure mode: over-broad redaction.
+      expect(loggedHeaderKeys).toContain("x-correlation-note");
+    });
+
+    it("should keep logging unrelated headers while redacting x-api-key", async () => {
+      const app = new Hono();
+      app.use("*", requestLogger());
+      app.get("/api/data", (c) => c.json({ ok: true }));
+
+      const callsBefore = consoleLogSpy.mock.calls.length;
+      await app.request("/api/data", {
+        headers: {
+          [API_HEADERS.CUSTOM.API_KEY]: SECOND_CANARY,
           "X-Correlation-Note": "safe-header-value",
           [HTTP_HEADER_NAMES.USER_AGENT]: "vitest",
         },
@@ -195,6 +244,7 @@ describe("requestLogger middleware", () => {
         );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
 
+      const serialized = requestLogs.map((call: unknown[]) => call[0] as string).join("\n");
       const loggedHeaders =
         (JSON.parse(requestLogs[0][0] as string) as { headers?: Record<string, string> }).headers ||
         {};
@@ -203,6 +253,18 @@ describe("requestLogger middleware", () => {
       expect(loggedHeaderKeys).toContain("x-correlation-note");
       expect(loggedHeaders["x-correlation-note"]).toBe("safe-header-value");
       expect(loggedHeaderKeys).toContain(HTTP_HEADER_NAMES.USER_AGENT_LC);
+      // This case also sends a credential, so it guards both directions: deleting the
+      // redaction entry outright must fail here, not only in the case above.
+      expect(serialized).not.toContain(SECOND_CANARY);
+      expect(loggedHeaderKeys.some((key) => key.includes(HTTP_HEADER_NAMES.X_API_KEY))).toBe(false);
+    });
+  });
+
+  describe("credential redaction invariant", () => {
+    it("should redact the exact header name apiKeyAuth reads by default", () => {
+      // If the authenticator's default header is ever renamed, this fails until the
+      // redaction list is updated in lockstep — closing the drift window between the two.
+      expect(LOGGER_CONFIG.SANITIZED_HEADER_EXCLUDE).toContain(API_HEADERS.CUSTOM.API_KEY);
     });
   });
 
