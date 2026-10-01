@@ -2,6 +2,35 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — misplaced-test relocation; pre-existing main breakage noted)
+
+**Scope**: `agent/janitor` branch, hygiene scan per cleanup request. Merged `origin/main` @ `550f47ff` (flexy iteration-187) then scanned: commented-out dead code, production `console.log`, unused exports/components/hooks, orphan files, duplicate utils, unused deps.
+
+### Changed (2 test relocations, zero source changes)
+
+- `apps/web/src/lib/debounce.test.ts` → `packages/shared/src/utils/debounce.test.ts` — tested `@blueprint/shared`'s `createDebouncedSaver` but lived in web `lib/` with no sibling implementation; import switched to relative `./debounce.js` per shared conventions (avoids self-referencing workspace `dist`).
+- `apps/web/src/lib/m2-workflows.test.ts` → `apps/web/src/integration/m2-workflows.test.ts` — workflow smoke test with no sibling implementation in `lib/`; sits with other workflow tests now.
+
+**Verification**: shared tests 878/878 ✅ (incl. 9 relocated debounce tests); web tests 1212/1213 ✅ (1 failure pre-existing, see below); `vite build` ✅ green; eslint on moved files ✅ clean; shared `tsc --noEmit` ✅ clean.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep → 2 prose false positives only (`OfflineBanner.tsx:178`, `App.tsx:292`); block comments are section headers/CSS tokens, not dead code.
+- **No production `console.log`**: hits are template-generator output strings (`node.ts`, `static.ts`), e2e specs, JSDoc examples, and intentional Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts`).
+- **No orphan components/hooks**: every non-test file under `components/`, `hooks/`, `lib/`, `utils/`, `api/utils/`, `shared/config/` has live importers.
+- **No duplicate utilities**: single `createDebouncedSaver` in `packages/shared`; web consumes it via import (no copy-paste fork); no `formatDate`-style duplication found.
+- **No unused deps**: all deps referenced in source or scripts; `*.log` files at root are gitignored transients, untracked — left alone.
+
+### Pre-existing breakage on main (NOT introduced by this cleanup, NOT fixed — out of janitor scope)
+
+- `apps/web` `tsc --noEmit` fails with 2 errors (proven pre-existing via `git stash` re-run on clean merge commit): `ELAPSED_ANNOUNCEMENT_INTERVAL_MS` missing from shared animation config (used by `StepGenerating.tsx:82/88`) and `PUBLIC_ACCESS_KEY` missing from shared core config (used by `config/env.ts:24`). Same root cause fails 1 web test (`StepGenerating.test.tsx:285`, `NaN:NaN` — undefined interval). Looks like flexy iteration-187 merged component/test changes without the matching shared-config constants. Flagging for the owning team — needs a constants addition on main, not a janitor deletion.
+
+### Structural findings (recommended for future work, not moved)
+
+- [Janitor] 4 parallel util homes persist: `apps/web/src/lib/` vs `apps/web/src/utils/` vs `apps/api/src/utils/` vs `packages/shared/src/utils/` (+ `packages/shared/src/config/`). Modules are currently disjoint (no duplication), so no action taken — but recommend documenting the intended split (e.g. `lib/` = app services, `utils/` = pure helpers) before the next growth spurt recreates `formatDate`-style forks.
+
+---
+
 ## Janitor Cleanup (2026-09-30 — Post-#3687 resync: zero safe deletions, build green)
 
 **Scope**: `agent/janitor` branch, pre-merge hygiene scan per cleanup request. Merged `origin/main` @ `6b98b8a2` (#3687 free-model hierarchy + OpenAPI spec restore + prettier sync) then ran manual repo-wide grep verification (scanner script `scripts/janitor-scan.mjs` was dropped last cycle for leanness — manual grep replaces it: commented-out code, production `console.log`, md5 duplicates, deps, TODO/focused-test/type-safety, eslint-disables, merge markers, temp files, empty dirs).

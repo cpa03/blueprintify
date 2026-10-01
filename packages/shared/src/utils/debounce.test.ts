@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { createDebouncedSaver } from "@blueprint/shared";
+import { createDebouncedSaver } from "./debounce.js";
 
-describe("createDebouncedSaver (shared package)", () => {
+describe("createDebouncedSaver", () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
