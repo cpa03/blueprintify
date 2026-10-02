@@ -22,15 +22,15 @@ import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 // Mock framer-motion to render plain HTML elements
 vi.mock("framer-motion", () => ({
   motion: {
-    div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
+    div: vi.fn(({ children, layoutId: _layoutId, initial: _initial, animate: _animate, exit: _exit, transition: _transition, whileHover: _whileHover, whileTap: _whileTap, ...props }) => <div {...props}>{children}</div>),
+    span: vi.fn(({ children, layoutId: _layoutId, initial: _initial, animate: _animate, exit: _exit, transition: _transition, whileHover: _whileHover, whileTap: _whileTap, ...props }) => <span {...props}>{children}</span>),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
 
 vi.mock("framer-motion/m", () => ({
-  div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-  span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
+  div: vi.fn(({ children, layoutId: _layoutId, initial: _initial, animate: _animate, exit: _exit, transition: _transition, whileHover: _whileHover, whileTap: _whileTap, ...props }) => <div {...props}>{children}</div>),
+  span: vi.fn(({ children, layoutId: _layoutId, initial: _initial, animate: _animate, exit: _exit, transition: _transition, whileHover: _whileHover, whileTap: _whileTap, ...props }) => <span {...props}>{children}</span>),
 }));
 
 // Mock child components
