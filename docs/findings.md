@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head re-verification (2026-10-02)
+
+**Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → head `b5786a81` (2 commits `801a04a4` x-api-key redaction + `b5786a81` SPA fallback removal; 4 files: `apps/api/src/config/constants/logger.ts` +20, `apps/api/src/index.ts` -9, `apps/api/src/index.test.ts` +258, `apps/api/src/middleware/logger.test.ts` +153). Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — net security FIX. `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (verified `= HTTP_HEADER_NAMES.X_API_KEY = "x-api-key"`, the `apiKeyAuth` default at `middleware/auth.ts:110`; sole prod call site does not override) to `SANITIZED_HEADER_EXCLUDE`, closing CWE-532 credential-into-Workers-logs; case-insensitive substring matcher (`middleware/logger.ts:186` `.includes`) covers gateway/SDK aliases (`Proxy-X-Api-Key`, `x-api-key-id`) with non-over-redaction guard. `index.ts` deletes the 2nd `env.ASSETS.fetch(request)` SPA fallback, fixing consumed-body "Cannot reconstruct a Request" crash + stack/filesystem-path leak; unknown paths now return structured JSON 404 (no asset over-exposure, no open redirect). Test canaries (`CANARY-bug052-*` ×5) are synthetic markers; `TEST_API_KEY="test-key"` is a fake fixture (test-utils.ts:46); no real secrets. No `eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`/`Math.random`/`md5`; no `.env`/`.dev.vars`/pem in diff; no `package.json`/lockfile change → no new CVEs.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities (full + `--omit=dev`) · no env/key files in PR.
+**Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed.
+
 ## Security Audit — PR recover-lost-web-frontend-fixes-companio full 5-file state @93d1b31 (2026-10-01)
 
 **Scope**: `merge-base(origin/main, origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head)=da76892c` → head `93d1b31` (3 commits `eee24cee/0933fd61/93d1b31`; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1) plus `git diff --name-only origin/.../head` 11-file working-tree direction (secret hardening + audit prose on `agent/security-engineer`).
