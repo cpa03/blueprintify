@@ -25,8 +25,7 @@ import {
 // Storage Error Types
 // ============================================================================
 
-export type StorageErrorType =
-  (typeof STORAGE_ERROR_TYPE_VALUES)[keyof typeof STORAGE_ERROR_TYPE_VALUES];
+type StorageErrorType = (typeof STORAGE_ERROR_TYPE_VALUES)[keyof typeof STORAGE_ERROR_TYPE_VALUES];
 
 interface StorageErrorDetails {
   key: string;

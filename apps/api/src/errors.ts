@@ -252,7 +252,7 @@ export class ConfigurationError extends APIError {
  * Error for unexpected internal failures (HTTP 500).
  * Used as a catch-all for unhandled errors.
  */
-export class InternalServerError extends APIError {
+class InternalServerError extends APIError {
   /**
    * Creates a new InternalServerError instance.
    * @param message - Human-readable internal error message

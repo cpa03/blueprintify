@@ -260,5 +260,5 @@ export const createCircuitBreaker = (config?: Partial<CircuitBreakerConfig>): Ci
   return new CircuitBreaker(config);
 };
 
-export type { CircuitBreaker, CircuitBreakerMetrics };
+export type { CircuitBreaker };
 export { CircuitState };
