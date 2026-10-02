@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-02 — post-#3708 resync, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `56550f91` (#3708 scan packages/shared in Tailwind content to stop class purging) per cleanup request (redundant files, unused exports, commented-out dead code). Already up to date, no conflicts.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond this docs entry.
+
+**Verification**: `npm run build` ✅ exit 0 · `npm run typecheck` ✅ exit 0 (shared/api/web) · `eslint apps packages` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **#3708 changes all live**: `tailwind.config.js` `sharedSrc` glob (`packages/shared/src` scan for `TOAST_STYLES`/`CHAR_COUNTER_COLORS` literal class strings) + `tailwindContent.test.ts` purge-guard (asserts shared-only classes survive JIT) + `tailwind.config.d.ts` typings are load-bearing, not dead code. Not deletable.
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` + `packages/` + `scripts/` → 2 prose false positives only (`App.tsx:300`, `OfflineBanner.tsx:178`, both explanatory sentences); zero hits in `packages/` and `scripts/`.
+- **No production `console.log` to remove**: `apps/` 16 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`), sanitized `secureLog.ts:256` (+ JSDoc `@example` snippets `:97,141`, `lib/api.ts:21,23`), generated-project template strings (`templates/node.ts:141,169`, `static.ts:193`), e2e console-capture specs, docs comment (`config/security.ts:164`); test files assert logger behavior.
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`; `generateCompletion` + `getStorageErrorMessage` both live (source export + test consumers).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; zero `formatDate` hits; `md5sum` sweep → zero identical pairs.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source; 0 `.only`/`.skip`/`debugger` (1 `.skip-highlight` CSS class false positive); 0 merge markers; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint (`lib/` = domain libs, `utils/` = generic helpers), no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Janitor Cleanup (2026-10-02 — post-#3704 resync, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `56fbf6d4` (#3704 ScrollToTop micro-UX + test console-warning cleanup) per cleanup request (redundant files, unused exports, commented-out dead code). No conflicts on merge.
