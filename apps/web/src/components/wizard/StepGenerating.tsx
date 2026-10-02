@@ -298,9 +298,18 @@ export const StepGenerating = memo(function StepGenerating({
   const proTipShownRef = useRef(false);
   useEffect(() => {
     if (isComplete && !wasComplete.current && !proTipShownRef.current) {
-      const shown = localStorage.getItem(STORAGE_KEYS.PRO_TIP_SHOWN);
+      let shown: string | null = null;
+      try {
+        shown = localStorage.getItem(STORAGE_KEYS.PRO_TIP_SHOWN);
+      } catch {
+        shown = null;
+      }
       if (!shown) {
-        localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, "true");
+        try {
+          localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, "true");
+        } catch {
+          // localStorage can throw in privacy mode — toast below still shows once per mount.
+        }
         proTipShownRef.current = true;
         toast.info(WIZARD_GENERATING_LABELS.PRO_TIP_MESSAGE, {
           title: WIZARD_GENERATING_LABELS.PRO_TIP_TITLE,
