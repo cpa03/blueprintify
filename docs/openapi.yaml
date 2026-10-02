@@ -596,12 +596,15 @@ components:
                 Correlation id for this request, identical to the value logged for the
                 same request and to the `X-Request-ID` response header. Format is
                 `{epochMilliseconds}-{random}`, NOT a UUID. It is not present on every
-                error body: the global error handler (404, 500, 504 and the
-                circuit-breaker 503), API-key authentication (401, 503), request-body
-                validation (400) and the `/share` and `/storage` routes emit it, while
-                authorization (401, 403), rate limiting (429 and its 503 configuration
-                error), the payload-size 413 and the `/import` route's own validation
-                and internal errors do not.
+                error body. This description is the authoritative per-producer list:
+                the global error handler (404, 500, 504 and the circuit-breaker 503),
+                API-key authentication (401, 503), request-body validation (400) and
+                the `/share` and `/storage` routes emit it, while authorization (401,
+                403), rate limiting (429 and its 503 configuration error), the
+                payload-size 413, the `/import` route's own validation and internal
+                errors, and the `/export` route's internal errors do not. `/export`'s
+                400 responses are produced by request-body validation and do carry the
+                field; its internal-error catch does not.
               pattern: '^\d+-[a-z0-9]+$'
               example: "1790884637380-om7wd1rqu"
 

@@ -230,7 +230,7 @@ curl -X POST http://localhost:8787/generate \
 }
 ```
 
-`requestId`, where present, matches the `X-Request-ID` response header and the server-side log line for the same request. Its format is `<epoch-ms>-<random>` (for example `1790884637380-om7wd1rqu`), not a UUID. It is not present on every error body: the global error handler (404, 500, 504 and the circuit-breaker 503), API-key authentication (401, 503), request-body validation (400) and the `/share` and `/storage` routes emit it, while authorization (401, 403), rate limiting (429 and its 503 configuration error), the payload-size 413 and the `/import` route's own validation and internal errors do not.
+`requestId`, where present, matches the `X-Request-ID` response header and the server-side log line for the same request. Its format is `<epoch-ms>-<random>` (for example `1790884637380-om7wd1rqu`), not a UUID. It is not present on every error body — see [`ErrorResponse.requestId`](openapi.yaml) for the current per-producer list.
 
 Each entry in `details.issues[].path` is an ordered array of path segments, not a dotted string: object keys are strings and array indices are integers, so a bad `techStack[2].category` value yields `["techStack", 2, "category"]`.
 
@@ -694,7 +694,7 @@ All endpoints return consistent error responses using structured JSON format:
 }
 ```
 
-The `requestId` field provides a unique identifier for each request, enabling efficient debugging and log correlation across distributed systems. It is formatted as `{epochMilliseconds}-{random}` (not a UUID) and, where present, matches the `X-Request-ID` response header and the server-side log line for the same request. It is not present on every error body: the global error handler (404, 500, 504 and the circuit-breaker 503), API-key authentication (401, 503), request-body validation (400) and the `/share` and `/storage` routes emit it, while authorization (401, 403), rate limiting (429 and its 503 configuration error), the payload-size 413 and the `/import` route's own validation and internal errors do not.
+The `requestId` field provides a unique identifier for each request, enabling efficient debugging and log correlation across distributed systems. It is formatted as `{epochMilliseconds}-{random}` (not a UUID) and, where present, matches the `X-Request-ID` response header and the server-side log line for the same request. It is not present on every error body — see [`ErrorResponse.requestId`](openapi.yaml) for the current per-producer list.
 
 `details.issues[].path` is an ordered array of path segments, not a dotted string: object keys are strings and array indices are integers.
 
