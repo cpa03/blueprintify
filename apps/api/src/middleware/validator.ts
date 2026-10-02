@@ -32,7 +32,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
   };
 }> => {
   return async (c, next) => {
-    const requestId = c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined;
+    const requestId = c.get(CONTEXT_KEYS.REQUEST_ID);
     const contentType = c.req.header(API_HEADERS.REQUEST.CONTENT_TYPE);
     if (!contentType?.includes(HTTP_HEADERS.CONTENT_TYPE_JSON)) {
       return c.json(

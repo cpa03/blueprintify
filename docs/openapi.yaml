@@ -581,6 +581,11 @@ components:
                 Error-specific context. For 400 validation failures this carries an
                 `issues` array of ValidationIssue objects; prompt-injection rejections
                 carry `field` and `message`.
+              properties:
+                issues:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ValidationIssue"
               additionalProperties: true
             timestamp:
               type: string
@@ -588,10 +593,15 @@ components:
             requestId:
               type: string
               description: >-
-                Correlation id for this request. Present on every error body produced by
-                the API (400, 401, 503, 504, 404) and identical to the value logged for
-                the same request and to the `X-Request-ID` response header. Format is
-                `{epochMilliseconds}-{random}`, NOT a UUID.
+                Correlation id for this request, identical to the value logged for the
+                same request and to the `X-Request-ID` response header. Format is
+                `{epochMilliseconds}-{random}`, NOT a UUID. It is not present on every
+                error body: the global error handler (404, 500, 504 and the
+                circuit-breaker 503), API-key authentication (401, 503), request-body
+                validation (400) and the `/share` and `/storage` routes emit it, while
+                authorization (401, 403), rate limiting (429 and its 503 configuration
+                error), the payload-size 413 and the `/import` route's own validation
+                and internal errors do not.
               pattern: '^\d+-[a-z0-9]+$'
               example: "1790884637380-om7wd1rqu"
 
