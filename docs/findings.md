@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR app-functionality-fixes-round-2 changed-files scan (2026-10-02)
+
+**Scope**: PR head `b5786a81` (`origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head`), merge-base `da76892c` → 4 code files (`logger.ts` +20, `index.ts` -9, `index.test.ts` +258, `logger.test.ts` +153); full `origin/main..head` 9 files reviewed for stale-base drift. Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (CWE-532 `x-api-key` log redaction via shared `API_HEADERS` derivation, no import cycle; BUG-053 consumed-body `ASSETS.fetch(request)` removal → structured 404, no stack/path leak). Added-lines secret regex hits are prose + synthetic fixtures only (`TEST_API_KEY="test-key"`, 5x `CANARY-bug052-*`); dangerous patterns (`eval`/`innerHTML`/`Math.random`/`substr`/`max_tokens`) 0x in added lines and PR-head file versions; no `package.json`/lockfile change → no new CVEs.
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · working-tree `auth.ts`/`validator.ts` quick-scan clean.
+**Result**: No code fixes required — nothing to remove. Structural flags (report-only, no rewrite per constraints): `ScrollToTop.tsx` drops arrow-float reduced-motion guard (hook still used elsewhere, no lint break — decorative-anim a11y regression); `endpoints.ts` removes `STORAGE_REPORT`/`SHARE_VERIFY` registry keys while routes live on main (stale behind #3705 registry sync). No rotation needed (all canaries synthetic).
+
 ## Security Audit — Changed-files scan vs origin/main, re-verification (2026-10-02)
 
 **Scope**: `git diff --name-only origin/main` on `agent/security-engineer` (6 files: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
