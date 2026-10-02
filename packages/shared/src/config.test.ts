@@ -628,8 +628,8 @@ describe("SHARED_DEFAULTS", () => {
     expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
 
-  it("should have a public API key fallback", () => {
-    expect(SHARED_DEFAULTS.PUBLIC_ACCESS_KEY).toBe("blueprintify-public-access-2026");
+  it("should have no hardcoded API key fallback (fail-closed)", () => {
+    expect("PUBLIC_ACCESS_KEY" in SHARED_DEFAULTS).toBe(false);
   });
 });
 
