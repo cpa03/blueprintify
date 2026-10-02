@@ -10,6 +10,18 @@
 **Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ exit 0 · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 335 files · audit ✅ 0 vulns.
 **Stray state**: 20+ open PRs (incl. #3684/#3681/#3676/#3672 repokeeper) left untouched — human disposition pending; this cycle adds minimal docs-only PR.
 
+## RepoKeeper Cycle (2026-09-27 — VITEST 5 TYPECHECK FIX + AUDIT RETENTION)
+
+**Phase 0**: `main` HEAD `c03cffd3`, clean tree, 0-behind/0-ahead `origin/main`; work branch `cpa03/repokeeper/cleanup-20260927-230000` created from `main`.
+
+**Fatal typecheck failure on `main` — FIXED**: `npm run typecheck` → **757 errors**, all jest-dom matchers (`toBeInTheDocument`, etc.) unrecognized in `apps/web` test files. Root cause: dependabot major bump vitest 4.1.11→5.0.1 (#3547, merged today) changed the `Assertion` interface; `@testing-library/jest-dom` v7 only augments Vitest types via its split `./vitest` entry point, but `apps/web/src/test/setup.ts` imported the bare package. Fix (1 line): `import "@testing-library/jest-dom/vitest"`. Verified live: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (302 files) · build ✅ exit 0 · web tests **1248/1248** (85 files) · shared **859/859** (4 files).
+
+**Pre-existing, out of scope (vendor-blocked)**: `apps/api` tests cannot execute — `@cloudflare/vitest-pool-workers` 0.22.0 (latest published) officially supports only `vitest ^4.1.0`; under vitest 5 the workerd binary crashes (`jsg.SyntaxError`). No upgrade path available; downgrading vitest would regress the green web suite and fight dependabot. CI `pr-gatekeeper.yml` gates typecheck/lint/build only — all green. Documented here, no code-actionable fix this cycle.
+
+**Retention purge (30-day policy)**: removed 6 Jul-25 audit reports (`brocula-audit-2026-07-25{,-run2..-run6}.md`, 64 days old, past policy) + 6 `docs/audits/README.md` index rows (0 dangling `2026-07-25` refs verified; 92 reports remain). Oldest remaining now Jul 26 (63 days — flagged for next cycle; full backlog Jul 26–Aug 20 remains past policy, purged incrementally per minimal/atomic precedent).
+
+**Hygiene audit CLEAN**: 0 tracked suspicious files (bak/tmp/log/patch/task_plan.md grep empty), 0 untracked files; agents 28/28 + skills 25/25 + commands 8/8 match README counts; all scripts wired (`opencode-run.sh` referenced by workflows); `functions/api/[[path]].ts` Pages proxy intentional — kept.
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.
