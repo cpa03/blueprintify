@@ -2,6 +2,32 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-02 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.57s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 4 prose false positives only (`App.tsx:105/300`, `OfflineBanner.tsx:178`, `motion.test.ts:110`); zero hits in `packages/`.
+- **No production `console.log`**: 14 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets (`secureLog.ts:97/141`), test expectations (`secureLog.test.ts:229`, `logger.test.ts:88`), e2e console-capture specs, docs comment; `dist/` bundle hits ignored (build artifact).
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`generateCompletion`/`validateXssSafe`/`secureLogDebug`/`withTimeoutAndRetry`/`getStorageErrorMessage`/`CreateShareRequest`/`StreamCallbacks`; spot-checked live exports (`storageManager:5`, `sanitizeHtml:66`, `fadeInUp:27`, `wizardStorage:9`, `TECH_STACK_OPTIONS:8`, `VALIDATION_LIMITS:73` refs) + `utils/motion.ts` live via `Wizard.tsx` + `PreviewEmptyState.tsx`.
+- **No orphan/empty/duplicate files**: zero empty first-party sources; zero `*.bak`/`*.orig`/`*~`/`.DS_Store`; zero tracked `*.log`; first-party `md5sum` sweep → zero identical pairs; zero `formatDate` hits.
+- **No unused deps**: web deps (`framer-motion`/`clsx`/`jszip`/`zustand`/`dompurify`/`react-markdown`/`@blueprint/shared`) + api deps (`hono`/`openai`/`zod`) all import-verified in prior cycles, `package.json` surface unchanged since.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in `apps/`; 0 `.only`; 0 `debugger`/`ts-ignore`/`ts-expect-error`; 0 merge markers; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+- **Branch stays lean**: diff vs `origin/main` = 43 files, +901/−1096 at scan start (net −195; `findings.md` docs history + prior source removals intact).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] Dual `createPersistedStore` implementations persist (live `apps/web/src/store/persistence.ts` vs test-only `apps/web/src/hooks/usePersistedStore.ts`) — flagged in prior cycles, still open; recommend unifying on one, not executed to keep pre-merge diff behavior-untouched.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files post-#3693) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep diff minimal.
+
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
