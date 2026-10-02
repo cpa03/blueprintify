@@ -17,6 +17,23 @@
 **Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ exit 0 · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 335 files · audit ✅ 0 vulns.
 **Stray state**: 20+ open PRs (incl. #3684/#3681/#3676/#3672 repokeeper) left untouched — human disposition pending; this cycle adds minimal docs-only PR.
 
+## RepoKeeper Cycle 2026-09-29 (Sisyphus — hygiene audit + doc-sync)
+
+**Phase 0**: Branch `agent/repokeeper-20260929-sisyphus` created from `origin/main` `e56f56bf` (0-behind/0-ahead, clean tree, `git fetch` verified).
+
+**Hygiene audit CLEAN** — 697 tracked files; 0 redundant/temp/unused (temp-artifact grep empty: no `.bak`/`.tmp`/`.old`/`~`/`.swp`/`.DS_Store`/`.log`/`task_plan.md` tracked); 0 tracked build artifacts (`dist/`+`node_modules/` ignored, `git ls-files` count 0); scripts 6/6 wired (`brocula-hunt`↔`brocula`, `migrate.ts`↔`db:*`, `normalize-issue-labels`↔`normalize:issues`, `scan-secrets`↔`scan:secrets`, `validate-wrangler`↔`validate:wrangler`; `brocula-sweep.mjs`+`lh-warm.mjs` helpers intentional); 28/28 agents + 25/25 skills + 8/8 commands cross-checked 1:1; 5/5 workflows `ubuntu-24.04-arm`; audits index 98 reports ↔ 98 rows (99 `.md` on-disk includes README, 14 archived excluded by design), exactly 1 `**Latest**` marker (Run 89, Aug 20); `.omo/run-continuation` present but gitignored (no residue); `functions/api/[[path]].ts` proxy intentional duplicate with shared-config parity comment.
+
+**Retention DEFERRED (report-only)** — oldest top-level audit Jul 25 = 66d (exceeds 30d boundary); no purge this cycle to avoid conflicts with open retention PRs #3653 (`agent/repokeeper-cleanup-20260928`) + #3656 (`repokeeper/cleanup-20260929-ultra`).
+
+**Doc-sync — 0 NEW defects**: README counts exact (28 agents / 25+ skills); audits README in sync; workflows runner-compliant; `console.log` 15 hits intentional only (logger/secureLog/JSDoc/template strings); 0 TODO/FIXME/HACK in `apps/*/src`+`packages/shared/src`. NOTE (out of scope, report-only): `docs/active-tasks.md` 324 lines exceeds 200-line sprawl threshold per `docs/repo-rules.md` — Technical Writer archival pending, no action per atomic/focused constraint.
+
+**Baseline ALL GREEN (live)**: typecheck ✅ exit 0 · lint ✅ exit 0 (0 errors/0 warnings) · build ✅ exit 0 (9.85s) · test:api ✅ 535/535 · validate via `npm run typecheck/lint/build/test:api`.
+
+**Stray branches FAIL-SAFE MAINTAINED**: 20+ open PRs observed (incl. repokeeper #3656/#3653/#3643) — none touched, human disposition pending; this branch docs-only 1 file.
+
+Skills used: `docs-update` (findings record). Subagents: none — explore delegation failed (`ProviderModelNotFoundError: sabila/cmz`), deterministic direct probes used instead.
+
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.
