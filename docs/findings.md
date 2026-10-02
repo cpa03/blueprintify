@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR recover-lost-web-frontend-fixes-companio full 5-file state @93d1b31 (2026-10-02)
+
+**Scope**: `merge-base(origin/main, origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head)=da76892c` → head `93d1b31` (3 commits `eee24cee/0933fd61/93d1b31`; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new 320 lines, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1). Task: remove introduced vulnerabilities, secrets, deprecated usage. Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — build-correctness FIX (shared `packages/shared/src` scan is load-bearing for TOAST_STYLES/CHAR_COUNTER_COLORS; `escapePath(convertPathToPattern())` hardens Windows/metachar globs; AST `ts.createSourceFile` walk + `isErasedImport` fix regex blind spots for `lazy(() => import())`/JSDoc matches and erased type-only imports; `TS_REWRITES` handles `.js`→`.ts` ESM rewrites; bare-specifier skip guarded by no-wildcard-exports assertion). `escapePath`/`convertPathToPattern` verified current (fast-glob 3.3.3 = npm latest, forward-only add, lock +1 is workspace entry only); `isImportDeclaration`/`isExportDeclaration`/`isStringLiteral`/`isCallExpression`/`forEachChild`/`ImportKeyword`/`isNamedImports` all current TS APIs. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`/`__dirname`/`require(`; `fs` test-only on constant-derived paths (no traversal); regexes linear (no ReDoS). Code-only added secret value count 0 (sole `token` hit is English word "tokens" in comment).
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · `scan:secrets` ✅ 335 files · no sensitive filenames in diff.
+**Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed.
+
 ## Security Audit — Sync PR hardening to agent/security-engineer (2026-10-02)
 
 **Scope**: True PR diff `da76892c..b5786a81` (4 files: `logger.ts`, `index.ts`, `index.test.ts`, `logger.test.ts`). Task: remove introduced vulnerabilities, secrets, deprecated usage.
