@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-02 — post-#3666 resync, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `6f472f95` (#3666 ScrollToTop reduced-motion arrow float) per cleanup request (redundant files, unused exports, commented-out dead code). No conflicts on merge.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero tracked-file changes beyond this docs entry. Untracked gitignored workspace artifacts removed from disk only (`build.log`, `lint.log`, `typecheck.log` — `*.log` is gitignored, regenerate on demand).
+
+**Verification**: `npm run build` ✅ green (9.23s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **#3666 changes all live**: `ScrollToTop.tsx` reduced-motion guard (+16/−6) imported by `App.tsx` (lazy `ScrollToTop`/`ScrollToBottom`) and `Editor.tsx`; `ScrollToTop.test.tsx` covers it. Not dead code.
+- **No commented-out dead code**: `// <code-keyword>` grep (import/export/const/let/var/function/return/if/for) over `apps/*/src` + `packages/shared/src` → zero hits; `{/* */}` hits are intentional JSX section markers, not corpses; 0 TODO/FIXME/HACK in source.
+- **No production `console.log`**: `apps/` hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets, generated-project template strings (`templates/node.ts`, `static.ts`), e2e console-capture specs, docs comment (`config/security.ts:164`).
+- **No unused deps**: all import-verified (`framer-motion` ~25 component imports, `clsx`/`jszip`/`zustand`/`dompurify`/dynamic imports, `react-markdown`/`react-syntax-highlighter`/`remark-gfm`, `react-error-boundary`, CodeMirror via `LazyCodeMirror`; api `hono`/`openai`/`zod`).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`~`/`*.log`; zero empty first-party sources; zero `formatDate` duplicates; `ScrollProgress` (container-level, `Editor.tsx`) vs `PageScrollProgressBar` (window-level, `App.tsx`) are documented complements, not duplicates; `MotionConfigWrapper` (trivial passthrough) is live via `main.tsx` — KEEP.
+- **Hygiene clean**: 0 `.only`/`.skip`/`debugger`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint (`lib/` = domain libs, `utils/` = generic helpers), no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `MotionConfigWrapper` is now a trivial passthrough (children + onMount) since framer-motion natively respects prefers-reduced-motion — candidate for inlining into `main.tsx` in a follow-up (touches boot path, out of janitor no-logic-change scope).
+- [Janitor] framer-motion ↔ CSS migration is mid-flight (some components on CSS animations, most still on motion) — intentional incremental perf work, not duplication; KEEP.
+
 ## Janitor Cleanup (2026-10-02 — pre-merge scan of merged `origin/main` @ `5244a98b`, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` per cleanup request (redundant files, unused exports, commented-out dead code). Merged `origin/main` (`da76892c` → `5244a98b`) first — **conflict in `docs/findings.md` resolved preserving both sides** (branch's Janitor block + main's `ULW Loop Cycle 603` section, 0 lines dropped, 0 conflict markers).
