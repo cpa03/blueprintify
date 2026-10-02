@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-02: Security Engineer Audit — Changed-Files Scan vs origin/main (6 files)
+
+- **Finding**: Diff is the hardening itself (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence). 0 introduced vulnerabilities / secrets / deprecated usage — nothing to remove.
+- **Verification**: Code-only added secret value 0x (audit-prose quotes excluded); injection/XSS/deprecated CLEAN; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns (full + prod); `validate:wrangler` ✅; fail-closed verified both sides (web omits header, api 503s); shared 869/869, web typecheck clean.
+- **Lesson**: When audit-prose docs quote a removed secret for traceability, scope secret-counting to code paths (`apps/**`, `packages/**`) — doc quotes are false positives. Staging `CORS_ORIGIN="*"` pre-exists on main; flag report-only, don't expand scope.
+
 ### 2026-10-01: Security Engineer Audit — PR app-functionality-fixes-round-2 (4-file state)
 
 - **Finding**: PR (`origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head` vs `origin/main`: `logger.ts` +20, `index.ts` -9, `index.test.ts` +258, `logger.test.ts` +153) introduces 0 vulnerabilities, secrets, or deprecated usage — it is a net security FIX.

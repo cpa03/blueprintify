@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Changed-files scan vs origin/main (2026-10-02)
+
+**Scope**: `agent/security-engineer` vs `origin/main` (6 files: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose in `.opencode/memory/security.md` + `docs/findings.md`). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff itself IS the hardening (removes hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; drops `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY`; `env.ts` fallback → fail-closed `""`; test asserts absence). Code-only added secret value 0x; added-lines injection/XSS (`eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`) CLEAN; deprecated (`substr`/`new Buffer`/`max_tokens`/`Math.random`/`md5`) CLEAN in code files (audit-prose mentions are historical quotes, not code). No `.env`/`.dev.vars`/pem in diff; no `package.json`/lockfile change → no new CVEs. Fail-closed verified both sides (frontend `api.ts:142` omits `x-api-key` when empty, backend `auth.ts` 503s when unset, constant-time compare intact). Staging `CORS_ORIGIN="*"` is pre-existing on main, not introduced here.
+**Scans**: code-only added secret 0x · `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · `validate:wrangler` ✅ · shared build ✅ 869/869 ✅ · web typecheck ✅.
+**Result**: No code fixes required — nothing to remove. No rotation needed (public dev fallback, never a real secret).
+
 ## Security Audit — PR convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head re-verification (2026-10-02)
 
 **Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → head `b5786a81` (2 commits `801a04a4` x-api-key redaction + `b5786a81` SPA fallback removal; 4 files: `apps/api/src/config/constants/logger.ts` +20, `apps/api/src/index.ts` -9, `apps/api/src/index.test.ts` +258, `apps/api/src/middleware/logger.test.ts` +153). Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
