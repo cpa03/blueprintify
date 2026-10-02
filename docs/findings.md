@@ -6,6 +6,32 @@
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
 
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ exit 0 · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over first-party `apps/*/src`, `packages/*/src`, `scripts/` → 4 prose false positives only (`App.tsx:105/300`, `OfflineBanner.tsx:178`, `motion.test.ts:110`); zero block-comment corpses.
+- **No production `console.log`**: 111 first-party hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets, generated-project template strings (`templates/node.ts`, `static.ts`), CLI scripts (`brocula-*`, `validate-wrangler`, `lh-warm`), test/e2e expectations, docs comment (`config/security.ts:164`). Prod surface (components/hooks/store/context/config/utils excl tests/templates/examples) → 1 docs-comment hit only.
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`generateCompletion`/`validateXssSafe`/`secureLogDebug`/`withTimeoutAndRetry`/`getStorageErrorMessage`/`CreateShareRequest`/`StreamCallbacks`; spot-checked live exports (`storageManager:5`, `sanitizeHtml:66`, `fadeInUp:27`, `wizardStorage:9`, `TECH_STACK_OPTIONS:8`, `VALIDATION_LIMITS:73`, `useFaviconStatus:14`, `createDebouncedSaver:17`, `STARTER_TEMPLATES:31`); `utils/motion.ts` full surface live (`transitions:47`, `staggerContainer:12`, `floatingAnimation:17`, `pulseAnimation:12`, `pageTransition:21`, `createFadeInUp:9`); 714 export sites, no dead ones found.
+- **No orphan/empty/duplicate files**: zero empty first-party sources; zero tracked `.bak`/`.orig`/`.tmp`/`~`/`.DS_Store`; zero tracked `*.log`; first-party `md5sum` sweep → zero identical pairs; zero `formatDate` hits.
+- **No unused deps**: all import-verified (`framer-motion`/`clsx`/`jszip`/`zustand`/`dompurify`/`react-markdown`/`hono`/`openai`/`zod`/`react-error-boundary` live).
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source; 0 `.only`/`.skip`/`debugger`; 0 merge markers; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+- **Branch stays lean**: diff vs `origin/main` = 47 files, +974/−1096 at scan start (net −132; `findings.md` docs history + prior source removals intact).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] Dual `createPersistedStore` implementations persist (live `apps/web/src/store/persistence.ts` vs test-only `apps/web/src/hooks/usePersistedStore.ts`) — flagged in prior cycles, still open; recommend unifying on one, not executed to keep pre-merge diff behavior-untouched.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files post-#3693) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep diff minimal.
+
+## Janitor Cleanup (2026-10-02 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
+
 ## Janitor Cleanup (2026-10-02 — pre-merge hygiene scan, zero safe deletions, build+lint green)
 
 **Scope**: `agent/janitor` (fresh checkout, merged `origin/main`, already up-to-date) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`debugger`, merge markers.
