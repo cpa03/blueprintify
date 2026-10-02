@@ -848,6 +848,12 @@ Build/typecheck verified green after removal.
 - Shared type exports `GenerationResult`, `ImportResult`, `StorageReportRequest`, `ExportRequest`, `ImportRequest` have zero live consumers in apps but are referenced in `docs/findings.md`/`packages/shared/README.md` as documented API surface. Keep.
 - Root devDependency `@emnapi/core` (1.11.3) has no code references and no dependents in `package-lock.json` beyond the root entry, but `@img/sharp-wasm32` (used for ARM CI sharp support) pulls in `@emnapi/runtime`. Verify on `ubuntu-24.04-arm` CI before removing; flagged for human disposition.
 ---
+## ULW Loop Cycle 603 (2026-10-02 — REPOKEEPER DOC-SYNC)
+
+**Phase 0**: Branch `agent` from `origin/main` (`da76892c`), clean tree, 0-behind.
+**Hygiene**: 0 redundant/temp/unused safe-delete (temp-artifact grep empty; dist/node_modules ignored; 8/8 scripts USED; functions/api proxy bukan duplikat; docs/issues+audit append-only KEEP; .agent vs .opencode duplikat struktural — KEEP pending keputusan kanonis loader).
+**Doc-sync**: `API_ENDPOINTS` + `GET /` + `api-documentation.md` GET-example hilang `STORAGE_REPORT`/`SHARE_VERIFY` padahal routes hidup (`storage.ts:132`, `share.ts:473`) dan README table benar → tambah 2 keys di `endpoints.ts`/`index.ts`/`api-documentation.md`; README tree tambah `openapi.yaml`+`issues/`+`security/assessment-ajv-vulnerabilities.md`; README index tambah OpenAPI Spec + Active Issue Specs.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ · scan:secrets ✅ · api 535/535 ✅ · shared 869/869 ✅ · web 1248/1248 ✅.
 
 ## ULW Loop Cycle 602 (2026-09-30 — REPOKEEPER DOC-SYNC)
 
