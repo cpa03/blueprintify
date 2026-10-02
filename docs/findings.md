@@ -6,13 +6,17 @@
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
 
+## Janitor Cleanup (2026-10-02 — pre-merge hygiene scan, zero safe deletions, build+lint green)
+
+**Scope**: `agent/janitor` (fresh checkout, merged `origin/main`, already up-to-date) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`debugger`, merge markers.
+
 ### Removed
 
 - None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes.
 
-**Verification**: `npm run build` ✅ green (9.57s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+**Verification (scan A)**: `npm run build` ✅ green (9.57s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
 
-### Verified clean (no action needed)
+### Verified clean — scan A (no action needed)
 
 - **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 4 prose false positives only (`App.tsx:105/300`, `OfflineBanner.tsx:178`, `motion.test.ts:110`); zero hits in `packages/`.
 - **No production `console.log`**: 14 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets (`secureLog.ts:97/141`), test expectations (`secureLog.test.ts:229`, `logger.test.ts:88`), e2e console-capture specs, docs comment; `dist/` bundle hits ignored (build artifact).
@@ -22,11 +26,25 @@
 - **Hygiene clean**: 0 TODO/FIXME/HACK in `apps/`; 0 `.only`; 0 `debugger`/`ts-ignore`/`ts-expect-error`; 0 merge markers; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
 - **Branch stays lean**: diff vs `origin/main` = 43 files, +901/−1096 at scan start (net −195; `findings.md` docs history + prior source removals intact).
 
+**Verification (scan B)**: `npm run build` ✅ green (9.19s) · `npx eslint apps packages` ✅ exit 0, zero warnings.
+
+### Verified clean — scan B (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 1 prose false positive only (`App.tsx:105`, explanatory sentence); zero block-comment code corpses.
+- **No production `console.log` to remove**: 122 hits all intentional — Workers structured-logging transports (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized `secureLogInfo`), CLI scripts (`brocula-*.mjs`, `migrate.ts`, `scan-secrets.mjs`, `validate-wrangler.mjs`), JSDoc `@example` snippets, generated-project template strings (`templates/node.ts`, `templates/static.ts`), test/e2e expectations, docs examples. Per memory policy these ARE the logging utilities — kept.
+- **No unused exports**: spot-checked export graph (464 export sites) — hooks barrel, `useFaviconStatus`, `secureLog*`, retry helpers all have live consumers; barrels are intentional public-API pattern.
+- **No duplicate logic**: `calculateRetryDelay`/`sleep`/`isRetryableError` exist once per runtime (web `config/api-client.ts` is the single browser source; api `utils/retry.ts` private fn is the separate Workers runtime) — not dupes. No `formatDate` dupes; 3 util homes + `web/lib` have disjoint concerns.
+- **No unused deps**: verified `react-error-boundary` (ErrorBoundary/ErrorFallback), `clsx`/`zustand`/`jszip`/`react-syntax-highlighter`, `@tailwindcss/typography` (tailwind.config) — all import-wired.
+- **Hygiene clean**: 0 `debugger`/`.only`; 0 merge markers; eslint-disables remain the 5 legitimate targeted suppressions (`exhaustive-deps` ×3, `set-state-in-effect` ×1, `require-yield` ×1).
+- **Tracked tree lean**: `tui.json` is the only tracked root dot-config besides real configs; `*.log`/`task_plan.md`/`notes.md` all gitignored, never committed.
+
 ### Structural findings (recommended for future work, not refactored — out of janitor scope)
 
 - [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
 - [Janitor] Dual `createPersistedStore` implementations persist (live `apps/web/src/store/persistence.ts` vs test-only `apps/web/src/hooks/usePersistedStore.ts`) — flagged in prior cycles, still open; recommend unifying on one, not executed to keep pre-merge diff behavior-untouched.
 - [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files post-#3693) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep diff minimal.
+- [Janitor] Inline debounce in `apps/web/src/store/persistence.ts:103` duplicates `createDebouncedSaver` in `packages/shared/src/utils/debounce.ts` (deviation is documented in a code comment as intentional type-constraint avoidance) — recommend unifying when shared helper's generics allow; not executed to avoid behavior change.
+- [Janitor] Root `tui.json` duplicates `.opencode/tui.json` byte-for-byte (both tracked) — recommend deleting one and documenting the canonical path; not executed (config-file risk, needs owner confirm).
 
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
 
