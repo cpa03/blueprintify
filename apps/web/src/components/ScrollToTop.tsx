@@ -292,13 +292,23 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
                 initial={false}
-                animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
-                transition={{
-                  duration: ANIMATION.FLOAT,
-                  repeat: Infinity,
-                  ease: EASING.easeInOut,
-                }}
+                // Decorative infinite float: disabled when the user prefers
+                // reduced motion (WCAG 2.3.3) — the arrow stays static while
+                // the button itself remains fully functional.
+                animate={
+                  shouldReduceMotion ? { y: 0 } : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: ANIMATION.FLOAT,
+                        repeat: Infinity,
+                        ease: EASING.easeInOut,
+                      }
+                }
               >
                 {isToTop ? (
                   <path
