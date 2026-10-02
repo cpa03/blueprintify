@@ -209,13 +209,22 @@ const ScrollToPosition = memo(function ScrollToPosition({
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
-          transition={{
-            type: FRAMER_TYPE.SPRING,
-            ...SPRING_CONFIG.DEFAULT,
-          }}
+          {...(shouldReduceMotion
+            ? {
+                initial: { opacity: 0 },
+                animate: { opacity: 1 },
+                exit: { opacity: 0 },
+                transition: { duration: ANIMATION.NORMAL, ease: EASING.easeOut },
+              }
+            : {
+                initial: { opacity: 0, scale: 0.8, y: 20 },
+                animate: { opacity: 1, scale: 1, y: 0 },
+                exit: { opacity: 0, scale: 0.8, y: 20 },
+                transition: {
+                  type: FRAMER_TYPE.SPRING,
+                  ...SPRING_CONFIG.DEFAULT,
+                },
+              })}
           className={positionClass}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
@@ -280,21 +289,26 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-label={ariaLabel}
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
-              whileHover={HOVER_SCALE.STRONG}
-              whileTap={TAP_SCALE.STANDARD}
+              whileHover={shouldReduceMotion ? undefined : HOVER_SCALE.STRONG}
+              whileTap={shouldReduceMotion ? undefined : TAP_SCALE.STANDARD}
             >
               <motion.svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
                 initial={false}
-                animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
-                transition={{
-                  duration: ANIMATION.FLOAT,
-                  repeat: Infinity,
-                  ease: EASING.easeInOut,
-                }}
+                animate={shouldReduceMotion ? {} : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: ANIMATION.FLOAT,
+                        repeat: Infinity,
+                        ease: EASING.easeInOut,
+                      }
+                }
               >
                 {isToTop ? (
                   <path
