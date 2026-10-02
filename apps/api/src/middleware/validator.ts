@@ -18,6 +18,7 @@ import {
   CONTENT_TYPE_NONE,
 } from "../config/constants";
 import { detectInjectionPatterns } from "../config/prompt-security";
+import type { AppVariables } from "../types";
 
 /**
  * Custom Zod validator that returns standardized error responses
@@ -26,11 +27,12 @@ import { detectInjectionPatterns } from "../config/prompt-security";
 export const validateJson = <T extends z.ZodTypeAny>(
   schema: T
 ): MiddlewareHandler<{
-  Variables: {
+  Variables: AppVariables & {
     validatedData: z.infer<T>;
   };
 }> => {
   return async (c, next) => {
+    const requestId = c.get(CONTEXT_KEYS.REQUEST_ID);
     const contentType = c.req.header(API_HEADERS.REQUEST.CONTENT_TYPE);
     if (!contentType?.includes(HTTP_HEADERS.CONTENT_TYPE_JSON)) {
       return c.json(
@@ -43,6 +45,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
               expected: HTTP_HEADERS.CONTENT_TYPE_JSON,
               received: contentType || CONTENT_TYPE_NONE,
             },
+            requestId,
           }
         ),
         HTTP_STATUS.BAD_REQUEST
@@ -62,6 +65,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
               message: issue.message,
             })),
           },
+          requestId,
         });
 
         return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
@@ -74,6 +78,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
       return c.json(
         createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.INVALID_JSON_BODY, {
           code: ERROR_CODES.VALIDATION_ERROR,
+          requestId,
         }),
         HTTP_STATUS.BAD_REQUEST
       );
@@ -120,6 +125,7 @@ export const validatePromptInjection = (
   fields: readonly PromptInjectionField[]
 ): MiddlewareHandler => {
   return async (c, next) => {
+    const requestId = c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined;
     const data = c.get(CONTEXT_KEYS.VALIDATED_DATA) as Record<string, unknown>;
     if (!data) {
       await next();
@@ -138,6 +144,7 @@ export const validatePromptInjection = (
                 field: field.path,
                 message: INJECTION_ERROR_MESSAGE(field.label),
               },
+              requestId,
             }),
             HTTP_STATUS.BAD_REQUEST
           );
@@ -154,6 +161,7 @@ export const validatePromptInjection = (
                   field: field.path,
                   message: INJECTION_ERROR_MESSAGE(field.label),
                 },
+                requestId,
               }),
               HTTP_STATUS.BAD_REQUEST
             );

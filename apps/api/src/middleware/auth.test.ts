@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
+import { requestLogger } from "./logger";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
 import {
   ERROR_TYPES,
@@ -229,6 +230,64 @@ describe("auth middleware", () => {
       expect(data.error).toHaveProperty("message");
       expect(data.error).toHaveProperty("code");
       expect(data.error).toHaveProperty("timestamp");
+    });
+  });
+
+  describe("error response requestId correlation", () => {
+    const REQUEST_ID_PATTERN = /^\d+-[a-z0-9]+$/;
+
+    /** Mirrors the src/index.ts order: requestLogger sets the id before apiKeyAuth rejects. */
+    const buildApp = (env: { API_KEY?: string }) => {
+      const app = new Hono<{ Bindings: { API_KEY?: string } }>();
+      app.use("*", requestLogger({ excludePaths: [] }));
+      app.use("*", async (c, next) => {
+        c.env = env;
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => c.json({ success: true }));
+      return app;
+    };
+
+    it("should include requestId in the 401 body matching the logged request", async () => {
+      const app = buildApp({ API_KEY: validApiKey });
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "invalid_key_value" },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.error.requestId).toBeTruthy();
+      expect(data.error.requestId).toMatch(REQUEST_ID_PATTERN);
+      expect(data.error.requestId).toBe(res.headers.get(API_HEADERS.RESPONSE.REQUEST_ID));
+    });
+
+    it("should include requestId in the 401 body when the API key is missing entirely", async () => {
+      const app = buildApp({ API_KEY: validApiKey });
+
+      const res = await app.request("/");
+
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.error.requestId).toBe(res.headers.get(API_HEADERS.RESPONSE.REQUEST_ID));
+    });
+
+    it("should include requestId in the 503 CONFIGURATION_ERROR body when API_KEY is unset", async () => {
+      const app = buildApp({});
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.SERVICE_UNAVAILABLE);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.error.code).toBe(ERROR_CODES.CONFIGURATION_ERROR);
+      expect(data.error.requestId).toBeTruthy();
+      expect(data.error.requestId).toMatch(REQUEST_ID_PATTERN);
+      expect(data.error.requestId).toBe(res.headers.get(API_HEADERS.RESPONSE.REQUEST_ID));
+      warnSpy.mockRestore();
     });
   });
 

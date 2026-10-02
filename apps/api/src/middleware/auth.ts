@@ -124,6 +124,8 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     const validKey = c.env.API_KEY;
     const adminKey = c.env.ADMIN_API_KEY;
 
+    const requestId = c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined;
+
     // SECURITY FIX: Reject requests when API_KEY is not configured instead of bypassing auth
     // This prevents unauthenticated access when the server is misconfigured
     if (!validKey) {
@@ -131,11 +133,12 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       secureLogWarn(LOG_CONTEXT.AUTH_CONFIG, ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
         environment: c.env.ENVIRONMENT,
         path,
-        requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+        requestId,
       });
       return c.json(
         createErrorJson(ErrorType.CONFIGURATION, ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
           code: ERROR_CODES.CONFIGURATION_ERROR,
+          requestId,
         }),
         HTTP_STATUS.SERVICE_UNAVAILABLE
       );
@@ -153,6 +156,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       return c.json(
         createErrorJson(ErrorType.AUTHENTICATION, ERROR_MESSAGES.AUTHENTICATION_INVALID_KEY, {
           code: ERROR_CODES.AUTHENTICATION_ERROR,
+          requestId,
         }),
         HTTP_STATUS.UNAUTHORIZED
       );
