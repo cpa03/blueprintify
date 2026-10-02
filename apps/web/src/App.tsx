@@ -79,7 +79,11 @@ function App(): JSX.Element {
   // first-time visitors, not on every page load for returning users.
   const [shortcutsDiscovered, setShortcutsDiscovered] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+    try {
+      return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+    } catch {
+      return false;
+    }
   });
   const showShortcutsModalRef = useRef(showShortcutsModal);
   // Keep ref in sync so the global keydown handler reads the latest state
@@ -194,7 +198,11 @@ function App(): JSX.Element {
   const handleShowShortcuts = useCallback(() => {
     setShortcutsDiscovered(true);
     if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+      try {
+        localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+      } catch {
+        // localStorage can throw in privacy mode — state update above still applies.
+      }
     }
     setShowShortcutsModal(true);
   }, []);
@@ -419,21 +427,33 @@ function App(): JSX.Element {
               {wizardActivated ? (
                 <Suspense
                   fallback={
-                    <div className="flex items-center justify-center py-16">
-                      <div className={SPINNER.DEFAULT}></div>
+                    <div
+                      className="flex items-center justify-center py-16"
+                      role="status"
+                      aria-live="polite"
+                      aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
+                    >
+                      <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
                     </div>
                   }
                 >
                   <Wizard />
                 </Suspense>
               ) : (
-                <div className="p-6 space-y-4">
-                  <div className="skeleton-block h-5 w-36" />
-                  <div className="skeleton-block h-10 w-full" />
-                  <div className="skeleton-block h-5 w-48" />
-                  <div className="skeleton-block h-24 w-full" />
-                  <div className="skeleton-block h-5 w-32" />
-                  <div className="skeleton-block h-10 w-full" />
+                <div
+                  className="p-6 space-y-4"
+                  role="status"
+                  aria-live="polite"
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
+                >
+                  <div aria-hidden="true" className="space-y-4">
+                    <div className="skeleton-block h-5 w-36" />
+                    <div className="skeleton-block h-10 w-full" />
+                    <div className="skeleton-block h-5 w-48" />
+                    <div className="skeleton-block h-24 w-full" />
+                    <div className="skeleton-block h-5 w-32" />
+                    <div className="skeleton-block h-10 w-full" />
+                  </div>
                 </div>
               )}
             </div>
@@ -510,10 +530,15 @@ function App(): JSX.Element {
                 >
                   <Suspense
                     fallback={
-                      <div className="h-full min-h-100 flex items-center justify-center text-dark-500">
+                      <div
+                        className="h-full min-h-100 flex items-center justify-center text-dark-500"
+                        role="status"
+                        aria-live="polite"
+                        aria-label={UI_CONTENT.EDITOR.LOADING}
+                      >
                         <div className="flex flex-col items-center gap-2">
-                          <div className={SPINNER.DEFAULT}></div>
-                          <span>{UI_CONTENT.EDITOR.LOADING}</span>
+                          <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
+                          <span aria-hidden="true">{UI_CONTENT.EDITOR.LOADING}</span>
                         </div>
                       </div>
                     }
