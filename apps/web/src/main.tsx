@@ -62,3 +62,33 @@ function Root(): JSX.Element {
 
 const root = ReactDOM.createRoot(rootElement);
 root.render(<Root />);
+
+const MONO_FONT_HREF =
+  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=optional";
+
+function loadMonoFont(): void {
+  if (typeof document === "undefined") return;
+  if (document.getElementById("font-mono")) return;
+  const link = document.createElement("link");
+  link.id = "font-mono";
+  link.rel = "stylesheet";
+  link.href = MONO_FONT_HREF;
+  link.media = "print";
+  link.onload = (): void => {
+    link.media = "all";
+  };
+  document.head.appendChild(link);
+}
+
+function scheduleMonoFont(): void {
+  if (typeof window === "undefined") return;
+  const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number })
+    .requestIdleCallback;
+  if (typeof idle === "function") {
+    idle.call(window, loadMonoFont);
+  } else {
+    window.setTimeout(loadMonoFont, 2000);
+  }
+}
+
+scheduleMonoFont();
