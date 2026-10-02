@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-02: Security Engineer Audit — Changed-Files Scan re-verification (6 files)
+
+- **Finding**: `git diff --name-only origin/main` (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence) introduces 0 vulnerabilities, secrets, or deprecated usage — the diff IS the hardening.
+- **Verification**: code-only added secret 0x · injection/XSS/deprecated 0x (sole `Math.random` = pre-existing JSDoc `core.ts:90`) · `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck ✅ · shared 869/869 · api 535/535 · fail-closed both sides re-confirmed · stale gitignored dists rebuilt → 0 hits.
+- **Lesson**: Gitignored `dist/` regresses to the old fallback on every cycle until rebuilt — always rebuild shared + web dists and re-grep after any secret-removal verification, even when source is clean.
+
 ### 2026-10-02: Security Engineer Audit — Changed-Files Scan post-merge re-verification (6 files)
 
 - **Finding**: After `git merge origin/main` (5244a98b doc-sync), the 6-file diff vs `origin/main` still introduces 0 vulnerabilities, secrets, or deprecated usage — the diff IS the hardening (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence).

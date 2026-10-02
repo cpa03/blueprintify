@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Changed-files scan vs origin/main, re-verification (2026-10-02)
+
+**Scope**: `git diff --name-only origin/main` on `agent/security-engineer` (6 files: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (prod+staging hardcoded `API_KEY` → `wrangler secret put` comments; `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` deleted; `env.ts` getter → `getEnvVar(WEB_ENV.VITE_API_KEY)` fail-closed `""`; test asserts absence). Code-only added secret value 0x; injection/XSS (`eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`) 0x; deprecated (`substr`/`new Buffer`/`max_tokens`/`Math.random()`/`md5`) 0x — sole `Math.random` hit is pre-existing JSDoc at `core.ts:90`, not introduced. No `.env`/`.dev.vars`/pem/key files and no `package.json`/lockfile in diff → no new CVEs. Fail-closed verified both sides (`env.ts:7` `""`; `api.ts:142` omits `x-api-key` when empty; `auth.ts:127-151` 503s when unset; `constantTimeCompare` intact).
+**Scans**: code-only added secret 0x · `scan:secrets` ✅ 335 files · `validate:wrangler` ✅ · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · typecheck ✅ (shared/api/web) · shared ✅ 869/869 · api ✅ 535/535 · stale gitignored `dist/` rebuilt (shared tsc-build + web vite build) → post-rebuild secret grep 0 hits.
+**Result**: No code fixes required — nothing to remove. Structural flags (report-only, pre-existing on main): staging `CORS_ORIGIN="*"`; `origin/main` still carries the removed public dev fallback until merge. No rotation needed (public dev fallback, never a real secret).
+
 ## Security Audit — Changed-files scan vs origin/main, post-merge re-verification (2026-10-02)
 
 **Scope**: `git diff --name-only origin/main` on `agent/security-engineer` after merging `origin/main` (5244a98b doc-sync: STORAGE_REPORT/SHARE_VERIFY registry + README links). Final 6-file diff: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose (`.opencode/memory/security.md`, `docs/findings.md`). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
