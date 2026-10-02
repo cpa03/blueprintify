@@ -31,6 +31,14 @@
 
 ## Lessons Learned
 
+### 2026-10-02: Security Engineer Audit — Changed-Files Scan post-merge re-verification (6 files)
+
+- **Finding**: After `git merge origin/main` (5244a98b doc-sync), the 6-file diff vs `origin/main` still introduces 0 vulnerabilities, secrets, or deprecated usage — the diff IS the hardening (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence).
+- **Merge gate**: `docs/findings.md` conflicted (HEAD audit block vs main's Cycle 603 block) — resolved keeping **both** sections, 0 residual markers. Main's new commit is doc/registry-only; it did NOT reintroduce the removed secret, so no secret-side conflict this cycle.
+- **Verification**: code-only added secret 0x (6 added lines) · injection/XSS/deprecated 0x (sole `Math.random` hit = pre-existing JSDoc at `core.ts:90`) · `scan:secrets` ✅ 336 files · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck ✅ (shared/api/web) · shared 869/869 · api 535/535 · fail-closed both sides re-confirmed (`env.ts:7` `""`, `api.ts:142` header omitted, `auth.ts:129-140` 503).
+- **Stale artifacts**: gitignored `packages/shared/dist` + `apps/web/dist` had regressed to embedding the removed fallback again (built from pre-fix source) — rebuilt both; post-rebuild grep 0 hits.
+- **Lesson**: A merge that only conflicts in *docs* still needs a re-scan of the code diff afterward — main moves, and the code-side secret removal must be re-proven (not assumed) after every merge; rebuild gitignored dists on every cycle since local builds drift from source.
+
 ### 2026-10-02: Security Engineer Audit — Changed-Files Scan vs origin/main (6 files)
 
 - **Finding**: Diff is the hardening itself (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence). 0 introduced vulnerabilities / secrets / deprecated usage — nothing to remove.
