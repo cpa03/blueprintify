@@ -3,14 +3,14 @@
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
 ## ✅ StorX — **ScrollToTop Micro-UX & State Inspection**
-- [CONNECT] Connected `useReducedMotion` hook and `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx`.
-- [STRENGTHEN] Strengthened `ScrollToTop` / `ScrollToPosition` DOM state inspection with `data-state` ("visible"/"hidden") and `data-reduced-motion` ("true"/"false") attributes.
+- [CONNECT] Connected `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx` for DOM state inspection (`useReducedMotion` was already wired for scroll behavior).
+- [STRENGTHEN] Strengthened `ScrollToTop` / `ScrollToPosition` DOM state inspection with `data-state` ("visible") and `data-reduced-motion` ("true"/"false") attributes on wrapper and button.
 - [CONSOLIDATE] Consolidated floating scroll component display state and reduced motion tracking across web components.
-- [REMOVE] Removed un-inspected DOM state for scroll-to-top floating button in test fixtures (`ScrollToTop.test.tsx`).
+- [REMOVE] Removed unreachable `HIDDEN` branch from `data-state` (element only mounts when visible).
 
-## ✅ BugLover Audit — **Phase 1 Complete (Oct 02 2026)**
+## ✅ BugLover Audit — **Phase 1 Follow-up (Oct 02 2026)**
 - [x] bug Filtered framer-motion props in test mocks (`ScrollToTop.test.tsx`, `EditorHeader.test.tsx`) to eliminate React console DOM warnings.
-- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite passing.
+- [x] error Phase 1 BugLover follow-up: zero unhandled errors, web typecheck clean, eslint clean (0 errors, 0 warnings), web test suite 1250/1250 passing on PR branch.
 
 ## ✅ BugLover Audit — **Phase 1 Complete (Oct 01 2026)**
 - [x] bug dompurify package security vulnerability GHSA-p98j-92pf-mc4p.

@@ -217,7 +217,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
             ...SPRING_CONFIG.DEFAULT,
           }}
           className={positionClass}
-          data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+          data-state={BANNER_STATE_VALUES.VISIBLE}
           data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
@@ -282,7 +282,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-label={ariaLabel}
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
-              data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+              data-state={BANNER_STATE_VALUES.VISIBLE}
               data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
