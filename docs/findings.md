@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-02 — post-#3707 resync, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `4018e1ed` (#3707 ConfirmDialog reduced-motion action buttons) per cleanup request (redundant files, unused exports, commented-out dead code). No conflicts on merge.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero tracked-file changes beyond this docs entry.
+
+**Verification**: `npm run build` ✅ green (9.24s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **#3707 changes all live**: `ConfirmDialog.tsx` reduced-motion guard (`shouldReduceMotion` via `useReducedMotion`, `whileHover`/`whileTap` conditional + `data-reduced-motion` attr) follows the established per-component pattern (46 files consume `useReducedMotion`); new test (`data-reduced-motion` + click usability) covers it. Added JSX comment is explanatory prose (WCAG 2.3.3), not dead code. Not dead code.
+- **No commented-out dead code**: `// <code-keyword>` grep (import/export/const/let/var/function/return/if/for/while/class) over `apps/*/src` + `packages/shared/src` + `scripts/` → 5 prose false positives only (`App.tsx:105/300`, `OfflineBanner.tsx:178`, `motion.test.ts:110`, `ConfirmDialog.test.tsx:163` mock explanation); 0 TODO/FIXME/HACK in source (1 README grep-example only).
+- **No production `console.log`**: `apps/` 18 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets (`secureLog.ts:97,141`, `lib/api.ts:21,23`), generated-project template strings (`templates/node.ts:141,169`, `static.ts:193`), e2e console-capture specs, docs comment (`config/security.ts:164`).
+- **No unused deps/exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`generateCompletion`/`validateXssSafe`/`secureLogDebug`/`withTimeoutAndRetry`/`getStorageErrorMessage`/`CreateShareRequest`/`StreamCallbacks`; `ConfirmDialog` single export live; `useReducedMotion` consumed 46 files deep.
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep → zero identical pairs; zero `formatDate` hits.
+- **Hygiene clean**: 0 `.only`/`.skip`/`debugger`; 0 merge markers; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint (`lib/` = domain libs, `utils/` = generic helpers), no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Janitor Cleanup (2026-10-02 — post-#3666 resync, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `6f472f95` (#3666 ScrollToTop reduced-motion arrow float) per cleanup request (redundant files, unused exports, commented-out dead code). No conflicts on merge.
