@@ -12652,3 +12652,16 @@ worker URL in Pages Function now mitigated via parity-constants comment block.
 - `apps/web/functions/api/[[path]].ts` Pages Function proxy is load-bearing (deploy path), kept.
 **Gates**: `npm run build` ✅ (9.17s).
 **Structural findings (report only)**: none new.
+
+---
+## [Janitor] Pre-merge hygiene scan — 2026-10-02 late (`agent/janitor`)
+
+**Scope**: redundant files, unused exports, commented-out dead code, console.log sweep before merge.
+**Method**: repo-wide grep verification + `npm run build` + `npm run typecheck` + `npm run lint`.
+**Results — zero safe deletions**:
+- `console.log`/`console.debug` (16 hits): all intentional — `secureLog`/`logger` utilities, e2e console-audit specs, generated template strings (`node.ts`, `static.ts`), JSDoc/doc examples, README examples. None in production paths.
+- Commented-out code: 0 blocks — `^// (import|export|const|...)` sweep clean in apps + packages; no TODO/FIXME/HACK; `eslint-disable` hits are legitimate exhaustive-deps guards.
+- Unused exports: spot-verified live — `createDebouncedSaver` (used by `usePersistedStore`), `createPersistedStore`/`useBeforeUnload`/`useScrollLock`/`useOnlineStatus`/`useAutoScroll` (all consumed in `App.tsx`/components), `slug`/`scroll`/`motion`/`clipboard`/`platform`/`dom` utils (all imported), `hexToRgba`/`SANITIZE_*`/`PARTICLE_DEFAULTS`/`ANIMATION_ENTRANCE_DELAYS_MS` (all consumed + test-covered). `createFadeInUp` has no production consumer beyond its own test — kept deliberately (public util with test coverage, deleting would break its test).
+- Strays: 0 tracked build artifacts (`*.log` gitignored via `.gitignore:51`); 0 `.bak/.orig` strays; 0 `formatDate` duplicates; `utils` dirs are by-design domain separation (api/web/shared, disjoint exports).
+**Gates**: `npm run build` ✅ (9.24s) · `typecheck` ✅ (shared+api+web) · `lint` ✅ 0 errors.
+**Structural findings (report only)**: none new.
