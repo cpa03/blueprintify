@@ -2,6 +2,16 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **ScrollToTop Micro-UX & State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx`.
+- [STRENGTHEN] Strengthened `ScrollToTop` / `ScrollToPosition` DOM state inspection with `data-state` ("visible"/"hidden") and `data-reduced-motion` ("true"/"false") attributes.
+- [CONSOLIDATE] Consolidated floating scroll component display state and reduced motion tracking across web components.
+- [REMOVE] Removed un-inspected DOM state for scroll-to-top floating button in test fixtures (`ScrollToTop.test.tsx`).
+
+## ✅ BugLover Audit — **Phase 1 Complete (Oct 02 2026)**
+- [x] bug Filtered framer-motion props in test mocks (`ScrollToTop.test.tsx`, `EditorHeader.test.tsx`) to eliminate React console DOM warnings.
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite passing.
+
 ## ✅ BugLover Audit — **Phase 1 Complete (Oct 01 2026)**
 - [x] bug dompurify package security vulnerability GHSA-p98j-92pf-mc4p.
 - [x] error MarkdownRenderer image element console src warning.
