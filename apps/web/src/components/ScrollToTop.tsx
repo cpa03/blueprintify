@@ -33,7 +33,7 @@ import {
   SCROLL_BEHAVIOR,
   DIRECTION,
 } from "../config/constants";
-import { FRAMER_TYPE, MODIFIER_KEYS } from "@blueprint/shared/config";
+import { FRAMER_TYPE, MODIFIER_KEYS, BANNER_STATE_VALUES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 type ScrollDirection = "top" | "bottom";
@@ -217,6 +217,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
             ...SPRING_CONFIG.DEFAULT,
           }}
           className={positionClass}
+          data-state={BANNER_STATE_VALUES.VISIBLE}
+          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
               the button first appears, drawing the user's eye to the new UI
@@ -280,6 +282,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-label={ariaLabel}
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
+              data-state={BANNER_STATE_VALUES.VISIBLE}
+              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
             >
