@@ -523,7 +523,7 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
       // One lookup per request; a retry or double fetch is a behaviour change.
       // Counted as requests are made, so the expectation does not depend on
       // the list being unique or in order.
-      expect(assets.fetch.mock.calls.length, `after requesting ${requestPath}`).toBe(
+      expect(assets.fetch, `after requesting ${requestPath}`).toHaveBeenCalledTimes(
         requestsMade + 1
       );
       requestsMade += 1;
