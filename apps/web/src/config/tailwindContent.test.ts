@@ -227,19 +227,27 @@ const readPathAliases = (): AliasRule[] =>
 const PATH_ALIASES = readPathAliases();
 
 /**
- * Specifiers Vite resolves through its own pipeline: `?url`/`?raw`/`?inline`, `#hash` suffixes,
- * and asset extensions (`.png`, `.svg`, `.css`, fonts). Those files are never TypeScript
- * sources, so the resolver below does not model them — the reachability check filters them out
- * *before* asking, which is what keeps `resolveSpecifier`'s `null` meaning exactly one thing.
+ * Whether a specifier must resolve to a file on disk, decided by a denylist of *source*
+ * extensions on purpose. An allow-list of asset extensions fails closed: the first `.csv`,
+ * `.wasm`, `.webmanifest` or `.md` import in production code turns this guard red for something
+ * Vite resolves perfectly well, which is the same misleading failure it keeps causing. Anything
+ * that could be a TS/JS module must resolve; everything else is skipped, so the guard errs
+ * toward silence rather than a false alarm. `?url`/`?raw`/`#hash` are stripped before the
+ * extension is read, because Vite resolves those through its own pipeline, never to a file.
  */
-const VITE_SPECIFIER =
-  /[?#]|\.(png|jpe?g|gif|svg|webp|avif|ico|css|scss|woff2?|ttf|eot|mp4|webm)$/i;
+const SOURCE_SUFFIXES = RESOLVABLE_SUFFIXES.filter(Boolean);
+
+const mustResolveOnDisk = (specifier: string): boolean => {
+  const [pathPart = ""] = specifier.split(/[?#]/, 1);
+  const extension = path.extname(pathPart);
+  return extension === "" || SOURCE_SUFFIXES.includes(extension);
+};
 
 /**
  * The on-disk file a relative or alias specifier names, or `null` when nothing does. Exactly
  * one question is answered here — "does this resolve?" — so `null` unambiguously means a
- * broken import. Vite-handled specifiers never reach this function; the caller filters them
- * on `VITE_SPECIFIER` first, so a miss here cannot be mistaken for an asset or vice versa.
+ * broken import. Specifiers that could not be a TS/JS module never reach this function; the
+ * caller filters them on `mustResolveOnDisk` first.
  */
 const resolveSpecifier = (fromFile: string, specifier: string): string | null => {
   // Longest prefix wins, as in TypeScript's own `paths` matching, so `@/foo/x` is never
@@ -365,9 +373,9 @@ describe("tailwind content globs", () => {
         // model — see the wildcard-export test for why skipping those is safe.
         const isAlias = PATH_ALIASES.some((rule) => specifier.startsWith(rule.prefix));
         if (!isAlias && !specifier.startsWith(".")) continue;
-        // Vite-handled specifiers are filtered *here*, before the call, so `null` below
-        // can only mean "should resolve to a file on disk and does not".
-        if (VITE_SPECIFIER.test(specifier)) continue;
+        // Only a specifier that could be a TS/JS module is required to resolve, so `null`
+        // below can only mean "should have resolved to a file on disk and did not".
+        if (!mustResolveOnDisk(specifier)) continue;
         const resolvedPath = resolveSpecifier(file, specifier);
         if (resolvedPath === null) {
           throw new Error(
