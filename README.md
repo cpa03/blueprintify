@@ -55,16 +55,19 @@ blueprintify/
 │   ├── findings.md
 │   ├── flexy-plan.md
 │   ├── issue-manager-plan-cycle-368.md
+│   ├── issues/               # Active issue specs (ISSUE-01..07)
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
 │   ├── ocr-review-summary-2026-09-26.md
+│   ├── openapi.yaml          # OpenAPI 3.1 source of truth (14 paths)
 │   ├── refinement-workflow.md
 │   ├── release-process.md
 │   ├── repo-rules.md
 │   ├── roadmap-m3-proposal.md
 │   ├── roadmap.md
 │   ├── security/
+│   │   └── assessment-ajv-vulnerabilities.md
 │   ├── testing-procedures.md
 │   ├── troubleshooting.md
 │   └── user-guide.md
@@ -306,6 +309,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 
 - **[User Guide](./docs/user-guide.md)** - Complete guide for using the blueprint generation workflow
 - **[API Documentation](./docs/api-documentation.md)** - Comprehensive API reference and examples
+- **[OpenAPI Spec](./docs/openapi.yaml)** - OpenAPI 3.1 source of truth (14 paths)
 
 ### 🛠️ Development Resources
 
@@ -337,6 +341,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Manager Plan (Cycle 368)](./docs/issue-manager-plan-cycle-368.md)** - Issue management plan and workflow
+- **[Active Issue Specs](./docs/issues/)** - Active issue specifications (ISSUE-01..07)
 - **[OCR Review Summary](./docs/ocr-review-summary-2026-09-26.md)** - OCR review summary and findings
 
 - **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 21–Aug 20)

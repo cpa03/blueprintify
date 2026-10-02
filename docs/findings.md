@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-02 — post-#3705 resync, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `5244a98b` (#3705 endpoint registry: STORAGE_REPORT + SHARE_VERIFY) per cleanup request. Resolved `findings.md` merge conflict (kept both HEAD Janitor history + Cycle 603). Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`/`debugger`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond the `origin/main` merge intake.
+
+**Verification**: `npm run build` ✅ green (9.52s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **#3705 changes all live**: `STORAGE_REPORT` (`endpoints.ts:60`) ↔ `POST /storage/report` route (`storage.ts:127`) + test (`storage.test.ts:197`) + `GET /` surface (`index.ts:147`); `SHARE_VERIFY` (`endpoints.ts:80`) ↔ `POST /share/:id/verify` route (`share.ts:466`) + `GET /` surface (`index.ts:151`); README + `api-documentation.md` sync matches live routes. Not dead code.
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/*/src`, `packages/*/src`, `scripts/` → zero hits; block-comment grep → zero code corpses.
+- **No production `console.log`**: `apps/` 16 hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`, `utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets, generated-project template strings (`templates/node.ts`, `static.ts`), e2e console-capture specs, docs comment (`config/security.ts:164`); `packages/` 4 hits build-script only (`fix-esm.mjs`).
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`generateCompletion`/`validateXssSafe`/`secureLogDebug`/`withTimeoutAndRetry`/`getStorageErrorMessage`/`CreateShareRequest`/`StreamCallbacks`; spot-checked live exports (`storageManager`, `sanitizeHtml`, `fadeInUp`, `TECH_STACK_OPTIONS`, `VALIDATION_LIMITS` all have importers).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep → zero identical pairs; zero `formatDate` hits; single `functions/api/[[path]].ts` deploy entry (`apps/web/functions/api/`) — prior root duplicate stays resolved.
+- **No unused deps**: all import-verified (`framer-motion`/`clsx`/`jszip`/`zustand`/`dompurify`/`react-markdown`/`react-error-boundary` web; `hono`/`openai`/`zod` api/shared).
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (1 README grep-example only); 0 `.only`/`.skip`/`debugger`; 0 real merge markers (`^<<<<<<<` grep clean); 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files post-#3693) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Janitor Cleanup (2026-10-02 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
@@ -848,6 +873,12 @@ Build/typecheck verified green after removal.
 - Shared type exports `GenerationResult`, `ImportResult`, `StorageReportRequest`, `ExportRequest`, `ImportRequest` have zero live consumers in apps but are referenced in `docs/findings.md`/`packages/shared/README.md` as documented API surface. Keep.
 - Root devDependency `@emnapi/core` (1.11.3) has no code references and no dependents in `package-lock.json` beyond the root entry, but `@img/sharp-wasm32` (used for ARM CI sharp support) pulls in `@emnapi/runtime`. Verify on `ubuntu-24.04-arm` CI before removing; flagged for human disposition.
 ---
+## ULW Loop Cycle 603 (2026-10-02 — REPOKEEPER DOC-SYNC)
+
+**Phase 0**: Branch `agent` from `origin/main` (`da76892c`), clean tree, 0-behind.
+**Hygiene**: 0 redundant/temp/unused safe-delete (temp-artifact grep empty; dist/node_modules ignored; 8/8 scripts USED; functions/api proxy bukan duplikat; docs/issues+audit append-only KEEP; .agent vs .opencode duplikat struktural — KEEP pending keputusan kanonis loader).
+**Doc-sync**: `API_ENDPOINTS` + `GET /` + `api-documentation.md` GET-example hilang `STORAGE_REPORT`/`SHARE_VERIFY` padahal routes hidup (`storage.ts:132`, `share.ts:473`) dan README table benar → tambah 2 keys di `endpoints.ts`/`index.ts`/`api-documentation.md`; README tree tambah `openapi.yaml`+`issues/`+`security/assessment-ajv-vulnerabilities.md`; README index tambah OpenAPI Spec + Active Issue Specs.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ · scan:secrets ✅ · api 535/535 ✅ · shared 869/869 ✅ · web 1248/1248 ✅.
 
 ## ULW Loop Cycle 602 (2026-09-30 — REPOKEEPER DOC-SYNC)
 
