@@ -31,6 +31,13 @@
 
 ## Lessons Learned
 
+### 2026-10-02: Security Engineer Audit — Changed-files scan vs origin/main (16 files), 0 introduced issues
+
+- **Finding**: 16-file diff IS the hardening (CWE-532 x-api-key log redaction, BUG-053 consumed-body fix, hardcoded `blueprintify-public-access-2026` removal fail-closed). No introduced vulnerabilities, secrets, or deprecated usage.
+- **Verification**: Added-lines secret regex 0x, PR-head source grep 0x, deprecated/unsafe 0x, npm audit 0 vulns (full + prod), XSS vectors 0x, Zod + constantTimeCompare intact.
+- **Structural flag (report-only)**: `tailwind.config.js` simplification drops load-bearing `packages/shared/src` scan (TOAST_STYLES/CHAR_COUNTER_COLORS still interpolated at runtime) → JIT purge risk. Functional, not security — flagged in docs/findings.md, no rewrite.
+- **Lesson**: Removal-only `package.json` changes (e.g. dropping `fast-glob`) reduce attack surface and need no CVE action; tailwind content-glob narrowing should be cross-checked against shared literal class sources before merge.
+
 ### 2026-10-02: Security Engineer Audit — Changed-Files Scan re-verification (6 files)
 
 - **Finding**: `git diff --name-only origin/main` (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence) introduces 0 vulnerabilities, secrets, or deprecated usage — the diff IS the hardening.
