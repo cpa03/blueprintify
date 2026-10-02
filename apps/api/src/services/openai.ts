@@ -4,7 +4,7 @@
  * for resilient API interactions.
  */
 
-import OpenAI from "openai";
+import { OpenAI } from "openai";
 import { withRetry } from "../utils/retry";
 import {
   createCircuitBreaker,
