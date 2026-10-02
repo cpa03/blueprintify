@@ -2,6 +2,32 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-02 — pre-merge scan of merged `origin/main` @ `5244a98b`, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` per cleanup request (redundant files, unused exports, commented-out dead code). Merged `origin/main` (`da76892c` → `5244a98b`) first — **conflict in `docs/findings.md` resolved preserving both sides** (branch's Janitor block + main's `ULW Loop Cycle 603` section, 0 lines dropped, 0 conflict markers).
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes; only this docs entry + the conflict resolution.
+
+**Verification**: `npm run build` ✅ exit 0 · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0 · `npm run test:all` ✅ 2,598/2,598 (web 1,213 + api 507 + shared 878) · prettier ✅ (this entry).
+
+### Verified clean (no action needed)
+
+- **Unused exports**: full export-graph scan over 714 tracked `.ts/.tsx` files → 694 distinct exported names, exactly 1 zero-ref candidate: `onRequest` in `apps/web/functions/api/[[path]].ts` — **Cloudflare Pages Functions entry point** (file-based routing, invoked by the platform, never imported) → KEEP (documented false-positive class). Barrels (`apps/web/src/config/constants.ts`, `apps/web/src/store/index.ts`, `packages/shared/config.ts`, `packages/shared/schema.ts`) all reachable; shared `config/animation.ts`+`config/core.ts`+`config/http.ts`+`utils/debounce.ts` "orphans" from naive importer scan are live via `.js`-suffixed barrel specifiers (`export * from "./config/core.js"` etc.) → KEEP.
+- **Commented-out dead code**: `// <code-statement>` grep (const/let/function/return/import/if/for/while/className/JSX) over first-party src → **0 hits**; multi-line `/* */` block scan for ≥2 code-like lines → **0 hits**; 0 TODO/FIXME/HACK; 0 `.only`/`.skip`/`debugger`.
+- **Redundant/orphan files**: 0 tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`/`tsbuildinfo`/`dist` artifacts; 0 empty first-party sources; `md5sum` sweep → 0 duplicate code pairs; 20 no-textual-importer files all accounted for (ambient `.d.ts`, vitest/vite/playwright configs, `main.tsx`, `functions/api/[[path]].ts`, `scripts/migrate.ts` via `db:*`, e2e specs via `playwright.config.ts`, shared config modules via barrels); default-export scan → 19 files all imported except 5 tool configs (KEEP); static assets all live (`icon-384.png`/`icon-192.png`/`icon-512.png` via `manifest.webmanifest`, `favicon*` via `index.html`, `robots.txt`/`sitemap.xml`/`llms.txt`/`.well-known/security.txt` = convention-served) → KEEP.
+- **Unused deps**: root depcheck → `jest-axe`+`@types/jest-axe` flagged but imported by 4 a11y test files (`accessibility/Header/Wizard/Editor.test.tsx`) → KEEP; apps/web `autoprefixer`/`cssnano`/`postcss` flagged but all wired in `postcss.config.js` → KEEP; apps/api + packages/shared clean; `@blueprint/shared` "missing" in `playwright.config.ts` = workspace resolution (correct).
+- **Scripts**: 8/8 wired — 5 via `package.json` (`brocula-hunt`/`migrate`×4/`normalize-issue-labels`/`scan-secrets`/`validate-wrangler`), `opencode-run.sh` via 5 CI workflows, `brocula-sweep.mjs`+`lh-warm.mjs` intentionally committed reusable audit tools (Run 71/74 audit records; kept by prior cycles).
+- **Console.log**: 8 first-party non-test hits all intentional (Workers structured logging `logger.ts:217,263` + `secureLog.ts:256`; JSDoc `@example` snippets `secureLog.ts:97,141`, `security.ts:164`, `api.ts:21,23`).
+- **Hygiene**: 0 `as any`/`@ts-ignore`/`@ts-expect-error`; 0 merge markers; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] `.agent/` vs `.opencode/` mirrored trees (skills/memory/agents byte-identical md5 pairs) — pre-existing structural duplication, KEEP pending canonical loader decision (per Cycle 603 hygiene note).
+- [Janitor] `.node-version` and `.nvmrc` byte-identical (both `22`) — conventional dual-tool pinning, KEEP; note only.
+- [Janitor] Prior open items persist: 4-way util-home split (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`), dual `createPersistedStore` implementations, `safeLocalStorage` try/catch ×3 files — recommend unifying in follow-up work.
+
 ## Janitor Cleanup (2026-10-02 — pre-merge hygiene scan, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers, `as any`/ts-expect-error, eslint-disables.
