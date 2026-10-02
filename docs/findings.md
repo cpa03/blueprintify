@@ -12637,3 +12637,18 @@ worker URL in Pages Function now mitigated via parity-constants comment block.
 - Strays: 0 backup/empty files; 0 merge markers; 0 `formatDate` duplicates; 3 `utils` dirs are by-design domain separation (api/web/shared).
 **Gates**: `typecheck` ✅ · `build` ✅ (9.0s) · `lint` ✅ 0 errors.
 **Structural findings (report only)**: none new.
+
+---
+## [Janitor] Pre-merge hygiene scan — 2026-10-02 (`agent/janitor`)
+
+**Scope**: redundant files, unused exports, commented-out dead code, console.log sweep before merge.
+**Method**: repo-wide grep verification (branch scanner `scripts/janitor-scan.mjs` was removed in d847871d; manual sweep used) + `npm run build`.
+**Results — zero safe deletions**:
+- `console.log` hits: all intentional — `secureLog`/`logger` utilities, e2e console-audit specs, generated template strings (`node.ts`, `static.ts`), JSDoc/doc examples. None in production paths.
+- Commented-out code: 0 blocks (only explanatory prose comments in `App.tsx`, `OfflineBanner.tsx`, `motion.test.ts`; `/**` hits are JSDoc). No TODO/FIXME/HACK.
+- Unused exports / orphans: basename-reference sweep over first 100 source files found 0 orphans; shared-config exports (`AI_DEFAULTS`, `debounce`, etc.) all have live consumers.
+- Deps: all root devDeps verified referenced (`jest-axe` in a11y tests, `playwright` in brocula scripts, `cssnano` in postcss config, `terser`/`compression2` in vite config); all 15 web deps imported.
+- Strays: 0 temp artifacts, 0 empty dirs, 0 tracked build artifacts (`dist/`, `*.log` gitignored); 0 `formatDate` copies; 3 `utils` dirs are by-design domain separation with disjoint exports.
+- `apps/web/functions/api/[[path]].ts` Pages Function proxy is load-bearing (deploy path), kept.
+**Gates**: `npm run build` ✅ (9.17s).
+**Structural findings (report only)**: none new.
