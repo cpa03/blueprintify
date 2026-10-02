@@ -269,10 +269,13 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 }
                 className="flex justify-end gap-3 mt-6"
               >
+                {/* Action buttons skip hover/tap scale micro-animations when
+                    reduced motion is preferred (WCAG 2.3.3) — the buttons stay
+                    fully functional, just static. */}
                 <motion.button
                   ref={cancelButtonRef}
-                  whileHover={HOVER_SCALE.MICRO}
-                  whileTap={TAP_SCALE.MICRO}
+                  whileHover={shouldReduceMotion ? undefined : HOVER_SCALE.MICRO}
+                  whileTap={shouldReduceMotion ? undefined : TAP_SCALE.MICRO}
                   onClick={onClose}
                   className="btn-ghost px-4 py-2 rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                   aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ESCAPE}
@@ -287,8 +290,8 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 >
                   <motion.button
                     ref={confirmButtonRef}
-                    whileHover={HOVER_SCALE.MICRO}
-                    whileTap={TAP_SCALE.MICRO}
+                    whileHover={shouldReduceMotion ? undefined : HOVER_SCALE.MICRO}
+                    whileTap={shouldReduceMotion ? undefined : TAP_SCALE.MICRO}
                     onClick={handleConfirm}
                     className="bg-accent-pink hover:bg-accent-pink/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ENTER}
