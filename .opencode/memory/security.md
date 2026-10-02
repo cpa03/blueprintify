@@ -291,6 +291,14 @@
   is the safe pattern for cwd-independent Tailwind content scans — inputs are never user-controlled,
   so no path-traversal risk.
 
+### 2026-10-02: Security Engineer Audit — Dependabot dev-deps PR clean, stale dist rebuilt
+
+- **Finding**: Dependabot PR (9 forward-only dev bumps: workers-types, eslint ×4, wrangler, jsdom, vite, @types/node, lighthouse, prettier, typescript-eslint) introduces no vulnerabilities, secrets, or deprecated usage. `npm audit` 0 vulns (full + prod). Lockfile clean (local workspace links only, no suspicious scripts).
+- **Root Cause (stale artifacts)**: Gitignored build outputs (`packages/shared/dist`, `apps/web/dist`) still embedded the previously removed `blueprintify-public-access-2026` fallback because they were built from pre-fix source. Tracked source was already clean.
+- **Risk**: LOW — dist/ is gitignored and never part of any PR, but stale secrets in local artifacts can confuse future scans.
+- **Fix**: Rebuilt both dists from current source (`tsc --build` + vite build); post-rebuild grep 0 hits. Verified typecheck clean, shared 869/869, api 535/535, web 1248/1248.
+- **Lesson**: After removing a hardcoded secret from source, always rebuild gitignored dist outputs — otherwise the value lingers in local artifacts and re-triggers secret scans.
+
 ## Security Checklist
 
 - [x] No hardcoded secrets in codebase
