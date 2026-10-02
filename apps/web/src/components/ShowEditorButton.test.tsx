@@ -154,7 +154,7 @@ describe("ShowEditorButton", () => {
 
     const button = screen.getByRole("button");
     expect(button).toHaveAttribute("aria-keyshortcuts", "Ctrl+E");
-    expect(button).toHaveAttribute("aria-label", UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON);
+    expect(button).toHaveAttribute("aria-label", `${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} Ctrl+E`);
   });
 
   it("renders SVG icon for the edit action", () => {
