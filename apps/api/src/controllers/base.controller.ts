@@ -53,9 +53,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<V>(
-    c: Context<{ Bindings: Env; Variables: { validatedData: V } }>
-  ): V {
+  public getValidatedData<V>(c: Context<{ Bindings: Env; Variables: { validatedData: V } }>): V {
     const data = c.get(CONTEXT_KEYS.VALIDATED_DATA as "validatedData") as V;
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
