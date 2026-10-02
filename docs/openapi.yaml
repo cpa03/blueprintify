@@ -605,12 +605,12 @@ components:
                 errors, and the `/export` route's internal errors do not. `/export`'s
                 400 responses are produced by request-body validation and do carry the
                 field; its internal-error catch does not. Server-sent event error frames
-                are a separate channel and never carry it: when a generator throws after
-                streaming has begun on `/generate`, `/tasks` or `/refine`, the response is
-                already 200 and the failure arrives as a `data:` frame of
-                `{"type":"error","error":"..."}`. Correlate those via the `X-Request-ID`
-                response header, which is set on the stream response and matches the
-                server-side log line.
+                are a separate channel and never carry it: when the generator fails on
+                `/generate`, `/tasks` or `/refine` — before or after any `content` chunk —
+                the response is already 200 and the failure arrives as a `data:` frame of
+                `{"type":"error","error":"..."}`, which may be the first and only frame.
+                Correlate those via the `X-Request-ID` response header, which is set on
+                the stream response and matches the server-side log line.
               pattern: '^\d+-[a-z0-9]+$'
               example: "1790884637380-om7wd1rqu"
 
