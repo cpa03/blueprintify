@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Sync PR hardening to agent/security-engineer (2026-10-02)
+
+**Scope**: True PR diff `da76892c..b5786a81` (4 files: `logger.ts`, `index.ts`, `index.test.ts`, `logger.test.ts`). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: PR IS hardening, 0 introduced vulns — `index.ts` removes BUG-053 consumed-body `ASSETS.fetch(request)` fallback (unstructured 500 + stack/path leak → structured NOT_FOUND); `logger.ts` adds `x-api-key` to `SANITIZED_HEADER_EXCLUDE` via shared `API_HEADERS` (fixes CWE-532 secret-in-logs). This branch had `index.ts` fix but was missing `logger.ts` redaction + both regression suites (5 tests vs 13 on PR head). Fix cherry-picked `801a04a4` (logger + 153-line logger.test.ts) and restored `index.test.ts` BUG-053 suite from `b5786a81` (258 lines: consumed-body, FILESYSTEM_ROOTS leak table, structured-404 pins).
+**Clean**: secrets in added lines 0x (test fixtures only); `eval`/`innerHTML`/`dangerouslySetInnerHTML`/`max_tokens`/`substr`/`new Buffer` 0x; `npm audit` ✅ 0 vulns; `scan:secrets` ✅ 335 files.
+**Scans**: typecheck ✅ (shared/api/web) · lint ✅ · api ✅ 547/547 (33 files) · `scan:secrets` ✅ · `npm audit` ✅ 0.
+**Result**: Code fix applied on `agent/security-engineer`. No rotation needed (no real secrets). No structural rewrite (report-only per constraints).
+
 ## Security Audit — Remove reintroduced SPA fallback on agent/security-engineer (2026-10-02)
 
 **Scope**: `git diff --name-only origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head` (9 files) + `agent/security-engineer` working tree. Task: remove introduced vulnerabilities, secrets, deprecated usage.
