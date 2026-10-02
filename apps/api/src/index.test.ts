@@ -329,9 +329,9 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
       const scanned = stripEchoedPaths(field, requestPath);
       const report = (what: string, pattern: RegExp): void => {
         const at = scanned.search(pattern);
-        expect(at, `${what} in ${path}: ${at === -1 ? scanned : excerptAround(scanned, at)}`).toBe(
-          -1
-        );
+        // `at` is only ever non -1 when this assertion is about to fail, so the
+        // excerpt is always windowed; there is no unbounded-dump branch.
+        expect(at, `${what} in ${path}: ${excerptAround(scanned, at)}`).toBe(-1);
       };
       for (const [label, pattern] of FILESYSTEM_ROOTS) {
         report(`response body leaked a filesystem path under ${label}`, pattern);
@@ -496,6 +496,7 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
 
   it("does not read a build-path-shaped request as a leak when routed end to end", async () => {
     const requestPaths = ["/app/src/index.ts", "/var/task/index.js", "/home/runner/x.json"];
+    let requestsMade = 0;
     // These 404 at the binding so the request reaches notFoundHandler, which is
     // what echoes the path back.
     const { env, assets } = createEnv(new Set(requestPaths.map((p) => `https://example.com${p}`)));
@@ -520,7 +521,12 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
         expect.objectContaining({ url: `https://example.com${requestPath}` })
       );
       // One lookup per request; a retry or double fetch is a behaviour change.
-      expect(assets.fetch).toHaveBeenCalledTimes(requestPaths.indexOf(requestPath) + 1);
+      // Counted as requests are made, so the expectation does not depend on
+      // the list being unique or in order.
+      expect(assets.fetch.mock.calls.length, `after requesting ${requestPath}`).toBe(
+        requestsMade + 1
+      );
+      requestsMade += 1;
       expectNoLeakedInternals(raw, requestPath);
     }
   });
