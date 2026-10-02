@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Remove reintroduced SPA fallback on agent/security-engineer (2026-10-02)
+
+**Scope**: `git diff --name-only origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head` (9 files) + `agent/security-engineer` working tree. Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 1 reintroduced vulnerability REMOVED — `apps/api/src/index.ts:248-255` post-API 404 `env.ASSETS.fetch(request)` SPA fallback (same block removed upstream by `b5786a81` BUG-053). `agent/security-engineer` diverged at `da76892c` and never picked up `b5786a81`, so both the convoy HEAD (`5cd0b630`) and this branch re-carried it. Fix deletes the block, keeping `return response;` — POSTs with bodies (e.g. `POST /share/:id/verify` on missing id) no longer throw "Cannot reconstruct a Request with a used body" (unstructured 500 + stack/filesystem-path leak risk), and unknown paths keep the structured `NOT_FOUND_ERROR` envelope per `docs/openapi.yaml`. No consumer lost: `apps/web` has no router (no react-router/wouter, no pushState/popstate, Zustand view state only) and all fetchers sit behind `/api/`. Pre-app ASSETS lookup (`index.ts:218-226` for `/`, `/assets/*`, file-extension paths) untouched.
+**Clean**: `auth.ts`/`validator.ts` `requestId` additions are safe correlation IDs (`<epoch-ms>-<random>`, match `X-Request-ID` + logs, no PII/secret); `openapi.yaml` `ValidationIssue.path: array` + `requestId` pattern `^\d+-[a-z0-9]+$` docs-only; `README`/`api-documentation.md` docs-only. Secrets in diff 0x; `eval`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`new Function`/`max_tokens`/`substr` 0x; `npm audit` ✅ 0 vulns; `scan:secrets` ✅ 335 files.
+**Scans**: typecheck ✅ (shared/api/web) · lint ✅ · api ✅ 535/535 · `scan:secrets` ✅ · `npm audit` ✅ 0.
+**Result**: Code fix applied on `agent/security-engineer`. Structural flag (report-only, no rewrite): `index.test.ts` on this branch has 5 tests vs 12+ with BUG-053 regression cases on `origin/convoy/.../head` (`createAssetFetcher` 404-set, `FILESYSTEM_ROOTS` leak table) — coverage gap remains; recommend cherry-picking `b5786a81` tests in a follow-up. No rotation needed (no real secrets).
+
 ## Security Audit — PR app-functionality-fixes-round-2 changed-files scan (2026-10-02)
 
 **Scope**: PR head `b5786a81` (`origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head`), merge-base `da76892c` → 4 code files (`logger.ts` +20, `index.ts` -9, `index.test.ts` +258, `logger.test.ts` +153); full `origin/main..head` 9 files reviewed for stale-base drift. Task: remove introduced vulnerabilities, secrets, deprecated usage.
