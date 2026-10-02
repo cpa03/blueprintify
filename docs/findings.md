@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Changed-files scan vs origin/main on agent/security-engineer (2026-10-02)
+
+**Scope**: `git diff --name-only origin/main` (16 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (CWE-532 `x-api-key` log redaction via shared `API_HEADERS`; BUG-053 consumed-body `ASSETS.fetch(request)` removal → structured 404; hardcoded `blueprintify-public-access-2026` removed from `wrangler.toml` prod+staging, `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY`, and `env.ts` fallback → fail-closed). Added-lines secret regex 0x (removals only); PR-head source grep 0x; `eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`substr`/`new Buffer`/`max_tokens`/`Math.random`/`md5` 0x in added lines; no `.env`/`.dev.vars`/pem in diff; `package.json` change is removal-only (`fast-glob` dropped) → no new CVEs. Test canaries (`CANARY-bug052-*`, `TEST_API_KEY="test-key"`) are synthetic fixtures.
+**Scans**: `npm audit` ✅ 0 vulns (full + `--omit=dev`) · XSS vectors in PR-head changed files 0x · Zod validation intact · `constantTimeCompare` intact.
+**Result**: No code fixes required — nothing to remove. Structural flag resolved post-merge: `origin/main` fix #3708 (`56550f91`) restored the load-bearing `packages/shared/src` scan + guard test, so the `tailwind.config.js` simplification is no longer in the diff (10 files now, tailwind/package.json entries gone). Post-merge re-scan clean (tracked-source secret grep 0x, `npm audit` 0 vulns).
+
+
 ## Security Audit — Sync PR hardening to agent/security-engineer (2026-10-02)
 
 **Scope**: True PR diff `da76892c..b5786a81` (4 files: `logger.ts`, `index.ts`, `index.test.ts`, `logger.test.ts`). Task: remove introduced vulnerabilities, secrets, deprecated usage.
