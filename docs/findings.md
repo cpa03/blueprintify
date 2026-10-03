@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR StepReview micro-UX state inspection (3 files) (2026-10-03)
+
+**Scope**: `origin/main..origin/agent-1691495575004059774` (head `61fe4054`; 3 files: `apps/web/src/components/wizard/StepReview.tsx` +9/-1, `StepReview.test.tsx` +40/-14, `docs/active-tasks.md` +6). Task: remove introduced vulnerabilities, secrets, deprecated usage. Audited from `agent/security-engineer` (empty diff vs `origin/main`, so PR range used explicitly).
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — UI-only micro-UX change (`useReducedMotion` wiring + `data-state` "generating"/"idle" + `data-reduced-motion` "true"/"false" on root `motion.div`; test mock strips framer-motion props `isLoading`/`whileHover`/`whileTap` to silence unknown-prop warnings; docs prose only). `useReducedMotion` verified safe (matchMedia + localStorage try/catch privacy-mode guard, `useSyncExternalStore`, SSR-safe `false`). User-controlled strings (`projectName`/`description`/`targetAudience`/`constraints`) render as React text children (auto-escaped, `dir="auto"` bidi only); `data-*` values are static literals from booleans — no XSS/injection. Test `{...props}` spread is test-only. No `package.json`/lockfile change → no new CVEs.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · PR-head full-file secrets/injection/deprecated CLEAN · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full audit 5 high pre-existing dev-only `braces` GHSA-vfj7-8cjw-p6xm via chokidar/micromatch→fast-glob 3.3.3→tailwindcss 3.4.19, no fix available, `--force` not run) · web typecheck ✅ · StepReview 19/19 ✅.
+**Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed (no real secrets). No structural rewrite (report-only per constraints).
+
 ## Security Audit — PR recover-lost-web-frontend-fixes-companio full 5-file state @93d1b31 (2026-10-02)
 
 **Scope**: `merge-base(origin/main, origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head)=da76892c` → head `93d1b31` (3 commits `eee24cee/0933fd61/93d1b31`; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new 320 lines, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1). Task: remove introduced vulnerabilities, secrets, deprecated usage. Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
