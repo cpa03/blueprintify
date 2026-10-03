@@ -1,6 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, configure } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ErrorBoundary } from "./ErrorBoundary";
+
+// ErrorFallback is lazy-loaded behind framer-motion, so findBy* has to wait out
+// a dynamic import plus the animation transform. Measured 4281ms on a 4-core
+// runner with 8 competing processes, so both the 1s findBy* budget and the 5s
+// per-test budget fire early. Scoped to this file on purpose: a module-level
+// configure() only reaches this file's module registry, so the other 83 suites
+// keep failing fast and still catch a real multi-second render regression.
+configure({ asyncUtilTimeout: 10000 });
+vi.setConfig({ testTimeout: 15000, hookTimeout: 15000 });
 
 describe("ErrorBoundary", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
