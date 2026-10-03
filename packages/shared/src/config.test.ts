@@ -128,6 +128,7 @@ import {
   GENERATION_ERROR_PREFIXES,
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
+  SVG_ICON_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -3415,6 +3416,34 @@ describe("SVG_TRANSITION_DEFAULTS", () => {
 
   it("should have 4 entries", () => {
     expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(4);
+  });
+});
+
+describe("SVG_ICON_DEFAULTS", () => {
+  it("should use standard 24x24 viewBox", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX).toBe("0 0 24 24");
+  });
+
+  it("should use none fill and currentColor stroke", () => {
+    expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
+    expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
+  });
+
+  it("should use round line caps and joins", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND).toBe("round");
+    expect(SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND).toBe("round");
+  });
+
+  it("should have numeric stroke widths with bold greater than default", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT).toBe(2);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBe(3);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+  });
+
+  it("should have 9 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(9);
   });
 });
 
