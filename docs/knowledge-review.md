@@ -11,7 +11,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State (Sep 2026)
 
-**Last Review**: 2026-09-26 (consolidation pass)  
+**Last Review**: 2026-09-29 (RepoKeeper retention purge: 98 current + 13 archive BroCula reports >30d removed; `docs/audits/README.md`, `archive/CONSOLIDATED-README.md`, `README.md` BroCula range synced; prior status carried forward, re-verified this cycle before PR)  
 **Status**: ✅ All quality gates clean (typecheck ✅ lint ✅ 0/0 build ✅ tests ✅ audit 0 vulns ✅ scan:secrets ✅ validate:wrangler ✅)
 
 ### Known Documentation Drift (Resolved)

@@ -154,6 +154,21 @@
 **Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ exit 0 · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 335 files · audit ✅ 0 vulns.
 **Stray state**: 20+ open PRs (incl. #3684/#3681/#3676/#3672 repokeeper) left untouched — human disposition pending; this cycle adds minimal docs-only PR.
 
+## RepoKeeper Cycle 2026-09-29 (RETENTION PURGE + HYGIENE AUDIT)
+
+**Mandate**: RepoKeeper — efficient/organized repo, no redundant/temp/unused files, docs in sync, PR after done with branch synced to main, build/lint error/warning = fatal.
+**Phase 0**: `main` HEAD `e56f56bf` = `origin/main` (fetch verified, 0-behind, clean tree); branch `agent/repokeeper-cleanup-20260929` created from main.
+**Hygiene audit**: 697 tracked files; 0 `*.bak/*.tmp/*.log/*.patch`, 0 tracked `dist/`/`coverage/`/`node_modules/`, 0 untracked files; `functions/api/[[path]].ts` Pages proxy verified still referenced (deploy wiring, kept); `.agent/` vs `.opencode/` drift noted but out of scope (no certainty, untouched); all 5 workflows `ubuntu-24.04-arm` ✅.
+**Retention — FULL PURGE EXECUTED (98 current + 13 archive, all >30d)**: 40-day gap since last RepoKeeper (latest audit commit `850f576b` 2026-08-20); `git log --since="30 days ago" -- docs/audits/` empty; youngest file-dated 2026-08-20 = 40d, oldest created 2026-07-21 = 70d (spot-verified creation ≤ filename date) → `git rm docs/audits/brocula-*.md docs/audits/archive/brocula-*.md`; `docs/audits/` 852K → 96K; history preserved in git.
+**Doc-sync**: `docs/audits/README.md` table (89 rows) replaced with purge notice + Run 89 last-known-green state; `archive/CONSOLIDATED-README.md` purge row + empty-archive note + Last cleanup line; `README.md` BroCula range `(Jul 21–Aug 20)` → purge note; `docs/knowledge-review.md` Last Review refreshed; this record.
+**Dependency hygiene**: `npm audit` (pre-existing, unrelated to docs diff) reported 5 vulns via
+`undici@7.29.0` (pinned override) in jsdom/miniflare/openai chains → bumped override to `7.30.0`
+(patch, fixes GHSA-3wwx/1240036/1240038/1240041 + 6 more) + `npm update undici` → **0 vulnerabilities**.
+**Baseline ALL GREEN**: typecheck ✅ · lint ✅ 0/0 · build ✅ · build:api ✅ · tests **2,651/2,651**
+(web 1,248/85 + api 535/33 + shared 868/4) · audit **0 vulns** ✅ · scan:secrets ✅ 338 files · prettier ✅.
+**Final state: PR pending** — branch sync + PR creation follows verification.
+
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.
