@@ -52,17 +52,29 @@ vi.mock("../../lib/platform", () => ({
 
 // Mock child components
 vi.mock("../RippleButton", () => ({
-  RippleButton: vi.fn(({ children, onClick, disabled, className, ariaLabel, ...props }) => (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={className}
-      aria-label={ariaLabel}
-      {...props}
-    >
-      {children}
-    </button>
-  )),
+  RippleButton: vi.fn(
+    ({
+      children,
+      onClick,
+      disabled,
+      className,
+      ariaLabel,
+      isLoading: _isLoading,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      ...props
+    }) => (
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        className={className}
+        aria-label={ariaLabel}
+        {...props}
+      >
+        {children}
+      </button>
+    )
+  ),
 }));
 
 vi.mock("../SmartTooltip", () => ({
@@ -271,10 +283,10 @@ describe("StepReview", () => {
     expect(mockStream.startGeneration).toHaveBeenCalledTimes(1);
   });
 
-  it("shows a generating state with a disabled button", () => {
+  it("shows a generating state with a disabled button and state inspection attributes", () => {
     mockStream.isGenerating = true;
     mockStream.progress = "Generating architecture...";
-    render(<StepReview />);
+    const { container } = render(<StepReview />);
     expect(
       screen.getByRole("button", {
         name: ACCESSIBILITY_LABELS.REVIEW.GENERATING_IN_PROGRESS_ARIA,
@@ -282,6 +294,8 @@ describe("StepReview", () => {
     ).toBeDisabled();
     expect(screen.getByText("Generating...")).toBeInTheDocument();
     expect(screen.getByText("Generating architecture...")).toBeInTheDocument();
+    expect(container.firstChild).toHaveAttribute("data-state", "generating");
+    expect(container.firstChild).toHaveAttribute("data-reduced-motion");
   });
 
   it("disables the back button while generating", () => {

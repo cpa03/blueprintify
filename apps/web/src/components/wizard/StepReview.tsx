@@ -35,6 +35,7 @@ import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   ANIMATION,
   GENERATION_ESTIMATES,
@@ -70,6 +71,7 @@ export const StepReview = memo(function StepReview({
   const features = useWizardStore((s) => s.features);
   const setStep = useWizardStore((s) => s.setStep);
   const { startGeneration, isGenerating, progress } = useBlueprintStream();
+  const shouldReduceMotion = useReducedMotion();
 
   const handleEditInfo = useCallback(() => setStep(WIZARD_STEP_KEYS.INFO), [setStep]);
   const handleEditStack = useCallback(() => setStep(WIZARD_STEP_KEYS.STACK), [setStep]);
@@ -100,7 +102,12 @@ export const StepReview = memo(function StepReview({
   }, [handleEditInfo, handleEditStack, handleEditFeatures]);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-state={isGenerating ? "generating" : "idle"}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+    >
       {/* Heading - guides attention first */}
       <motion.div
         initial="hidden"
