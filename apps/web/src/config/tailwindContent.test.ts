@@ -74,6 +74,16 @@ const toRepoPosix = (file: string): string =>
   path.relative(repoRoot, file).split(path.sep).join("/");
 const scannedFiles = fg.sync(contentPatterns).map(toRepoPosix);
 
+/** The file set every reachability test walks: what the positive patterns reach minus what the negations drop. */
+const inScopeFiles = fg.sync(positivePatterns);
+const excludedFiles = inScopeFiles
+  .map(toRepoPosix)
+  .filter((file) => !scannedFiles.includes(file) && !/\.(test|spec)\./.test(file));
+const excludedSet = new Set(excludedFiles);
+const productionFiles = inScopeFiles.filter(
+  (file) => !/\.(test|spec)\./.test(file) && !excludedSet.has(toRepoPosix(file))
+);
+
 const RESOLVABLE_SUFFIXES = [
   "",
   ".ts",
@@ -119,7 +129,7 @@ const importSpecifiers = (file: string): string[] => {
       ts.isExportDeclaration(node) &&
       node.moduleSpecifier &&
       ts.isStringLiteral(node.moduleSpecifier) &&
-      !node.isTypeOnly
+      !isErasedExport(node)
     ) {
       specifiers.push(node.moduleSpecifier.text);
     }
@@ -134,17 +144,29 @@ const importSpecifiers = (file: string): string[] => {
 };
 
 /**
- * True when every binding in the statement is type-only and the compiler therefore drops the
- * whole declaration. Covers both `import type { A }` (statement-level) and `import { type A }`
- * (inline), where only `importClause.namedBindings.elements[].isTypeOnly` distinguishes them.
+ * True when the compiler erases the whole declaration, i.e. every binding it introduces is
+ * type-only. Both the statement-level (`import type { A }`) and inline (`import { type A }`)
+ * spellings are covered, and any surviving *value* binding disqualifies the statement — that
+ * is what would load the module, so it must be counted. Order matters: `isTypeOnly` outranks
+ * the default binding, because `import type Def from "./x"` binds a name but erases the module.
  */
 function isErasedImport(node: ts.ImportDeclaration): boolean {
   const clause = node.importClause;
-  if (!clause) return false;
+  if (!clause) return false; // `import "./x"` loads the module
   if (clause.isTypeOnly) return true;
+  if (clause.name) return false; // default binding is a value binding
   const { namedBindings } = clause;
-  if (!namedBindings || !ts.isNamedImports(namedBindings)) return false;
+  if (!namedBindings) return false; // `import * as ns from "./x"`
+  if (!ts.isNamedImports(namedBindings)) return false;
   return namedBindings.elements.length > 0 && namedBindings.elements.every((e) => e.isTypeOnly);
+}
+
+/** Mirror of isErasedImport for `export … from`, so `export { type A } from "./x"` is skipped too. */
+function isErasedExport(node: ts.ExportDeclaration): boolean {
+  if (node.isTypeOnly) return true;
+  const clause = node.exportClause;
+  if (!clause || !ts.isNamedExports(clause)) return false; // `export * from "./x"` is runtime
+  return clause.elements.length > 0 && clause.elements.every((e) => e.isTypeOnly);
 }
 
 /**
@@ -159,9 +181,88 @@ const TS_REWRITES: Record<string, string[]> = {
   ".cjs": [".cts"],
 };
 
-const resolveSpecifier = (fromFile: string, specifier: string): string => {
-  const bases = specifier.startsWith("@/")
-    ? [path.join(appDir, "src", specifier.slice(2))]
+/**
+ * Path aliases read from the workspace tsconfig rather than hardcoded, so adding a second
+ * alias cannot silently become an unchecked blind spot. `extends` is followed, and TypeScript's
+ * own rule is applied: a `paths` map declared in a config *replaces* the inherited one outright
+ * rather than merging into it. Targets are resolved to absolute paths against the file that
+ * declares them, so an inherited entry keeps pointing where its author meant.
+ */
+interface AliasRule {
+  prefix: string;
+  targets: string[];
+}
+
+const readTsconfigPaths = (tsconfigFile: string): Record<string, string[]> => {
+  const raw = fs.readFileSync(tsconfigFile, "utf8").replace(/^\s*\/\/.*$/gm, "");
+  let parsed: { extends?: string; compilerOptions?: { paths?: Record<string, string[]> } };
+  try {
+    parsed = JSON.parse(raw) as typeof parsed;
+  } catch (error) {
+    throw new Error(`cannot parse ${tsconfigFile}: ${String(error)}`);
+  }
+  const declaringDir = path.dirname(tsconfigFile);
+  const own = parsed.compilerOptions?.paths;
+  if (own) {
+    return Object.fromEntries(
+      Object.entries(own).map(([pattern, targets]) => [
+        pattern,
+        (targets ?? []).map((target) => path.resolve(declaringDir, target)),
+      ])
+    );
+  }
+  if (!parsed.extends) return {};
+  const parent = parsed.extends.endsWith(".json") ? parsed.extends : `${parsed.extends}.json`;
+  return readTsconfigPaths(path.resolve(declaringDir, parent));
+};
+
+const readPathAliases = (): AliasRule[] =>
+  Object.entries(readTsconfigPaths(path.join(appDir, "tsconfig.json"))).map(
+    ([pattern, targets]) => ({
+      prefix: pattern.replace(/\*$/, ""),
+      targets: targets.map((target) => target.replace(/\*$/, "")),
+    })
+  );
+
+const PATH_ALIASES = readPathAliases();
+
+/**
+ * Whether a specifier must resolve to a file on disk, decided by a denylist of *source*
+ * extensions on purpose. An allow-list of asset extensions fails closed: the first `.csv`,
+ * `.wasm`, `.webmanifest` or `.md` import in production code turns this guard red for something
+ * Vite resolves perfectly well, which is the same misleading failure it keeps causing. Anything
+ * that could be a TS/JS module must resolve; everything else is skipped, so the guard errs
+ * toward silence rather than a false alarm. `?url`/`?raw`/`#hash` are stripped before the
+ * extension is read, because Vite resolves those through its own pipeline, never to a file.
+ */
+const SOURCE_SUFFIXES = RESOLVABLE_SUFFIXES.filter(Boolean);
+
+const mustResolveOnDisk = (specifier: string): boolean => {
+  const [pathPart = ""] = specifier.split(/[?#]/, 1);
+  const extension = path.extname(pathPart);
+  return extension === "" || SOURCE_SUFFIXES.includes(extension);
+};
+
+/**
+ * The on-disk file a relative or alias specifier names, or `null` when nothing does. Exactly
+ * one question is answered here — "does this resolve?" — so `null` unambiguously means a
+ * broken import. Specifiers that could not be a TS/JS module never reach this function; the
+ * caller filters them on `mustResolveOnDisk` first.
+ */
+const resolveSpecifier = (fromFile: string, specifier: string): string | null => {
+  // Longest prefix wins, as in TypeScript's own `paths` matching, so `@/foo/x` is never
+  // claimed by a shorter `@/`-style rule that happens to be declared first.
+  const matches = PATH_ALIASES.filter((rule) => specifier.startsWith(rule.prefix));
+  const longest = matches.reduce((max, rule) => Math.max(max, rule.prefix.length), 0);
+  // Every target of the winning pattern is probed in declaration order, so a multi-target
+  // `paths` entry keeps its fallbacks instead of silently dropping all but the first.
+  const aliasBases = matches
+    .filter((rule) => rule.prefix.length === longest)
+    .flatMap((rule) =>
+      rule.targets.map((target) => path.resolve(target, specifier.slice(rule.prefix.length)))
+    );
+  const bases = matches.length
+    ? aliasBases
     : specifier.startsWith(".")
       ? [path.resolve(path.dirname(fromFile), specifier)]
       : [];
@@ -186,7 +287,7 @@ const resolveSpecifier = (fromFile: string, specifier: string): string => {
       if (isFile(candidate)) return candidate;
     }
   }
-  return "";
+  return null;
 };
 
 describe("tailwind content globs", () => {
@@ -258,56 +359,110 @@ describe("tailwind content globs", () => {
     // it keys off a directory name rather than a test filename. Close that hole here: every
     // file it drops is reachable only from test files, so a helper that production code starts
     // importing becomes a red test instead of a silently purged class.
-    const inScope = fg.sync(positivePatterns);
-    const excluded = inScope
-      .map(toRepoPosix)
-      .filter((file) => !scannedFiles.includes(file) && !/\.(test|spec)\./.test(file));
     // Canary: an empty exclusion set means the directory negation was dropped or went inert and
     // this check would pass forever without testing anything.
-    expect(excluded, "no test-only module is being excluded, so this guard is vacuous").not.toEqual(
-      []
-    );
+    expect(
+      excludedFiles,
+      "no test-only module is being excluded, so this guard is vacuous"
+    ).not.toEqual([]);
 
-    // The excluded modules are not themselves production code, so they must not count as
-    // importers of each other.
-    const excludedSet = new Set(excluded);
-    const production = inScope.filter(
-      (file) => !/\.(test|spec)\./.test(file) && !excludedSet.has(toRepoPosix(file))
-    );
-    for (const file of production) {
+    for (const file of productionFiles) {
       for (const specifier of importSpecifiers(file)) {
-        // Bare specifiers resolve through package exports rather than a scanned root, so this
-        // loop cannot see them. That is safe only while no workspace package exposes a
-        // wildcard subpath, which `exports` below asserts rather than assumes — a `./*` entry
-        // would let a bare specifier name an excluded file and turn this skip into a blind spot.
-        if (!specifier.startsWith(".") && !specifier.startsWith("@/")) continue;
-        // Assert on the raw resolution, not its repo-relative form: toRepoPosix("") is
-        // path.relative(repoRoot, cwd), a real-looking path that compares unequal to every
-        // excluded module and would make this branch permanently inert.
+        // A path alias from tsconfig `paths`, or a relative specifier, names a file on disk.
+        // A bare specifier goes through package exports instead, which this resolver does not
+        // model — see the wildcard-export test for why skipping those is safe.
+        const isAlias = PATH_ALIASES.some((rule) => specifier.startsWith(rule.prefix));
+        if (!isAlias && !specifier.startsWith(".")) continue;
+        // Only a specifier that could be a TS/JS module is required to resolve, so `null`
+        // below can only mean "should have resolved to a file on disk and did not".
+        if (!mustResolveOnDisk(specifier)) continue;
         const resolvedPath = resolveSpecifier(file, specifier);
-        // A relative or aliased specifier that resolves to nothing is a real defect, and
-        // letting it degrade to "" is how this guard would go blind without saying so.
-        expect(resolvedPath, `${specifier} in ${toRepoPosix(file)} does not resolve`).not.toBe("");
+        if (resolvedPath === null) {
+          throw new Error(
+            `${specifier} in ${toRepoPosix(file)} does not resolve to a file on disk`
+          );
+        }
         expect(
-          excluded,
+          excludedFiles,
           `${specifier} in ${toRepoPosix(file)} is excluded from the scan`
         ).not.toContain(toRepoPosix(resolvedPath));
       }
     }
   });
 
+  it("reads path aliases from the workspace tsconfig", () => {
+    // An empty PATH_ALIASES would silently disable the alias leg of the reachability check
+    // above — every `@/…` import would take the bare-specifier `continue` and never be tested.
+    expect(
+      PATH_ALIASES.length,
+      "no path aliases were read from tsconfig, so the alias leg of the reachability check is inert"
+    ).toBeGreaterThan(0);
+  });
+
   it("exposes no wildcard subpath that a bare specifier could use to skip this guard", () => {
     // The reachability check skips bare specifiers, so a wildcard export would let a bare
     // specifier name an excluded module and bypass it entirely. Assert that rather than
-    // assume it; a wildcard here means the check above needs a real bare-specifier resolver.
-    const manifest = JSON.parse(
-      fs.readFileSync(path.join(repoRoot, "packages/shared/package.json"), "utf8")
-    ) as { exports?: Record<string, unknown> };
-    const subpaths = Object.keys(manifest.exports ?? {});
-    expect(subpaths.length, "@blueprint/shared exposes no subpath exports").toBeGreaterThan(0);
+    // assume it, walking the manifests the root `workspaces` globs actually declare rather
+    // than a hardcoded path — a wildcard anywhere means the check above needs a real
+    // bare-specifier resolver. Nested conditional targets are included by walking the whole
+    // value, not just the top-level keys.
+    const rootManifest = JSON.parse(
+      fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")
+    ) as {
+      workspaces?: string[] | { packages?: string[] };
+    };
+    const workspaces = Array.isArray(rootManifest.workspaces)
+      ? rootManifest.workspaces
+      : (rootManifest.workspaces?.packages ?? []);
+    expect(workspaces.length, "root package.json declares no workspace globs").toBeGreaterThan(0);
+    const manifests = fg.sync(
+      workspaces.map((glob) => `${glob.replace(/\/+$/, "")}/package.json`),
+      { cwd: repoRoot }
+    );
+    expect(manifests.length, "no workspace manifests were found").toBeGreaterThan(0);
+
+    const wildcards: string[] = [];
+    const exportslessPackages: string[] = [];
+    for (const manifest of manifests) {
+      const parsed = JSON.parse(fs.readFileSync(path.join(repoRoot, manifest), "utf8")) as {
+        name?: string;
+        exports?: unknown;
+      };
+      const label = parsed.name ?? manifest;
+      if (parsed.exports === undefined || parsed.exports === null) {
+        exportslessPackages.push(label);
+        continue;
+      }
+      const entries = JSON.stringify(parsed.exports).match(/"[^"]*\*[^"]*"/g) ?? [];
+      for (const entry of entries) wildcards.push(`${label} ${entry}`);
+    }
     expect(
-      subpaths.filter((subpath) => subpath.includes("*")),
+      wildcards,
       "a wildcard export makes the bare-specifier skip in this file unsafe"
+    ).toEqual([]);
+
+    // A manifest without an `exports` map is a wildcard by another name — it exposes *every*
+    // subpath — so it must never be named by a bare specifier in production code at all.
+    // Workspace packages are the only manifests that can reach an excluded module this way,
+    // because they symlink straight into the repo's source tree.
+    const bareSpecifierPackages = new Set<string>();
+    for (const file of productionFiles) {
+      for (const specifier of importSpecifiers(file)) {
+        if (
+          specifier.startsWith(".") ||
+          PATH_ALIASES.some((rule) => specifier.startsWith(rule.prefix))
+        ) {
+          continue;
+        }
+        const segments = specifier.split("/");
+        bareSpecifierPackages.add(
+          specifier.startsWith("@") ? segments.slice(0, 2).join("/") : (segments[0] ?? specifier)
+        );
+      }
+    }
+    expect(
+      exportslessPackages.filter((name) => bareSpecifierPackages.has(name)),
+      "an exports-less workspace package is bare-imported, so the bare-specifier skip is unsafe for it"
     ).toEqual([]);
   });
 
