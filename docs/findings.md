@@ -2,6 +2,15 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-03 — rescan, zero safe deletions, build green)
+
+**Scope**: `agent/janitor` merged `origin/main` (6 files: env examples, types.ts, env docs, findings, package.json scripts) per cleanup request (redundant files, unused exports, commented-out dead code).
+**Removed**: none in tracked source — every candidate verified live (see below). Local-only: deleted gitignored root `build.log`/`lint.log`/`typecheck.log` workspace artifacts.
+**Verified clean**: no commented-out dead code (only JSDoc/prose; zero `// console|debugger|alert` hits; zero `debugger`/`alert(` in prod); no production `console.log` to remove (Workers `middleware/logger.ts:217,263` + `secureLog.ts:256` intentional, rest are template-string payloads/JSDoc/docs); no dead exports (spot-checked `getScrollBehavior`, `generateSlug`/`childrenToText`, `fadeInUp`/`createFadeInUp`, `sleep`, api utils ×6, web libs ×7 — all consumed; eslint on utils/libs clean); no unused deps (all root devDeps referenced in scripts/config/workflows); no stray `.bak`/empty files; `scripts/opencode-run.sh` live via 5 workflows (not orphan); `functions/` legacy dir already gone.
+**Structural flags (report-only, no moves)**: `.agent/` (672K) vs `.opencode/` (63M) content drift + `docs/audits/` bloat + `tui.json`/`opencode.json` plugin-name drift remain as deferred in prior RepoKeeper entry — needs owner sign-off, not janitor deletion. Util-like dirs (`api/src/utils`, `web/src/lib`, `web/src/utils`, `shared/src/utils`) are domain-separated, no `formatDate`-style duplication found.
+**Verification**: `npm run build` ✅ green (9.18s vite).
+**Result**: codebase lean, 0 deletions, build passing.
+
 ## Janitor Cleanup (2026-10-03 — post-#3706 resync, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `4ab5aaa6` (#3706 security audit, 0 vulns, hardening preserved) per cleanup request (redundant files, unused exports, commented-out dead code). Resolved 2 `findings.md` merge conflicts keeping both sides (HEAD janitor history + main security-audit history), 0 residual markers.
