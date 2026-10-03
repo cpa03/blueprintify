@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **StepReview Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and centralized step keys to `StepReview.tsx`.
+- [STRENGTHEN] Strengthened `StepReview` DOM state tracking with `data-state` ("generating"/"idle") and `data-reduced-motion` ("true"/"false") attributes for accessibility testing.
+- [CONSOLIDATE] Consolidated wizard review step state inspection via `REVIEW_STATE_VALUES` shared config in `packages/shared/src/config/ui.ts`.
+- [REMOVE] Removed raw "generating"/"idle" string literals in `StepReview.tsx`/`StepReview.test.tsx` in favor of `REVIEW_STATE_VALUES`; fixed weak `data-reduced-motion` assertion and gated entrance/hover animations on reduced motion.
+
 ## ✅ StorX — **ScrollToTop Micro-UX & State Inspection**
 - [CONNECT] Connected `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx` for DOM state inspection (`useReducedMotion` was already wired for scroll behavior).
 - [STRENGTHEN] Strengthened `ScrollToTop` / `ScrollToPosition` DOM state inspection with `data-state` ("visible") and `data-reduced-motion` ("true"/"false") attributes on wrapper and button.
