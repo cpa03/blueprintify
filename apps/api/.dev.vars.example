@@ -47,7 +47,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 # External URLs (defaults from @blueprint/shared DEFAULT_URLS)
 # PROJECT_HOMEPAGE_URL=https://blueprint-generator.pages.dev
-# GITHUB_URL=https://github.com
+# GITHUB_URL=https://github.com/cpa03/blueprintify
 
 # Security
 # API_KEY=your_api_key_here
