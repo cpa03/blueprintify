@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-03 — post-#3706 resync, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `4ab5aaa6` (#3706 security audit, 0 vulns, hardening preserved) per cleanup request (redundant files, unused exports, commented-out dead code). Resolved 2 `findings.md` merge conflicts keeping both sides (HEAD janitor history + main security-audit history), 0 residual markers.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond this docs entry; untracked gitignored workspace artifacts (`build.log`, `lint.log`, `typecheck.log`) left on disk for this run's evidence, regenerate on demand.
+
+**Verification**: `npm run build` ✅ green (9.76s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **#3706 intake all live**: `x-api-key` redaction via shared `API_HEADERS` (`logger.ts:47` + comment block `:29-38`) + BUG-053 consumed-body fallback removal + fail-closed secret hardening (`wrangler.toml` → `wrangler secret put` comments, `env.ts` → `""`, no `PUBLIC_ACCESS_KEY` in code — 0 hits) + both regression suites (`index.test.ts` +258, `logger.test.ts` +153) intact after merge. Not dead code.
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/*/src` + `packages/*/src` + `scripts/` → 9 prose false positives only (`tailwindContent.test.ts:109/260/272/289`, `App.tsx:105/300`, `OfflineBanner.tsx:178`, `ConfirmDialog.test.tsx:163` mock explanation, `motion.test.ts:110`); zero block-comment corpses; zero hits in `packages/` and `scripts/`.
+- **No production `console.log` to remove**: 11 non-test hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`), sanitized `secureLog.ts:256` (+ JSDoc `@example` snippets `:97,141`, `lib/api.ts:21,23`), generated-project template strings (`templates/node.ts:141,169`, `static.ts:193`), docs comment (`config/security.ts:164`).
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`/`generateCompletion`/`getStorageErrorMessage`/`RATE_LIMIT_CONFIG`/`DB_ID_CONFIG`/`UI_FALLBACKS`; live spot-checks all consumed (`storageManager:2`, `sanitizeHtml:7`, `fadeInUp:6`, `TECH_STACK_OPTIONS:4`, `VALIDATION_LIMITS:6`, `BANNER_STATE_VALUES:11`, `STORAGE_REPORT:2`, `SHARE_VERIFY:4` files).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; zero `formatDate` hits; `md5sum` sweep → zero identical pairs.
+- **No unused deps**: import-verified (`framer-motion:65`, `clsx:6`, `hono:32`, `openai:9`, `zod:9` files, `jszip:6`, `zustand:6`, `dompurify:1`); no `package.json` changes in merge commit.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source; 0 `.only`/`.skip`/`debugger`; 0 merge markers (incl. `findings.md` post-resolution); 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Janitor Cleanup (2026-10-02 — post-#3708 resync, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `56550f91` (#3708 scan packages/shared in Tailwind content to stop class purging) per cleanup request (redundant files, unused exports, commented-out dead code). Already up to date, no conflicts.
