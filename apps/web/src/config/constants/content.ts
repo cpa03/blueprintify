@@ -334,6 +334,29 @@ export const ACCESSIBILITY_LABELS = {
   /** Step indicator aria-label format for keyboard shortcut display */
   STEP: {
     SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
+    /** Explicit accessible name for step navigation buttons. The visible label
+     *  is hidden on mobile (`hidden sm:inline`), leaving icon-only buttons
+     *  without a name for screen readers (WCAG 4.1.2). Includes position
+     *  ("step X of N") and state so SR users get the same context sighted
+     *  users perceive through color/glow cues. */
+    BUTTON_LABEL: (
+      label: string,
+      index: number,
+      total: number,
+      state: "current" | "completed" | "locked" | "available"
+    ): string => {
+      const position = `step ${index + 1} of ${total}`;
+      switch (state) {
+        case "current":
+          return `${label}, ${position}, current step`;
+        case "completed":
+          return `${label}, ${position}, completed`;
+        case "locked":
+          return `${label}, ${position}, locked`;
+        default:
+          return `${label}, ${position}`;
+      }
+    },
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
