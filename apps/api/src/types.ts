@@ -48,6 +48,7 @@ import type {
  * @property CIRCUIT_BREAKER_FAILURE_THRESHOLD - Failures before circuit opens
  * @property CIRCUIT_BREAKER_RESET_TIMEOUT_MS - Time before circuit half-opens
  * @property CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS - Test calls in half-open state
+ * @property CIRCUIT_BREAKER_COLD_START_WINDOW_MS - Cold start window before normal operation
  * @property RETRY_MAX_RETRIES - Maximum retry attempts for failed requests
  * @property RETRY_INITIAL_DELAY_MS - Initial delay before first retry
  * @property RETRY_BACKOFF_FACTOR - Multiplier for exponential backoff
@@ -56,7 +57,7 @@ import type {
  * @property GITHUB_URL - URL to GitHub repository
  * @property DB - Cloudflare D1 database binding
  * @property CACHE - Cloudflare KV namespace for caching
- * @property BACKGROUND_QUEUE - Cloudflare Queue for background processing
+ * @property BACKGROUND_QUEUE - Cloudflare Queue for background processing (optional, disabled on Free Tier)
  * @property STRICT_RATE_LIMITER - Cloudflare Rate Limiter for strict limits
  * @property STANDARD_RATE_LIMITER - Cloudflare Rate Limiter for standard limits
  * @property LENIENT_RATE_LIMITER - Cloudflare Rate Limiter for lenient limits
@@ -74,6 +75,8 @@ export interface Env {
   API_KEY?: string;
   ADMIN_API_KEY?: string;
   ENVIRONMENT?: Environment;
+  // Read ad-hoc in config/env.ts for production detection (Workers never sets NODE_ENV).
+  NODE_ENV?: string;
   API_VERSION?: string;
   CORS_ORIGIN?: string;
   CORS_MAX_AGE?: string;
@@ -91,6 +94,7 @@ export interface Env {
   CIRCUIT_BREAKER_FAILURE_THRESHOLD?: string;
   CIRCUIT_BREAKER_RESET_TIMEOUT_MS?: string;
   CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS?: string;
+  CIRCUIT_BREAKER_COLD_START_WINDOW_MS?: string;
 
   // Retry Configuration
   RETRY_MAX_RETRIES?: string;
@@ -105,7 +109,9 @@ export interface Env {
   // Cloudflare Bindings
   DB: D1Database;
   CACHE: KVNamespace;
-  BACKGROUND_QUEUE: Queue;
+  // Intentionally optional: Queues disabled on Free Tier (see docs/environment-variables.md).
+  // Background processing runs inline instead of via Queues.
+  BACKGROUND_QUEUE?: Queue;
 
   // Cloudflare Native Rate Limiters
   STRICT_RATE_LIMITER: RateLimit;
