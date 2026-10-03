@@ -31,6 +31,13 @@
 
 ## Lessons Learned
 
+### 2026-10-03: Security Engineer Audit — Merge doc-sync (6 files) + dependabot vitest/ui 5.0.3 (2 files), 0 introduced issues
+
+- **Finding**: Both scopes clean — merge is docs/type-shaping only (`.dev.vars.example` URL fix, `.env.example` placeholder, `types.ts` optional cold-start/NODE_ENV + `BACKGROUND_QUEUE?`, 3 orphan-script wires); vitest/ui PR is forward-only dev-only bump (lock hoists ui/utils/pretty-format to 5.0.3, registry URLs intact, 0 install scripts). No introduced vulnerabilities, secrets, or deprecated usage — nothing to remove.
+- **Verification**: Added-lines secret/injection/deprecated 0 real hits both scopes · hardcoded fallback 0x · fail-closed intact both sides · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing dev-only braces chain, no fix) · `validate:wrangler` ✅ · typecheck ✅.
+- **Structural flags (report-only)**: vitest 4.1.11 runner + ui 5.0.3 peer mismatch (lone-UI-major; coordinated 5.x bump left to dependabot) · full-audit braces chain pre-existing on main.
+- **Lesson**: When the invoking PR lives on another branch, audit it explicitly via `git diff origin/main..origin/<pr-branch>` from `agent/security-engineer` — `git diff --name-only origin/main` alone only shows the security branch's own (post-merge, empty) diff. Merge conflicts in `docs/findings.md` resolve by keeping both audit blocks.
+
 ### 2026-10-02: Security Engineer Audit — Changed-files scan vs origin/main (16 files), 0 introduced issues
 
 - **Finding**: 16-file diff IS the hardening (CWE-532 x-api-key log redaction, BUG-053 consumed-body fix, hardcoded `blueprintify-public-access-2026` removal fail-closed). No introduced vulnerabilities, secrets, or deprecated usage.
