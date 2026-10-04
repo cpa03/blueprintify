@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-04 — rescan @ e7090bd5, 0-behind f1379260, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` @ `e7090bd5` (0-behind `origin/main` @ `f1379260`, no merge needed, no conflicts) per cleanup request (redundant files, unused exports, commented-out dead code).
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond this docs entry.
+
+**Verification**: `npm run build` ✅ green (9.09s vite) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **Merge intake all live**: `StepIndicator` aria-label via `ACCESSIBILITY_LABELS.STEP.BUTTON_LABEL` (`StepIndicator.tsx:218`, consumed by `App.tsx` + tests); `PageScrollProgressBar` `data-reduced-motion` (`:224`) follows per-component pattern; `SVG_ICON_DEFAULTS` consumed by `Icon.tsx`/`icons.ts` (5 files incl. shared config/tests); `REVIEW_STATE_VALUES` consumed by `StepReview.tsx:116` + 3 test assertions. Prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`/`generateCompletion`/`getStorageErrorMessage`/`RATE_LIMIT_CONFIG`/`DB_ID_CONFIG`/`UI_FALLBACKS`.
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/`+`packages/`+`scripts/` → 5 prose false positives only (`tailwindContent.test.ts:109/260/272/289`, `App.tsx:105`); zero `// console|debugger|alert`; block `/*` hits are JSDoc/eslint/JSX section markers only.
+- **No production `console.log` to remove**: 11 non-test hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`), sanitized `secureLog.ts:256` (+ JSDoc `@example` snippets `:97,141`, `lib/api.ts:21,23`), generated-project template strings (`templates/node.ts:141,169`, `static.ts:193`), docs comment (`config/security.ts:164`).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep → zero identical pairs; zero `formatDate` hits; single `functions/api/[[path]].ts` deploy entry; `tui.json` vs `.opencode/tui.json` no longer byte-identical (drifted, prior dup note resolved).
+- **No unused deps**: import-verified (`framer-motion`:67, `clsx`:7, `hono`:37, `zod`:12, `openai`:11, `jszip`:6, `zustand`:7, `dompurify`:1 files); no `package.json`/lock changes in intake; `scripts/` 8/8 wired.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source; 0 `.only`/`.skip`/`debugger`; 0 merge markers; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (5× `react-hooks/*`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Janitor Cleanup (2026-10-04 — post-merge d8c7bb3b resync, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `f1379260` (StepIndicator aria-label #3675, PageScrollProgressBar reduced-motion #3712, Icon centralization Iteration 187 #3679, Toast reduced-motion #3711, StepReview rework + shared `SVG_ICON_DEFAULTS`/`REVIEW_STATE_VALUES`) per cleanup request (redundant files, unused exports, commented-out dead code). Resolved 1 `findings.md` merge conflict keeping both sides newest-first (incoming 2026-10-04 security-audit entry on top, then janitor history), 0 lines dropped, 0 residual markers.
