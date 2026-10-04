@@ -13,6 +13,7 @@
 
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { BANNER_STATE_VALUES } from "@blueprint/shared/config";
 import { PageScrollProgressBar } from "./PageScrollProgressBar";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -22,7 +23,17 @@ let capturedDivProps: Array<Record<string, unknown>> = [];
 vi.mock("framer-motion/m", () => ({
   div: vi.fn(({ children, ...props }: Record<string, unknown>) => {
     capturedDivProps.push(props);
-    return <div {...props}>{children as React.ReactNode}</div>;
+    const {
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      transition: _transition,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      layoutId: _layoutId,
+      ...domProps
+    } = props;
+    return <div {...domProps}>{children as React.ReactNode}</div>;
   }),
 }));
 
@@ -171,15 +182,16 @@ describe("PageScrollProgressBar", () => {
     expect(animate.opacity).toBe(0);
   });
 
-  it("exposes data-state, data-progress, data-hovered, and data-focused DOM inspection attributes", () => {
+  it("exposes data-state, data-progress, data-hovered, data-focused, and data-reduced-motion DOM inspection attributes", () => {
     mockScrolledPage();
     renderPageProgressBar();
 
     const slider = screen.getByRole("slider");
-    expect(slider.getAttribute("data-state")).toBe("visible");
+    expect(slider.getAttribute("data-state")).toBe(BANNER_STATE_VALUES.VISIBLE);
     expect(slider.getAttribute("data-progress")).toBe("41");
     expect(slider.getAttribute("data-hovered")).toBe("false");
     expect(slider.getAttribute("data-focused")).toBe("false");
+    expect(slider.getAttribute("data-reduced-motion")).toBe("false");
 
     fireEvent.focus(slider);
     expect(slider.getAttribute("data-focused")).toBe("true");

@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **PageScrollProgressBar Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and `BANNER_STATE_VALUES` shared config export to `PageScrollProgressBar.tsx`.
+- [STRENGTHEN] Strengthened `PageScrollProgressBar` DOM state tracking with `data-reduced-motion` ("true"/"false") attribute for accessibility testing.
+- [CONSOLIDATE] Consolidated `PageScrollProgressBar` display state and reduced motion tracking across web components.
+- [REMOVE] Removed raw string literals in `PageScrollProgressBar.test.tsx` state assertions in favor of `BANNER_STATE_VALUES`.
+
 ## ✅ StorX — **StepReview Micro-UX & Reduced Motion State Inspection**
 - [CONNECT] Connected `useReducedMotion` hook and centralized step keys to `StepReview.tsx`.
 - [STRENGTHEN] Strengthened `StepReview` DOM state tracking with `data-state` ("generating"/"idle") and `data-reduced-motion` ("true"/"false") attributes for accessibility testing.
