@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PageScrollProgressBar reduced-motion DOM tracking (3 files vs origin/main, 2026-10-04)
+
+**Scope**: `git diff --name-only origin/main` (3 files: `apps/web/src/components/PageScrollProgressBar.tsx` +1, `PageScrollProgressBar.test.tsx` +12/-4, `docs/active-tasks.md` +6 prose). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — nothing to remove. `.tsx` adds only `data-reduced-motion={prefersReducedMotion ? "true" : "false"}` (boolean-derived static strings, no user input → no XSS/injection); test imports shared `BANNER_STATE_VALUES` (replaces raw `"visible"` literal, reduces drift) and strips framer-motion animation props (`initial`/`animate`/`exit`/`transition`/`whileHover`/`whileTap`/`layoutId`) in the mock so they never reach the DOM (unknown-prop hardening, not a vuln). `docs/active-tasks.md` is prose-only.
+**Scans**: added-lines secret regex 0x · injection/XSS (`eval`/`innerHTML`/`dangerouslySetInnerHTML`/`child_process`/`document.write`) 0x · deprecated (`Math.random`/`substr`/`max_tokens`) 0x · full-file secret/XSS grep on changed source 0x · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full audit 5 high pre-existing `braces` GHSA-vfj7-8cjw-p6xm via tailwindcss→chokidar/fast-glob/micromatch, no fix available, no package.json/lock change in this PR → not introduced, dev/build-tooling only, risk accepted) · web typecheck ✅ · `PageScrollProgressBar.test.tsx` ✅ 10/10 · `BANNER_STATE_VALUES` export verified (`packages/shared/src/config/ui.ts:805`).
+**Result**: No code fixes required — nothing to remove. No rotation needed (no secrets). No structural rewrite (report-only per constraints).
+
 ## Security Audit — PR recover-lost-web-frontend-fixes-companio full 5-file state @93d1b31 (2026-10-02)
 
 **Scope**: `merge-base(origin/main, origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head)=da76892c` → head `93d1b31` (3 commits `eee24cee/0933fd61/93d1b31`; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new 320 lines, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1). Task: remove introduced vulnerabilities, secrets, deprecated usage. Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
