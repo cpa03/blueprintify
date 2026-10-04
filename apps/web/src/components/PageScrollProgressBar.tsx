@@ -221,6 +221,7 @@ function PageScrollProgressBarComponent({
       data-progress={Math.round(scrollProgress)}
       data-hovered={isHovered}
       data-focused={isFocused}
+      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
     >
       <div
         ref={barRef}

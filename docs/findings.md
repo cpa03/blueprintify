@@ -2,6 +2,172 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main, 2026-10-04)
+
+**Scope**: `git diff origin/main...c50ff06 --name-only` (3 files: `apps/web/src/components/PageScrollProgressBar.tsx` +1, `PageScrollProgressBar.test.tsx` +15/-3, `docs/active-tasks.md` +6 prose; the audit commit 7743e74 then added this entry + `.opencode/memory/security.md`, bringing the PR head to 5 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — nothing to remove. `.tsx` adds only `data-reduced-motion={prefersReducedMotion ? "true" : "false"}` (boolean-derived static strings, no user input → no XSS/injection); test imports shared `BANNER_STATE_VALUES` (replaces raw `"visible"` literal, reduces drift) and strips framer-motion animation props (`initial`/`animate`/`exit`/`transition`/`whileHover`/`whileTap`/`layoutId`) in the jsdom mock so they never reach the test DOM (test-only unknown-prop filtering, not a shipped-code vuln). `docs/active-tasks.md` is prose-only.
+**Scans**: added-lines secret regex 0x · injection/XSS (`eval`/`innerHTML`/`dangerouslySetInnerHTML`/`child_process`/`document.write`) 0x · deprecated (`Math.random`/`substr`/`max_tokens`) 0x · full-file secret/XSS grep on changed source 0x · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full audit 5 high pre-existing `braces` GHSA-vfj7-8cjw-p6xm via tailwindcss→chokidar/fast-glob/micromatch, no fix available, no package.json/lock change in this PR → not introduced, dev/build-tooling only, risk accepted) · web typecheck ✅ · `PageScrollProgressBar.test.tsx` ✅ 11/11 (incl. reduced-motion true-branch) · `BANNER_STATE_VALUES` export verified (`packages/shared/src/config/ui.ts:805`).
+**Result**: No code fixes required — nothing to remove. No rotation needed (no secrets). No structural rewrite (report-only per constraints).
+
+## Security Audit — PR recover-lost-web-frontend-fixes-companio full 5-file state @93d1b31 (2026-10-02)
+
+**Scope**: `merge-base(origin/main, origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head)=da76892c` → head `93d1b31` (3 commits `eee24cee/0933fd61/93d1b31`; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new 320 lines, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1). Task: remove introduced vulnerabilities, secrets, deprecated usage. Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — build-correctness FIX (shared `packages/shared/src` scan is load-bearing for TOAST_STYLES/CHAR_COUNTER_COLORS; `escapePath(convertPathToPattern())` hardens Windows/metachar globs; AST `ts.createSourceFile` walk + `isErasedImport` fix regex blind spots for `lazy(() => import())`/JSDoc matches and erased type-only imports; `TS_REWRITES` handles `.js`→`.ts` ESM rewrites; bare-specifier skip guarded by no-wildcard-exports assertion). `escapePath`/`convertPathToPattern` verified current (fast-glob 3.3.3 = npm latest, forward-only add, lock +1 is workspace entry only); `isImportDeclaration`/`isExportDeclaration`/`isStringLiteral`/`isCallExpression`/`forEachChild`/`ImportKeyword`/`isNamedImports` all current TS APIs. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`/`__dirname`/`require(`; `fs` test-only on constant-derived paths (no traversal); regexes linear (no ReDoS). Code-only added secret value count 0 (sole `token` hit is English word "tokens" in comment).
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · `scan:secrets` ✅ 335 files · no sensitive filenames in diff.
+**Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed.
+
+## Security Audit — Changed-files scan vs origin/main on agent/security-engineer (2026-10-02)
+
+**Scope**: `git diff --name-only origin/main` (16 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (CWE-532 `x-api-key` log redaction via shared `API_HEADERS`; BUG-053 consumed-body `ASSETS.fetch(request)` removal → structured 404; hardcoded `blueprintify-public-access-2026` removed from `wrangler.toml` prod+staging, `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY`, and `env.ts` fallback → fail-closed). Added-lines secret regex 0x (removals only); PR-head source grep 0x; `eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`substr`/`new Buffer`/`max_tokens`/`Math.random`/`md5` 0x in added lines; no `.env`/`.dev.vars`/pem in diff; `package.json` change is removal-only (`fast-glob` dropped) → no new CVEs. Test canaries (`CANARY-bug052-*`, `TEST_API_KEY="test-key"`) are synthetic fixtures.
+**Scans**: `npm audit` ✅ 0 vulns (full + `--omit=dev`) · XSS vectors in PR-head changed files 0x · Zod validation intact · `constantTimeCompare` intact.
+**Result**: No code fixes required — nothing to remove. Structural flag resolved post-merge: `origin/main` fix #3708 (`56550f91`) restored the load-bearing `packages/shared/src` scan + guard test, so the `tailwind.config.js` simplification is no longer in the diff (10 files now, tailwind/package.json entries gone). Post-merge re-scan clean (tracked-source secret grep 0x, `npm audit` 0 vulns).
+
+## Security Audit — Sync PR hardening to agent/security-engineer (2026-10-02)
+
+**Scope**: True PR diff `da76892c..b5786a81` (4 files: `logger.ts`, `index.ts`, `index.test.ts`, `logger.test.ts`). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: PR IS hardening, 0 introduced vulns — `index.ts` removes BUG-053 consumed-body `ASSETS.fetch(request)` fallback (unstructured 500 + stack/path leak → structured NOT_FOUND); `logger.ts` adds `x-api-key` to `SANITIZED_HEADER_EXCLUDE` via shared `API_HEADERS` (fixes CWE-532 secret-in-logs). This branch had `index.ts` fix but was missing `logger.ts` redaction + both regression suites (5 tests vs 13 on PR head). Fix cherry-picked `801a04a4` (logger + 153-line logger.test.ts) and restored `index.test.ts` BUG-053 suite from `b5786a81` (258 lines: consumed-body, FILESYSTEM_ROOTS leak table, structured-404 pins).
+**Clean**: secrets in added lines 0x (test fixtures only); `eval`/`innerHTML`/`dangerouslySetInnerHTML`/`max_tokens`/`substr`/`new Buffer` 0x; `npm audit` ✅ 0 vulns; `scan:secrets` ✅ 335 files.
+**Scans**: typecheck ✅ (shared/api/web) · lint ✅ · api ✅ 547/547 (33 files) · `scan:secrets` ✅ · `npm audit` ✅ 0.
+**Result**: Code fix applied on `agent/security-engineer`. No rotation needed (no real secrets). No structural rewrite (report-only per constraints).
+
+## Security Audit — Remove reintroduced SPA fallback on agent/security-engineer (2026-10-02)
+
+**Scope**: `git diff --name-only origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head` (9 files) + `agent/security-engineer` working tree. Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 1 reintroduced vulnerability REMOVED — `apps/api/src/index.ts:248-255` post-API 404 `env.ASSETS.fetch(request)` SPA fallback (same block removed upstream by `b5786a81` BUG-053). `agent/security-engineer` diverged at `da76892c` and never picked up `b5786a81`, so both the convoy HEAD (`5cd0b630`) and this branch re-carried it. Fix deletes the block, keeping `return response;` — POSTs with bodies (e.g. `POST /share/:id/verify` on missing id) no longer throw "Cannot reconstruct a Request with a used body" (unstructured 500 + stack/filesystem-path leak risk), and unknown paths keep the structured `NOT_FOUND_ERROR` envelope per `docs/openapi.yaml`. No consumer lost: `apps/web` has no router (no react-router/wouter, no pushState/popstate, Zustand view state only) and all fetchers sit behind `/api/`. Pre-app ASSETS lookup (`index.ts:218-226` for `/`, `/assets/*`, file-extension paths) untouched.
+**Clean**: `auth.ts`/`validator.ts` `requestId` additions are safe correlation IDs (`<epoch-ms>-<random>`, match `X-Request-ID` + logs, no PII/secret); `openapi.yaml` `ValidationIssue.path: array` + `requestId` pattern `^\d+-[a-z0-9]+$` docs-only; `README`/`api-documentation.md` docs-only. Secrets in diff 0x; `eval`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`new Function`/`max_tokens`/`substr` 0x; `npm audit` ✅ 0 vulns; `scan:secrets` ✅ 335 files.
+**Scans**: typecheck ✅ (shared/api/web) · lint ✅ · api ✅ 535/535 · `scan:secrets` ✅ · `npm audit` ✅ 0.
+**Result**: Code fix applied on `agent/security-engineer`. Structural flag (report-only, no rewrite): `index.test.ts` on this branch has 5 tests vs 12+ with BUG-053 regression cases on `origin/convoy/.../head` (`createAssetFetcher` 404-set, `FILESYSTEM_ROOTS` leak table) — coverage gap remains; recommend cherry-picking `b5786a81` tests in a follow-up. No rotation needed (no real secrets).
+
+## Security Audit — PR app-functionality-fixes-round-2 changed-files scan (2026-10-02)
+
+**Scope**: PR head `b5786a81` (`origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head`), merge-base `da76892c` → 4 code files (`logger.ts` +20, `index.ts` -9, `index.test.ts` +258, `logger.test.ts` +153); full `origin/main..head` 9 files reviewed for stale-base drift. Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (CWE-532 `x-api-key` log redaction via shared `API_HEADERS` derivation, no import cycle; BUG-053 consumed-body `ASSETS.fetch(request)` removal → structured 404, no stack/path leak). Added-lines secret regex hits are prose + synthetic fixtures only (`TEST_API_KEY="test-key"`, 5x `CANARY-bug052-*`); dangerous patterns (`eval`/`innerHTML`/`Math.random`/`substr`/`max_tokens`) 0x in added lines and PR-head file versions; no `package.json`/lockfile change → no new CVEs.
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · working-tree `auth.ts`/`validator.ts` quick-scan clean.
+**Result**: No code fixes required — nothing to remove. Structural flags (report-only, no rewrite per constraints): `ScrollToTop.tsx` drops arrow-float reduced-motion guard (hook still used elsewhere, no lint break — decorative-anim a11y regression); `endpoints.ts` removes `STORAGE_REPORT`/`SHARE_VERIFY` registry keys while routes live on main (stale behind #3705 registry sync). No rotation needed (all canaries synthetic).
+
+## Security Audit — Changed-files scan vs origin/main, re-verification (2026-10-02)
+
+**Scope**: `git diff --name-only origin/main` on `agent/security-engineer` (6 files: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (prod+staging hardcoded `API_KEY` → `wrangler secret put` comments; `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` deleted; `env.ts` getter → `getEnvVar(WEB_ENV.VITE_API_KEY)` fail-closed `""`; test asserts absence). Code-only added secret value 0x; injection/XSS (`eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`) 0x; deprecated (`substr`/`new Buffer`/`max_tokens`/`Math.random()`/`md5`) 0x — sole `Math.random` hit is pre-existing JSDoc at `core.ts:90`, not introduced. No `.env`/`.dev.vars`/pem/key files and no `package.json`/lockfile in diff → no new CVEs. Fail-closed verified both sides (`env.ts:7` `""`; `api.ts:142` omits `x-api-key` when empty; `auth.ts:127-151` 503s when unset; `constantTimeCompare` intact).
+**Scans**: code-only added secret 0x · `scan:secrets` ✅ 335 files · `validate:wrangler` ✅ · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · typecheck ✅ (shared/api/web) · shared ✅ 869/869 · api ✅ 535/535 · stale gitignored `dist/` rebuilt (shared tsc-build + web vite build) → post-rebuild secret grep 0 hits.
+**Result**: No code fixes required — nothing to remove. Structural flags (report-only, pre-existing on main): staging `CORS_ORIGIN="*"`; `origin/main` still carries the removed public dev fallback until merge. No rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — Changed-files scan vs origin/main, post-merge re-verification (2026-10-02)
+
+**Scope**: `git diff --name-only origin/main` on `agent/security-engineer` after merging `origin/main` (5244a98b doc-sync: STORAGE_REPORT/SHARE_VERIFY registry + README links). Final 6-file diff: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose (`.opencode/memory/security.md`, `docs/findings.md`). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
+**Merge gate**: `origin/main` merge conflicted in `docs/findings.md` (HEAD audit block vs main's Cycle 603 block) — resolved by keeping **both** sections, verified 0 residual conflict markers, no secret-reintroduction on main's side (main's new commit is doc/registry-only; wrangler/env/shared secret-removal files were untouched by main).
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff IS the hardening (prod+staging hardcoded `API_KEY` → `wrangler secret put` comments; `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` deleted; `env.ts` getter → `getEnvVar(WEB_ENV.VITE_API_KEY)` fail-closed `""`; test asserts absence). Code-only added secret value 0x (6 added lines, all comments/config/test asserts); injection/XSS (`eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`) 0x; deprecated (`substr`/`new Buffer`/`max_tokens`/`Math.random()`/`md5`/`url.parse`) 0x — sole `Math.random` hit is a pre-existing JSDoc comment in `core.ts:90`, not introduced. No `.env`/`.dev.vars`/pem/key files and no `package.json`/lockfile in diff → no new CVEs. Fail-closed verified both sides (`apps/web/src/config/env.ts:7` returns `""` when unset; `apps/web/src/lib/api.ts:142` omits `x-api-key` when empty; `apps/api/src/middleware/auth.ts:129-140` 503s when `API_KEY` unset; `constantTimeCompare` intact).
+**Scans**: code-only added secret 0x · `scan:secrets` ✅ 336 files · `validate:wrangler` ✅ · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · typecheck ✅ 0 errors (shared/api/web) · shared ✅ 869/869 · api ✅ 535/535 · stale gitignored `dist/` artifacts rebuilt from current source (`shared` tsc-build + `web` vite build) → post-rebuild secret grep 0 hits.
+**Result**: No code fixes required — nothing to remove. Structural flags (report-only, pre-existing on main): staging `CORS_ORIGIN="*"`; `origin/main` itself still carries the removed public dev fallback until this PR merges. No rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — Changed-files scan vs origin/main (2026-10-02)
+
+**Scope**: `agent/security-engineer` vs `origin/main` (6 files: `apps/api/wrangler.toml`, `apps/web/src/config/env.ts`, `packages/shared/src/config/core.ts`, `packages/shared/src/config.test.ts` + audit prose in `.opencode/memory/security.md` + `docs/findings.md`). Task: remove any introduced vulnerabilities, secrets, or deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — the diff itself IS the hardening (removes hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; drops `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY`; `env.ts` fallback → fail-closed `""`; test asserts absence). Code-only added secret value 0x; added-lines injection/XSS (`eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`) CLEAN; deprecated (`substr`/`new Buffer`/`max_tokens`/`Math.random`/`md5`) CLEAN in code files (audit-prose mentions are historical quotes, not code). No `.env`/`.dev.vars`/pem in diff; no `package.json`/lockfile change → no new CVEs. Fail-closed verified both sides (frontend `api.ts:142` omits `x-api-key` when empty, backend `auth.ts` 503s when unset, constant-time compare intact). Staging `CORS_ORIGIN="*"` is pre-existing on main, not introduced here.
+**Scans**: code-only added secret 0x · `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · `validate:wrangler` ✅ · shared build ✅ 869/869 ✅ · web typecheck ✅.
+**Result**: No code fixes required — nothing to remove. No rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — PR convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head re-verification (2026-10-02)
+
+**Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → head `b5786a81` (2 commits `801a04a4` x-api-key redaction + `b5786a81` SPA fallback removal; 4 files: `apps/api/src/config/constants/logger.ts` +20, `apps/api/src/index.ts` -9, `apps/api/src/index.test.ts` +258, `apps/api/src/middleware/logger.test.ts` +153). Audited from `agent/security-engineer` via `git diff origin/main...<head>`.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — net security FIX. `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (verified `= HTTP_HEADER_NAMES.X_API_KEY = "x-api-key"`, the `apiKeyAuth` default at `middleware/auth.ts:110`; sole prod call site does not override) to `SANITIZED_HEADER_EXCLUDE`, closing CWE-532 credential-into-Workers-logs; case-insensitive substring matcher (`middleware/logger.ts:186` `.includes`) covers gateway/SDK aliases (`Proxy-X-Api-Key`, `x-api-key-id`) with non-over-redaction guard. `index.ts` deletes the 2nd `env.ASSETS.fetch(request)` SPA fallback, fixing consumed-body "Cannot reconstruct a Request" crash + stack/filesystem-path leak; unknown paths now return structured JSON 404 (no asset over-exposure, no open redirect). Test canaries (`CANARY-bug052-*` ×5) are synthetic markers; `TEST_API_KEY="test-key"` is a fake fixture (test-utils.ts:46); no real secrets. No `eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`/`Math.random`/`md5`; no `.env`/`.dev.vars`/pem in diff; no `package.json`/lockfile change → no new CVEs.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities (full + `--omit=dev`) · no env/key files in PR.
+**Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed.
+
+## Security Audit — PR recover-lost-web-frontend-fixes-companio full 5-file state @93d1b31 (2026-10-01)
+
+**Scope**: `merge-base(origin/main, origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head)=da76892c` → head `93d1b31` (3 commits `eee24cee/0933fd61/93d1b31`; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1) plus `git diff --name-only origin/.../head` 11-file working-tree direction (secret hardening + audit prose on `agent/security-engineer`).
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — build-correctness FIX (shared `packages/shared/src` scan is load-bearing for TOAST_STYLES/CHAR_COUNTER_COLORS; `escapePath(convertPathToPattern())` hardens Windows/metachar globs; AST `ts.createSourceFile` walk + `isErasedImport` fix regex blind spots for `lazy(() => import())`/JSDoc matches and erased type-only imports; `TS_REWRITES` handles `.js`→`.ts` ESM rewrites; bare-specifier skip guarded by no-wildcard-exports assertion). `escapePath`/`convertPathToPattern` verified current via Context7 (not deprecated); `isImportDeclaration`/`isExportDeclaration`/`isStringLiteral`/`isCallExpression`/`forEachChild`/`ImportKeyword`/`isNamedImports` all current TS APIs. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`/`__dirname`/`require(`; `fs` test-only on constant-derived paths (no traversal); regexes linear (no ReDoS). Code-only added secret value `blueprintify-public-access-2026` = 0 (PR adds none; branch removes wrangler prod+staging keys, shared PUBLIC_ACCESS_KEY, env.ts fallback — fail-closed). Stale `dist/` bundles still embed old value but gitignored (`dist/`, `packages/*/dist/`) — never committed.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities · `scan:secrets` ✅ 335 files · shared typecheck clean.
+**Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — PR app-functionality-fixes-round-2 full 4-file state + birch tip hardening (2026-10-01)
+
+**Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → PR head `b5786a81` (4 files: `apps/api/src/config/constants/logger.ts` +20/-1, `apps/api/src/index.ts` -9, `apps/api/src/index.test.ts`, `apps/api/src/middleware/logger.test.ts` +153) plus local tip `convoy/.../gt/birch/6a11d188` (3 commits `a75cec70/e96bbc68/11c5928c`, `index.test.ts` leak-assertion hardening).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a net security FIX. `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (= `x-api-key`, the `apiKeyAuth` default) to `SANITIZED_HEADER_EXCLUDE`, closing CWE-532 credential-into-Workers-logs on every authenticated request; case-insensitive substring matcher (`middleware/logger.ts:186`) deliberately covers gateway/SDK aliases (`Proxy-X-Api-Key`, `x-api-key-id`) and tests pin redaction + non-over-redaction. `index.ts` deletes the 2nd `env.ASSETS.fetch(request)` SPA fallback, fixing the consumed-body "Cannot reconstruct a Request" crash path; unknown paths now return structured JSON 404 (no unintended asset exposure, no open redirect). Test-only hardening (`stripEchoedPaths` with `escapeRegExp`-escaped `new RegExp` + bounded lookahead, per-field envelope scan, anchored `FILESYSTEM_ROOTS`, `STACK_FRAME`) correctly separates echoed request paths from real leaks; regexes linear (no ReDoS); `expect.unreachable` is current Vitest 4.1.11 API. Canaries (`CANARY-bug052-*`) are synthetic markers, never real secrets; `Bearer secret-token-12345` is a pre-existing fixture (not in PR diff). No `eval`/`new Function`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`; no `substr`/`unescape`/`Math.random`/`md5`/`sha1`.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities · no `package.json`/lockfile change → no new CVEs.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
+## Security Audit — PR recover-lost-web-frontend-fixes-companio/2527e45b/head @0933fd61 (2026-10-01)
+
+**Scope**: `origin/main`=da76892c → head `0933fd61` (2 commits: `eee24cee` shared-scan + `0933fd61` AST guard; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `tailwindContent.test.ts` new 244 lines, `tailwind.config.d.ts` new 5 lines, `tailwind.config.js` +45/-1, `package-lock.json` +1).
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — build-correctness fix (shared `packages/shared/src` scan is load-bearing for TOAST_STYLES/CHAR_COUNTER_COLORS; `escapePath(convertPathToPattern())` hardens Windows/metachar globs; AST `ts.createSourceFile` walk fixes regex blind spots for `lazy(() => import())` + JSDoc false matches). No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`/`__dirname`/`require(`; `token` hits are design-token prose only; `fs` use test-only on constant-derived paths (no traversal); regexes linear (no ReDoS); fast-glob 3.3.3 already pinned transitively (lock +1 is workspace entry only, no new CVEs).
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulns · `scan:secrets` ✅ 335 files clean.
+**Result**: No code fixes required on `agent/security-engineer`. No rotation needed.
+
+## Security Audit — PR AST import-graph guard (25789190) vs convoy head (2026-10-01)
+
+**Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head`=eee24cee → `25789190` (1 commit `fix(web): read the import graph from the AST, not a regex`; 1 file: `apps/web/src/config/tailwindContent.test.ts` +75/-14).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a correctness FIX for the purge guard (regex missed `lazy(() => import("./x"))` dynamic imports and false-matched JSDoc example imports; replaced with `ts.createSourceFile` walk over static imports, `export ... from`, and dynamic `import()`). Test-only file: `ts.createSourceFile`/`isImportDeclaration`/`isExportDeclaration`/`isStringLiteral`/`isCallExpression`/`forEachChild`/`SyntaxKind.ImportKeyword` are all current APIs (not deprecated); `fs.readFileSync`/`fg.sync`/`postcss([tailwindcss(config)])` operate on config-derived constants and bounded repo files (no attacker input → no injection/traversal); regexes (`/\.[cm]?[jt]sx?$/`, `toPosixGlob` lookahead) are linear (no ReDoS); `resolveSpecifier` handles only relative + `@/` alias on constants; `typescript@6.0.3` already a devDep of `apps/web` + root (no new dep → no new CVEs). No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`new Buffer`/`max_tokens`.
+**Scans**: new-file secrets CLEAN · new-file XSS/injection CLEAN · deprecated CLEAN · `npm audit` ✅ 0 vulnerabilities · added-lines secrets CLEAN in apps/packages (convoy-diff `API_KEY` hits are REMOVALS: `wrangler.toml` drops hardcoded prod+staging keys, shared drops `PUBLIC_ACCESS_KEY`, `env.ts` fail-closed).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
+## Security Audit — PR recover-lost-web-frontend-fixes-companio 5-file state vs head (2026-10-01)
+
+**Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head`=da76892c → head `44a8214e` (4 commits; 5 files: `apps/web/package.json` +fast-glob 3.3.3, `apps/web/src/config/tailwindContent.test.ts` +154 new, `apps/web/tailwind.config.d.ts` +5 new, `apps/web/tailwind.config.js` +45/-1, `package-lock.json` +1).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a build-correctness FIX (follow-up to prior 3-file audit; delta adds `fast-glob@3.3.3` devDep + platform-safe glob-prefix guard). `tailwind.config.js` uses current `escapePath`/`convertPathToPattern` (verified via fast-glob docs, NOT deprecated) + ESM `fileURLToPath` on constant-only `path.join` args (no user input → no traversal); negations are static strings. Test-only file runs `fg.sync` on config-derived constants (no attacker input → no injection); regexes are linear (no ReDoS); `fs.readFileSync` on fixed declaration path; `postcss([tailwindcss(config)])` on static config. Declaration file is a trivial `Config` re-export. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `substr`/`max_tokens`; repo-wide `token` hits are design-token comments + pre-existing python template placeholder, not secrets.
+**Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · `npm audit` ✅ 0 vulns (convoy branch + `agent/security-engineer`) · fast-glob APIs confirmed current via Context7.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
+## Security Audit — PR app-functionality-fixes-round-2 (a6674c16/head) vs merge-base (2026-10-01)
+
+**Scope**: `merge-base(origin/main, origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head)=da76892c` → head `801a04a4` (1 commit `fix(api): redact x-api-key header from Workers request logs (#3696)`; 2 files: `apps/api/src/config/constants/logger.ts` +20, `apps/api/src/middleware/logger.test.ts` +153).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a security FIX (consistent with prior toast-entry audit). `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (verified `= HTTP_HEADER_NAMES.X_API_KEY = "x-api-key"`, the `apiKeyAuth` default at `auth.ts:110`; sole prod call site `src/index.ts` does not override) to `SANITIZED_HEADER_EXCLUDE`. Substring case-insensitive matching covers alias forms; tests pin redaction + non-over-redaction. Canaries (`CANARY-bug052-*` ×5) are fake test markers, never real secrets. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`/`child_process`; no `.substr`/`max_tokens`; uses `.includes`. No `.env`/`.dev.vars`/keys in diff; no `package.json` change → no new CVEs.
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns · added-lines secrets/injection/XSS/deprecated CLEAN · shared/API header invariant confirmed (`packages/shared/src/config/http.ts:147`, `apps/api/src/config/constants/network.ts:41`).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`. No rotation needed.
+
+## Security Audit — PR tailwind content-glob fix vs head (2026-10-01)
+
+**Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/gt/maple/1b8aca4a` vs `.../head` (3-file diff: `apps/web/tailwind.config.js` content-glob hardening, `apps/web/tailwind.config.d.ts` +5 new, `apps/web/src/config/tailwindContent.test.ts` +85 new).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a build-correctness FIX. `tailwind.config.js` derives content globs from `import.meta.url` via `fileURLToPath`+`path.join` (constants only, no user input → no path traversal), adds load-bearing `packages/shared/src` scan (TOAST_STYLES/CHAR_COUNTER_COLORS literal classes would otherwise purge) and `!**/*.{test,spec}.*` + `!**/__tests__/**` negations for both roots (prevents fixture/prose `.isolate` pollution). Test compiles real config via `postcss([tailwindcss(config)])` and asserts shared-only classes survive + test-only classes absent; `fast-glob` input comes from config constants (no injection). `tailwind.config.d.ts` is a trivial `Config` type re-export. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`; no `Math.random`/weak hashing/auth logic; no `__dirname`/`require(`/`substr`/`max_tokens` (uses current ESM `fileURLToPath`, `String.includes`, `Array.filter/some`). Only `token` hit is English word "tokens" in a comment.
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · added-lines secrets/injection/XSS/deprecated/weak-crypto CLEAN · no `package.json` in diff → no new CVEs.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`.
+
+## Security Audit — PR toast credential-redaction vs head (2026-10-01)
+
+**Scope**: `origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/gt/toast/271503c9` vs `.../head` (2-file diff: `apps/api/src/config/constants/logger.ts` +18, `apps/api/src/middleware/logger.test.ts` +124/-1).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a security FIX. `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (`x-api-key`, the `apiKeyAuth` default header verified in `auth.ts:110`; sole prod call site `src/index.ts:104` does not override) to `SANITIZED_HEADER_EXCLUDE`, closing a credential leak into Workers logs on every authenticated request. Substring matching (`key.toLowerCase().includes(h)`) deliberately covers gateway/SDK aliases (`Proxy-X-Api-Key`, `x-api-key-id`); tests pin both redaction and non-over-redaction (`x-correlation-note` preserved). Canaries are fake `CANARY-bug052-*` values, `scan:secrets` clean. No `eval`/`innerHTML`/`Math.random`/weak hashing; uses `.includes` (not deprecated `.substr`).
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + prod) · added-lines XSS/injection/deprecated CLEAN · toast overlay tests ✅ 15/15 (baseline 11/11) · shared `X_API_KEY="x-api-key"` invariant confirmed.
+**Pre-existing (not introduced, for follow-up)**: `origin/main` + `agent/security-engineer` still log `x-api-key` until toast merges — no action taken here to avoid duplicating toast's fix and diverging. No rotation needed (leak is log-storage exposure, canaries never real secrets).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`.
+
+## Security Audit — PR introduced-defect removal vs origin/main (2026-10-01)
+
+**Scope**: `agent/security-engineer` vs `origin/main` (6-file diff). Intent is secret hardening (wrangler.toml drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; `env.ts` fail-closed `""`; shared drops `PUBLIC_ACCESS_KEY` with fail-closed test).
+**Fixes applied (this cycle)**: Removed introduced regressions alongside hardening — (1) dependency downgrades restored forward (hono 4.13.8→4.13.9, openai 7.18.0→7.23.0, @uiw/react-codemirror 4.25.11→4.25.12, framer-motion 13.4.0→13.4.4, react-error-boundary 6.1.5→6.1.6; lockfile synced to origin/main); (2) localStorage try/catch guards restored (App.tsx 2 sites, StepGenerating.tsx, ReducedMotionContext.tsx 3 fns — prevents privacy-mode SecurityError crash); (3) shared-constant centralization restored (PLAYWRIGHT_DEFAULTS visibility timeouts, UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT, web import, e2e specs, api.test mock, config.test 23-count, flexy Iteration 187 docs).
+**Scans**: secret value 0x in source · `scan:secrets` ✅ 335 files · XSS/injection/deprecated CLEAN · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck clean · shared 869/869 ✅ · web api.test 5/5 ✅.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — PR stale-deps sync vs origin/main (2026-10-01)
+
+**Scope**: `agent/security-engineer` vs `origin/main` (merge-base 6b98b8a2). Branch intent is secret hardening (wrangler.toml drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; `env.ts` fail-closed `""`; shared drops `PUBLIC_ACCESS_KEY`).
+**Finding (fixed this cycle)**: Branch was behind main's f0aa4fbb — stale `dompurify@3.4.15` + missing `overrides.dompurify=3.4.16` re-exposed GHSA-p98j-92pf-mc4p (DOM XSS, `npm audit` 1 low); stale `MarkdownRenderer` (`src={src}` vs safe `src={src || undefined}`), stale `PreviewEmptyState` (missing `data-reduced-motion`), stale docs (README/active-tasks/bugs BUG-051, findings Cycle 602). Synced 9 stale files + Cycle 602 block forward from `origin/main`; kept the 4 secret-removal files untouched.
+**Scans**: code-only added-lines secret value 0x · `scan:secrets` ✅ 335 files · added-lines XSS/injection/deprecated CLEAN · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck clean (shared/api/web) · shared 868/868 ✅ · web PreviewEmptyState 12/12 + MarkdownRenderer 27/27 ✅ · api 535/535 ✅.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+
+## ULW Loop Cycle 603 (2026-10-02 — REPOKEEPER DOC-SYNC)
+
+**Phase 0**: Branch `agent` from `origin/main` (`da76892c`), clean tree, 0-behind.
+**Hygiene**: 0 redundant/temp/unused safe-delete (temp-artifact grep empty; dist/node_modules ignored; 8/8 scripts USED; functions/api proxy bukan duplikat; docs/issues+audit append-only KEEP; .agent vs .opencode duplikat struktural — KEEP pending keputusan kanonis loader).
+**Doc-sync**: `API_ENDPOINTS` + `GET /` + `api-documentation.md` GET-example hilang `STORAGE_REPORT`/`SHARE_VERIFY` padahal routes hidup (`storage.ts:132`, `share.ts:473`) dan README table benar → tambah 2 keys di `endpoints.ts`/`index.ts`/`api-documentation.md`; README tree tambah `openapi.yaml`+`issues/`+`security/assessment-ajv-vulnerabilities.md`; README index tambah OpenAPI Spec + Active Issue Specs.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ · scan:secrets ✅ · api 535/535 ✅ · shared 869/869 ✅ · web 1248/1248 ✅.
+
+## ULW Loop Cycle 602 (2026-09-30 — REPOKEEPER DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20260930-sisyphus-loop` from `origin/main` (`3ae464da`), clean tree, 0-behind.
+**Hygiene**: 698 tracked files; 0 redundant/temp/unused (temp-artifact grep empty); 0 empty tracked dirs; 28/28 agents + 25/25 skills match README; 5/5 workflows `ubuntu-24.04-arm`; audits 99 top-level + 14 archived (retention: no purge, append-only per header).
+**Doc-sync**: README tree missing `ocr-review-summary-2026-09-26.md` → added; README index missing `issue-manager-plan-cycle-368.md` + `ocr-review-summary-2026-09-26.md` → added. TODO/FIXME 0; console.log only intentional (logger/secureLog).
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ exit 0 · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 335 files · audit ✅ 0 vulns.
+**Stray state**: 20+ open PRs (incl. #3684/#3681/#3676/#3672 repokeeper) left untouched — human disposition pending; this cycle adds minimal docs-only PR.
+
+## RepoKeeper Cycle 2026-09-30 (HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-cleanup-20260930` created from `origin/main` (`e56f56bf`); working tree clean; `git fetch` synced.
+**Hygiene CLEAN** — 697 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy (Pages + Web deploys); `.agent/` ↔ `.opencode/agent/` intentional mirror (both tracked, contents differ); scripts wired (`brocula-hunt`↔`brocula`, `migrate`↔`db:*`, `normalize`↔`normalize:issues`, `scan-secrets`, `validate-wrangler`; `brocula-sweep.mjs`+`lh-warm.mjs` documented helpers).
+**Doc-sync**: README architecture tree indexed missing `docs/ocr-review-summary-2026-09-26.md` + `docs/issues/` (7 files); tree now matches on-disk.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors/0 warnings · build ✅ exit 0 (PLUGIN_TIMINGS informational) · prettier ✅ README.
+
 
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
@@ -11661,3 +11827,211 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 **Doc-sync — 1 CONFIRMED defect fixed**: **SECURITY.md audit-history missing Cycle 478–489 recurring-gate rows** (Cycles 478–489 records were findings-only per `git show --stat` — only `docs/findings.md` touched each cycle) → **backfilled** (precedent Cycles 448/449/451/454/458/466/469/474/477) + Cycle 490 row appended; **`docs/knowledge-review.md` Last Review stayed at Cycle 477** → backfilled Cycle 478–489 entries + refreshed to Cycle 490; **`docs/active-tasks.md` + `CHANGELOG.md` top entries stayed at Cycle 477** → Cycle 490 records appended (Cycles 478–489 findings-only, matching SECURITY backfill precedent). All other tracked records current (findings top = Cycle 489 ✅ — this entry appends 490; README L340 BroCula range `(Jul 15–Aug 15)` matches archives latest Run 67 Aug 15 — no bump; `sitemap.xml` `lastmod` already `2026-08-15` matches this cycle's commit date — no bump).
 
 **Baseline ALL GREEN 2,571/2,571 CONFIRMED LIVE THIS CYCLE** (web 1,184/83 + api 535/33 + shared 852/4; typecheck ✅ exit 0 · lint ✅ **0 errors, 0 warnings** ✅ · build ✅ (`PLUGIN_TIMINGS` informational) · build:api ✅ (wrangler `--dry-run` exit 0) · tests 2,571/2,571 ✅ · scan:secrets ✅ 322 files · audit **0 vulns** ✅ · prettier ✅). **Skills used**: none loaded this cycle — all operations are deterministic CLI probes + live gate runs per contract (label audit via `scripts/normalize-issue-labels.mjs --dry-run` — the deterministic label mapper; permission probes; P1 live re-verification — all known-file reads; scoring is evidence-based read-only analysis). **Subagents used**: none — deterministic CLI probes per contract; no parallel exploration needed (all targets are known-file live reads). **Final state: idle** — Phase 0 → ISSUE MANAGER MODE (0 PRs + 101 open issues); Steps 1–3 mutations blocked (`issues: write`, 69th block); Step 4 P1s code/docs-resolved (close blocked) or workflow-blocked (#1014 CI gate / #849/#953, 95th deferral — workflow-file push LIVE-verified rejected, zero residue); Phase 1 scoring → lowest domain D (Delivery 73.5), lowest criterion CI/CD Health (55) → workflow-blocked (95th); doc-sync 12-cycle backfill executed; no code-actionable work this cycle; baseline ALL GREEN.
+
+## Security Audit — PR model-fallback-hierarchy vs origin/main (2026-09-27)
+
+**Scope**: 90 changed files. Code/config: toast API refactor (options→duration), pro-tip
+removal, StepIndicator responsive-class removal, debounce retype, opencode.json model
+hierarchy, 2 new dev deps (@emnapi/core 1.11.3, @img/sharp-wasm32 0.35.4), new
+scripts/opencode-run.sh (multi-model fallback), 5 workflows migrated to it.
+**Scans**: diff secret grep CLEAN · `scan:secrets` ✅ 332 files · diff XSS/injection grep
+CLEAN · diff deprecated-API grep CLEAN · `npm audit` ✅ 0 vulns (incl. new deps) ·
+workflows preserve `--share false/disabled` + secrets usage · opencode-run.sh `bash -n` OK,
+0755, fully quoted, no eval/curl/secrets · toast refactor complete (0 old-API callers,
+44/44 vitest pass) · source typecheck 0 errors (test-file jest-dom matcher errors
+pre-existing on main).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes required.
+
+## Security Audit — PR hardcoded-secret removal vs origin/main (2026-09-27)
+
+**Scope**: 22 changed files vs origin/main. Headline change is secret hardening:
+`apps/api/wrangler.toml` drops hardcoded `API_KEY = "blueprintify-public-access-2026"`
+(prod + staging → `wrangler secret put` comments); `apps/web/src/config/env.ts`
+drops the same hardcoded `VITE_API_KEY` fallback (now returns `""` when unset).
+Remainder is toast options→duration refactor + callers, pro-tip removal, StepIndicator
+class simplification, debounce retype, 2 new devDeps (@emnapi/core 1.11.3,
+@img/sharp-wasm32 0.35.4), plus docs/table formatting (SECURITY.md, README, CHANGELOG).
+**Scans**: added-lines secret grep CLEAN (only removed `-` lines matched) ·
+`scan:secrets` ✅ 334 files · added-lines XSS/injection grep CLEAN
+(no dangerouslySetInnerHTML/innerHTML/eval/Function) · deprecated grep CLEAN in
+changed files · `npm audit` ✅ 0 vulns · `.gitignore` covers `.dev.vars` + `.env*` ·
+fail-closed verified: frontend omits `x-api-key` header when empty
+(`api.ts` conditional spread), backend `apiKeyAuth` 503s when unset (auth.ts + test) ·
+toast refactor complete (44/44 vitest: toast/store/autosave/StepIndicator pass,
+0 stale options-object callers) · web source typecheck 0 non-test errors, shared
+typecheck clean (API controller + web jest-dom matcher errors pre-existing on main).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. The PR *removes*
+a hardcoded credential — no rotation needed (public dev fallback, never a real secret),
+no code fixes required. Note: `toast.ts` `Math.random()` ID generation is pre-existing
+and non-security-sensitive (ephemeral UI IDs), left untouched.
+
+## Security Audit — PR re-verification vs origin/main (2026-09-28)
+
+**Scope**: Same 22-file diff vs origin/main (secret-removal + toast refactor +
+pro-tip removal + StepIndicator + debounce + 2 devDeps + docs). Re-ran full gate.
+**Scans**: added-lines secret grep CLEAN (only benign `wrangler secret put`
+comments + `getEnvVar("VITE_API_KEY")` ref) · `scan:secrets` ✅ 334 files ·
+added-lines XSS/injection grep CLEAN · deprecated grep CLEAN · `npm audit` ✅
+0 vulns · no sensitive filenames in diff · `.gitignore` covers `.dev.vars` + `.env*` ·
+fail-closed re-verified (env `""` when unset, api.ts omits `x-api-key` when empty,
+auth.ts 503s when unset) · toast refactor complete (44/44 vitest pass, 0 stale
+options-object callers — remaining `{ duration:` hits are framer-motion props) ·
+shared typecheck clean, web 0 source errors (test-file jest-dom matcher errors
+pre-existing on main).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
+fixes required — nothing to remove. `toast.ts` `Math.random()` UI IDs left
+untouched (pre-existing, non-security-sensitive).
+
+## Security Audit — PR re-verification vs origin/main (2026-09-29)
+
+**Scope**: 4-file diff vs origin/main (secret-removal: `apps/api/wrangler.toml`
+drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments;
+`apps/web/src/config/env.ts` drops hardcoded `VITE_API_KEY` fallback → `""`
+when unset; plus audit-history appends in `.opencode/memory/security.md` +
+`docs/findings.md`). Merge from `origin/main` conflict-resolved to HEAD
+(secure) side on both files.
+**Scans**: added-lines secret grep CLEAN (hits are benign audit prose +
+`wrangler secret put` comments + `getEnvVar("VITE_API_KEY")` ref; working-tree
+grep for `blueprintify-public-access` in both config files = zero matches) ·
+`scan:secrets` ✅ 334 files · added-lines XSS/injection grep CLEAN (single hit
+is audit prose quoting pattern names) · deprecated grep CLEAN · no sensitive
+filenames in diff · `.gitignore` covers `.dev.vars` + `.env*` · `npm audit`
+✅ 0 prod vulns (5 moderate dev-only: `undici` via jsdom/miniflare/wrangler
+transitives — fix requires breaking `@cloudflare/vitest-pool-workers` bump,
+untouched by this PR which has no package.json changes) · fail-closed
+re-verified (frontend `api.ts` omits `x-api-key` when empty via conditional
+spread; backend `auth.ts` 503s when unset).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
+fixes required — nothing to remove. The PR *removes* a hardcoded credential —
+no rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — PR dependabot vitest/ui 5.0.2 vs origin/main (2026-09-29)
+
+**Scope**: 2-file diff (`apps/web/package.json` + `package-lock.json`):
+`@vitest/ui` `^4.1.11` → `^5.0.2` (dev-only test UI).
+**Scans**: PR-diff secret grep CLEAN · `scan:secrets` ✅ 334 files ·
+added-lines XSS/injection grep CLEAN (no eval/innerHTML/dangerouslySetInnerHTML) ·
+deprecated grep CLEAN · lockfile URLs all `registry.npmjs.org` with sha512
+integrity ✅ · no downgrades (only fflate/flatted/tinyrainbow patch bumps +
+tinyglobby drop per upstream) · `npm audit --omit=dev` ✅ 0 vulns ·
+`npm audit` full 5 moderate (undici GHSA-3wwx-pv8p-q78v via jsdom→miniflare→
+wrangler) PRE-EXISTING, not introduced · Snyk `@vitest/ui@5.0.2` no direct
+vulns · GHSA-p63j-vcc4-9vmv + GHSA-5xrq-8626-4rwp patched in both 4.1.11 and
+5.0.2 · Vite 8.3.0 satisfies Vitest 5 (≥6.4.0), Node ≥22 satisfies (≥22.12.0 —
+CI uses coarse `22` pin) · `vitest.config.ts` has no deprecated options, src
+uses only stable APIs (describe/it/expect/vi) ✅.
+**Structural flag (report-only, no fix)**: `vitest` stays `4.1.11` while
+`@vitest/ui@5.0.2` peerRequires `vitest@5.0.2` → npm peer warning, possible
+`vitest --ui` breakage. Coordinated bump (vitest + coverage-v8 + ui → 5.x)
+left to dependabot follow-ups — out of scope, no functionality reduction.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
+fixes required — nothing to remove.
+
+## Security Audit — Dependabot dev-deps PR (development-dependencies-2da20e1db4) vs origin/main (2026-09-29)
+
+**Scope**: 5 files (root + api/web/shared package.json, package-lock.json). 9 bumps,
+all forward-only patch/minor, all dev-only: workers-types 5.20260918.1→5.20260926.1,
+eslint 10.10.0→10.11.0 (x4 workspaces), wrangler 4.134.0→4.141.0, jsdom 30.1.0→30.1.1,
+vite 8.3.0→8.3.1, @types/node 26.6.1→26.6.3, lighthouse 13.4.1→13.5.0,
+prettier 3.9.8→3.9.9, typescript-eslint 8.70.0→8.70.1.
+**Scans**: added-lines secret/XSS/deprecated grep CLEAN (both this PR and own-branch
+diff) · `scan:secrets` ✅ 334 files · `npm audit` 5 moderate, single chain undici
+GHSA-3wwx-pv8p-q78v (7.28.0–7.29.0 permessage-deflate DoS) via
+jsdom→miniflare→vitest-pool-workers→wrangler — dev-only test tooling, fix needs breaking
+`--force` downgrade → risk accepted · jsdom@30.1.1 moves to undici ^8.10.2 (out of
+vuln range, improves one leg) · residual pin wrangler@4.141.0→miniflare
+5.20260925.0-alpha→undici 7.29.0 exact requires upstream workers-sdk release, not
+fixable at project level · merge from origin/main tried to reintroduce hardcoded
+`blueprintify-public-access-2026` (wrangler.toml prod+staging, env.ts fallback) →
+conflicts resolved keeping secret-free HEAD version (tomllib parse OK, no markers,
+web typecheck exit 0) · stale gitignored apps/web/dist held old fallback → rebuilt,
+fresh bundle grep CLEAN (dist untracked, never committed).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes
+required — nothing to remove.
+
+## Security Audit — PR diff vs origin/main (2026-09-30)
+
+**Scope**: 16-file diff on `agent/security-engineer` vs `origin/main` (secret-removal
+direction: wrangler.toml drops hardcoded `API_KEY`, env.ts drops `VITE_API_KEY`
+fallback, shared drops `PUBLIC_ACCESS_KEY`/related constants; plus Flexy-186 revert
+inlining origin/proxy literals, and override version drift).
+**Scans**: added-lines secret grep CLEAN (hits are benign audit prose +
+`wrangler secret put` comments + `getEnvVar("VITE_API_KEY")` ref) ·
+added-lines XSS/injection grep CLEAN · deprecated grep CLEAN ·
+`scan:secrets` ✅ 334 files · `npm audit --omit=dev` ✅ 0 vulns, full `npm audit`
+✅ 0 vulns · `validate:wrangler` ✅ · shared build + shared/web typecheck clean.
+**Fixes applied (this cycle)**:
+1. `apps/api/wrangler.toml:76` — removed stray `<` in `<vars = {...}` (invalid TOML
+introduced alongside secret removal; broke staging deploy + validator) → `vars = {...}`.
+2. `package.json` overrides — reverted silent downgrades `brace-expansion 5.0.9→5.0.12`,
+`undici 7.29.0→7.30.0` to match `origin/main` forward-only versions (lockfile
+re-resolved via `npm update undici`); undici 7.29.0 sits in GHSA-3wwx-pv8p-q78v range.
+**Structural flag (report-only, no fix)**: `apps/api/src/index.ts` + both
+`functions/api/[[path]].ts` proxies reinline hardcoded origins/paths/patterns,
+reverting Flexy-186 shared-config centralization (`DEPLOYMENT_ORIGINS`,
+`PROXY_CONFIG`, `HTTP_STATUS`/`HTTP_METHODS` members, `API_ERROR_MESSAGES`
+factories deleted from shared). Modularity regression, not exploitable — left to
+Flexy follow-up per no-functionality-reduction constraint.
+**Result**: Secret-removal direction preserved (fail-closed); 2 introduced defects
+removed; no secrets/XSS/deprecated introduced.
+
+## Security Audit — PR secret-removal + constants inline-expansion vs origin/main (2026-09-30)
+
+**Scope**: 14 changed files vs origin/main on agent/security-engineer. Headline change is
+secret hardening: `apps/api/wrangler.toml` drops hardcoded `API_KEY` (prod + staging →
+`wrangler secret put` comments); `packages/shared` drops `PUBLIC_ACCESS_KEY`, `VITE_API_KEY`
+key, `ENDPOINT_UNAVAILABLE`/`SERVER_ERROR` factories, `DEPLOYMENT_ORIGINS`, `PROXY_CONFIG`,
+`METHOD_NOT_ALLOWED`/`HEAD`/`OPTIONS` members; `apps/web/src/config/env.ts` API_KEY falls
+back to `""` when unset; call sites inline identical literals.
+**Scans**: secret value 0x in added code lines (4x in removed lines only) · `scan:secrets`
+✅ 334 files · added-lines XSS/injection grep CLEAN · deprecated-API grep CLEAN (0 hits) ·
+`npm audit` ✅ 0 vulns (full + prod) · wrangler.toml valid TOML · fail-closed verified
+(frontend omits `x-api-key` when empty per api.ts:142, backend 503s when unset per
+auth.ts + test, constant-time compare intact) · typechecks clean (shared/web/api) · zero
+stale refs to removed exports repo-wide · CORS values byte-identical (no widening).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes
+required; no rotation needed (public dev fallback, never a real secret).
+**Structural flag (report-only)**: inlining shared constants as literals duplicates
+values across index.ts + 2 proxy functions + api.ts (drift risk, no behavior change) —
+left to owning team per no-functionality-reduction constraint.
+
+## Security Audit — PR diff vs origin/kilo/sandy-rocket-5a5 (2026-09-30)
+
+**Scope**: 18 changed files vs origin/kilo/sandy-rocket-5a5 on agent/security-engineer. Kilo base carries hardcoded `blueprintify-public-access-2026` in wrangler.toml (prod+staging) + SHARED_DEFAULTS.PUBLIC_ACCESS_KEY; our branch removes it (prod+staging → `wrangler secret put` comments, env.ts fallback → "" fail-closed).
+**Scans**: code-only added-lines secret value 0x (4x hits are audit prose in memory/findings docs, not code) · added-lines XSS/injection grep CLEAN · deprecated-API grep CLEAN (openai default import + max_completion_tokens correct for openai 7.18.0) · `scan:secrets` ✅ 334 files · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · shared build + web rebuild clear stale gitignored dist (post-rebuild grep 0 hits).
+**Fixes applied (this cycle)**: none required in tracked source (already secret-free); rebuilt gitignored artifacts (packages/shared/dist + apps/web/dist) that still embedded old fallback — post-rebuild verified clean.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+**Structural flag (report-only)**: inlining shared constants (DEPLOYMENT_ORIGINS/PROXY_CONFIG/HTTP_STATUS members) duplicates literals across index.ts + 2 proxies + api.ts (drift risk, no behavior change) — left to owning team per no-functionality-reduction constraint.
+
+## Security Audit — origin/main merge secret-reintroduction removed (2026-09-30)
+
+**Scope**: `origin/main` merge into agent/security-engineer staged 20 files (Flexy Iteration 186: shared-config centralization + `docs/openapi.yaml` restore + model-hierarchy config) with 1 merge conflict in `apps/web/src/config/env.ts`. PR `git diff --name-only origin/main` on the source branch was empty (merge HEAD tree == origin/main; ec2021c9 formatting-only changes absorbed).
+**Finding (fixed this cycle)**: origin/main reintroduced hardcoded fallback `blueprintify-public-access-2026` via new `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` (`packages/shared/src/config/core.ts`) wired as `getEnvVar(WEB_ENV.VITE_API_KEY, SHARED_DEFAULTS.PUBLIC_ACCESS_KEY)` fallback in `env.ts` — regressing the prior secret-removal hardening (fail-closed `""`). Removed the constant, resolved the conflict secret-free as `getEnvVar(WEB_ENV.VITE_API_KEY)` (keeps shared key-name constant, no fallback), replaced the hardcoding test with a fail-closed absence assertion (`"PUBLIC_ACCESS_KEY" in SHARED_DEFAULTS === false`).
+**Scans**: secret value 0x in added code lines (apps/packages/functions) · `scan:secrets` ✅ 335 files · added-lines XSS/injection/deprecated grep CLEAN (no eval/innerHTML/dangerouslySetInnerHTML/max_tokens/exec) · `max_completion_tokens` correct for openai 7.18.0 · `import { OpenAI }` named import compiles under openai 7.18.0 (api typecheck clean, mock provides both default+named) · `npm audit` ✅ 0 vulns (full + prod) · fail-closed verified both sides (frontend omits `x-api-key` when empty per web api.ts:142, backend 503s when unset per auth middleware + tests) · constant-time compare intact · shared build ✅ · shared 868/868 ✅ · web typecheck ✅ + api/env tests 25/25 ✅ · api typecheck ✅ + openai tests 19/19 ✅.
+**Result**: 1 introduced secret removed; 0 remaining vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+**Structural flag (report-only)**: `docs/flexy-plan.md` Iteration-186 prose still names the removed fallback value in 4 lines (historical plan record, same as prior findings entries) — left untouched per minimal-diff; value already in git history.
+
+## Security Audit — PR convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head (2026-10-01)
+
+**Scope**: 4 files vs origin/main on agent/security-engineer: `apps/api/src/config/constants/logger.ts` (+20), `apps/api/src/index.test.ts` (+258 BUG-053 coverage), `apps/api/src/index.ts` (-9 fallback removal), `apps/api/src/middleware/logger.test.ts` (+153 redaction coverage). No package.json/lockfile changes.
+**Finding**: PR is a hardening PR — no introduced vulnerabilities, secrets, or deprecated functions.
+- *x-api-key redaction (BUG-052)*: `SANITIZED_HEADER_EXCLUDE` gains `API_HEADERS.CUSTOM.API_KEY` (= shared `"x-api-key"` lowercase); middleware substring match covers aliases (`Proxy-X-Api-Key`, `x-api-key-id`) without over-redacting (`x-correlation-note` intact); auth default reads same constant (anti-drift) with outside-pinned invariant test (401-on-drift). Fixes credential leak into Workers logs.
+- *SPA fallback removal (BUG-053)*: deletes post-`app.fetch` `env.ASSETS.fetch(request)` that threw on consumed bodies (500 + stack/filesystem-path leak) and shadowed structured `NOT_FOUND_ERROR`. Pre-app ASSETS lookup retained (pre-consumption, safe).
+**Scans**: added-lines secret grep CLEAN (sole "secret" hit is doc prose; CANARY* are test-only sentinels asserted absent) · XSS/injection grep CLEAN · deprecated grep CLEAN · no `.env`/pem/key in diff · `npm audit` ✅ 0 vulns (full + prod) · `scan:secrets` ✅ 335 files · baseline api logger+index tests 16/16 pass.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes required; no rotation needed (canaries are non-secrets).
+
+## Security Audit — dependabot dev-dependencies PR (2026-10-02)
+
+**Scope**: 5 files vs origin/main on origin/dependabot/npm_and_yarn/development-dependencies-2da20e1db4: `apps/api/package.json`, `apps/web/package.json`, `package.json`, `packages/shared/package.json`, `package-lock.json`. All 9 version moves are forward-only dev-dependency bumps (workers-types 5.20260918.1→5.20260926.1, eslint 10.10.0→10.11.0 ×4 workspaces, wrangler 4.134.0→4.141.0, jsdom 30.1.0→30.1.1, vite 8.3.0→8.3.1, @types/node 26.6.1→26.6.3, lighthouse 13.4.1→13.5.0, prettier 3.9.8→3.9.9, typescript-eslint 8.70.0→8.70.1). `dompurify` override stays pinned at 3.4.16; no downgrades (per 2026-06-08 rule).
+**Scans**: package.json diff secret grep CLEAN · deprecated-API grep CLEAN (no max_tokens/eval/innerHTML/dangerouslySetInnerHTML in changed source — PR touches manifests only) · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · lockfile integrity CLEAN (only local workspace `resolved` links, no suspicious postinstall scripts) · source secret scan CLEAN (no `blueprintify-public-access` in tracked source) · prior secret-removal hardening intact on agent/security-engineer (wrangler.toml → `wrangler secret put` comments, env.ts fail-closed `""`, PUBLIC_ACCESS_KEY constant + fallback removed, fail-closed absence test).
+**Fixes applied (this cycle)**: none required in tracked source; rebuilt gitignored stale artifacts that still embedded the removed fallback value (`packages/shared/dist` via `tsc --build`, `apps/web/dist` via vite build) — post-rebuild grep 0 hits in both.
+**Verification**: typecheck ✅ (all 3 workspaces) · shared 869/869 ✅ · api 535/535 ✅ · web 1248/1248 ✅ · fail-closed preserved (web omits `x-api-key` when empty per api.ts:142; API 503s when unset).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes required; no rotation needed (removed value was a public dev fallback, never a real secret).
+
+## RepoKeeper ULW Loop — Doc-sync + orphan-script wiring (2026-10-03)
+
+**Scope**: `agent` branch from `origin/main` (`4ab5aaa6`). 6 files: `docs/environment-variables.md` (+1 row), `apps/web/.env.example` (+3 lines), `apps/api/.dev.vars.example` (1-line URL fix), `apps/api/src/types.ts` (+COLD_START/NODE_ENV, BACKGROUND_QUEUE optional), `package.json` (+3 scripts), `docs/findings.md` (this entry).
+**Finding**: Temp files CLEAN (no *.tmp/*.bak/task_plan.md/.sisyphus/.omo); 0 docs orphan (28/28 docs linked); API 15 endpoints / 14 openapi paths IN SYNC (no fix needed post-#3705); CI runners 20/20 `ubuntu-24.04-arm` COMPLIANT.
+**Fixes**: (1) Added missing `VITE_API_KEY` row to frontend env table + `.env.example` (code uses `getEnvVar(WEB_ENV.VITE_API_KEY)` fail-closed, shared `ENV_VAR_KEYS.WEB` defines it — docs were behind). (2) Fixed truncated `# GITHUB_URL=https://github.com` → full `https://github.com/cpa03/blueprintify` to match `DEFAULT_URLS.GITHUB` + docs table. (3) Added missing `CIRCUIT_BREAKER_COLD_START_WINDOW_MS?: string` + `NODE_ENV?: string` to `Env` interface (present in EnvConfig/env.ts/docs, absent in types.ts). (4) Made `BACKGROUND_QUEUE: Queue` → optional (`BACKGROUND_QUEUE?: Queue`) — `wrangler.toml` has no queue binding (Free Tier, docs intentional-omission table), zero usages in `apps/api/src` outside declaration, so required field was a type lie. (5) Wired orphan scripts: `brocula:sweep`, `lh:warm`, `brocula:all` (previously 0 refs in package.json/workflows, only cited in audits/findings).
+**Deferred (documented, not deleted this cycle)**: `docs/audits/` 99 files bloat → archive <2026-08-01 + trim README table (needs owner sign-off); `.agent/` vs `.opencode/` full skill duplicate + root `opencode.json`/`tui.json` vs `.opencode/` plugin-name drift (`oh-my-opencode` vs `oh-my-openagent`) → verify CLI resolution before removal; `functions/api/[[path]].ts` Pages legacy vs `apps/api` Workers canonical → verify dashboard before removal; `scripts/migrate.ts` stub + root `schema.sql` placement → team decision (implement vs remove); `findings.md`/`flexy-plan.md`/`CHANGELOG.md` append-only giants → quarterly rotation, not deletion.
+**Scans**: typecheck ✅ (shared/api/web) · lint ✅ 0 errors · build ✅ (vite 9.34s) · baseline pre-change ALL GREEN, post-change verification pending in next step.

@@ -291,7 +291,10 @@ const ToastItem = memo(
           style={{
             width: `${progress}%`,
             opacity: isHovered ? 0 : 0.3,
-            transition: TOAST_SPRING.PROGRESS_BAR_TRANSITION,
+            // Match ProgressRing's noTransition behavior above (WCAG 2.3.3):
+            // the width countdown is decorative motion, so snap instantly
+            // when the user prefers reduced motion.
+            transition: shouldReduceMotion ? "none" : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
           }}
           aria-hidden="true"
         />
