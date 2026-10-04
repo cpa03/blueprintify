@@ -3,10 +3,10 @@
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
 ## ✅ StorX — **PageScrollProgressBar Micro-UX & Reduced Motion State Inspection**
-- [CONNECT] Connected `useReducedMotion` hook and `BANNER_STATE_VALUES` shared config export to `PageScrollProgressBar.tsx`.
+- [CONNECT] Wired the existing `useReducedMotion` hook to a new `data-reduced-motion` ("true"/"false") DOM inspection attribute on `PageScrollProgressBar.tsx`, and adopted the shared `BANNER_STATE_VALUES` export in `PageScrollProgressBar.test.tsx` state assertions.
 - [STRENGTHEN] Strengthened `PageScrollProgressBar` DOM state tracking with `data-reduced-motion` ("true"/"false") attribute for accessibility testing.
-- [CONSOLIDATE] Consolidated `PageScrollProgressBar` display state and reduced motion tracking across web components.
-- [REMOVE] Removed raw string literals in `PageScrollProgressBar.test.tsx` state assertions in favor of `BANNER_STATE_VALUES`.
+- [CONSOLIDATE] Consolidated `PageScrollProgressBar` display-state assertions onto the shared `BANNER_STATE_VALUES` export (single component; no new shared constant added).
+- [REMOVE] Removed the raw `"visible"` string literal from the `data-state` assertion in `PageScrollProgressBar.test.tsx` in favor of `BANNER_STATE_VALUES` (other attribute literals `"41"`/`"false"`/`"true"` remain literal-pinned).
 
 ## ✅ StorX — **StepReview Micro-UX & Reduced Motion State Inspection**
 - [CONNECT] Connected `useReducedMotion` hook and centralized step keys to `StepReview.tsx`.

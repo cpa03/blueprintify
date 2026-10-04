@@ -31,11 +31,11 @@
 
 ## Lessons Learned
 
-### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (3 files), 0 introduced issues
+### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
 
 - **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
-- **Verification**: Added-lines secret/injection/deprecated 0x; full-file secret/XSS 0x; `scan:secrets` ✅ 337 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, no fix, no package change → not introduced); web typecheck ✅; PageScrollProgressBar tests 10/10.
-- **Lesson**: Framer-motion mock prop-stripping (`initial`/`animate`/`transition`/etc.) is a DOM-hygiene hardening pattern — animation props must never reach real DOM nodes; when reviewing motion-component tests, verify the mock strips non-DOM props rather than spreading them.
+- **Verification**: Added-lines secret/injection/deprecated 0x; full-file secret/XSS 0x; `scan:secrets` ✅ 337 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, no fix, no package change → not introduced); web typecheck ✅; PageScrollProgressBar tests 11/11 (incl. reduced-motion true-branch).
+- **Lesson**: Framer-motion mock prop-stripping (`initial`/`animate`/`transition`/etc.) is a test-only jsdom hygiene pattern — it keeps test-DOM assertions focused on real attributes; shipped code is unaffected (framer-motion handles real DOM nodes itself). When reviewing motion-component tests, verify the mock strips non-DOM props rather than spreading them into the jsdom div.
 
 ### 2026-10-02: Security Engineer Audit — Changed-files scan vs origin/main (16 files), 0 introduced issues
 

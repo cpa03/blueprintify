@@ -187,7 +187,8 @@ describe("PageScrollProgressBar", () => {
     renderPageProgressBar();
 
     const slider = screen.getByRole("slider");
-    expect(slider.getAttribute("data-state")).toBe(BANNER_STATE_VALUES.VISIBLE);
+    expect(slider.getAttribute("data-state")).toBe("visible");
+    expect(BANNER_STATE_VALUES.VISIBLE).toBe("visible");
     expect(slider.getAttribute("data-progress")).toBe("41");
     expect(slider.getAttribute("data-hovered")).toBe("false");
     expect(slider.getAttribute("data-focused")).toBe("false");
@@ -198,5 +199,14 @@ describe("PageScrollProgressBar", () => {
 
     fireEvent.blur(slider);
     expect(slider.getAttribute("data-focused")).toBe("false");
+  });
+
+  it("reports reduced motion when preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    expect(slider.getAttribute("data-reduced-motion")).toBe("true");
   });
 });
