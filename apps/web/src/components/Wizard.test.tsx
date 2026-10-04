@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, configure } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { axe } from "jest-axe";
@@ -8,6 +8,15 @@ import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
 import { EDITOR_TABS, ACCESSIBILITY_LABELS } from "../config/constants";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+
+// The wizard step chunks are lazy-loaded behind framer-motion, so the
+// findBy* on StepInfo waits out a dynamic import plus the animation transform.
+// Measured 2943ms on a 4-core runner with 8 competing processes, so the 1s
+// findBy* budget fires early. Scoped to this file: a module-level configure()
+// only reaches this file's module registry, so the other suites keep failing
+// fast and still catch a real multi-second render regression.
+configure({ asyncUtilTimeout: 10000 });
+vi.setConfig({ testTimeout: 15000, hookTimeout: 15000 });
 
 // jsdom cannot compute real colors, so the color-contrast rule is always
 // "incomplete" there; disable it to focus on structural accessibility.

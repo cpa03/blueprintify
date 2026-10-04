@@ -46,8 +46,11 @@ npm run dev
 ### Testing
 
 ```bash
-# Run tests
+# Run tests (one-shot, non-interactive)
 npm run test
+
+# Run tests in watch mode
+npm run test:watch
 
 # Run tests with UI
 npm run test:ui
@@ -58,6 +61,11 @@ npm run test:coverage
 # Type checking
 npm run typecheck
 ```
+
+> `npm run test` runs Vitest with `--run`, so it always exits when the suite
+> finishes. Use `npm run test:watch` for an interactive feedback loop —
+> `npm run test -- --watch` does **not** work, because Vitest forces
+> `watch = false` whenever `run` is set.
 
 ### Build
 
