@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-04 — post-merge d8c7bb3b resync, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `f1379260` (StepIndicator aria-label #3675, PageScrollProgressBar reduced-motion #3712, Icon centralization Iteration 187 #3679, Toast reduced-motion #3711, StepReview rework + shared `SVG_ICON_DEFAULTS`/`REVIEW_STATE_VALUES`) per cleanup request (redundant files, unused exports, commented-out dead code). Resolved 1 `findings.md` merge conflict keeping both sides newest-first (incoming 2026-10-04 security-audit entry on top, then janitor history), 0 lines dropped, 0 residual markers.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond the `origin/main` merge intake + this docs entry.
+
+**Verification**: `npm run build` ✅ green (9.78s vite) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **Merge intake all live**: `SVG_ICON_DEFAULTS` (shared `config/ui.ts` + `index.ts` barrel) consumed by `Icon.tsx`/`icons.ts` (7+ `VIEW_BOX` refs); `REVIEW_STATE_VALUES` consumed by `StepReview.tsx:116` + 3 test assertions; `StepIndicator` aria-label live via `App.tsx:409`; `PageScrollProgressBar` `data-reduced-motion` follows per-component pattern; `StepReview` 211-line rework live via `Wizard.tsx` lazy import + `Wizard.test.tsx` mocks. Janitor removals hold through merge — `index.ts` correctly drops `StreamCallbacks`/`CreateShareRequest`/`VerifySharePassphraseRequest` vs main (zero consumers in `apps/`+`packages/` source; only docs-history + `openapi.yaml` spec refs, intentionally kept).
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 5 prose false positives only (`App.tsx:105`, `tailwindContent.test.ts:109/260/272/289`); zero hits in `packages/` and `scripts/`.
+- **No production `console.log` to remove**: 11 non-test hits all intentional — Workers structured logging (`middleware/logger.ts:217,263`), sanitized `secureLog.ts:256` (+ JSDoc `@example` snippets `:97,141`, `lib/api.ts:21,23`), generated-project template strings (`templates/node.ts:141,169`, `static.ts:193`), docs comment (`config/security.ts:164`).
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`/`generateCompletion`/`getStorageErrorMessage`/`RATE_LIMIT_CONFIG`/`DB_ID_CONFIG`/`UI_FALLBACKS`; live spot-checks all consumed (`BANNER_STATE_VALUES`:12 files, `framer-motion`:66, `clsx`:6, `hono`:32, `zod`:10 files).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep → zero identical pairs; zero `formatDate` hits.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (5 hits are `findings.md` history prose only); 0 `.only`/`.skip`/`debugger`; 0 merge markers; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (3× `exhaustive-deps`, 2× `set-state-in-effect`, 1× `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Security Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main, 2026-10-04)
 
 **Scope**: `git diff origin/main...c50ff06 --name-only` (3 files: `apps/web/src/components/PageScrollProgressBar.tsx` +1, `PageScrollProgressBar.test.tsx` +15/-3, `docs/active-tasks.md` +6 prose; the audit commit 7743e74 then added this entry + `.opencode/memory/security.md`, bringing the PR head to 5 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
