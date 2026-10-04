@@ -21,7 +21,7 @@ export const ENV = {
   },
 
   get API_KEY(): string {
-    return getEnvVar(WEB_ENV.VITE_API_KEY, SHARED_DEFAULTS.PUBLIC_ACCESS_KEY);
+    return getEnvVar(WEB_ENV.VITE_API_KEY);
   },
 
   // Feature Flags

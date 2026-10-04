@@ -628,8 +628,17 @@ describe("SHARED_DEFAULTS", () => {
     expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
 
-  it("should have a public API key fallback", () => {
-    expect(SHARED_DEFAULTS.PUBLIC_ACCESS_KEY).toBe("blueprintify-public-access-2026");
+  it("must not carry any API key material", () => {
+    // BUG-058 regression. A browser-shipped key is a published credential, so
+    // this package must export no default for one. The leaked literal is
+    // reconstructed from its parts rather than written out, so this assertion
+    // does not itself reintroduce the value it forbids.
+    const forbidden = ["blueprintify", "public", "access", "2026"].join("-");
+    const serialized = JSON.stringify(SHARED_DEFAULTS);
+
+    expect(serialized).not.toContain(forbidden);
+    expect(Object.keys(SHARED_DEFAULTS)).not.toContain("PUBLIC_ACCESS_KEY");
+    expect(serialized).not.toMatch(/PUBLIC_ACCESS_KEY/i);
   });
 });
 

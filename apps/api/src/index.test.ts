@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { MOCK_ENV, TEST_API_KEY } from "./test-utils";
+import { MOCK_ENV, MOCK_ENV_NO_KEY, TEST_API_KEY } from "./test-utils";
 import { API_METADATA, ERROR_CODES, ROUTE_SUB_PATHS } from "./config/constants";
 import {
   RESPONSE_STATUS,
@@ -619,5 +619,111 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
 
     await expectStructuredNotFound(res);
     expect(assets.fetch).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * BUG-058 regression coverage: authentication must fail closed.
+ *
+ * Removing the committed API key from the repository and the browser bundle
+ * (wrangler.toml, SHARED_DEFAULTS, ENV.API_KEY) means a fresh deployment now
+ * boots with API_KEY unset until an operator sets a Worker secret. That is only
+ * safe if the unset case locks the API down completely rather than degrading
+ * to open access, so this pins both halves of the contract at the whole-app
+ * level: every documented protected route answers 503 CONFIGURATION_ERROR,
+ * and the three public routes stay reachable.
+ *
+ * The final test records the unresolved design constraint from BUG-058: with
+ * API_KEY set, a request that presents no key is still rejected. There is no
+ * third option in which the browser may simply omit the credential.
+ */
+describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
+  interface ErrorBody {
+    success: boolean;
+    error: { type: string; code: string; message: string };
+  }
+
+  const PROTECTED_ROUTES: ReadonlyArray<readonly [method: string, path: string]> = [
+    [HTTP_METHODS.POST, ROUTE_PATHS.GENERATE],
+    [HTTP_METHODS.POST, ROUTE_PATHS.TASKS],
+    [HTTP_METHODS.POST, ROUTE_PATHS.REFINE],
+    [HTTP_METHODS.POST, ROUTE_PATHS.EXPORT],
+    [HTTP_METHODS.POST, ROUTE_PATHS.IMPORT],
+    [HTTP_METHODS.GET, `${ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.QUOTA}`],
+    [HTTP_METHODS.POST, `${ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.REPORT}`],
+    [HTTP_METHODS.DELETE, `${ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.CLEAR}`],
+    [HTTP_METHODS.POST, ROUTE_PATHS.SHARE],
+    [HTTP_METHODS.GET, `${ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`],
+    [HTTP_METHODS.POST, `${ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}${ROUTE_SUB_PATHS.VERIFY}`],
+    [HTTP_METHODS.DELETE, `${ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`],
+  ];
+
+  const PUBLIC_ROUTES = [ROUTE_PATHS.ROOT, ROUTE_PATHS.HEALTH, ROUTE_PATHS.WARMUP];
+
+  const assetFetcher = {
+    fetch: vi.fn(
+      async () =>
+        new Response("Not Found", { status: HTTP_STATUS.NOT_FOUND }) as unknown as Response
+    ),
+  };
+
+  /** API_KEY is deliberately absent — this is the deployment state under test. */
+  const envWithoutApiKey = () =>
+    ({
+      ...MOCK_ENV_NO_KEY,
+      OPENAI_API_KEY: TEST_API_KEY,
+      DB: {
+        prepare: vi.fn(() => ({
+          bind: vi.fn(() => ({
+            first: vi.fn(async () => null),
+            run: vi.fn(async () => ({ success: true })),
+          })),
+        })),
+      },
+      ASSETS: assetFetcher,
+    }) as unknown as Env;
+
+  const request = (method: string, path: string, origin = "https://api.example.com"): Request =>
+    new Request(`${origin}${path}`, {
+      method,
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
+      body: method === HTTP_METHODS.GET || method === HTTP_METHODS.DELETE ? undefined : "{}",
+    });
+
+  it("answers 503 CONFIGURATION_ERROR on every documented protected route", async () => {
+    const env = envWithoutApiKey();
+
+    for (const [method, path] of PROTECTED_ROUTES) {
+      const res = await worker.fetch(request(method, path), env, mockCtx);
+
+      expect(res.status, `${method} ${path}`).toBe(HTTP_STATUS.SERVICE_UNAVAILABLE);
+      const data = (await res.json()) as ErrorBody;
+      expect(data.success, `${method} ${path}`).toBe(false);
+      expect(data.error.code, `${method} ${path}`).toBe(ERROR_CODES.CONFIGURATION_ERROR);
+    }
+  });
+
+  it("keeps /, /health and /warmup reachable", async () => {
+    const env = envWithoutApiKey();
+
+    for (const path of PUBLIC_ROUTES) {
+      const res = await worker.fetch(request(HTTP_METHODS.GET, path), env, mockCtx);
+
+      expect(res.status, path).toBe(HTTP_STATUS.OK);
+    }
+  });
+
+  it("still rejects a keyless request once API_KEY is configured", async () => {
+    const env = { ...envWithoutApiKey(), API_KEY: TEST_API_KEY } as unknown as Env;
+
+    const res = await worker.fetch(request(HTTP_METHODS.GET, ROUTE_PATHS.HEALTH), env, mockCtx);
+    expect(res.status).toBe(HTTP_STATUS.OK);
+
+    const protectedRes = await worker.fetch(
+      request(HTTP_METHODS.POST, ROUTE_PATHS.GENERATE),
+      env,
+      mockCtx
+    );
+    expect(protectedRes.status).toBe(HTTP_STATUS.UNAUTHORIZED);
   });
 });

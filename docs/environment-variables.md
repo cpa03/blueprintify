@@ -26,7 +26,7 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 | `API_VERSION`        | No          | `1.0.0`                     | API version identifier returned in health check                    |
 | `CORS_ORIGIN`        | No          | `*`                         | Allowed CORS origins (comma-separated)                             |
 | `CORS_MAX_AGE`       | No          | `86400`                     | CORS preflight cache duration in seconds                           |
-| `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 |
+| `API_KEY`            | Recommended | -                           | API authentication key. **Secret only** — never a `[vars]` entry. If not set, protected endpoints return 503 |
 | `ADMIN_API_KEY`      | No          | -                           | Admin API key granting the `admin` role (RBAC). Takes precedence over `API_KEY` for admin-protected endpoints |
 | `ENVIRONMENT`        | No          | `development`               | Runtime environment (`development`, `staging`, `production`). Production detection uses this because CF Workers never sets `NODE_ENV` |
 | `NODE_ENV`           | No          | `development`               | Runtime environment (`development`, `test`, `production`)          |
@@ -171,7 +171,9 @@ cp .env.example .env
 
 ### 3. Cloudflare Setup
 
-For production deployments, secrets should be set via Wrangler:
+`API_KEY` must be set as a Worker **secret**, never as a `[vars]` entry in
+`wrangler.toml`. `[vars]` is committed plaintext and is read by every clone of
+this repository.
 
 ```bash
 # Set production secrets
@@ -182,6 +184,47 @@ wrangler secret put API_KEY --env production
 wrangler secret put OPENAI_API_KEY --env staging
 wrangler secret put API_KEY --env staging
 ```
+
+The top-level (production) environment takes no `--env` flag:
+
+```bash
+wrangler secret put API_KEY
+```
+
+### API Key Rotation
+
+An API key previously committed to `apps/api/wrangler.toml`, published in
+`SHARED_DEFAULTS`, and compiled into the web bundle. It was readable by anyone
+who cloned the repository or loaded the app, and remains readable in git
+history, so **it must be treated as compromised and rotated regardless of this
+change.**
+
+Rotation has to happen in every location the old value was ever consumed:
+
+| Location                    | Action                                                          |
+| --------------------------- | --------------------------------------------------------------- |
+| Cloudflare Worker, prod     | `wrangler secret put API_KEY`                                    |
+| Cloudflare Worker, staging  | `wrangler secret put API_KEY --env staging`                      |
+| Any other deployed worker   | Same command against that worker, or its dashboard Secrets tab   |
+| Web build (`VITE_API_KEY`)  | Rebuild and redeploy with a **new** value, or leave unset        |
+| Local `apps/api/.dev.vars`  | Replace the `API_KEY=` line                                      |
+| Git history                 | Treat as permanently public; rotate rather than rewrite history  |
+
+Rotating the Worker secret is what actually revokes the old key. Anything
+already built with the old value in `VITE_API_KEY` stays compromised until
+rebuilt and redeployed.
+
+### Browser-shipped keys
+
+`VITE_API_KEY` is inlined into the JavaScript bundle at build time. There is no
+configuration in which a browser-delivered key stays secret — anything the
+browser sends, an attacker can read. With `VITE_API_KEY` unset the client omits
+the `x-api-key` header entirely and the API responds `401` on protected routes.
+
+The Worker authenticates browsers from the same origin it serves the SPA on, so
+the long-term fix is a server-side session rather than a shipped credential.
+That is tracked as an open design decision, not an implemented feature: do not
+treat `VITE_API_KEY` as a way to keep a secret private.
 
 ### 4. Verify Configuration
 

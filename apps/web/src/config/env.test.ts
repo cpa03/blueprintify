@@ -23,6 +23,21 @@ describe("ENV Configuration", () => {
 
       vi.unstubAllEnvs();
     });
+
+    // BUG-058 regression: the browser bundle must ship no API key. An unset
+    // VITE_API_KEY has to resolve to an empty string so lib/api.ts omits the
+    // x-api-key header entirely, rather than falling back to a default that
+    // would end up in every visitor's JS.
+    it("should return an empty API key when VITE_API_KEY is not set", () => {
+      expect(ENV.API_KEY).toBe("");
+    });
+
+    it("should use VITE_API_KEY verbatim when provided", async () => {
+      vi.stubEnv("VITE_API_KEY", "operator-supplied-key");
+      const { ENV: freshENV } = await import("./env");
+      expect(freshENV.API_KEY).toBe("operator-supplied-key");
+      vi.unstubAllEnvs();
+    });
   });
 
   describe("Feature Flags", () => {
