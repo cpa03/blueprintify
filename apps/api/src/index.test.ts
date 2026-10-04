@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { MOCK_ENV, MOCK_ENV_NO_KEY, TEST_API_KEY } from "./test-utils";
-import { API_METADATA, ERROR_CODES, ROUTE_SUB_PATHS } from "./config/constants";
+import { API_METADATA, ERROR_CODES, ROUTE_PATH_ALL, ROUTE_SUB_PATHS } from "./config/constants";
 import {
   RESPONSE_STATUS,
   ROUTE_PATHS,
@@ -65,6 +65,36 @@ const mockCtx = {
   waitUntil: vi.fn(),
   passThroughOnException: vi.fn(),
 } as unknown as ExecutionContext;
+
+/**
+ * The error envelope every failure path in this file returns:
+ * `{ success: false, error: { type, code, message } }`. Declared once at module
+ * scope because the two suites below both assert against it.
+ */
+interface ErrorBody {
+  success: boolean;
+  error: { type: string; code: string; message: string };
+}
+
+/**
+ * The structured 404 contract: `notFoundHandler` must answer a path no route
+ * matches with a NOT_FOUND envelope, never a bare body and never an asset.
+ *
+ * Hoisted to module scope because two suites pin it from opposite directions and
+ * must not drift: the BUG-053 suite checks the ASSETS fall-through cannot
+ * shadow it, and the BUG-058 suite checks a catch-all handler cannot answer in
+ * its place.
+ *
+ * `message` is optional so callers asserting over many (method, path) pairs can
+ * name the combination that failed instead of leaving it unidentified.
+ */
+const expectStructuredNotFound = async (res: Response, message?: string): Promise<void> => {
+  expect(res.status, message).toBe(HTTP_STATUS.NOT_FOUND);
+  const body = (await res.json()) as ErrorBody;
+  expect(body.success, message).toBe(false);
+  expect(body.error.type, message).toBe(ERROR_TYPES.NOT_FOUND);
+  expect(body.error.code, message).toBe(ERROR_CODES.NOT_FOUND_ERROR);
+};
 
 describe("GET /health endpoint", () => {
   beforeEach(() => {
@@ -177,11 +207,6 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
   const SHARE_PATH = `${ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`;
   const VERIFY_PATH = `${SHARE_PATH}${ROUTE_SUB_PATHS.VERIFY}`;
   const INDEX_HTML = "<!doctype html><html><body>blueprintify</body></html>";
-
-  interface ErrorBody {
-    success: boolean;
-    error: { type: string; code: string; message: string };
-  }
 
   const createMockDB = () => ({
     prepare: vi.fn(() => ({
@@ -338,14 +363,6 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
       }
       report("response body leaked a stack frame", STACK_FRAME);
     }
-  };
-
-  const expectStructuredNotFound = async (res: Response): Promise<void> => {
-    expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
-    const body = (await res.json()) as ErrorBody;
-    expect(body.success).toBe(false);
-    expect(body.error.type).toBe(ERROR_TYPES.NOT_FOUND);
-    expect(body.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
   };
 
   beforeEach(() => {
@@ -638,11 +655,6 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
  * third option in which the browser may simply omit the credential.
  */
 describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
-  interface ErrorBody {
-    success: boolean;
-    error: { type: string; code: string; message: string };
-  }
-
   const PROTECTED_ROUTES: ReadonlyArray<readonly [method: string, path: string]> = [
     [HTTP_METHODS.POST, ROUTE_PATHS.GENERATE],
     [HTTP_METHODS.POST, ROUTE_PATHS.TASKS],
@@ -661,15 +673,87 @@ describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
   const PUBLIC_ROUTES = [ROUTE_PATHS.ROOT, ROUTE_PATHS.HEALTH, ROUTE_PATHS.WARMUP];
 
   /**
-   * Middleware is registered with method "ALL"; filtering it out leaves only the
-   * concrete (method, path) handlers the app actually serves.
+   * Hono's catch-all method name. `app.use(...)`, `app.all(...)` and
+   * `app.on("ALL", ...)` all funnel through `app.on(METHOD_NAME_ALL, ...)` and
+   * are recorded identically, so "ALL" alone cannot tell middleware from a
+   * catch-all route. `@blueprint/shared` has no equivalent constant, so it is
+   * declared here rather than inlined at each comparison site.
+   */
+  const METHOD_ALL = "ALL";
+
+  /**
+   * Hono stores a route-table path as `<basePath><pattern>`, so every
+   * `app.use(ROUTE_PATH_ALL, …)` on the root app is recorded as "/" + "*".
+   * Derived from the same constants `index.ts` uses so the expectation tracks a
+   * change to the wildcard rather than drifting from it.
+   */
+  const HONO_WILDCARD_ROUTE_PATH = `${ROUTE_PATHS.ROOT}${ROUTE_PATH_ALL}`;
+
+  /**
+   * Number of `ALL`-method entries `app.routes` holds, and the only discriminator
+   * available for a wildcard-scoped catch-all.
+   *
+   * Every `app.use(ROUTE_PATH_ALL, …)` in `index.ts` contributes exactly one
+   * entry, and none of the mounted sub-apps register their own middleware, so
+   * this equals the number of `app.use` calls there. A discriminator that was
+   * *derived* from `app.routes` (its own length, its own distinct paths) would
+   * compare the route table against itself and pass for any catch-all, so the
+   * number is pinned literally — verified empirically, not assumed.
+   *
+   * **Adding an `app.use` to `index.ts` requires bumping this in the same
+   * commit.** That is the only edit this suite forces, and it is deliberate: a
+   * new middleware layer is a change to what guards every route, so it should
+   * have to say so here. `path` and `basePath` cannot carry this instead — a
+   * catch-all written `app.all("*", …)` produces an entry byte-for-byte
+   * identical to a middleware one (`/*`, basePath "/"). `handler` identity is
+   * unavailable too: these handlers are anonymous values produced by factory
+   * calls at module scope (`secureHeaders()`, `apiKeyAuth({…})`, an inline
+   * arrow, …), so a test cannot obtain the same references, and four of the
+   * nine are unnamed. `handler.length` is not load-bearing either — a minifier
+   * may drop unused parameters, and a catch-all written `(c, next) => …` would
+   * read as middleware.
+   */
+  const EXPECTED_MIDDLEWARE_ROUTE_COUNT = 9;
+
+  /**
+   * Paths no entry in `app.routes` matches. The first two are extensionless, so
+   * they reach the app directly; the third carries a file extension, so the
+   * pre-app ASSETS lookup runs first (the mock answers 404 to every lookup, as
+   * it does for a stale build filename) and must then fall through to the same
+   * structured 404. That path is the one an attacker would reach for, so it
+   * must not become a way around the API.
+   */
+  const UNKNOWN_PATHS = [
+    "/canary-unknown",
+    `${ROUTE_PATHS.GENERATE}/canary/segment`,
+    "/canary-asset.js",
+  ];
+
+  /** A method-scoped catch-all only registers under the method it names, so each is exercised. */
+  const UNKNOWN_METHODS = [
+    HTTP_METHODS.GET,
+    HTTP_METHODS.POST,
+    HTTP_METHODS.PUT,
+    HTTP_METHODS.PATCH,
+    HTTP_METHODS.DELETE,
+  ];
+
+  /**
+   * The concrete (method, path) handlers the app actually serves. `ALL`-method
+   * entries are excluded because they are middleware rather than endpoints — and
+   * pinned separately by the test below, because a filter on `"ALL"` would also
+   * hide a catch-all from this one.
    */
   const registeredRoutes = (): ReadonlySet<string> =>
     new Set(
       app.routes
-        .filter((route) => route.method !== "ALL")
+        .filter((route) => route.method !== METHOD_ALL)
         .map((route) => `${route.method} ${route.path}`)
     );
+
+  /** Every `ALL`-method entry's stored path, in registration order. */
+  const allMethodRoutePaths = (): ReadonlyArray<string> =>
+    app.routes.filter((route) => route.method === METHOD_ALL).map((route) => route.path);
 
   const assetFetcher = {
     fetch: vi.fn(
@@ -701,6 +785,13 @@ describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
       body: method === HTTP_METHODS.GET || method === HTTP_METHODS.DELETE ? undefined : "{}",
     });
 
+  /** `request()` plus a valid credential, for the one case that must get past `apiKeyAuth`. */
+  const authedRequest = (method: string, path: string): Request => {
+    const req = request(method, path);
+    req.headers.set(HTTP_HEADER_NAMES.X_API_KEY, TEST_API_KEY);
+    return req;
+  };
+
   it("pins every route the app registers — no protected route can escape this suite", () => {
     const registered = registeredRoutes();
     const asserted = new Set(PROTECTED_ROUTES.map(([method, path]) => `${method} ${path}`));
@@ -715,6 +806,83 @@ describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
 
     for (const route of asserted) {
       expect([...registered], `asserted route ${route} is no longer registered`).toContain(route);
+    }
+  });
+
+  it("rejects any ALL-method route that is not the app's own middleware", () => {
+    const allPaths = allMethodRoutePaths();
+
+    // An `ALL`-method entry on any other path is a catch-all endpoint, not a
+    // layer: `app.all("/api/*", …)` or `app.on("ALL", path, handler)` lands
+    // here and fails. Middleware is only ever `app.use`'d on the app-wide
+    // wildcard, so nothing legitimate can produce a second path.
+    expect(
+      allPaths.filter((path) => path !== HONO_WILDCARD_ROUTE_PATH),
+      'an ALL-method route is registered on a path other than the app-wide middleware wildcard; app.all()/app.on("ALL", …) answers for paths no route declares and escapes the pinning above'
+    ).toEqual([]);
+
+    // A wildcard-scoped `app.all("*", …)` is byte-for-byte identical to a
+    // middleware entry, so only the count separates them — this is the assertion
+    // that makes "no protected route can escape this suite" true rather than
+    // aspirational.
+    expect(
+      allPaths.length,
+      "the number of ALL-method routes changed: a wildcard catch-all answers every path without authentication, and adding an app.use must bump EXPECTED_MIDDLEWARE_ROUTE_COUNT in the same commit"
+    ).toBe(EXPECTED_MIDDLEWARE_ROUTE_COUNT);
+  });
+
+  it("fails closed on every unknown path when API_KEY is unset — never an unauthenticated success", async () => {
+    const env = envWithoutApiKey();
+
+    for (const method of UNKNOWN_METHODS) {
+      for (const path of UNKNOWN_PATHS) {
+        const res = await worker.fetch(request(method, path), env, mockCtx);
+
+        // `apiKeyAuth` runs on the app-wide wildcard before routing, so an
+        // unrouted path is refused outright. A catch-all registered ahead of it
+        // answers 200 here — which is why this is asserted per method: a
+        // method-scoped one only shows up for the method it names.
+        expect(res.status, `${method} ${path} with API_KEY unset`).toBe(
+          HTTP_STATUS.SERVICE_UNAVAILABLE
+        );
+        const data = (await res.json()) as ErrorBody;
+        expect(data.success, `${method} ${path} with API_KEY unset`).toBe(false);
+        expect(data.error.code, `${method} ${path} with API_KEY unset`).toBe(
+          ERROR_CODES.CONFIGURATION_ERROR
+        );
+      }
+    }
+  });
+
+  it("rejects every unknown path to a keyless caller once API_KEY is configured", async () => {
+    const env = { ...envWithoutApiKey(), API_KEY: TEST_API_KEY } as unknown as Env;
+
+    for (const method of UNKNOWN_METHODS) {
+      for (const path of UNKNOWN_PATHS) {
+        const res = await worker.fetch(request(method, path), env, mockCtx);
+
+        expect(res.status, `${method} ${path} with no credential`).toBe(HTTP_STATUS.UNAUTHORIZED);
+        const data = (await res.json()) as ErrorBody;
+        expect(data.error.code, `${method} ${path} with no credential`).toBe(
+          ERROR_CODES.AUTHENTICATION_ERROR
+        );
+      }
+    }
+  });
+
+  it("still answers every unknown path with a structured 404 for an authenticated caller", async () => {
+    const env = { ...envWithoutApiKey(), API_KEY: TEST_API_KEY } as unknown as Env;
+
+    for (const method of UNKNOWN_METHODS) {
+      for (const path of UNKNOWN_PATHS) {
+        const res = await worker.fetch(authedRequest(method, path), env, mockCtx);
+
+        // The complement of the two tests above. Those two are satisfied by the
+        // middleware refusing early, so they cannot see a catch-all registered
+        // *behind* it; getting past auth here makes routing the thing under test.
+        // A `*` catch-all answers 200 "open" instead of 404ing.
+        await expectStructuredNotFound(res, `${method} ${path} with a valid credential`);
+      }
     }
   });
 

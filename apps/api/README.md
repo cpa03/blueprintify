@@ -278,8 +278,11 @@ wrangler secret put API_KEY
 wrangler secret put API_KEY --env staging
 ```
 
-`API_KEY` is a secret and must never be added to `[vars]` in `wrangler.toml` —
-that file is committed, so a value there is public. See
+`API_KEY` is a secret and must never be added to `[vars]` in `wrangler.toml` or
+`wrangler.test.toml` — both files are committed, so a value there is public.
+`npm run validate:wrangler` (offline, runs before every deploy) fails on either
+one, and `npm run validate:secrets` (authenticated) verifies the secret in both
+production and staging. See
 [API Key Rotation](../../docs/environment-variables.md#api-key-rotation).
 
 Optional configuration variables:
