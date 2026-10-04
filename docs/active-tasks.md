@@ -2,6 +2,28 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **PageScrollProgressBar Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Wired the existing `useReducedMotion` hook to a new `data-reduced-motion` ("true"/"false") DOM inspection attribute on `PageScrollProgressBar.tsx`, and adopted the shared `BANNER_STATE_VALUES` export in `PageScrollProgressBar.test.tsx` state assertions.
+- [STRENGTHEN] Strengthened `PageScrollProgressBar` DOM state tracking with `data-reduced-motion` ("true"/"false") attribute for accessibility testing.
+- [CONSOLIDATE] Consolidated `PageScrollProgressBar` display-state assertions onto the shared `BANNER_STATE_VALUES` export (single component; no new shared constant added).
+- [REMOVE] Removed the raw `"visible"` string literal from the `data-state` assertion in `PageScrollProgressBar.test.tsx` in favor of `BANNER_STATE_VALUES` (other attribute literals `"41"`/`"false"`/`"true"` remain literal-pinned).
+
+## ✅ StorX — **StepReview Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and centralized step keys to `StepReview.tsx`.
+- [STRENGTHEN] Strengthened `StepReview` DOM state tracking with `data-state` ("generating"/"idle") and `data-reduced-motion` ("true"/"false") attributes for accessibility testing.
+- [CONSOLIDATE] Consolidated wizard review step state inspection via `REVIEW_STATE_VALUES` shared config in `packages/shared/src/config/ui.ts`.
+- [REMOVE] Removed raw "generating"/"idle" string literals in `StepReview.tsx`/`StepReview.test.tsx` in favor of `REVIEW_STATE_VALUES`; fixed weak `data-reduced-motion` assertion and gated entrance/hover animations on reduced motion.
+
+## ✅ StorX — **ScrollToTop Micro-UX & State Inspection**
+- [CONNECT] Connected `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx` for DOM state inspection (`useReducedMotion` was already wired for scroll behavior).
+- [STRENGTHEN] Strengthened `ScrollToTop` / `ScrollToPosition` DOM state inspection with `data-state` ("visible") and `data-reduced-motion` ("true"/"false") attributes on wrapper and button.
+- [CONSOLIDATE] Consolidated floating scroll component display state and reduced motion tracking across web components.
+- [REMOVE] Removed unreachable `HIDDEN` branch from `data-state` (element only mounts when visible).
+
+## ✅ BugLover Audit — **Phase 1 Follow-up (Oct 02 2026)**
+- [x] bug Filtered framer-motion props in test mocks (`ScrollToTop.test.tsx`, `EditorHeader.test.tsx`) to eliminate React console DOM warnings.
+- [x] error Phase 1 BugLover follow-up: zero unhandled errors, web typecheck clean, eslint clean (0 errors, 0 warnings), web test suite 1250/1250 passing on PR branch.
+
 ## ✅ BugLover Audit — **Phase 1 Complete (Oct 01 2026)**
 - [x] bug dompurify package security vulnerability GHSA-p98j-92pf-mc4p.
 - [x] error MarkdownRenderer image element console src warning.

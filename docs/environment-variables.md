@@ -80,6 +80,7 @@ The frontend is built with Vite and uses `.env` files.
 | Variable                    | Required | Default                                       | Description                     |
 | --------------------------- | -------- | --------------------------------------------- | ------------------------------- |
 | `VITE_API_BASE_URL`         | No       | `/api`                                        | API base URL for requests       |
+| `VITE_API_KEY`              | No       | -                                             | Public API key for web client requests |
 | `VITE_PROJECT_HOMEPAGE_URL` | No       | `https://blueprint-generator.pages.dev`       | Public project homepage URL     |
 | `VITE_GITHUB_URL`           | No       | `https://github.com/cpa03/blueprintify`       | GitHub repository URL           |
 | `VITE_STORAGE_QUOTA_MB`     | No       | `5`                                           | LocalStorage quota in megabytes |

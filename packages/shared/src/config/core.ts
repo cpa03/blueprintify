@@ -180,8 +180,6 @@ export const SHARED_DEFAULTS = {
   CORS_MAX_AGE: 86400,
   /** Namespace prefix for all localStorage keys */
   STORAGE_NAMESPACE: "blueprint" as const,
-  /** Public fallback client key for web requests when no env key is set */
-  PUBLIC_ACCESS_KEY: "blueprintify-public-access-2026" as const,
 } as const;
 
 /**

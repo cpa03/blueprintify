@@ -988,3 +988,17 @@ export const SVG_ICON_DEFAULTS = {
   /** Small icon size class */
   SIZE_SMALL: "w-4 h-4" as const,
 } as const;
+
+/**
+ * Review Step Display State Values
+ * Centralized state tracking values for the wizard review step (StepReview).
+ * Flexy says: No hardcoded "generating"/"idle" strings in StepReview!
+ * Usage: import { REVIEW_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isGenerating ? REVIEW_STATE_VALUES.GENERATING : REVIEW_STATE_VALUES.IDLE}
+ */
+export const REVIEW_STATE_VALUES = {
+  /** Generation in progress state identifier */
+  GENERATING: "generating" as const,
+  /** Idle / ready to review state identifier */
+  IDLE: "idle" as const,
+} as const;
