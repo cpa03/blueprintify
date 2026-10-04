@@ -16,17 +16,48 @@ import { ScrollToTop, ScrollToBottom } from "./ScrollToTop";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SCROLL_THRESHOLDS } from "../config/constants";
 import { ACCESSIBILITY_LABELS, KEYBOARD_SHORTCUTS } from "../config/constants";
+import { BANNER_STATE_VALUES } from "@blueprint/shared/config";
 
 vi.mock("framer-motion/m", () => ({
-  div: vi.fn(({ children, ...props }: Record<string, unknown>) => (
-    <div {...props}>{children as React.ReactNode}</div>
-  )),
-  button: vi.fn(({ children, ...props }: Record<string, unknown>) => (
-    <button {...props}>{children as React.ReactNode}</button>
-  )),
-  svg: vi.fn(({ children, ...props }: Record<string, unknown>) => (
-    <svg {...props}>{children as React.ReactNode}</svg>
-  )),
+  div: vi.fn(
+    ({
+      children,
+      layoutId: _layoutId,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      transition: _transition,
+      ...props
+    }: Record<string, unknown>) => <div {...props}>{children as React.ReactNode}</div>
+  ),
+  button: vi.fn(
+    ({
+      children,
+      layoutId: _layoutId,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      transition: _transition,
+      ...props
+    }: Record<string, unknown>) => <button {...props}>{children as React.ReactNode}</button>
+  ),
+  svg: vi.fn(
+    ({
+      children,
+      layoutId: _layoutId,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      transition: _transition,
+      ...props
+    }: Record<string, unknown>) => <svg {...props}>{children as React.ReactNode}</svg>
+  ),
   path: vi.fn(() => <path />),
 }));
 
@@ -83,7 +114,7 @@ describe("ScrollToTop", () => {
     expect(screen.queryByLabelText(topLabel())).not.toBeInTheDocument();
   });
 
-  it("becomes visible after the scroll threshold is exceeded with aria-keyshortcuts and data-direction", () => {
+  it("becomes visible after the scroll threshold is exceeded with aria-keyshortcuts and data attributes", () => {
     mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
     render(<ScrollToTop />);
 
@@ -95,6 +126,26 @@ describe("ScrollToTop", () => {
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute("aria-keyshortcuts", KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY);
     expect(button).toHaveAttribute("data-direction", "top");
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
+    // Wrapper carries the same inspection pair (tooltip mock renders a fragment,
+    // so the button's parent is the positioned wrapper div).
+    expect(button.parentElement).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+    expect(button.parentElement).toHaveAttribute("data-reduced-motion", "false");
+  });
+
+  it("reports reduced motion on button and wrapper when preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const button = screen.getByLabelText(topLabel());
+    expect(button).toHaveAttribute("data-reduced-motion", "true");
+    expect(button.parentElement).toHaveAttribute("data-reduced-motion", "true");
   });
 
   it("scrolls the window to the top when clicked", () => {
