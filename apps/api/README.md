@@ -274,17 +274,25 @@ Required secrets (set via Cloudflare Dashboard or CLI):
 
 ```bash
 wrangler secret put OPENAI_API_KEY
+wrangler secret put API_KEY
+wrangler secret put API_KEY --env staging
 ```
+
+`API_KEY` is a secret and must never be added to `[vars]` in `wrangler.toml` or
+`wrangler.test.toml` — both files are committed, so a value there is public.
+`npm run validate:wrangler` (offline, runs before every deploy) fails on either
+one, and `npm run validate:secrets` (authenticated) verifies the secret in both
+production and staging. See
+[API Key Rotation](../../docs/environment-variables.md#api-key-rotation).
 
 Optional configuration variables:
 
-| Variable          | Default        | Description                                                                      |
-| ----------------- | -------------- | -------------------------------------------------------------------------------- |
-| `OPENAI_BASE_URL` | OpenAI default | Custom API endpoint                                                              |
-| `OPENAI_MODEL`    | gpt-4o-mini    | Model to use                                                                     |
-| `CORS_ORIGIN`     | \*             | Allowed CORS origin                                                              |
-| `API_KEY`         | -              | API authentication key (recommended — protected endpoints return 503 when unset) |
-| `ADMIN_API_KEY`   | -              | Admin key granting `admin` role via RBAC (takes precedence over `API_KEY`)       |
+| Variable          | Default        | Description                                                                |
+| ----------------- | -------------- | -------------------------------------------------------------------------- |
+| `OPENAI_BASE_URL` | OpenAI default | Custom API endpoint                                                        |
+| `OPENAI_MODEL`    | gpt-4o-mini    | Model to use                                                               |
+| `CORS_ORIGIN`     | \*             | Allowed CORS origin                                                        |
+| `ADMIN_API_KEY`   | -              | Admin key granting `admin` role via RBAC (takes precedence over `API_KEY`) |
 
 ### Required Infrastructure
 

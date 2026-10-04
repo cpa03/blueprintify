@@ -38,16 +38,16 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 ### ✅ Flexy Iteration 186: Centralize Deployment Origins, Proxy Routing & API-Key Fallback
 
-**Problem**: The #3610 live-generate/proxy fix introduced fresh hardcoded literals bypassing shared config. API: 4× deployment origins in the CORS allowlist (`https://blueprintify.pages.dev`, `.blueprintify.pages.dev`, `https://blueprintify.cpa03-cmz.workers.dev`, `http://localhost:`), static-asset detection (`/assets/`, `.`, `/api/`, `Accept`/`text/html`, `404`), and the `/api/*` rewrite (`/api/`, `/^\/api/`, `404`). Web: `VITE_API_KEY` env key + `blueprintify-public-access-2026` fallback in `env.ts`, and `405`/`500` + inline endpoint-unavailable/server-error templates in `lib/api.ts`. Functions proxies duplicated the worker target, `/^\/api` pattern, `/` fallback, and `GET`/`HEAD` checks inline. Flexy says: no hardcoded deployment/proxy literals!
+**Problem**: The #3610 live-generate/proxy fix introduced fresh hardcoded literals bypassing shared config. API: 4× deployment origins in the CORS allowlist (`https://blueprintify.pages.dev`, `.blueprintify.pages.dev`, `https://blueprintify.cpa03-cmz.workers.dev`, `http://localhost:`), static-asset detection (`/assets/`, `.`, `/api/`, `Accept`/`text/html`, `404`), and the `/api/*` rewrite (`/api/`, `/^\/api/`, `404`). Web: `VITE_API_KEY` env key + `<redacted-leaked-api-key>` fallback in `env.ts`, and `405`/`500` + inline endpoint-unavailable/server-error templates in `lib/api.ts`. Functions proxies duplicated the worker target, `/^\/api` pattern, `/` fallback, and `GET`/`HEAD` checks inline. Flexy says: no hardcoded deployment/proxy literals!
 
 | File | Change |
 |------|--------|
 | `packages/shared/src/config/http.ts` | Added `HTTP_STATUS.METHOD_NOT_ALLOWED` (`405`), `HTTP_METHODS.HEAD`/`OPTIONS`, `DEPLOYMENT_ORIGINS` (PAGES_PROD/PAGES_PREVIEW_SUFFIX/WORKER_DEV/LOCALHOST_PREFIX), `PROXY_CONFIG` (API_PREFIX_SLASH/API_STRIP_PATTERN/ASSETS_PREFIX/ROOT_FALLBACK/FILE_EXTENSION_MARKER) |
 | `packages/shared/src/config/api.ts` | Added `ENV_VAR_KEYS.WEB.VITE_API_KEY`, `API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE(status)` + `SERVER_ERROR(status)` factories |
-| `packages/shared/src/config/core.ts` | Added `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` (`blueprintify-public-access-2026`, scan-safe name) |
+| `packages/shared/src/config/core.ts` | Added `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` (`<redacted-leaked-api-key>`, scan-safe name) |
 | `packages/shared/src/index.ts` | Exported `DEPLOYMENT_ORIGINS`, `PROXY_CONFIG` |
 | `apps/api/src/index.ts` | CORS allowlist → `DEPLOYMENT_ORIGINS.*`; static-asset detection → `PROXY_CONFIG` + `HTTP_HEADER_NAMES.ACCEPT` + `HTTP_HEADERS.CONTENT_TYPE_HTML` + `ROUTE_PATHS.ROOT` + `HTTP_STATUS.NOT_FOUND`; `/api/*` rewrite → `PROXY_CONFIG.*` |
-| `apps/web/src/config/env.ts` | `getEnvVar("VITE_API_KEY", "blueprintify-public-access-2026")` → `getEnvVar(WEB_ENV.VITE_API_KEY, SHARED_DEFAULTS.PUBLIC_ACCESS_KEY)` |
+| `apps/web/src/config/env.ts` | `getEnvVar("VITE_API_KEY", "<redacted-leaked-api-key>")` → `getEnvVar(WEB_ENV.VITE_API_KEY, SHARED_DEFAULTS.PUBLIC_ACCESS_KEY)` |
 | `apps/web/src/lib/api.ts` | `405` → `HTTP_STATUS.METHOD_NOT_ALLOWED`, `>= 500` → `>= HTTP_STATUS.INTERNAL_ERROR`, inline templates → `API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE/SERVER_ERROR` |
 | `functions/api/[[path]].ts` + `apps/web/functions/api/[[path]].ts` | Extracted `PROXY_TARGET_ORIGIN`/`API_STRIP_PATTERN`/`ROOT_FALLBACK`/`SAFE_METHOD_GET`/`SAFE_METHOD_HEAD` local constants mirroring shared config (Pages Functions run outside workspace bundle) |
 | `packages/shared/src/config.test.ts` | Updated `HTTP_METHODS`/`HTTP_STATUS`/`ENV_VAR_KEYS.WEB`/`API_ERROR_MESSAGES` expectations; added `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` + `DEPLOYMENT_ORIGINS` (4 tests) + `PROXY_CONFIG` (3 tests) |

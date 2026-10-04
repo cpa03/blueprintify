@@ -199,7 +199,10 @@ while (true) {
 
 - **XSS Protection**: All markdown is sanitized with DOMPurify before rendering
 - **Input Validation**: Zod schemas validate all API requests
-- **API Key Storage**: Keys stored server-side only
+- **API Key Handling**: No key is bundled or committed. The browser sends
+  `x-api-key` only when `VITE_API_KEY` is set at build time, so any key supplied
+  that way reaches every visitor's JS and must be treated as public. See
+  [Environment Variables](../../docs/environment-variables.md#api-key-rotation).
 
 ## Testing
 

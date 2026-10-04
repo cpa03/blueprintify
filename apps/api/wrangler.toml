@@ -21,10 +21,21 @@ not_found_handling = "none"
 binding = "AI"
 
 # Default environment: production (top-level)
+#
+# API_KEY is deliberately ABSENT. It must never be declared here: [vars] values
+# are committed plaintext and are also baked into `wrangler dev`/deploy output,
+# so any key set here is a published credential. Set it as a Worker secret
+# instead, once per environment:
+#
+#   wrangler secret put API_KEY                  # production
+#   wrangler secret put API_KEY --env staging   # staging
+#
+# With API_KEY unset every protected route fails closed with
+# 503 CONFIGURATION_ERROR; only /, /health and /warmup stay reachable.
+# See docs/environment-variables.md for the full rotation runbook.
 [vars]
 ENVIRONMENT = "production"
 CORS_ORIGIN = "https://blueprintify.cpa03-cmz.workers.dev"
-API_KEY = "blueprintify-public-access-2026"
 
 # KV namespaces for caching (Free Tier: 1GB storage, 100k reads/day, 1k writes/day)
 [[kv_namespaces]]
@@ -73,7 +84,9 @@ head_sampling_rate = 0.5
 [env.staging]
 name = "blueprintify-staging"
 workers_dev = true
-vars = { ENVIRONMENT = "staging", CORS_ORIGIN = "*", API_KEY = "blueprintify-public-access-2026" }
+# API_KEY is intentionally not declared — set it per-environment with
+# `wrangler secret put API_KEY --env staging`, same as production.
+vars = { ENVIRONMENT = "staging", CORS_ORIGIN = "*" }
 
 [env.staging.ai]
 binding = "AI"

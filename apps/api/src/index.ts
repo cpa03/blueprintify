@@ -199,6 +199,13 @@ app.route(ROUTE_PATHS.SHARE, shareRoute);
 app.onError(errorHandler);
 app.notFound(notFoundHandler);
 
+/**
+ * Test-only. The BUG-058 fail-closed suite derives the protected route set from
+ * this app's route table so a newly registered route cannot escape it. Not a
+ * Cloudflare entrypoint — only `fetch` is dispatched.
+ */
+export { app };
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const config = loadConfig(env as unknown as Record<string, string | undefined>);

@@ -628,8 +628,113 @@ describe("SHARED_DEFAULTS", () => {
     expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
 
-  it("should have a public API key fallback", () => {
-    expect(SHARED_DEFAULTS.PUBLIC_ACCESS_KEY).toBe("blueprintify-public-access-2026");
+  // BUG-058, pinned directly and independently of the structural rule below, so
+  // that relaxing that rule can never quietly reopen this regression. Asserted
+  // as a boolean rather than with `not.toHaveProperty(...)`: the property
+  // matcher prints the value it found, and a security regression test must not
+  // write a credential into CI logs.
+  it("must not declare a PUBLIC_ACCESS_KEY default (BUG-058)", () => {
+    expect(Object.hasOwn(SHARED_DEFAULTS, "PUBLIC_ACCESS_KEY")).toBe(false);
+  });
+
+  it("must not carry any API key material", () => {
+    // BUG-058 regression, structurally. A default published here is compiled
+    // into the browser bundle, so it is a published credential. Two independent
+    // axes, because each one alone misses a real leak:
+    //
+    //   1. Value shape - the value itself looks like key material, whatever it
+    //      is filed under. Catches a key re-filed under an innocent name.
+    //   2. Name + value - a credential-named property holding a long opaque
+    //      string. Catches a key under a name that is not one of the provider
+    //      prefixes below.
+    //
+    // Both axes are deliberately narrow. An earlier revision failed on any
+    // credential-shaped NAME and on any hyphenated 3+ segment VALUE, which made
+    // it red for `API_TOKEN_TTL_SECONDS: 3600` and for
+    // `DEFAULT_PROJECT_NAME: "acme-web-frontend"`. A security test that cries
+    // wolf gets deleted, and a deleted test protects nothing - so a rule that
+    // cannot tell a key from a project name is worse than no rule.
+
+    // --- Axis 1, signal A: a known provider key prefix, under ANY name ------
+    // `sk`/`pk` require a separator so "skateboard-v2" is not read as a Stripe
+    // key; the distinctive prefixes (AIza, AKIA, ghp_) need none. Matched
+    // anywhere in the value, not only at the start, so "Bearer ghp_..." cannot
+    // slip past. The list is a floor, not an inventory - axes 1B and 2 below are
+    // what generalise to providers nobody wrote down here.
+    const PROVIDER_KEY_PREFIX =
+      /(?:^|[^A-Za-z0-9])(?:(?:sk|pk)[-_]|gh[pousr][-_]|github_pat[-_]|glpat[-_]|xox[baprs][-_]|AIza|AKIA|ASIA)[A-Za-z0-9._~+/-]{8,}/;
+
+    // --- Axis 1, signal B: an opaque segment inside an ordinary-looking value
+    // A hyphenated key is often not distinguishable from a slug by its prefix,
+    // but its segments are not words. A segment of 8+ characters mixing letters
+    // with digits at 40%+ is randomness, not spelling: "acme-web-frontend" and
+    // "my-project-name" have no digits at all, "frontend2" is one in nine, and a
+    // digits-only segment like "20240115" carries no letters, so neither is
+    // evidence of entropy.
+    const hasOpaqueSegment = (value: string): boolean =>
+      value.split(/[^A-Za-z0-9]+/).some((segment) => {
+        if (segment.length < 8) return false;
+        if (!/[0-9]/.test(segment) || !/[A-Za-z]/.test(segment)) return false;
+        return (segment.match(/[0-9]/g) ?? []).length / segment.length >= 0.4;
+      });
+
+    // --- Axis 2: a credential NAME and an opaque value, both required -------
+    // The name alone must never fail: `API_TOKEN_TTL_SECONDS: 3600` and
+    // `PASSWORD_MIN_LENGTH: 12` are settings, not secrets, so only string
+    // values reach the value test and only whole name segments count.
+    //
+    // `AUTH` is absent on purpose: `AUTH_MODE` / `AUTH_HEADER` are configuration
+    // knobs, and "acme-frontend-20240115" under one is a slug, not a secret.
+    // Re-adding it makes this test red on a plausible legitimate default.
+    //
+    // Residual, stated not papered over: a long slug under a genuinely
+    // credential-shaped name (`PASSWORD_POLICY: "minimum-length-12"`) still trips.
+    // A lowercase slug and a lowercase key are the same shape; only entropy
+    // separates them, which is axis 1's job. BUG-058 itself does not rely on this
+    // axis - the explicit pin above catches it whatever the value.
+    const CREDENTIAL_NAME =
+      /(?:^|_)(?:KEYS?|SECRETS?|TOKENS?|CREDENTIALS?|PASSWORDS?|PASSWD)(?:_|$)/i;
+    // A literal: 20+ characters of one unbroken token. `/`, `:` and `\` are
+    // excluded on purpose - they make a value a reference (a path, a URL, an
+    // env lookup) rather than a stored secret. The floor is low enough for any
+    // real token: 20 is shorter than every provider format worth listing, and
+    // a higher floor would let a plausible 20-24 character key through.
+    const OPAQUE_LITERAL = /^[A-Za-z0-9][A-Za-z0-9._~+-]{19,}$/;
+
+    // --- Documentation placeholders are not credentials ---------------------
+    // A placeholder has no entropy and is meant to be typed over. Failing on
+    // one is how this test gets deleted, so `<your-key>`, "your_api_key_here",
+    // "changeme", "example", "xxx" and "..." are explicitly not credentials.
+    const PLACEHOLDER_WRAPPED = /^(?:<.+>|\{\{.+\}\}|\$\{.+\}|`.+`)$/;
+    const PLACEHOLDER_SIGNAL =
+      /(?:^|[^A-Za-z0-9])(?:your|placeholder|examples?|samples?|dumm(?:y|ies)|fakes?|mocks?|stubs?|insert|replace|redacted|change[_\s-]?me|not[_\s-]?set|unset|tbd|todo|xxx+|\*{3,}|\?{3,}|\.{3,})(?:[^A-Za-z0-9]|$)/i;
+
+    const isPlaceholder = (value: string): boolean =>
+      PLACEHOLDER_WRAPPED.test(value) || PLACEHOLDER_SIGNAL.test(value);
+
+    // Report property name and reason only. The offending value is never
+    // interpolated into the assertion - that is what keeps a failing CI log
+    // from becoming a second copy of the leak.
+    const findings = Object.entries(SHARED_DEFAULTS).flatMap(([name, value]) => {
+      if (typeof value !== "string" || isPlaceholder(value)) return [];
+      if (PROVIDER_KEY_PREFIX.test(value)) return [`${name} (provider key prefix)`];
+      if (hasOpaqueSegment(value)) return [`${name} (opaque key segment)`];
+      if (CREDENTIAL_NAME.test(name) && OPAQUE_LITERAL.test(value)) {
+        return [`${name} (credential name, opaque value)`];
+      }
+      // Known gap, stated rather than papered over: a segmented slug made of
+      // plain words under an innocent name (`LEGACY_NAME: "acme-web-frontend"`)
+      // is not flagged. It is textually identical to a project or product
+      // name, and flagging those is exactly what made the previous revision
+      // unusable. The BUG-058 leak itself is still caught twice over, by the
+      // pin above and by both axes here.
+      return [];
+    });
+
+    expect(
+      findings,
+      `SHARED_DEFAULTS must not ship credential material: ${findings.join("; ")}`
+    ).toEqual([]);
   });
 });
 
