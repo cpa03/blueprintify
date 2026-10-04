@@ -64,7 +64,9 @@ const ALLOWED_PATHS = [
   "prompt-security.test.ts",
   "config/env.test.ts",
   ".dev.vars.example",
-  "wrangler.toml",
+  // NOTE: wrangler.toml is deliberately NOT exempt (BUG-058). It was, and that
+  // exemption is what let a committed API key pass this scan — [vars] values
+  // are plaintext by definition, so this file is scanned like any other.
   // Generated lock files
   "package-lock.json",
   // This script (contains example patterns but not real secrets)
@@ -110,6 +112,23 @@ const SECRET_PATTERNS = [
   // === Generic Token Patterns ===
   { pattern: /(?:api[-_]?key|apikey)\s*[:=]\s*['"][a-zA-Z0-9_\-\.]{16,}['"]/gi, label: "Generic API Key" },
   { pattern: /(?:token|secret)\s*[:=]\s*['"][a-zA-Z0-9_\-\.\/+]{20,}['"]/gi, label: "Generic Token/Secret" },
+
+  // === Auth Header Literals ===
+  // Any literal bound to the request-auth header is a shipped credential, so
+  // this threshold is deliberately lower than the generic pattern's 16 chars:
+  // the BUG-058 key reached every visitor's browser bundle through exactly
+  // this header and would be missed if it were short. Case-insensitive so it
+  // also matches the constant name a developer types when hardcoding a value
+  // (`X_API_KEY: "..."`), not just the wire name, and the optional closing
+  // bracket so a computed key (`[HTTP_HEADER_NAMES.X_API_KEY]: "..."`) matches
+  // too. The negative lookahead skips the header's own name-to-name definition
+  // (`X_API_KEY: "x-api-key"` in config/http.ts), which is a name, not a
+  // credential. A value read from the environment (`[...]: ENV.API_KEY`) has
+  // no literal and cannot match.
+  {
+    pattern: /x[-_]api[-_]key['"\]]?\s*[:=]\s*['"](?!x[-_]api[-_]key['"])[^'"\n]{6,}['"]/gi,
+    label: "Hardcoded auth header value",
+  },
 
   // === Private Keys ===
   {
