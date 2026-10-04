@@ -630,15 +630,23 @@ describe("SHARED_DEFAULTS", () => {
 
   it("must not carry any API key material", () => {
     // BUG-058 regression. A browser-shipped key is a published credential, so
-    // this package must export no default for one. The leaked literal is
-    // reconstructed from its parts rather than written out, so this assertion
-    // does not itself reintroduce the value it forbids.
-    const forbidden = ["blueprintify", "public", "access", "2026"].join("-");
-    const serialized = JSON.stringify(SHARED_DEFAULTS);
+    // this package must export no default for one. Asserted structurally rather
+    // than against the one leaked value: any future default named like a
+    // credential, or holding a value shaped like one, fails here too.
+    const CREDENTIAL_NAME = /KEY|SECRET|TOKEN|CREDENTIAL|PASSWORD/i;
+    const CREDENTIAL_VALUE = /^(?:sk|pk|ghp|gho|ghu|ghs|ghr|github_pat|AIza|AKIA)[-_a-zA-Z0-9]+$/;
+    const SEGMENTED_IDENTIFIER = /^[a-z0-9]+(?:-[a-z0-9]+){2,}$/;
 
-    expect(serialized).not.toContain(forbidden);
-    expect(Object.keys(SHARED_DEFAULTS)).not.toContain("PUBLIC_ACCESS_KEY");
-    expect(serialized).not.toMatch(/PUBLIC_ACCESS_KEY/i);
+    const offenders = Object.entries(SHARED_DEFAULTS)
+      .filter(
+        ([name, value]) =>
+          CREDENTIAL_NAME.test(name) ||
+          (typeof value === "string" &&
+            (CREDENTIAL_VALUE.test(value) || SEGMENTED_IDENTIFIER.test(value)))
+      )
+      .map(([name]) => name);
+
+    expect(offenders).toEqual([]);
   });
 });
 

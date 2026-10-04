@@ -117,11 +117,17 @@ const SECRET_PATTERNS = [
   // Any literal bound to the request-auth header is a shipped credential, so
   // this threshold is deliberately lower than the generic pattern's 16 chars:
   // the BUG-058 key reached every visitor's browser bundle through exactly
-  // this header and would be missed if it were short. Computed header keys
-  // (`[HTTP_HEADER_NAMES.X_API_KEY]: ENV.API_KEY`) do not match.
+  // this header and would be missed if it were short. Case-insensitive so it
+  // also matches the constant name a developer types when hardcoding a value
+  // (`X_API_KEY: "..."`), not just the wire name, and the optional closing
+  // bracket so a computed key (`[HTTP_HEADER_NAMES.X_API_KEY]: "..."`) matches
+  // too. The negative lookahead skips the header's own name-to-name definition
+  // (`X_API_KEY: "x-api-key"` in config/http.ts), which is a name, not a
+  // credential. A value read from the environment (`[...]: ENV.API_KEY`) has
+  // no literal and cannot match.
   {
-    pattern: /x-api-key['"]?\s*[:=]\s*['"][^'"\n]{6,}['"]/gi,
-    label: "Hardcoded x-api-key header value",
+    pattern: /x[-_]api[-_]key['"\]]?\s*[:=]\s*['"](?!x[-_]api[-_]key['"])[^'"\n]{6,}['"]/gi,
+    label: "Hardcoded auth header value",
   },
 
   // === Private Keys ===

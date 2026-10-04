@@ -191,6 +191,28 @@ The top-level (production) environment takes no `--env` flag:
 wrangler secret put API_KEY
 ```
 
+#### Blocking precondition: verify the secret before deploying
+
+`API_KEY` is absent from `[vars]`, and `npm run validate:wrangler` (run by
+`predeploy:api` before every deploy) now fails if it is ever declared there
+again. Until the secret exists, every protected route fails closed with
+`503 CONFIGURATION_ERROR` — the right behaviour for a known-compromised
+credential, but a dark API. **Set the secret before, or together with, the
+deploy. Not after.**
+
+Verify it, from the repo root, while authenticated (`wrangler login` or
+`CLOUDFLARE_API_TOKEN`):
+
+```bash
+npm run validate:secrets
+```
+
+This lists the Worker's secret names and exits non-zero when `API_KEY` is not
+provisioned. It needs Cloudflare credentials, so it is deliberately **not** part
+of the offline CI gate — run it manually as a pre-merge step. It fails rather
+than skips if it cannot reach Cloudflare, so a green result always means the
+secret was actually seen.
+
 ### API Key Rotation
 
 An API key previously committed to `apps/api/wrangler.toml`, published in
@@ -201,25 +223,30 @@ change.**
 
 Rotation has to happen in every location the old value was ever consumed:
 
-| Location                    | Action                                                          |
-| --------------------------- | --------------------------------------------------------------- |
-| Cloudflare Worker, prod     | `wrangler secret put API_KEY`                                    |
-| Cloudflare Worker, staging  | `wrangler secret put API_KEY --env staging`                      |
-| Any other deployed worker   | Same command against that worker, or its dashboard Secrets tab   |
-| Web build (`VITE_API_KEY`)  | Rebuild and redeploy with a **new** value, or leave unset        |
-| Local `apps/api/.dev.vars`  | Replace the `API_KEY=` line                                      |
-| Git history                 | Treat as permanently public; rotate rather than rewrite history  |
+| Location                   | Action                                                                                                                                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cloudflare Worker, prod    | `wrangler secret put API_KEY`                                                                                                                                                                                                     |
+| Cloudflare Worker, staging | `wrangler secret put API_KEY --env staging`                                                                                                                                                                                       |
+| Any other deployed worker  | Same command against that worker, or its dashboard Secrets tab                                                                                                                                                                    |
+| Web build (`VITE_API_KEY`) | Rebuild and redeploy with a **new** value in the same deploy as the Worker secret. Leave unset **only** if the Worker `API_KEY` secret is also unset (fully locked down) — otherwise the SPA sends no header and every protected call returns `401` |
+| Local `apps/api/.dev.vars` | Replace the `API_KEY=` line                                                                                                                                                                                                       |
+| Git history                | Treat as permanently public; rotate rather than rewrite history                                                                                                                                                                   |
 
 Rotating the Worker secret is what actually revokes the old key. Anything
 already built with the old value in `VITE_API_KEY` stays compromised until
-rebuilt and redeployed.
+rebuilt and redeployed. The two are not independent: the Worker secret and the
+build-time value are read by the two halves of one request, so rotating one
+without the other leaves either a locked-down API or a client that cannot
+authenticate.
 
 ### Browser-shipped keys
 
 `VITE_API_KEY` is inlined into the JavaScript bundle at build time. There is no
 configuration in which a browser-delivered key stays secret — anything the
 browser sends, an attacker can read. With `VITE_API_KEY` unset the client omits
-the `x-api-key` header entirely and the API responds `401` on protected routes.
+the `x-api-key` header entirely and the API responds `401` on protected routes —
+or `503 CONFIGURATION_ERROR` while the Worker `API_KEY` secret is unset too,
+which is the state every environment is in until the runbook above has been run.
 
 The Worker authenticates browsers from the same origin it serves the SPA on, so
 the long-term fix is a server-side session rather than a shipped credential.

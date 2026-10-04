@@ -49,7 +49,7 @@ vi.mock("./services/openai", async (importOriginal) => {
 });
 
 // ---- target module (imported after mocks) ----
-import worker from "./index";
+import worker, { app } from "./index";
 import type { Env } from "./types";
 
 interface HealthCheckResponse {
@@ -660,6 +660,17 @@ describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
 
   const PUBLIC_ROUTES = [ROUTE_PATHS.ROOT, ROUTE_PATHS.HEALTH, ROUTE_PATHS.WARMUP];
 
+  /**
+   * Middleware is registered with method "ALL"; filtering it out leaves only the
+   * concrete (method, path) handlers the app actually serves.
+   */
+  const registeredRoutes = (): ReadonlySet<string> =>
+    new Set(
+      app.routes
+        .filter((route) => route.method !== "ALL")
+        .map((route) => `${route.method} ${route.path}`)
+    );
+
   const assetFetcher = {
     fetch: vi.fn(
       async () =>
@@ -689,6 +700,23 @@ describe("auth must fail closed when API_KEY is unset (BUG-058)", () => {
       headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: method === HTTP_METHODS.GET || method === HTTP_METHODS.DELETE ? undefined : "{}",
     });
+
+  it("pins every route the app registers — no protected route can escape this suite", () => {
+    const registered = registeredRoutes();
+    const asserted = new Set(PROTECTED_ROUTES.map(([method, path]) => `${method} ${path}`));
+    const publicRoutes = new Set(PUBLIC_ROUTES.map((path) => `${HTTP_METHODS.GET} ${path}`));
+
+    for (const route of registered) {
+      expect(
+        [...asserted, ...publicRoutes],
+        `route ${route} is registered but neither asserted protected nor declared public`
+      ).toContain(route);
+    }
+
+    for (const route of asserted) {
+      expect([...registered], `asserted route ${route} is no longer registered`).toContain(route);
+    }
+  });
 
   it("answers 503 CONFIGURATION_ERROR on every documented protected route", async () => {
     const env = envWithoutApiKey();
