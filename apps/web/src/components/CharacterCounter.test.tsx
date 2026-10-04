@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { CharacterCounter, CharacterCounterCompact } from "./CharacterCounter";
+import { STORAGE_KEYS } from "../config/keys";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -97,6 +98,28 @@ describe("CharacterCounter", () => {
     visualParent = container.querySelector("[aria-hidden]");
     expect(visualParent).toHaveAttribute("data-state", "at-limit");
   });
+
+  it("keeps decorative animations enabled by default", () => {
+    const { container } = render(<CharacterCounter current={85} max={100} />);
+    const visual = container.querySelector("[data-reduced-motion]");
+    expect(visual).toHaveAttribute("data-reduced-motion", "false");
+    expect(visual?.className).toContain("animate-pulse-scale");
+  });
+
+  it("shows the animated warning icon by default at the limit", () => {
+    const { container } = render(<CharacterCounter current={100} max={100} />);
+    expect(container.querySelector(".animate-warning-icon")).toBeInTheDocument();
+  });
+
+  it("skips pulse, shake, and warning-icon animations when reduced motion is preferred", () => {
+    window.localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, "true");
+    const { container } = render(<CharacterCounter current={100} max={100} />);
+    const visual = container.querySelector("[data-reduced-motion]");
+    expect(visual).toHaveAttribute("data-reduced-motion", "true");
+    expect(visual?.className).not.toContain("animate-pulse-scale");
+    expect(visual?.className).not.toContain("shake-animation");
+    expect(container.querySelector(".animate-warning-icon")).toBeNull();
+  });
 });
 
 describe("CharacterCounterCompact", () => {
@@ -137,5 +160,20 @@ describe("CharacterCounterCompact", () => {
     rerender(<CharacterCounterCompact current={100} max={100} />);
     compactContainer = container.firstElementChild;
     expect(compactContainer).toHaveAttribute("data-state", "at-limit");
+  });
+
+  it("keeps compact pop animation enabled by default", () => {
+    const { container } = render(<CharacterCounterCompact current={30} max={100} />);
+    expect(container.firstElementChild).toHaveAttribute("data-reduced-motion", "false");
+    expect(container.querySelector(".animate-compact-counter-pop")).toBeInTheDocument();
+  });
+
+  it("skips compact pop animation and fill transition when reduced motion is preferred", () => {
+    window.localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, "true");
+    const { container } = render(<CharacterCounterCompact current={30} max={100} />);
+    expect(container.firstElementChild).toHaveAttribute("data-reduced-motion", "true");
+    expect(container.querySelector(".animate-compact-counter-pop")).toBeNull();
+    const fill = container.querySelector("div.rounded-full > div") as HTMLElement | null;
+    expect(fill?.style.transition).toBe("none");
   });
 });
