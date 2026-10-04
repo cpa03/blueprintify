@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main, 2026-10-04)
+
+**Scope**: `git diff origin/main...c50ff06 --name-only` (3 files: `apps/web/src/components/PageScrollProgressBar.tsx` +1, `PageScrollProgressBar.test.tsx` +15/-3, `docs/active-tasks.md` +6 prose; the audit commit 7743e74 then added this entry + `.opencode/memory/security.md`, bringing the PR head to 5 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage — nothing to remove. `.tsx` adds only `data-reduced-motion={prefersReducedMotion ? "true" : "false"}` (boolean-derived static strings, no user input → no XSS/injection); test imports shared `BANNER_STATE_VALUES` (replaces raw `"visible"` literal, reduces drift) and strips framer-motion animation props (`initial`/`animate`/`exit`/`transition`/`whileHover`/`whileTap`/`layoutId`) in the jsdom mock so they never reach the test DOM (test-only unknown-prop filtering, not a shipped-code vuln). `docs/active-tasks.md` is prose-only.
+**Scans**: added-lines secret regex 0x · injection/XSS (`eval`/`innerHTML`/`dangerouslySetInnerHTML`/`child_process`/`document.write`) 0x · deprecated (`Math.random`/`substr`/`max_tokens`) 0x · full-file secret/XSS grep on changed source 0x · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full audit 5 high pre-existing `braces` GHSA-vfj7-8cjw-p6xm via tailwindcss→chokidar/fast-glob/micromatch, no fix available, no package.json/lock change in this PR → not introduced, dev/build-tooling only, risk accepted) · web typecheck ✅ · `PageScrollProgressBar.test.tsx` ✅ 11/11 (incl. reduced-motion true-branch) · `BANNER_STATE_VALUES` export verified (`packages/shared/src/config/ui.ts:805`).
+**Result**: No code fixes required — nothing to remove. No rotation needed (no secrets). No structural rewrite (report-only per constraints).
+
 ## Janitor Cleanup (2026-10-03 — rescan, zero safe deletions, build green)
 
 **Scope**: `agent/janitor` merged `origin/main` (6 files: env examples, types.ts, env docs, findings, package.json scripts) per cleanup request (redundant files, unused exports, commented-out dead code).
@@ -12865,155 +12872,6 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 
 **Baseline ALL GREEN 2,571/2,571 CONFIRMED LIVE THIS CYCLE** (web 1,184/83 + api 535/33 + shared 852/4; typecheck ✅ exit 0 · lint ✅ **0 errors, 0 warnings** ✅ · build ✅ (`PLUGIN_TIMINGS` informational) · build:api ✅ (wrangler `--dry-run` exit 0) · tests 2,571/2,571 ✅ · scan:secrets ✅ 322 files · audit **0 vulns** ✅ · prettier ✅). **Skills used**: none loaded this cycle — all operations are deterministic CLI probes + live gate runs per contract (label audit via `scripts/normalize-issue-labels.mjs --dry-run` — the deterministic label mapper; permission probes; P1 live re-verification — all known-file reads; scoring is evidence-based read-only analysis). **Subagents used**: none — deterministic CLI probes per contract; no parallel exploration needed (all targets are known-file live reads). **Final state: idle** — Phase 0 → ISSUE MANAGER MODE (0 PRs + 101 open issues); Steps 1–3 mutations blocked (`issues: write`, 69th block); Step 4 P1s code/docs-resolved (close blocked) or workflow-blocked (#1014 CI gate / #849/#953, 95th deferral — workflow-file push LIVE-verified rejected, zero residue); Phase 1 scoring → lowest domain D (Delivery 73.5), lowest criterion CI/CD Health (55) → workflow-blocked (95th); doc-sync 12-cycle backfill executed; no code-actionable work this cycle; baseline ALL GREEN.
 
-## [Janitor] Pre-merge dead-code cleanup (2026-09-27, branch `agent/janitor`)
-
-**Scan**: full-repo grep verification (every candidate checked for prod/internal/barrel/test consumers).
-ESLint zero unused warnings; no commented-out code blocks; `console.log` only in legitimate
-logger/build-script/e2e/template-string contexts (no action); `sanitizeHtml` web-vs-api duplication
-is intentional (DOMPurify vs Workers-regex runtimes) — NOT consolidated.
-
-**Removed 16 unused exports + their test blocks** (zero production consumers, no keep-record):
-- `apps/web/src/utils/motion.ts`: `fadeIn`, `scaleIn`, `slideInRight`, `slideInLeft`, `createStaggerContainer`
-- `apps/api/src/utils/sanitize.ts`: `validateXssSafe`, `isXssSafe` (+ dropped now-unused `SANITIZE_ERROR_STRINGS` import)
-- `apps/api/src/utils/timeout.ts`: `createTimeoutWrapper`, `withTimeoutAndRetry` (+ now-unused `RETRY_CONFIG` import; kept `withTimeout` core primitive + live `TimeoutError`)
-- `apps/api/src/services/openai.ts`: `generateCompletion` (routes use streaming `streamCompletion` only)
-- `apps/api/src/utils/secureLog.ts`: `secureLogDebug`
-- `apps/web/src/lib/storage.ts`: `getStorageErrorMessage`, `withStorageRecovery` (+ now-unused `STORAGE_OPERATION_NAMES` import; kept `isStorageError`, used internally)
-- `apps/web/src/components/RippleButton.tsx`: `useRipple` (duplicated ripple logic already inside `RippleButtonComponent`)
-- `apps/web/src/components/CircularProgress.tsx`: `CircularProgressCompact` (+ now-unused `ANIMATION` import)
-- Docs synced: `docs/localstorage-schema.md`, `docs/flexy-plan.md` (Iteration 62 row annotated).
-
-**Verification**: web touched-file tests 105/105 pass; eslint clean on all 16 touched files;
-API typecheck 7 errors before = 7 after (all pre-existing controller errors, none in touched files);
-web typecheck 750 errors before → 743 after (all pre-existing jest-dom matcher typing noise, minus 7 in deleted blocks);
-`npm run build` passes. API workers-pool vitest cannot start in this environment (pre-existing workerd failure, verified on stashed baseline).
-
-**Deliberately KEPT (maintainer decision needed to remove)**: `UI_FALLBACKS` + `useShallow` re-export
-(explicit keep-record); `AnimatedCounter` (feature-documented); theme.ts tokens + a11y hook helpers
-(`getAnimationDuration`, `getSpringConfig`, `useAccessibleAnimation`, `useAccessibilityPreferences` —
-coherent public API surfaces, promote-or-remove is a product call); `withTimeout`, `ensureDOMPurifyLoaded`,
-all test-infra factories.
-**Structural findings (not actioned — report only)**: `.agent/` duplicates `.opencode/` agent system;
-4 parallel utils/lib folders (`apps/api/src/utils`, `apps/web/src/utils`, `apps/web/src/lib`, `packages/shared/src/utils`);
-root `tui.json` byte-identical to `.opencode/tui.json`.
-
-## [Janitor] Pre-merge dead-code cleanup, pass 2 (2026-09-27, branch `agent/janitor`)
-
-**Scan**: `node scripts/janitor-scan.mjs` (127 orphan files + 90 unused exports) with
-manual grep verification of EVERY candidate (aliases, property access, barrel
-re-exports, framework conventions, root-config consumers, same-file use).
-No commented-out dead code; no prod `console.log`; no unused deps
-(`playwright`+`@playwright/test`, `lighthouse`/`chrome-launcher`/`jest-axe` all live);
-no duplicate files (prior pass removed root `functions/` dupe).
-
-**Removed 4 dead exports + 1 stale test-mock key** (zero consumers in src/tests/e2e/scripts):
-- `apps/api/src/config/constants/ratelimit.ts`: `RATE_LIMIT_CONFIG` (live code uses
-  `RATE_LIMIT_CONSTANTS`; also dropped now-unused `getEnvConfig` import) + hub re-export
-- `apps/api/src/config/constants/storage.ts`: `DB_ID_CONFIG` (also dropped now-unused
-  `ID_GENERATION_CONFIG`/`ID_CHARS`/`DB_ID_PREFIXES`/`API_CONFIG_DEFAULTS` imports),
-  `KB`/`MB` aliases (inlined `BYTE_CONVERSION.KB/MB` into `BODY_SIZE_MAX`) + hub re-exports
-- `apps/web/src/config/constants/ui.ts`: `UI_FALLBACKS` (only a stale mock key referenced it;
-  also dropped now-unused `ENV` import)
-- `apps/web/src/lib/api.test.ts`: stale `UI_FALLBACKS` key in `../config/constants` mock
-
-**Verification**: `npm run build` passes; eslint clean on all 5 touched files;
-web `lib/api.test.ts` 5/5 pass; API typecheck 7 errors before = 7 after and web
-typecheck errors all pre-existing jest-dom matcher noise (zero in touched files,
-verified via `git stash` baseline); API workers-pool vitest cannot start in this
-environment (pre-existing workerd failure, verified on untouched file too).
-
-**Deliberately KEPT (scanner false positives, verified live)**: Pages Function
-`apps/web/functions/api/[[path]].ts` (`onRequest`, file-based routing — deleting breaks
-prod `/api/*` proxy); `scripts/migrate.ts`; all `packages/shared` exports (public API);
-`SHARED_SSE_CONFIG/SHARED_SSE_HEADERS` (aliased live re-exports), `SHARED_STAGGER_CONFIG`,
-`FIELD_LABELS/FIELD_PATHS` (compose live exports), `APIError`/`InternalServerError`
-(base class + thrown), `Container`, `PromptInjectionField`, `Environment`/`ExportContext`
-(local use), template granular fns (internal calls + barrel API), `metadata` (inside
-template string), `ViewMode`, toast/theme/hook/storage types (local or barrel use).
-**Structural findings (report only)**: `config-iteration-185.test.ts` is valid but named
-after an iteration — recommend rename to `constants-regression.test.ts`;
-`apps/web/functions/api/[[path]].ts` hardcodes `https://blueprintify.cpa03-cmz.workers.dev`
-— recommend env-var-izing; `janitor-scan.mjs` misses import aliases, property access,
-and root-config consumers — its output must stay manually verified.
-
----
-## [Janitor] Pre-merge dead-code sweep — 2026-09-27 (`agent/janitor`)
-
-**Cleanup (0 tracked source changes)**: full sweep — 0 commented-out dead code
-(only `// ====` section dividers, intentional `eslint-disable`, doc examples),
-0 `TODO/FIXME/HACK` / `@ts-ignore` / `@ts-expect-error` / `as any` / empty-catch /
-merge markers in `apps/*` + `packages/*`, 0 tracked `*.log|*.bak|*.orig|*.tmp|*.patch`,
-0 zero-size tracked files, 0 duplicate `formatDate`, no duplicate `utils` folders
-(`api/utils`, `web/lib`+`utils`, `shared/utils` is domain separation).
-All `console.log` hits verified intentional (request logger, `secureLog`, e2e specs,
-generated template strings, JSDoc examples).
-**Deliberately KEPT (verified live)**: `m2-workflows.test.ts` (self-contained spec),
-`debounce.test.ts` (covers shared `createDebouncedSaver`), `jest-axe` (depcheck false
-positive — imported by `Header.test.tsx` + `accessibility.test.tsx`).
-**Workspace-only**: deleted untracked root `build.log` / `lint.log` / `typecheck.log`
-(CI artifacts, never tracked). No source diff — build safety trivially preserved.
-
----
-## [Janitor] Pre-merge dead-code sweep — 2026-09-29 (`agent/janitor`)
-
-**Merge sync**: merged `origin/main` (Flexy Iteration 186 deploy/proxy modularization)
-into `agent/janitor`. Resolved 1 unmerged path: root `functions/api/[[path]].ts`
-(deleted-by-us duplicate, modified on main) — kept deletion; canonical copy is
-`apps/web/functions/api/[[path]].ts` (now with Flexy parity constants). Verified
-Worker serves frontend via ASSETS binding (`apps/web/dist`), so root copy was dead.
-**Cleanup**: removed resurrected duplicate only; no other safe deletions found.
-**Sweep results**: 0 production `console.log` (all hits intentional: `secureLog`,
-request `logger`, e2e specs, generated template strings, JSDoc/doc examples),
-0 commented-out dead code (2 explanatory comments only), 0 unused deps (all 15
-web deps + testing libs verified imported), 0 `.bak/.orig` strays, 0 duplicate
-`formatDate`/`utils` folders. `task_plan.md`/`*.log` are gitignored, never committed.
-**Build safety**: `packages/shared` rebuild required first (stale `dist` caused
-phantom `TS2305/TS2339` errors in api+web typecheck); after rebuild,
-`typecheck` (api+web) and `npm run build` all pass.
-**Structural findings (report only)**: none new — prior note about hardcoded
-worker URL in Pages Function now mitigated via parity-constants comment block.
-
----
-## [Janitor] Pre-merge hygiene scan — 2026-09-30 (`agent/janitor`)
-
-**Scope**: redundant files, unused exports, commented-out dead code, console.log sweep before merge.
-**Method**: `node scripts/janitor-scan.mjs` + repo-wide grep verification + `typecheck`/`build`/`lint`.
-**Results — zero safe deletions**:
-- `console.log` (16 hits): all intentional — template generator output strings (`node.ts`, `static.ts`), e2e console-audit specs, `secureLog`/`logger` utilities, JSDoc examples. None in production paths.
-- Commented-out code: 0 in production (3 explanatory `//` comments only; `====` hits are section banners in `storage.ts`). No TODO/FIXME/HACK.
-- Unused exports (82 scanner candidates): spot-verified false positives — `PLAYWRIGHT_CONFIG` live in `playwright.config.ts`; `PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS` are documented config surface; `generateHonoIndex`/`generateStaticHTML`/`storageManager` consumed via registry/same-file. Prior cycle analysis still holds.
-- Orphaned files: only `*.test.ts` (vitest entry points, expected) + live `apps/web/functions/api/[[path]].ts` Pages Function. Root `functions/api/[[path]].ts` duplicate already deleted on this branch (verified byte-identical before deletion).
-- Strays: 0 backup/empty files; 0 merge markers; 0 `formatDate` duplicates; 3 `utils` dirs are by-design domain separation (api/web/shared).
-**Gates**: `typecheck` ✅ · `build` ✅ (9.0s) · `lint` ✅ 0 errors.
-**Structural findings (report only)**: none new.
-
----
-## [Janitor] Pre-merge hygiene scan — 2026-10-02 (`agent/janitor`)
-
-**Scope**: redundant files, unused exports, commented-out dead code, console.log sweep before merge.
-**Method**: repo-wide grep verification (branch scanner `scripts/janitor-scan.mjs` was removed in d847871d; manual sweep used) + `npm run build`.
-**Results — zero safe deletions**:
-- `console.log` hits: all intentional — `secureLog`/`logger` utilities, e2e console-audit specs, generated template strings (`node.ts`, `static.ts`), JSDoc/doc examples. None in production paths.
-- Commented-out code: 0 blocks (only explanatory prose comments in `App.tsx`, `OfflineBanner.tsx`, `motion.test.ts`; `/**` hits are JSDoc). No TODO/FIXME/HACK.
-- Unused exports / orphans: basename-reference sweep over first 100 source files found 0 orphans; shared-config exports (`AI_DEFAULTS`, `debounce`, etc.) all have live consumers.
-- Deps: all root devDeps verified referenced (`jest-axe` in a11y tests, `playwright` in brocula scripts, `cssnano` in postcss config, `terser`/`compression2` in vite config); all 15 web deps imported.
-- Strays: 0 temp artifacts, 0 empty dirs, 0 tracked build artifacts (`dist/`, `*.log` gitignored); 0 `formatDate` copies; 3 `utils` dirs are by-design domain separation with disjoint exports.
-- `apps/web/functions/api/[[path]].ts` Pages Function proxy is load-bearing (deploy path), kept.
-**Gates**: `npm run build` ✅ (9.17s).
-**Structural findings (report only)**: none new.
-
----
-## [Janitor] Pre-merge hygiene scan — 2026-10-02 late (`agent/janitor`)
-
-**Scope**: redundant files, unused exports, commented-out dead code, console.log sweep before merge.
-**Method**: repo-wide grep verification + `npm run build` + `npm run typecheck` + `npm run lint`.
-**Results — zero safe deletions**:
-- `console.log`/`console.debug` (16 hits): all intentional — `secureLog`/`logger` utilities, e2e console-audit specs, generated template strings (`node.ts`, `static.ts`), JSDoc/doc examples, README examples. None in production paths.
-- Commented-out code: 0 blocks — `^// (import|export|const|...)` sweep clean in apps + packages; no TODO/FIXME/HACK; `eslint-disable` hits are legitimate exhaustive-deps guards.
-- Unused exports: spot-verified live — `createDebouncedSaver` (used by `usePersistedStore`), `createPersistedStore`/`useBeforeUnload`/`useScrollLock`/`useOnlineStatus`/`useAutoScroll` (all consumed in `App.tsx`/components), `slug`/`scroll`/`motion`/`clipboard`/`platform`/`dom` utils (all imported), `hexToRgba`/`SANITIZE_*`/`PARTICLE_DEFAULTS`/`ANIMATION_ENTRANCE_DELAYS_MS` (all consumed + test-covered). `createFadeInUp` has no production consumer beyond its own test — kept deliberately (public util with test coverage, deleting would break its test).
-- Strays: 0 tracked build artifacts (`*.log` gitignored via `.gitignore:51`); 0 `.bak/.orig` strays; 0 `formatDate` duplicates; `utils` dirs are by-design domain separation (api/web/shared, disjoint exports).
-**Gates**: `npm run build` ✅ (9.24s) · `typecheck` ✅ (shared+api+web) · `lint` ✅ 0 errors.
-**Structural findings (report only)**: none new.
 ## Security Audit — PR model-fallback-hierarchy vs origin/main (2026-09-27)
 
 **Scope**: 90 changed files. Code/config: toast API refactor (options→duration), pro-tip
@@ -13221,16 +13079,3 @@ left to owning team per no-functionality-reduction constraint.
 **Fixes**: (1) Added missing `VITE_API_KEY` row to frontend env table + `.env.example` (code uses `getEnvVar(WEB_ENV.VITE_API_KEY)` fail-closed, shared `ENV_VAR_KEYS.WEB` defines it — docs were behind). (2) Fixed truncated `# GITHUB_URL=https://github.com` → full `https://github.com/cpa03/blueprintify` to match `DEFAULT_URLS.GITHUB` + docs table. (3) Added missing `CIRCUIT_BREAKER_COLD_START_WINDOW_MS?: string` + `NODE_ENV?: string` to `Env` interface (present in EnvConfig/env.ts/docs, absent in types.ts). (4) Made `BACKGROUND_QUEUE: Queue` → optional (`BACKGROUND_QUEUE?: Queue`) — `wrangler.toml` has no queue binding (Free Tier, docs intentional-omission table), zero usages in `apps/api/src` outside declaration, so required field was a type lie. (5) Wired orphan scripts: `brocula:sweep`, `lh:warm`, `brocula:all` (previously 0 refs in package.json/workflows, only cited in audits/findings).
 **Deferred (documented, not deleted this cycle)**: `docs/audits/` 99 files bloat → archive <2026-08-01 + trim README table (needs owner sign-off); `.agent/` vs `.opencode/` full skill duplicate + root `opencode.json`/`tui.json` vs `.opencode/` plugin-name drift (`oh-my-opencode` vs `oh-my-openagent`) → verify CLI resolution before removal; `functions/api/[[path]].ts` Pages legacy vs `apps/api` Workers canonical → verify dashboard before removal; `scripts/migrate.ts` stub + root `schema.sql` placement → team decision (implement vs remove); `findings.md`/`flexy-plan.md`/`CHANGELOG.md` append-only giants → quarterly rotation, not deletion.
 **Scans**: typecheck ✅ (shared/api/web) · lint ✅ 0 errors · build ✅ (vite 9.34s) · baseline pre-change ALL GREEN, post-change verification pending in next step.
-
-## Janitor Sweep — pre-merge cleanup scan (2026-10-04)
-
-**Scope**: `agent/janitor` from `origin/main`. Scan for redundant files, unused exports, commented-out dead code, stray `console.log`, unused deps.
-**Finding**: codebase already lean — no deletions made (delete-nothing is a valid janitor result; safety first).
-- `console.log`: only intentional logging utilities (`apps/api/src/middleware/logger.ts`, `apps/api/src/utils/secureLog.ts`) + starter-template string content + e2e specs + JSDoc examples. 0 stray production logs.
-- Commented-out dead code: 0 blocks (`// import|export|const…` and `{/* … */}` greps clean; remaining `//` are explanatory prose). `debugger`: 0. `.only`/`.skip`: 0. Backup files (`*.bak/*.orig/*~`): 0. Empty source files: 0.
-- Unused exports: spot-checked 20+ symbols across web `lib`/`utils`/`store`, api `utils`/`middleware`, shared — every symbol has 2+ consumer files. Barrel files (`hooks/index.ts`, shared `index.ts`) fully consumed.
-- `eslint-disable`: 6 instances, all targeted react-hooks/test-rule suppressions with context — kept.
-- depcheck: `autoprefixer`+`cssnano` flagged unused but both ARE used in `apps/web/postcss.config.js` (false positive — kept); `zod`/`jest-axe`/`@codemirror/*`/`@playwright/test` "missing" in `apps/web` are root-hoisted workspace deps, build+typecheck green (false positives — no manifest change).
-- Duplicate helpers: none — single shared `createDebouncedSaver` in `@blueprint/shared`; web `lib/` vs `utils/` split is by design (service libs vs pure fns), not folder sprawl.
-**Structural flags (report-only, no unilateral action)**: endorse prior 2026-10-03 deferred list — `docs/audits/` bloat, `.agent/` vs `.opencode/` skill duplication, `functions/api/[[path]].ts` Pages-legacy question, `scripts/migrate.ts` stub, append-only giants (`findings.md`/`flexy-plan.md`/`CHANGELOG.md`) → owner sign-off / quarterly rotation, not janitor deletion.
-**Scans**: typecheck ✅ (shared/api/web) · eslint ✅ 0 errors on src dirs · build ✅ (vite 9.37s).
