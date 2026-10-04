@@ -31,6 +31,47 @@
 
 ## Lessons Learned
 
+### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
+
+- **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
+- **Verification**: Added-lines secret/injection/deprecated 0x; full-file secret/XSS 0x; `scan:secrets` ✅ 337 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, no fix, no package change → not introduced); web typecheck ✅; PageScrollProgressBar tests 11/11 (incl. reduced-motion true-branch).
+- **Lesson**: Framer-motion mock prop-stripping (`initial`/`animate`/`transition`/etc.) is a test-only jsdom hygiene pattern — it keeps test-DOM assertions focused on real attributes; shipped code is unaffected (framer-motion handles real DOM nodes itself). When reviewing motion-component tests, verify the mock strips non-DOM props rather than spreading them into the jsdom div.
+
+### 2026-10-02: Security Engineer Audit — Changed-files scan vs origin/main (16 files), 0 introduced issues
+
+- **Finding**: 16-file diff IS the hardening (CWE-532 x-api-key log redaction, BUG-053 consumed-body fix, hardcoded `blueprintify-public-access-2026` removal fail-closed). No introduced vulnerabilities, secrets, or deprecated usage.
+- **Verification**: Added-lines secret regex 0x, PR-head source grep 0x, deprecated/unsafe 0x, npm audit 0 vulns (full + prod), XSS vectors 0x, Zod + constantTimeCompare intact.
+- **Structural flag (report-only)**: `tailwind.config.js` simplification drops load-bearing `packages/shared/src` scan (TOAST_STYLES/CHAR_COUNTER_COLORS still interpolated at runtime) → JIT purge risk. Functional, not security — flagged in docs/findings.md, no rewrite.
+- **Lesson**: Removal-only `package.json` changes (e.g. dropping `fast-glob`) reduce attack surface and need no CVE action; tailwind content-glob narrowing should be cross-checked against shared literal class sources before merge.
+
+### 2026-10-02: Security Engineer Audit — Changed-Files Scan re-verification (6 files)
+
+- **Finding**: `git diff --name-only origin/main` (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence) introduces 0 vulnerabilities, secrets, or deprecated usage — the diff IS the hardening.
+- **Verification**: code-only added secret 0x · injection/XSS/deprecated 0x (sole `Math.random` = pre-existing JSDoc `core.ts:90`) · `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck ✅ · shared 869/869 · api 535/535 · fail-closed both sides re-confirmed · stale gitignored dists rebuilt → 0 hits.
+- **Lesson**: Gitignored `dist/` regresses to the old fallback on every cycle until rebuilt — always rebuild shared + web dists and re-grep after any secret-removal verification, even when source is clean.
+
+### 2026-10-02: Security Engineer Audit — Changed-Files Scan post-merge re-verification (6 files)
+
+- **Finding**: After `git merge origin/main` (5244a98b doc-sync), the 6-file diff vs `origin/main` still introduces 0 vulnerabilities, secrets, or deprecated usage — the diff IS the hardening (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence).
+- **Merge gate**: `docs/findings.md` conflicted (HEAD audit block vs main's Cycle 603 block) — resolved keeping **both** sections, 0 residual markers. Main's new commit is doc/registry-only; it did NOT reintroduce the removed secret, so no secret-side conflict this cycle.
+- **Verification**: code-only added secret 0x (6 added lines) · injection/XSS/deprecated 0x (sole `Math.random` hit = pre-existing JSDoc at `core.ts:90`) · `scan:secrets` ✅ 336 files · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck ✅ (shared/api/web) · shared 869/869 · api 535/535 · fail-closed both sides re-confirmed (`env.ts:7` `""`, `api.ts:142` header omitted, `auth.ts:129-140` 503).
+- **Stale artifacts**: gitignored `packages/shared/dist` + `apps/web/dist` had regressed to embedding the removed fallback again (built from pre-fix source) — rebuilt both; post-rebuild grep 0 hits.
+- **Lesson**: A merge that only conflicts in *docs* still needs a re-scan of the code diff afterward — main moves, and the code-side secret removal must be re-proven (not assumed) after every merge; rebuild gitignored dists on every cycle since local builds drift from source.
+
+### 2026-10-02: Security Engineer Audit — Changed-Files Scan vs origin/main (6 files)
+
+- **Finding**: Diff is the hardening itself (wrangler prod+staging `API_KEY` → secret-put comments, `PUBLIC_ACCESS_KEY` removed, `env.ts` fail-closed, test asserts absence). 0 introduced vulnerabilities / secrets / deprecated usage — nothing to remove.
+- **Verification**: Code-only added secret value 0x (audit-prose quotes excluded); injection/XSS/deprecated CLEAN; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns (full + prod); `validate:wrangler` ✅; fail-closed verified both sides (web omits header, api 503s); shared 869/869, web typecheck clean.
+- **Lesson**: When audit-prose docs quote a removed secret for traceability, scope secret-counting to code paths (`apps/**`, `packages/**`) — doc quotes are false positives. Staging `CORS_ORIGIN="*"` pre-exists on main; flag report-only, don't expand scope.
+
+### 2026-10-01: Security Engineer Audit — PR app-functionality-fixes-round-2 (4-file state)
+
+- **Finding**: PR (`origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/head` vs `origin/main`: `logger.ts` +20, `index.ts` -9, `index.test.ts` +258, `logger.test.ts` +153) introduces 0 vulnerabilities, secrets, or deprecated usage — it is a net security FIX.
+- **Fix 1 (CWE-532)**: `logger.ts` adds `API_HEADERS.CUSTOM.API_KEY` (= `x-api-key`, the `apiKeyAuth` default) to `SANITIZED_HEADER_EXCLUDE`, closing credential-into-Workers-logs. Verified import from `./network` with no import cycle; shared-derivation anti-drift.
+- **Fix 2**: `index.ts` deletes the `env.ASSETS.fetch(request)` SPA fallback, fixing the consumed-body "Cannot reconstruct a Request" crash; unknown paths now return structured JSON 404.
+- **Verification**: Secret scan (PR-head versions), added-lines secret regex, dangerous-pattern scan (`eval`/`innerHTML`/`Math.random`/`substr`/`max_tokens`) all clean; test canaries (`CANARY-bug052-*`, `TEST_API_KEY="test-key"`) are synthetic fixtures, not secrets; `npm audit` 0 vulnerabilities; no `package.json`/lockfile change → no new CVEs. Independently confirms the existing `docs/findings.md` audit entry for this PR scope.
+- **Lesson**: Bare `git diff --name-only <pr-head>` from another branch compares PR-head→working-tree (reversed); true PR scope is `origin/main..head`. Always verify diff direction before scoping an audit.
+
 ### 2026-02-22 06:15 UTC: Cloudflare Workers Environment File in .gitignore
 
 - **Finding**: `.dev.vars` (Cloudflare Workers environment file) was not in `.gitignore`
@@ -84,6 +125,65 @@
 - **Risk**: Outdated CI runners may contain unpatched vulnerabilities; invalid action versions could fail or execute unintended code
 - **Fix**: Updated runner to `ubuntu-24.04-arm`, actions/checkout and actions/setup-node to `@v4`
 - **Lesson**: CI workflows should be audited regularly for version consistency and security compliance per AGENTS.md standards
+
+### 2026-09-29 09:30 UTC: Security Engineer Audit — Dependabot Dev-Deps PR (9 bumps)
+
+- **Finding**: PR bumps 9 dev-only deps (eslint 10.11.0, wrangler 4.141.0, jsdom 30.1.1, vite 8.3.1, lighthouse 13.5.0, etc.). All forward-only, no introduced vulnerabilities, secrets, or deprecated functions.
+- **Verification**: Added-lines secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; web typecheck clean; fresh `apps/web/dist` rebuild grep CLEAN (stale gitignored bundle had held the old hardcoded fallback — never committed).
+- **Pre-existing Issue**: `undici@7.28.0-7.29.0` (GHSA-3wwx-pv8p-q78v, moderate) persists via `miniflare@5.20260925.0-alpha` exact pin (`undici: "7.29.0"`) inside wrangler 4.141.0. `npm audit fix --force` would breaking-downgrade vitest-pool-workers → risk accepted (dev-only test tooling). jsdom 30.1.1 moving to undici ^8.10.2 improves one leg.
+- **Merge Hazard**: `origin/main` merge tried to reintroduce hardcoded `blueprintify-public-access-2026` into `wrangler.toml` + `env.ts` — conflicts resolved keeping secret-free version.
+- **Lesson**: When main regresses a prior secret-removal, the merge conflict itself is the security gate — always resolve toward the secret-free side and rebuild gitignored artifacts (dist/) that may still embed the old value.
+
+### 2026-09-27 04:00 UTC: Security Engineer Audit — Model Fallback Hierarchy PR
+
+- **Finding**: PR (90 files: toast options→duration refactor, pro-tip removal, debounce retype, opencode.json model hierarchy, 2 new dev deps, new scripts/opencode-run.sh, 5 workflows migrated to wrapper). No introduced vulnerabilities, secrets, or deprecated functions.
+- **Code Scanned**: All code/config diffs; secret/XSS/deprecated greps on added lines clean; `scan:secrets` ✅ 332 files; `npm audit` ✅ 0 vulns (incl. @emnapi/core 1.11.3, @img/sharp-wasm32 0.35.4); opencode-run.sh bash -n OK, 0755, fully quoted, no eval/curl/secrets; toast refactor complete (44/44 vitest pass); source typecheck 0 errors.
+- **Verification**: No code fixes required; audit recorded in `docs/findings.md`.
+- **Lesson**: Shell fallback wrappers that interpolate a user-passed `--model` must quote the expansion and strip the original flag first, otherwise argument injection reorders the fallback chain. Verified pattern: strip `--model`/`-m` during arg parse, then append `--model "$model"` quoted per attempt.
+
+### 2026-09-27 05:15 UTC: Security Engineer Audit — Hardcoded-Secret Removal Verified (22 files vs origin/main)
+
+- **Finding**: PR removes hardcoded credential `blueprintify-public-access-2026` from `apps/api/wrangler.toml` (prod + staging → `wrangler secret put` comments) and `apps/web/src/config/env.ts` (fallback → `""` when unset). No introduced vulnerabilities, secrets, or deprecated usage in the 22-file diff.
+- **Verification**: Added-lines secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; `npm audit` ✅ 0 vulns; fail-closed confirmed (frontend omits `x-api-key` when empty, backend 503s when unset); toast tests 44/44 pass; web source + shared typecheck clean.
+- **Lesson**: Removing a hardcoded *fallback* credential is only safe when both sides fail closed — verify the client omits the header on empty and the server rejects (not bypasses) on unset before approving. No rotation needed for a public dev fallback that was never a real secret.
+
+### 2026-09-29 09:00 UTC: Security Engineer Audit — vitest/ui 4.1.11→5.0.2 (dependabot)
+
+- **Finding**: PR bumps dev-only `@vitest/ui` to `5.0.2` (2 files: package.json + lock). No introduced vulnerabilities, secrets, or deprecated functions. Snyk 0 direct vulns; prior Vitest UI RCEs (GHSA-p63j-vcc4-9vmv, GHSA-5xrq-8626-4rwp) patched in both versions; Vite 8.3.0 + Node ≥22 satisfy Vitest 5 reqs.
+- **Verification**: PR-diff secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; `npm audit --omit=dev` ✅ 0 vulns (full audit 5 moderate undici pre-existing via jsdom→miniflare chain); lockfile URLs + integrity ✅.
+- **Structural flag (report-only)**: `vitest` stays `4.1.11` while ui 5.0.2 peerRequires `vitest@5.0.2` → peer warning / possible `vitest --ui` breakage. Coordinated 5.x bump (vitest + coverage-v8 + ui) left to dependabot follow-ups.
+- **Lesson**: Major-range dev-tool bumps must be checked for peer-matrix coherence, not just CVEs — a lone UI major ahead of its runner is the classic dependabot interim state. Flag it, don't fix it (no functionality reduction).
+
+### 2026-09-30 09:00 UTC: Security Engineer Audit — TOML Typo + Override Downgrade Fixed
+- **Finding**: PR diff carried 2 introduced defects alongside valid secret removal: (1) stray `<` in `apps/api/wrangler.toml:76` (`<vars = {...}` — invalid TOML breaking staging deploy/validator); (2) silent overrides downgrade (`brace-expansion` 5.0.12→5.0.9, `undici` 7.30.0→7.29.0 behind origin/main; undici 7.29.0 in GHSA-3wwx-pv8p-q78v range).
+- **Fix**: Removed `<` → valid `vars = {...}`; bumped overrides forward to main's versions and re-resolved lockfile (`npm update undici`).
+- **Verification**: `validate:wrangler` ✅, `scan:secrets` ✅ 334 files, `npm audit` ✅ 0 vulns (prod + full), shared build + shared/web typecheck clean.
+- **Lesson**: Secret-removal edits to config files must be followed by a syntax-validate step (`validate:wrangler`/tomllib parse) — a one-char typo next to the removed secret can break deploys worse than the secret did. Always diff overrides against main; backward version moves are regressions even when the surrounding PR is a hardening PR.
+
+### 2026-09-30 10:30 UTC: Security Engineer Audit — Secret-Removal + Inline-Expansion PR Verified
+
+- **Finding**: 14-file diff vs origin/main removes hardcoded `API_KEY` from wrangler.toml (prod + staging) and `PUBLIC_ACCESS_KEY`/`VITE_API_KEY` from shared config; call sites inline byte-identical literals. No introduced vulnerabilities, secrets, or deprecated functions.
+- **Verification**: Secret value 0x in added code lines (4x removed only); `scan:secrets` ✅ 334 files; `npm audit` ✅ 0 vulns (full + prod); fail-closed verified both sides (frontend omits header, backend 503s, constant-time compare intact); valid TOML; typechecks clean (shared/web/api); zero stale refs.
+- **Structural flag (report-only)**: Inlining shared constants duplicates values across 4 files (drift risk, no behavior change) — left to owning team per no-functionality-reduction rule.
+- **Lesson**: Secret-counting on diff direction (`grep -c` on `+` vs `-` lines) is the fastest proof that a hardening PR only removes credentials; pair it with a fail-closed check on both client and server before approving.
+
+### 2026-10-01 01:55 UTC: Security Engineer Audit — Stale-Deps Sync (dompurify GHSA-p98j-92pf-mc4p)
+- **Finding**: `agent/security-engineer` was behind `origin/main` (f0aa4fbb): stale `dompurify@3.4.15` + missing `overrides.dompurify` re-exposed GHSA-p98j-92pf-mc4p (1 low in `npm audit`); stale UI (`MarkdownRenderer` empty-src guard, `PreviewEmptyState` data-reduced-motion) and docs (BUG-051, Cycle 602) would have been deleted by the PR.
+- **Fix**: Checked out 9 stale files + Cycle 602 block forward from `origin/main`; kept the 4 secret-removal files untouched. Final diff vs main = secret removal + audit logs only.
+- **Verification**: Code-only secret value 0x; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns (full + prod); `validate:wrangler` ✅; typecheck clean; shared 868/868, web 12/12 + 27/27, api 535/535.
+- **Lesson**: When `git diff origin/main` shows a security lib moving *backward*, check merge-base first — zero branch changes since MB means staleness, not introduction. Sync forward with `git checkout origin/main -- <files>` and never let a hardening PR delete main's newer hardening.
+
+### 2026-10-01 02:30 UTC: Security Engineer Audit — Introduced-Defect Removal (downgrades + localStorage + inline-expansion)
+- **Finding**: 18-file diff carried valid secret removal plus 3 introduced regression classes: (1) 5 dependency downgrades (hono 4.13.9→4.13.8, openai 7.23.0→7.18.0, codemirror 4.25.12→4.25.11, framer 13.4.4→13.4.0, error-boundary 6.1.6→6.1.5); (2) localStorage try/catch removal in 3 files (privacy-mode SecurityError crash/DoS); (3) shared-constant inline expansion (visibility timeouts, ELAPSED_ANNOUNCEMENT, test mocks, Iteration 187 docs).
+- **Fix**: Restored forward dep versions + origin/main lockfile; checked out App/StepGenerating/ReducedMotion/e2e/api.test/flexy-plan from origin/main; surgically restored PLAYWRIGHT/UI_TIMEOUTS constants + web import + config.test expectations (23-count) while keeping PUBLIC_ACCESS_KEY removal + fail-closed test. Final diff vs main = 6 files (secret removal + audit logs only).
+- **Verification**: Secret 0x; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns; `validate:wrangler` ✅; typecheck clean; shared 869/869, web api.test 5/5.
+- **Lesson**: A hardening PR that also touches package.json or shared config must be diffed for direction — every version move must be forward-only and every shared-constant deletion must be secret-only; otherwise restore from main and re-apply only the secret removal.
+
+### 2026-09-30 11:00 UTC: Security Engineer Audit — Merge Reintroduction of Removed Secret Fixed
+- **Finding**: `origin/main` merge reintroduced hardcoded fallback `blueprintify-public-access-2026` as new `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` with `env.ts` fallback wiring — regressing the prior fail-closed (`""`) hardening. Empty `git diff --name-only origin/main` on the source branch masked it; the staged merge diff (20 files) plus the `env.ts` conflict exposed it.
+- **Fix**: Removed the constant; resolved conflict as `getEnvVar(WEB_ENV.VITE_API_KEY)` (shared key name, no fallback); replaced hardcoding test with fail-closed absence assertion.
+- **Verification**: Secret value 0x in added code lines; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns; shared 868/868, web 25/25, api openai 19/19; typechecks clean.
+- **Lesson**: When `git diff --name-only origin/main` is empty on a PR branch, audit the staged merge diff (`git diff --cached`) and every merge conflict instead — merges from main can silently reintroduce previously removed secrets, and the conflict resolver is the last security gate. Always resolve toward the secret-free side.
 
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 
@@ -198,6 +298,33 @@
 - **Risk**: Information leakage through logs (API keys, file paths, database connection strings)
 - **Fix**: Created `secureLog.ts` utility with pattern-based sanitization for sensitive data
 - **Lesson**: All error logging should sanitize output to prevent OWASP A09:2021 (Security Logging and Monitoring Failures)
+
+### 2026-10-01 20:20 UTC: Security Engineer Audit — PR Tailwind content-glob hardening (fast-glob + test guard)
+
+- **Finding**: PR adds `fast-glob@3.3.3` (dev-only), hardens `apps/web/tailwind.config.js` with absolute
+  cwd-independent glob prefixes + test-file/`__tests__` negations, adds `tailwind.config.d.ts` and
+  `apps/web/src/config/tailwindContent.test.ts` guard. No introduced vulnerabilities, secrets, or deprecated functions.
+- **Code Scanned**: `apps/web/package.json`, `apps/web/tailwind.config.js`, `apps/web/tailwind.config.d.ts`,
+  `apps/web/src/config/tailwindContent.test.ts`, `package-lock.json`
+  (diff vs `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/head` = 5 files).
+- **Scans performed**: npm audit (0 vulns ✅), `npm run scan:secrets` (337 files clean ✅),
+  secrets grep (only false-positive "tokens" = design tokens ✅), injection/XSS grep
+  (no eval/innerHTML/dangerouslySetInnerHTML/child_process ✅), deprecated-API grep (none ✅),
+  fast-glob API check (`convertPathToPattern`/`escapePath` present in 3.3.3, no @deprecated ✅),
+  targeted vitest run (7/7 pass ✅).
+- **Action**: No code changes required. Named ESM import from CJS `fast-glob` relies on Vite/Vitest
+  interop (verified passing); leaving as-is per no-unasked-rewrite.
+- **Lesson**: Glob-building from `__dirname`-derived constants with `escapePath(convertPathToPattern())`
+  is the safe pattern for cwd-independent Tailwind content scans — inputs are never user-controlled,
+  so no path-traversal risk.
+
+### 2026-10-02: Security Engineer Audit — Dependabot dev-deps PR clean, stale dist rebuilt
+
+- **Finding**: Dependabot PR (9 forward-only dev bumps: workers-types, eslint ×4, wrangler, jsdom, vite, @types/node, lighthouse, prettier, typescript-eslint) introduces no vulnerabilities, secrets, or deprecated usage. `npm audit` 0 vulns (full + prod). Lockfile clean (local workspace links only, no suspicious scripts).
+- **Root Cause (stale artifacts)**: Gitignored build outputs (`packages/shared/dist`, `apps/web/dist`) still embedded the previously removed `blueprintify-public-access-2026` fallback because they were built from pre-fix source. Tracked source was already clean.
+- **Risk**: LOW — dist/ is gitignored and never part of any PR, but stale secrets in local artifacts can confuse future scans.
+- **Fix**: Rebuilt both dists from current source (`tsc --build` + vite build); post-rebuild grep 0 hits. Verified typecheck clean, shared 869/869, api 535/535, web 1248/1248.
+- **Lesson**: After removing a hardcoded secret from source, always rebuild gitignored dist outputs — otherwise the value lingers in local artifacts and re-triggers secret scans.
 
 ## Security Checklist
 

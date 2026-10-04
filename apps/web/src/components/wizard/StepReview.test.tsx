@@ -18,7 +18,8 @@ import { StepReview } from "./StepReview";
 import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { WIZARD_STEP_KEYS, REVIEW_STATE_VALUES } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
   WIZARD_REVIEW_DESCRIPTIONS,
@@ -51,18 +52,37 @@ vi.mock("../../lib/platform", () => ({
 }));
 
 // Mock child components
+vi.mock("../../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
+}));
+
 vi.mock("../RippleButton", () => ({
-  RippleButton: vi.fn(({ children, onClick, disabled, className, ariaLabel, ...props }) => (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={className}
-      aria-label={ariaLabel}
-      {...props}
-    >
-      {children}
-    </button>
-  )),
+  RippleButton: vi.fn(
+    ({
+      children,
+      onClick,
+      disabled,
+      className,
+      ariaLabel,
+      isLoading,
+      whileHover,
+      whileTap,
+      ...props
+    }) => (
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        className={className}
+        aria-label={ariaLabel}
+        data-loading={isLoading === undefined ? undefined : String(isLoading)}
+        data-has-hover={whileHover === undefined ? "undefined" : "defined"}
+        data-has-tap={whileTap === undefined ? "undefined" : "defined"}
+        {...props}
+      >
+        {children}
+      </button>
+    )
+  ),
 }));
 
 vi.mock("../SmartTooltip", () => ({
@@ -129,6 +149,7 @@ let mockStream: { startGeneration: Mock; isGenerating: boolean; progress: string
 describe("StepReview", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useReducedMotion).mockReturnValue(false);
     mockStore = createMockStore();
     (useWizardStore as unknown as Mock).mockImplementation(
       (selector: (state: WizardStore) => unknown) => selector(mockStore)
@@ -271,10 +292,10 @@ describe("StepReview", () => {
     expect(mockStream.startGeneration).toHaveBeenCalledTimes(1);
   });
 
-  it("shows a generating state with a disabled button", () => {
+  it("shows a generating state with a disabled button and state inspection attributes", () => {
     mockStream.isGenerating = true;
     mockStream.progress = "Generating architecture...";
-    render(<StepReview />);
+    const { container } = render(<StepReview />);
     expect(
       screen.getByRole("button", {
         name: ACCESSIBILITY_LABELS.REVIEW.GENERATING_IN_PROGRESS_ARIA,
@@ -282,6 +303,30 @@ describe("StepReview", () => {
     ).toBeDisabled();
     expect(screen.getByText("Generating...")).toBeInTheDocument();
     expect(screen.getByText("Generating architecture...")).toBeInTheDocument();
+    expect(container.firstChild).toHaveAttribute("data-state", REVIEW_STATE_VALUES.GENERATING);
+    expect(container.firstChild).toHaveAttribute("data-reduced-motion", "false");
+  });
+
+  it("exposes idle state and reduced-motion false by default", () => {
+    const { container } = render(<StepReview />);
+    expect(container.firstChild).toHaveAttribute("data-state", REVIEW_STATE_VALUES.IDLE);
+    expect(container.firstChild).toHaveAttribute("data-reduced-motion", "false");
+  });
+
+  it("exposes reduced-motion true branch via data attribute", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(<StepReview />);
+    expect(container.firstChild).toHaveAttribute("data-state", REVIEW_STATE_VALUES.IDLE);
+    expect(container.firstChild).toHaveAttribute("data-reduced-motion", "true");
+  });
+
+  it("passes loading and hover wiring through to the generate button", () => {
+    render(<StepReview />);
+    const generateButton = screen.getByRole("button", {
+      name: new RegExp(UI_CONTENT.WIZARD.STEP_REVIEW.GENERATE_BUTTON),
+    });
+    expect(generateButton).toHaveAttribute("data-has-hover", "defined");
+    expect(generateButton).toHaveAttribute("data-has-tap", "defined");
   });
 
   it("disables the back button while generating", () => {

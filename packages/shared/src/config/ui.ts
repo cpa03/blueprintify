@@ -352,6 +352,10 @@ export const UI_TIMEOUTS = {
   /** Interval for elapsed time counter tick in StepGenerating (1s).
    * Used as the setInterval period for the MM:SS elapsed time display during AI generation. */
   ELAPSED_TIMER_INTERVAL_MS: 1000,
+  /** Interval for throttled screen-reader announcements of elapsed time in StepGenerating (30s).
+   * Announcing every second is an a11y anti-pattern — only the SR live region is throttled,
+   * the on-screen timer still ticks at ELAPSED_TIMER_INTERVAL_MS. */
+  ELAPSED_ANNOUNCEMENT_INTERVAL_MS: 30000,
 } as const;
 
 /**
@@ -954,5 +958,47 @@ export const EDITOR_BUTTON_STATE_VALUES = {
   /** Content ready state identifier */
   CONTENT_READY: "content-ready" as const,
   /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * SVG Icon Rendering Defaults
+ * Centralized source of truth for inline SVG icon attributes.
+ * Flexy says: No hardcoded "0 0 24 24"/"none"/"currentColor"/"round"/strokeWidth in Icon components!
+ * Usage: import { SVG_ICON_DEFAULTS } from "@blueprint/shared";
+ *        <svg viewBox={SVG_ICON_DEFAULTS.VIEW_BOX} fill={SVG_ICON_DEFAULTS.FILL_NONE} ...>
+ */
+export const SVG_ICON_DEFAULTS = {
+  /** Default viewBox for 24x24 stroke icons */
+  VIEW_BOX: "0 0 24 24" as const,
+  /** Default fill for stroke-only icons */
+  FILL_NONE: "none" as const,
+  /** Default stroke color inheriting surrounding text color */
+  STROKE_CURRENT: "currentColor" as const,
+  /** Default rounded line caps */
+  STROKE_LINECAP_ROUND: "round" as const,
+  /** Default rounded line joins */
+  STROKE_LINEJOIN_ROUND: "round" as const,
+  /** Default stroke width for regular icons */
+  STROKE_WIDTH_DEFAULT: 2 as const,
+  /** Bold stroke width for emphasis icons */
+  STROKE_WIDTH_BOLD: 3 as const,
+  /** Default icon size class */
+  SIZE_DEFAULT: "w-5 h-5" as const,
+  /** Small icon size class */
+  SIZE_SMALL: "w-4 h-4" as const,
+} as const;
+
+/**
+ * Review Step Display State Values
+ * Centralized state tracking values for the wizard review step (StepReview).
+ * Flexy says: No hardcoded "generating"/"idle" strings in StepReview!
+ * Usage: import { REVIEW_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isGenerating ? REVIEW_STATE_VALUES.GENERATING : REVIEW_STATE_VALUES.IDLE}
+ */
+export const REVIEW_STATE_VALUES = {
+  /** Generation in progress state identifier */
+  GENERATING: "generating" as const,
+  /** Idle / ready to review state identifier */
   IDLE: "idle" as const,
 } as const;
