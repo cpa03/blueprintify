@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-05 — rescan @ 34ae5aee, 0-behind 7dcfe59f, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` @ `34ae5aee` (merge-base `7dcfe59f` = `origin/main` tip, 0-behind, no merge needed, no conflicts) per cleanup request (redundant files, unused exports, commented-out dead code).
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond this docs entry.
+
+**Verification**: `npm run build` ✅ green (8.58s vite) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 5 prose false positives only (`App.tsx:105`, `tailwindContent.test.ts:109/260/272/289`); zero hits in `packages/` and `scripts/`; zero `// console|debugger|alert` corpses; block `/*` hits are JSDoc/eslint/JSX section markers only.
+- **No production `console.log` to remove**: all non-test hits intentional — Workers structured logging (`middleware/logger.ts:217,263`), sanitized `secureLog.ts:256` (+ JSDoc `@example` snippets `:97,141`, `lib/api.ts:21,23`), generated-project template strings (`templates/node.ts:141,169`, `static.ts:193`), docs comment (`config/security.ts:164`); `console.warn/error` are sanitized storage/error paths (`storage.ts`, `persistence.ts`, `usePersistedStore.ts`, `ErrorBoundary.tsx`, `main.tsx` handlers) — kept.
+- **No dead unused exports**: spot-checked all live — motion/framer (`framer-motion`:23 files), reduced-motion family (303 refs/61 files incl. `sanitizeHtml`, `storageManager`, `BANNER_STATE_VALUES`, `fadeInUp`, `useReducedMotion`); prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`/`generateCompletion`/`getStorageErrorMessage`/`RATE_LIMIT_CONFIG`/`DB_ID_CONFIG`/`UI_FALLBACKS` in `apps/`+`packages/` source.
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep over `apps`/`packages`/`scripts`/`functions` → zero identical pairs; zero `formatDate` hits; all 8 `scripts/` wired via `package.json`/`workflows`.
+- **No unused deps**: all root devDeps referenced in scripts/config/workflows; web deps import-verified (`framer-motion`, `clsx`, `jszip`, `zustand`, `dompurify`, `react-markdown`, `hono`/`openai`/`zod` unchanged since prior cycles).
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (sole hit is `apps/api/README.md` grep-example prose); 0 merge markers; 0 `.only`/`.skip`/`debugger`; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (4× `react-hooks/*` in ShowEditorButton/CircularProgress/GenerationCelebration/useAutoSaveToast/useLastSaved, 1× `set-state-in-effect`, 1× `require-yield` in `stream.test.ts`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `safeLocalStorage` DRY opportunity persists (try/catch `localStorage` ×3 files) — recommend helper in `apps/web/src/lib/storage.ts`, not executed to keep pre-merge diff behavior-untouched.
+
 ## Janitor Cleanup (2026-10-05 — rescan @ f7ff621c, 0-behind 0ca2e30d, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` @ `f7ff621c` (merge-base `0ca2e30d` = `origin/main` tip, 0-behind, no conflicts) per cleanup request (redundant files, unused exports, commented-out dead code). Merge intake: CharacterCounter reduced-motion (#3717), BUTTON_LABEL mock fix (#3714).
