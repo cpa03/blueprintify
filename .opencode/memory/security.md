@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-05: Security Engineer Audit — 27-file changed-files scan vs origin/main, 0 introduced issues
+
+- **Finding**: 27-file diff IS hardening + cleanup (BUG-058 gates: scan-secrets drops wrangler.toml exemption + adds auth-header-literal pattern, validate-wrangler +381 API_KEY-in-[vars] gate + --check-secrets, validate:secrets script, fail-closed regression tests asserting booleans; shared-constant removals + StepReview simplification). Nothing to remove.
+- **Verification**: Code-only added secret 0x; full-file secret/XSS 0x; sole execFileSync = safe argv-array pattern (no shell, static bin, no user input); `scan:secrets` ✅ 338 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, no fix, zero dep moves → not introduced); typecheck ✅; shared 796/796; web env 22/22. Invoking dependabot prod-deps PR (hono/openai/framer-motion) forward-only.
+- **Lesson**: When `git merge` fails on missing identity in a non-interactive env, use `git -c user.name=… -c user.email=…` inline flags rather than skipping the sync — and never let a skipped merge go unrecorded: log the behind-count (here 9) in findings.md so the next cycle re-scans after syncing.
+
 ### 2026-10-03: Security Engineer Audit — Merge doc-sync (6 files) + dependabot vitest/ui 5.0.3 (2 files), 0 introduced issues
 
 - **Finding**: Both scopes clean — merge is docs/type-shaping only (`.dev.vars.example` URL fix, `.env.example` placeholder, `types.ts` optional cold-start/NODE_ENV + `BACKGROUND_QUEUE?`, 3 orphan-script wires); vitest/ui PR is forward-only dev-only bump (lock hoists ui/utils/pretty-format to 5.0.3, registry URLs intact, 0 install scripts). No introduced vulnerabilities, secrets, or deprecated usage — nothing to remove.
