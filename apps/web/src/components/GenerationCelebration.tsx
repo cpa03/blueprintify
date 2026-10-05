@@ -22,6 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
+import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
 import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
@@ -205,6 +206,8 @@ function GenerationCelebrationComponent({
       role="status"
       aria-live="polite"
       aria-label={ACCESSIBILITY_LABELS.CELEBRATION.COMPLETE}
+      data-state={isComplete ? CELEBRATION_STATE_VALUES.ACTIVE : CELEBRATION_STATE_VALUES.IDLE}
+      data-reduced-motion={String(prefersReducedMotion)}
     >
       <AnimatePresence>
         {particles.map((particle) => {
