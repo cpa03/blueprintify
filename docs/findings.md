@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.
+**Hygiene CLEAN** — 700 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy; 8/8 scripts wired (`opencode-run.sh`↔workflows, `lh-warm`↔`lh:warm`, `brocula-sweep`↔`brocula:sweep` verified); 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; TODO/FIXME 0; console.log only intentional (secureLog/e2e/docs-example).
+**Doc-sync CLEAN** — README tree matches on-disk; `openapi.yaml` 14 paths ↔ README/API table; `API_ENDPOINTS` carries `STORAGE_REPORT`/`SHARE_VERIFY`; env docs cover all code vars; no drift found, no sync edits needed.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 337 files · audit prod ✅ 0 vulns (full 5 high pre-existing `braces` dev-chain, risk accepted) · tests ✅ 2691/2691 (web 1270/86 + api 547/33 + shared 874/4).
+
 ## Security Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main, 2026-10-04)
 
 **Scope**: `git diff origin/main...c50ff06 --name-only` (3 files: `apps/web/src/components/PageScrollProgressBar.tsx` +1, `PageScrollProgressBar.test.tsx` +15/-3, `docs/active-tasks.md` +6 prose; the audit commit 7743e74 then added this entry + `.opencode/memory/security.md`, bringing the PR head to 5 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
