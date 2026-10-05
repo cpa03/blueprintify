@@ -2,6 +2,37 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-05 — merge origin/main 1f0408be, zero safe deletions, typecheck+lint+build green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `1f0408be` (merge-base was `7dcfe59f`; intake = dependabot dev-deps bump #3720 + repokeeper hygiene audit #3721) per cleanup request (redundant files, unused exports, commented-out dead code). Resolved 1 `findings.md` merge conflict keeping both sides newest-first (incoming repokeeper ULW entry on top, then janitor history), 0 lines dropped, 0 residual markers.
+
+### Removed
+
+- None. No safe deletions — intake contains zero source changes (manifest version bumps + docs prose only), and the tree verifies clean (see below). Zero source changes beyond the `origin/main` merge intake + this docs entry.
+
+**Verification**: `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0 · `npm run build` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **Merge intake introduces no dead code**: `git diff` of intake = 4 manifests (forward-only dev-dep version bumps, no removals) + lockfile + this `findings.md` entry. No new files, no new exports, no commented code possible.
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → prose comments only; zero hits in `packages/` and `scripts/`; JSX `{/* */}` 76 hits all section labels, not dead code; zero `// console|debugger|alert` corpses.
+- **No production `console.log` to remove**: `apps/` hits all intentional (Workers structured logging, sanitized `secureLog`, generated-project template strings, JSDoc `@example`s); `scripts/` hits are by-design CLI UX; rest are test/e2e expectations.
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`/`RATE_LIMIT_CONFIG`/`DB_ID_CONFIG`/`UI_FALLBACKS` in `apps/`+`packages/` source.
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep over first-party `src`+`scripts`+`functions` → zero identical pairs; 0 merge markers.
+- **Hygiene clean**: 0 `.only`/`.skip`/`debugger` in `apps/` source.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `scripts/migrate.ts` stub persists (methods return `[]`, no real DB wiring) but is wired via `db:*` scripts — implement vs remove needs team decision, not janitor deletion.
+
+## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.
+**Hygiene CLEAN** — 700 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy; 8/8 scripts wired (`opencode-run.sh`↔workflows, `lh-warm`↔`lh:warm`, `brocula-sweep`↔`brocula:sweep` verified); 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; TODO/FIXME 0; console.log only intentional (secureLog/e2e/docs-example).
+**Doc-sync CLEAN** — README tree matches on-disk; `openapi.yaml` 14 paths ↔ README/API table; `API_ENDPOINTS` carries `STORAGE_REPORT`/`SHARE_VERIFY`; env docs cover all code vars; no drift found, no sync edits needed.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 337 files · audit prod ✅ 0 vulns (full 5 high pre-existing `braces` dev-chain, risk accepted) · tests ✅ 2691/2691 (web 1270/86 + api 547/33 + shared 874/4).
+
 ## Janitor Cleanup (2026-10-05 — rescan @ 34ae5aee, 0-behind 7dcfe59f, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` @ `34ae5aee` (merge-base `7dcfe59f` = `origin/main` tip, 0-behind, no merge needed, no conflicts) per cleanup request (redundant files, unused exports, commented-out dead code).
