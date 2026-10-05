@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-05 — rescan @ f7ff621c, 0-behind 0ca2e30d, zero safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` @ `f7ff621c` (merge-base `0ca2e30d` = `origin/main` tip, 0-behind, no conflicts) per cleanup request (redundant files, unused exports, commented-out dead code). Merge intake: CharacterCounter reduced-motion (#3717), BUTTON_LABEL mock fix (#3714).
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes beyond this docs entry.
+
+**Verification**: `npm run build` ✅ green (8.72s vite) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **Merge intake all live**: CharacterCounter reduced-motion path + accessibility test additions are consumed additions, not dead code; no new exports introduced by intake.
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → prose comments only (App.tsx, OfflineBanner, CharacterCounter, ConfirmDialog test); block `/*` hits are JSDoc only; zero `// console|debugger|alert`.
+- **No production `console.log` to remove**: all non-test hits intentional — Workers structured logging (`middleware/logger.ts:217,263`), sanitized `secureLog.ts:256` (+ JSDoc `@example` snippets), generated-project template strings (`templates/node.ts`, `static.ts`), docs comment (`config/security.ts:164`); `scripts/migrate.ts` CLI output is by-design CLI UX. Rest are test/e2e expectations.
+- **No dead unused exports**: spot-checked all live — motion utils (`transitions`:18, `fadeInUp`:6, `pageTransition`:7 consumers), `sanitizeHtml` (7 files), `secureLog*` (3–8 files), `formatSSE`/`createSSEResponse` (2/6), `TimeoutError`/`CircuitBreakerOpenError` (6/8), storage (`StorageService`:3, `StorageManager`:6, `wizardStorage`:6, `editorStorage`:4), shared types (`StreamChunk`:4, `WizardStep`:8, `Session`:7 — all multi-consumer). Prior removals hold — zero refs to `StreamCallbacks`/`CreateShareRequest`/`VerifySharePassphraseRequest` in tracked src (only stale gitignored `dist/`).
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources; `md5sum` sweep over `apps`/`packages`/`scripts`/`functions` → zero identical pairs; zero `formatDate` hits; single `apps/web/functions/api/[[path]].ts` deploy entry (no root duplicate).
+- **No unused deps**: all root devDeps referenced in scripts/config/workflows (`concurrently`, `lint-staged`, `husky`, `lighthouse`, `playwright`, `jest-axe`, eslint plugins via `eslint.config.js`); web deps import-verified (`fast-glob` via `tailwind.config.js` + test, compression2/terser/cssnano/autoprefixer via vite/postcss configs); `scripts/migrate.ts` wired via `db:*` scripts.
+- **Hygiene clean**: 0 TODO/FIXME in source (sole hit is README prose); 0 merge markers; 0 `console.debug/info` in prod (sole hit is JSDoc prose); eslint-disables legitimate only (`require-yield` in `stream.test.ts`, rest in `node_modules`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `scripts/migrate.ts` stub persists (methods return `[]`, no real DB wiring) but is wired via `db:*` scripts — implement vs remove needs team decision, not janitor deletion.
+
 ## Janitor Cleanup (2026-10-04 — rescan @ 70588cad, 0-behind f1379260, zero safe deletions, build+typecheck+lint green)
 
 **Scope**: `agent/janitor` @ `70588cad` (merge-base `f1379260` = `origin/main` tip, 0-behind, no merge needed, no conflicts) per cleanup request (redundant files, unused exports, commented-out dead code).
