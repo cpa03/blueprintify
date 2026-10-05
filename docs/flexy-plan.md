@@ -4,6 +4,35 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 187b: Centralize SVG Icon Rendering Defaults
+
+**Problem**: `apps/web/src/components/Icon.tsx` rendered `<svg>` with hardcoded `fill="none"`, `stroke="currentColor"`, `strokeLinecap/Linejoin="round"`, default `className="w-5 h-5"` and `strokeWidth=2`; `apps/web/src/config/icons.ts` repeated `viewBox: "0 0 24 24"` 25× across every icon. Flexy says: no hardcoded SVG icon literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `SVG_ICON_DEFAULTS` (VIEW_BOX/FILL_NONE/STROKE_CURRENT/STROKE_LINECAP_ROUND/STROKE_LINEJOIN_ROUND/STROKE_WIDTH_DEFAULT/STROKE_WIDTH_BOLD/SIZE_DEFAULT/SIZE_SMALL) |
+| `packages/shared/src/index.ts` | Exported `SVG_ICON_DEFAULTS` |
+| `apps/web/src/config/icons.ts` | 25× `viewBox: "0 0 24 24"` → `viewBox: SVG_ICON_DEFAULTS.VIEW_BOX` |
+| `apps/web/src/components/Icon.tsx` | `fill`/`stroke`/`strokeLinecap`/`strokeLinejoin`/`className`/`strokeWidth` defaults → `SVG_ICON_DEFAULTS.*` |
+| `packages/shared/src/config.test.ts` | Added 5 tests asserting `SVG_ICON_DEFAULTS` values |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run typecheck` (shared/web) — clean
+- ✅ `npm run build --workspace=apps/web` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npm run test --workspace=packages/shared` — **873 tests passing** (was 868; +5 new)
+- ✅ `npm run test --workspace=apps/web -- --run src/components/Icon.test.tsx src/components/Header.test.tsx` — **27 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-187-svg-icon-defaults` | refactor(flexy): centralize SVG icon rendering defaults into shared config (Iteration 187) |
+
 ### ✅ Flexy Iteration 187: Centralize E2E Visibility Timeouts, SR Announce Interval & Test Mock Timeouts
 
 **Problem**: Sisa magic numbers: `3000`/`2000` di `isVisible({ timeout })` e2e (5 lokasi), `30000` di `ELAPSED_ANNOUNCEMENT_INTERVAL_MS` web constants, dan `30000`/`5000` di mock `TIMEOUTS` `api.test.ts` — semua bypass shared config. Flexy says: no hardcoded timeouts!

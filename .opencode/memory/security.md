@@ -35,7 +35,13 @@
 
 - **Finding**: 27-file diff IS hardening + cleanup (BUG-058 gates: scan-secrets drops wrangler.toml exemption + adds auth-header-literal pattern, validate-wrangler +381 API_KEY-in-[vars] gate + --check-secrets, validate:secrets script, fail-closed regression tests asserting booleans; shared-constant removals + StepReview simplification). Nothing to remove.
 - **Verification**: Code-only added secret 0x; full-file secret/XSS 0x; sole execFileSync = safe argv-array pattern (no shell, static bin, no user input); `scan:secrets` ✅ 338 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, no fix, zero dep moves → not introduced); typecheck ✅; shared 796/796; web env 22/22. Invoking dependabot prod-deps PR (hono/openai/framer-motion) forward-only.
-- **Lesson**: When `git merge` fails on missing identity in a non-interactive env, use `git -c user.name=… -c user.email=…` inline flags rather than skipping the sync — and never let a skipped merge go unrecorded: log the behind-count (here 9) in findings.md so the next cycle re-scans after syncing.
+- **Lesson**: When `git merge` fails on missing identity in a non-interactive env, use `git -c user.name=… -c user.email=…` inline flags (no config change) — the merge then succeeds; docs-only conflicts resolve by keeping both entries in date order, and the code diff must still be re-scanned afterward since main can silently reintroduce removed secrets.
+
+### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
+
+- **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
+- **Verification**: Added-lines secret/injection/deprecated 0x; full-file secret/XSS 0x; `scan:secrets` ✅ 337 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, no fix, no package change → not introduced); web typecheck ✅; PageScrollProgressBar tests 11/11 (incl. reduced-motion true-branch).
+- **Lesson**: Framer-motion mock prop-stripping (`initial`/`animate`/`transition`/etc.) is a test-only jsdom hygiene pattern — it keeps test-DOM assertions focused on real attributes; shipped code is unaffected (framer-motion handles real DOM nodes itself). When reviewing motion-component tests, verify the mock strips non-DOM props rather than spreading them into the jsdom div.
 
 ### 2026-10-03: Security Engineer Audit — Merge doc-sync (6 files) + dependabot vitest/ui 5.0.3 (2 files), 0 introduced issues
 

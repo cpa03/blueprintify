@@ -215,6 +215,18 @@ function StepIndicatorComponent(): JSX.Element {
               // the aria-describedby hint (a native `disabled` attribute removes
               // the button from the tab order and silences the explanation).
               aria-disabled={!isClickable}
+              aria-label={ACCESSIBILITY_LABELS.STEP.BUTTON_LABEL(
+                step.label,
+                index,
+                STEPS.length,
+                isActive
+                  ? "current"
+                  : isCompleted
+                    ? "completed"
+                    : isClickable
+                      ? "available"
+                      : "locked"
+              )}
               title={
                 isClickable
                   ? ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT(step.label, step.shortcut)
