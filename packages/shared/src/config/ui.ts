@@ -1002,3 +1002,17 @@ export const REVIEW_STATE_VALUES = {
   /** Idle / ready to review state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * Celebration Display State Values
+ * Centralized state tracking values for completion celebration animations (GenerationCelebration).
+ * Flexy says: No hardcoded "active"/"idle" strings in GenerationCelebration!
+ * Usage: import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isComplete ? CELEBRATION_STATE_VALUES.ACTIVE : CELEBRATION_STATE_VALUES.IDLE}
+ */
+export const CELEBRATION_STATE_VALUES = {
+  /** Celebration animation active state identifier */
+  ACTIVE: "active" as const,
+  /** Celebration animation idle state identifier */
+  IDLE: "idle" as const,
+} as const;
