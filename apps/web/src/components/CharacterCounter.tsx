@@ -1,5 +1,6 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
@@ -45,6 +46,12 @@ function CharacterCounterComponent({
 
   const remaining = max - current;
 
+  // Respect prefers-reduced-motion (WCAG 2.3.3): the limit shake, warning
+  // pulse, and min-met celebration are purely decorative, so they are skipped
+  // for vestibular-sensitive users. State colors and screen-reader
+  // announcements stay fully functional.
+  const shouldReduceMotion = useReducedMotion();
+
   const [showLimitShake, setShowLimitShake] = useState(false);
   const prevAtLimitRef = useRef(false);
 
@@ -74,9 +81,10 @@ function CharacterCounterComponent({
     prevBelowMinRef.current = belowMin;
   }, [belowMin, min]);
 
-  const shakeClass = showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
-  const pulseClass = shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
-  const celebrateClass = showCelebrate ? "counter-celebrate-pop" : "";
+  const shakeClass = !shouldReduceMotion && showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
+  const pulseClass =
+    !shouldReduceMotion && shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
+  const celebrateClass = !shouldReduceMotion && showCelebrate ? "counter-celebrate-pop" : "";
 
   // Intentionally empty during normal typing: a live region that changes on
   // every keystroke makes screen readers announce each character typed.
@@ -97,11 +105,15 @@ function CharacterCounterComponent({
         aria-hidden="true"
         data-state={stateValue}
         data-has-min={min !== undefined ? "true" : "false"}
+        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
         <span className="text-dark-600">/{max}</span>
         {isAtLimit && (
-          <span className="ml-1 inline-flex animate-warning-icon" aria-hidden="true">
+          <span
+            className={`ml-1 inline-flex ${shouldReduceMotion ? "" : "animate-warning-icon"}`}
+            aria-hidden="true"
+          >
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
               viewBox="0 0 24 24"
@@ -148,6 +160,10 @@ function CharacterCounterCompactComponent({
   const remaining = max - current;
   const isAtLimit = current >= max;
 
+  // Same reduced-motion policy as the main counter above (WCAG 2.3.3): the
+  // per-keystroke count pop and the fill-width transition are decorative.
+  const shouldReduceMotion = useReducedMotion();
+
   const compactStateValue = isAtLimit
     ? CHAR_COUNTER_STATE_VALUES.AT_LIMIT
     : isDanger
@@ -166,20 +182,27 @@ function CharacterCounterCompactComponent({
         : "";
 
   return (
-    <div className={`flex items-center gap-1.5 ${className}`} data-state={compactStateValue}>
+    <div
+      className={`flex items-center gap-1.5 ${className}`}
+      data-state={compactStateValue}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+    >
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${
             isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
           }`}
-          style={{ width: `${Math.min(percentage, 100)}%` }}
+          style={{
+            width: `${Math.min(percentage, 100)}%`,
+            transition: shouldReduceMotion ? "none" : undefined,
+          }}
         />
       </div>
       <span
         key={`compact-count-${current}`}
-        className={`text-2xs tabular-nums inline-block animate-compact-counter-pop ${
-          isDanger ? "text-accent-pink font-bold" : "text-dark-500"
-        }`}
+        className={`text-2xs tabular-nums inline-block ${
+          shouldReduceMotion ? "" : "animate-compact-counter-pop"
+        } ${isDanger ? "text-accent-pink font-bold" : "text-dark-500"}`}
         aria-hidden="true"
       >
         {current}/{max}
