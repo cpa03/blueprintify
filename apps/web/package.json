@@ -22,7 +22,7 @@
     "@uiw/react-codemirror": "4.25.12",
     "clsx": "2.1.1",
     "dompurify": "3.4.16",
-    "framer-motion": "13.4.4",
+    "framer-motion": "13.5.0",
     "jszip": "3.10.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
