@@ -2,6 +2,15 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Dependabot vitest/ui 5.0.3 PR + stale-downgrade remediation (2026-10-05)
+
+**Scope**: (A) invoking PR `origin/main..origin/dependabot/npm_and_yarn/vitest/ui-5.0.2` (2 files: `apps/web/package.json` `@vitest/ui` `^4.1.11`→`^5.0.3`, `package-lock.json` +51/-22: ui/utils/pretty-format hoisted to 5.0.3); (B) `agent/security-engineer` working diff vs `origin/main` (10 files pre-fix, 8 post-fix). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 0 introduced vulnerabilities / secrets / deprecated usage in either scope — nothing to remove from the PR. (A) is a forward-only dev-only bump (registry.npmjs.org URLs intact, 0 install scripts, no secrets/injection/deprecated in 51 added lines). (B) carried a stale-branch regression: `apps/api/package.json` + `package-lock.json` moved `hono` 4.13.12→4.13.9 and `openai` 7.27.0→7.23.0 backward (merge-base `7dcfe59f` predates main's prod-deps bump `#3722`) — branch-behind-main staleness, not a deliberate downgrade.
+**Fixes applied (this cycle)**: restored `apps/api/package.json` + `package-lock.json` forward from `origin/main` (`git checkout origin/main -- <files>`). Final diff vs main = 8 files (BUG-058 gates + `validate:secrets` script + audit docs only, zero dep moves).
+**Scans**: dependabot added-lines secret/injection/deprecated 0x · code-only added secret value 0x · hardcoded fallback `blueprintify-public-access` 0x · sole `execFileSync` = safe argv-array (no `shell:true`, static bin, no user input) · `scan:secrets` ✅ 338 files · `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing dev-only `braces` GHSA-vfj7-8cjw-p6xm chain via tailwindcss, identical on main, `--force` not run) · `validate:wrangler` ✅ · typecheck ✅ (shared/api/web) · shared `config.test.ts` 801/801 · web `env.test.ts` 22/22.
+**Structural flags (report-only, no rewrite)**: (1) PR leaves `vitest@4.1.11` runner + `@vitest/coverage-v8@4.1.11` while `ui@5.0.3` peer-requires vitest 5 → lone-UI-major peer warning / possible `vitest --ui` breakage; coordinated 5.x bump left to dependabot follow-ups. (2) Full-audit 5 high `braces` chain is pre-existing on main — risk accepted dev-only.
+**Result**: Introduced downgrade regression removed; hardening intact. No rotation needed (no real secrets).
+
 ## Security Audit — Changed-files scan vs origin/main, stale-downgrade remediation (2026-10-05)
 
 **Scope**: `git diff --name-only origin/main` on `agent/security-engineer` (12 files pre-fix: BUG-058 gates — `scripts/scan-secrets.mjs`, `scripts/validate-wrangler.mjs`, `package.json` +`validate:secrets`, `apps/web/src/config/env.test.ts`, `packages/shared/src/config.test.ts`, `apps/web/.env.example`; audit docs — `docs/findings.md`, `.opencode/memory/security.md`; stale — `apps/api/package.json`, `apps/web/package.json`, `packages/shared/package.json`, `package-lock.json`). Task: remove introduced vulnerabilities, secrets, deprecated usage.

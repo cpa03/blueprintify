@@ -31,6 +31,13 @@
 
 ## Lessons Learned
 
+### 2026-10-05: Security Engineer Audit — Dependabot vitest/ui 5.0.3 PR + stale-downgrade remediation
+
+- **Finding**: Invoking PR (`origin/main..origin/dependabot/npm_and_yarn/vitest/ui-5.0.2`: `@vitest/ui` ^4.1.11→^5.0.3, lock +51/-22) introduces 0 vulnerabilities, secrets, or deprecated usage — forward-only dev-only bump, nothing to remove. Working branch carried stale downgrades (`hono` 4.13.12→4.13.9, `openai` 7.27.0→7.23.0; merge-base predates main's #3722 prod-deps bump) — restored forward from `origin/main`; final diff = 8 files, zero dep moves.
+- **Verification**: Dependabot added-lines secret/injection/deprecated 0x; code-only secret value 0x; hardcoded fallback 0x; sole `execFileSync` = safe argv-array; `scan:secrets` ✅ 338 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing dev-only braces GHSA-vfj7-8cjw-p6xm, identical on main); `validate:wrangler` ✅; typecheck ✅; shared 801/801; web env 22/22.
+- **Structural flags (report-only)**: `ui@5.0.3` peer-requires vitest 5 while runner stays 4.1.11 → lone-UI-major peer warning, coordinated 5.x bump left to dependabot; full-audit 5 high braces chain pre-existing dev-only, risk accepted.
+- **Lesson**: After checking out a new branch away from the PR branch, `git diff --name-only origin/main` changes meaning — capture the invoking PR's range (`origin/main..<pr-head>`) before switching, and audit both the PR scope and the working-branch scope explicitly.
+
 ### 2026-10-05: Security Engineer Audit — Changed-files scan, stale-downgrade remediation (12→8 files)
 
 - **Finding**: 12-file diff vs origin/main mixed BUG-058 hardening (gates + tests + docs, 0 introduced issues) with stale backward version moves in 4 package files (eslint/wrangler/vite/jsdom/etc. behind main). Restored the 4 files forward from origin/main, re-applying only the `validate:secrets` script to root package.json. Final diff = 8 files, zero dep moves.
