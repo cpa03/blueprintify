@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-05: Security Engineer Audit — Changed-files scan, stale-downgrade remediation (12→8 files)
+
+- **Finding**: 12-file diff vs origin/main mixed BUG-058 hardening (gates + tests + docs, 0 introduced issues) with stale backward version moves in 4 package files (eslint/wrangler/vite/jsdom/etc. behind main). Restored the 4 files forward from origin/main, re-applying only the `validate:secrets` script to root package.json. Final diff = 8 files, zero dep moves.
+- **Verification**: Added-lines real-secret 0x; hardcoded fallback 0x; XSS/injection 0x (execFileSync safe argv pattern); deprecated 0x; `scan:secrets` ✅ 338 files; `npm audit --omit=dev` ✅ 0 vulns (full 5 high pre-existing braces GHSA-vfj7-8cjw-p6xm, identical on main); typecheck ✅; shared 801/801; web env 22/22.
+- **Lesson**: When a hardening branch sits behind main, `git diff origin/main` shows package files moving *backward* — this is staleness, not introduction. Fix with `git checkout origin/main -- <package files>` then surgically re-apply only the intended addition (e.g. a new npm script); never hand-edit versions forward.
+
 ### 2026-10-05: Security Engineer Audit — 27-file changed-files scan vs origin/main, 0 introduced issues
 
 - **Finding**: 27-file diff IS hardening + cleanup (BUG-058 gates: scan-secrets drops wrangler.toml exemption + adds auth-header-literal pattern, validate-wrangler +381 API_KEY-in-[vars] gate + --check-secrets, validate:secrets script, fail-closed regression tests asserting booleans; shared-constant removals + StepReview simplification). Nothing to remove.
