@@ -13184,3 +13184,6 @@ left to owning team per no-functionality-reduction constraint.
 **Fixes applied (this cycle)**: none required in tracked source; removed gitignored `build.log`/`lint.log`/`typecheck.log` residue from disk (untracked, no commit effect).
 **Verification**: ESLint on the 4 merge-touched source files → exit 0. Zero tracked edits → no build risk introduced.
 **Structural flags (report-only, no moves)**: prior deferred items unchanged — `.agent/` vs `.opencode/` duplication, `opencode.json`/`tui.json` plugin-name drift, `functions/api/[[path]].ts` Pages legacy vs `apps/api` canonical, `scripts/migrate.ts` stub + root `schema.sql`, `docs/audits/` bloat, append-only giants rotation, undocumented `web/src/lib/` vs `web/src/utils/` split (modules disjoint, no duplication found).
+
+### Janitor addendum — pre-existing `npm audit` gate failure (2026-10-05)
+Pre-push hook (`npm run check`) results on `agent/janitor`: typecheck ✅ (shared/api/web) · lint ✅ · scan:secrets ✅ (337 files) · `npm audit --audit-level=high` ❌ 5 high (transitive dev-only: `braces` ← `chokidar` ← `tailwindcss` chain) — pre-existing, unrelated to this docs-only commit; `npm audit fix --force` would be breaking, left to dependabot/owner. `test:all` not reached (audit gates it in `check` script order).
