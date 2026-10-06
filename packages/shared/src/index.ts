@@ -251,6 +251,7 @@ export {
   SAVE_STATE_VALUES,
   PROGRESS_STATE_VALUES,
   REVIEW_STATE_VALUES,
+  CELEBRATION_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";
