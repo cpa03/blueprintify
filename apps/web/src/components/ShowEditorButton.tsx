@@ -27,6 +27,7 @@ import {
   BUTTON_TRANSITION_DEFAULTS,
   EDITOR_BUTTON_STATE_VALUES,
 } from "@blueprint/shared/config";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
@@ -53,6 +54,7 @@ function ShowEditorButtonComponent({
   isGenerating = false,
 }: ShowEditorButtonProps): JSX.Element {
   const modifierKey = getModifierLabel();
+  const prefersReducedMotion = useReducedMotion();
 
   const [showArrival, setShowArrival] = useState(false);
   const prevIsGenerating = useRef(isGenerating);
@@ -131,6 +133,7 @@ function ShowEditorButtonComponent({
           }
           data-glow-active={showGlow}
           data-is-generating={isGenerating}
+          data-reduced-motion={String(prefersReducedMotion)}
           aria-expanded={false}
           aria-controls="editor-panel"
         >
