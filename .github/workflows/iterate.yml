@@ -58,7 +58,7 @@ jobs:
         run: npm ci
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: arsitek
         timeout-minutes: 20
@@ -122,7 +122,7 @@ jobs:
         run: npm ci
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: BugFixer
         timeout-minutes: 20
@@ -186,7 +186,7 @@ jobs:
         run: npm ci
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Palette
         timeout-minutes: 20
@@ -250,7 +250,7 @@ jobs:
         run: npm ci
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Flexy
         timeout-minutes: 20
@@ -314,7 +314,7 @@ jobs:
         run: npm ci
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Brocula
         timeout-minutes: 20

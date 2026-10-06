@@ -60,7 +60,7 @@ jobs:
 
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: On-Pull

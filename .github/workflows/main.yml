@@ -27,7 +27,7 @@ jobs:
 
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Create / Update Task Plan
@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Dispatch Tasks
         env:
@@ -101,7 +101,7 @@ jobs:
 
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash || npm install -g opencode-ai
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Execute Assigned Task
