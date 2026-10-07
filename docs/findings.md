@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-07 — merge origin/main 3120ce33, zero safe deletions, typecheck+lint+build green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `3120ce33` (intake = AnimatedCopyButton reduced-motion/content attrs #3728 + shortcuts-modal focus ring #3727 + ShowEditorButton reduced-motion attr #3724 + bugs/audit docs + prod-dep bumps #3722) per cleanup request (redundant files, unused exports, commented-out dead code). Auto-merge clean, 0 conflicts.
+
+### Removed
+
+- None. No safe deletions — intake adds only live code (2 data attrs + focus-ring class + `useReducedMotion` hook usage, all consumed + tested), and the tree verifies clean (see below). Zero source changes beyond the `origin/main` merge intake + this docs entry.
+
+**Verification**: `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0 · `npm run build` ✅ exit 0 (9.66s vite).
+
+### Verified clean (no action needed)
+
+- **Merge intake introduces no dead code**: `git diff` of intake = 3 component tweaks (live attrs/hooks) + 3 test files + docs/audits + manifests. New `data-reduced-motion`/`data-has-content` attrs live-verified (60 refs across 32 files, component + test).
+- **No commented-out dead code**: `// <code-keyword>` grep over `apps/` → 3 prose hits only (`App.tsx:300`, `OfflineBanner.tsx:178`, `tailwind.config.js:8`); zero hits in `packages/` and `scripts/`; block comments are JSDoc/prose; zero `// console|debugger|alert` corpses.
+- **No production `console.log` to remove**: `apps/` hits all intentional (Workers structured logging, sanitized `secureLog`, generated-project template strings, JSDoc `@example`s); `console.debug/info` only JSDoc prose; rest are test/e2e expectations.
+- **No dead unused exports**: prior removals hold — zero refs to `scaleIn`/`slideInRight`/`secureLogDebug`/`withTimeoutAndRetry`/`CreateShareRequest`/`StreamCallbacks`/`validateXssSafe`/`RATE_LIMIT_CONFIG`/`DB_ID_CONFIG`/`UI_FALLBACKS` in `apps/`+`packages/` source.
+- **No orphan/empty/duplicate files**: zero tracked `.bak`/`.orig`/`.tmp`/`.swp`/`~`/`.DS_Store`/`*.log`; zero empty first-party sources (empty blobs are `.agent/` legacy stubs); root `functions/` stays deleted, only `apps/web/functions/api/[[path]].ts` deploy entry remains; 0 merge markers; zero `formatDate` hits.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (sole hit is `apps/api/README.md` grep-example prose); 0 `.only`/`.skip`/`debugger`; 0 `as any`/`@ts-ignore`/`@ts-expect-error`; eslint-disables remain the 6 legitimate targeted suppressions (`react-hooks/*`, `require-yield`).
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+- [Janitor] `scripts/migrate.ts` stub persists (methods return `[]`, no real DB wiring) but is wired via `db:*` scripts — implement vs remove needs team decision, not janitor deletion.
+- [Janitor] `.agent/` vs `.opencode/` duplication + `docs/audits/` bloat persist — owner sign-off needed before removal.
+
 ## Janitor Cleanup (2026-10-05 — merge origin/main 1f0408be, zero safe deletions, typecheck+lint+build green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `1f0408be` (merge-base was `7dcfe59f`; intake = dependabot dev-deps bump #3720 + repokeeper hygiene audit #3721) per cleanup request (redundant files, unused exports, commented-out dead code). Resolved 1 `findings.md` merge conflict keeping both sides newest-first (incoming repokeeper ULW entry on top, then janitor history), 0 lines dropped, 0 residual markers.
