@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 2026-10-07 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261007` from `origin/main` (`ed0dd93a`), clean tree, 0-behind.
+**Hygiene CLEAN** — 0 redundant/temp/unused tracked (`*.bak/*.tmp/*.log/*.patch/task_plan.md/lighthouse-*.json/.DS_Store` empty); `audit-reports/`/`coverage/`/`tmp/` absent; `packages/shared/dist` local-only gitignored; 8/8 scripts wired; `docs/audits` Run 90-93 all <30d RETAIN; `docs/issues` 7 specs active KEEP.
+**Doc-sync FIX (4 items)** — `docs/environment-variables.md`: +`ASSETS` Static Assets binding row (was missing vs `wrangler.toml` `[assets]`), staging/production custom domains → actual `workers.dev` URLs, env sections `NODE_ENV=` → `ENVIRONMENT=` (Workers never sets `NODE_ENV`), `NODE_ENV` row clarified legacy/test-only; `docs/knowledge-review.md` DOC-003 stale "32 endpoints" → verified 14 paths / 15 ops. `openapi.yaml` 14 paths + README API table + `api-documentation.md` verified SYNC, untouched.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 339 files.
+
 ## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.

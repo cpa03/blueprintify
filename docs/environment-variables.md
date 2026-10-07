@@ -29,7 +29,7 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 | `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 |
 | `ADMIN_API_KEY`      | No          | -                           | Admin API key granting the `admin` role (RBAC). Takes precedence over `API_KEY` for admin-protected endpoints |
 | `ENVIRONMENT`        | No          | `development`               | Runtime environment (`development`, `staging`, `production`). Production detection uses this because CF Workers never sets `NODE_ENV` |
-| `NODE_ENV`           | No          | `development`               | Runtime environment (`development`, `test`, `production`)          |
+| `NODE_ENV`           | No          | `development`               | Legacy/test-only mirror (`development`, `test`, `production`). Read ad-hoc for production detection and Vitest rate-limit bypass; prefer `ENVIRONMENT`. Not set in `.dev.vars.example` |
 
 ### Rate Limiting
 
@@ -111,6 +111,12 @@ The API uses Cloudflare Workers bindings for various services.
 | Binding | Type       | Description                            |
 | ------- | ---------- | -------------------------------------- |
 | `AI`    | Workers AI | AI binding for server-side AI features |
+
+### Static Assets
+
+| Binding  | Type          | Description                                              |
+| -------- | ------------- | -------------------------------------------------------- |
+| `ASSETS` | Static Assets | Serves frontend from `apps/web/dist` (`not_found_handling=none`) |
 
 ### Rate Limiting
 
@@ -206,28 +212,27 @@ npm run lint
 ### Development (default)
 
 - `ENVIRONMENT=development`
-- `NODE_ENV=development`
 - `CORS_ORIGIN=http://localhost:3000`
 - Rate limiting: 60 requests per minute (standard tier)
 
 ### Testing
 
-- `NODE_ENV=test`
+- `ENVIRONMENT=test` (Vitest sets `NODE_ENV=test`; rate-limit bypass checks `NODE_ENV`)
 - Rate limiting disabled
 - Analytics disabled
 
 ### Staging
 
-- `NODE_ENV=staging`
-- Custom domain: `api-staging.blueprintify.dev`
+- `ENVIRONMENT=staging`
+- Worker URL: `blueprintify-staging.<account>.workers.dev` (`workers_dev=true`)
 - Production-like settings with test data
 
 ### Production
 
-- `NODE_ENV=production`
-- Custom domain: `api.blueprintify.dev`
+- `ENVIRONMENT=production` (production detection uses `ENVIRONMENT` because CF Workers never sets `NODE_ENV`)
+- Worker URL: `https://blueprintify.cpa03-cmz.workers.dev`
 - Full rate limiting enabled
-- Analytics enabled
+- Analytics via Workers Observability Logs (`ANALYTICS` binding disabled on Free Tier, error 10089)
 
 ---
 

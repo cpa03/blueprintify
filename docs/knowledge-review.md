@@ -34,7 +34,7 @@ All previously tracked drift items resolved in the Sep 2026 consolidation pass:
 |----|------|-----------------|----------|
 | **DOC-001** | CI Workflows | `on-pull.yml` still lacks `issues: write`; blocks Issue Manager automation | Medium |
 | **DOC-002** | CI Workflows | All 5 workflows lack `workflows: write`; blocks self-healing gatekeeper workflows | Medium |
-| **DOC-003** | API Docs | `docs/api-documentation.md` endpoint list incomplete vs. actual 32 endpoints | Low |
+| **DOC-003** | API Docs | `docs/api-documentation.md` endpoint list verified sync: 14 paths / 15 operations (was tracked as incomplete vs. stale "32 endpoints" claim) | Low |
 | **DOC-004** | CHANGELOG | 1,036 lines of cycle logs; consider moving to archive | Low |
 
 ---
