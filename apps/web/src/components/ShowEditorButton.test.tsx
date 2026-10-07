@@ -164,4 +164,11 @@ describe("ShowEditorButton", () => {
     expect(svg).toBeInTheDocument();
     expect(svg).toHaveAttribute("aria-hidden", "true");
   });
+
+  it("exposes data-reduced-motion attribute for state inspection", () => {
+    render(<ShowEditorButton {...defaultProps} />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
+  });
 });
