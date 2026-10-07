@@ -4,11 +4,11 @@
 
 ## Current Defect Status (Oct 2026)
 
-- **Zero code defects**: Typecheck clean; ESLint clean (0 errors, 0 warnings) — verified 2026-10-06.
+- **Zero code defects**: Typecheck clean; ESLint clean (0 errors, 0 warnings) — verified 2026-10-07.
 - **Zero known unhandled exceptions**: Clean console in production bundles.
 - **Zero build/lint fatals**: `build`, `build:api`, `typecheck`, `lint`, `format:check`, `scan:secrets`, `validate:wrangler` all passing.
-- **Tests green**: 2,692 passed (web 1,271 + api 547 + shared 874) — verified 2026-10-06.
-- **Known dependency limitation (no non-breaking fix)**: `npm audit --audit-level=high` reports 9 vulnerabilities (3 moderate, 6 high) via `braces@3.0.3` ← `micromatch/fast-glob/chokidar` ← `tailwindcss@3.4.19` (GHSA-vfj7-8cjw-p6xm) plus `postcss-selector-parser` and `source-map-js` transitives. `braces` has no patched 3.x release; the only audit-suggested path is the breaking `tailwindcss@4.x` upgrade, so this is tracked here and not changed in this cycle. Hardening overrides held: `dompurify@3.4.16`, `undici@7.30.0`, `sharp@0.35.4`, `brace-expansion@5.0.12`, `ajv@6.15.0`, `hono@4.13.9`.
+- **Tests green**: 2,695 passed (web 1,274 + api 547 + shared 874) — verified 2026-10-07.
+- **Known dependency limitation (no non-breaking fix)**: `npm audit --audit-level=high` reports 15 vulnerabilities (3 moderate, 10 high, 2 critical) via `braces@3.0.3` ← `micromatch/fast-glob/chokidar` ← `tailwindcss@3.4.19` (GHSA-vfj7-8cjw-p6xm) plus `postcss-selector-parser` and `source-map-js` transitives, plus `shell-quote` via `concurrently` (critical, breaking fix only) and `sharp` librsvg CVE-2026-96889. `braces` has no patched 3.x release; the only audit-suggested path is the breaking `tailwindcss@4.x` upgrade, so this is tracked here and not changed in this cycle. Hardening overrides held: `dompurify@3.4.16`, `undici@7.30.0`, `sharp@0.35.4`, `brace-expansion@5.0.12`, `ajv@6.15.0`, `hono@4.13.9`.
 - **Known toolchain drift (lint still green)**: `eslint@10.11.0` exceeds the peer ranges declared by `eslint-plugin-jsx-a11y`/`eslint-plugin-react` (`^3 || ... || ^9`), so `npm ls eslint` reports invalid peer. `npm run lint` still exits 0 with 0 errors/0 warnings; downgrade to 9.39.5 is deferred to avoid churn.
 
 ---
@@ -34,7 +34,7 @@
 > Over 110 BugFixer and 600+ ULW orchestration cycles have been executed. All individual cycle logs and Phase 1 daily audits are preserved in [`findings.md`](./findings.md) and in `git log -- docs/bugs.md`.
 
 > **Recurring Fix Verification (held across all cycles):**
-> - **BUG-048** (ESLint pin, peer dep resolution): Drift noted 2026-10-06 — `eslint@10.11.0` exceeds plugin peer ranges; lint still 0/0, downgrade deferred
+> - **BUG-048** (ESLint pin, peer dep resolution): Drift noted 2026-10-07 — `eslint@10.11.0` exceeds plugin peer ranges; lint still 0/0, downgrade deferred
 > - **BUG-049** (Storage route error format via `createErrorJson`): Verified held
 > - **BUG-047** (DOMPurify 3.4.13 security pin): Verified held
 > - **BUG-040** (Hono 4.13.2 CORS ReDoS patch): Verified held
@@ -82,5 +82,5 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 
 ---
 
-**Last Updated**: 2026-10-06 — BugFixer ULW cycle: verified typecheck/lint/build/test green (2,692 tests); synced audit + toolchain drift (9 vulns: braces/postcss/source-map-js, eslint 10.11.0 peer) without breaking changes
+**Last Updated**: 2026-10-07 — BugFixer ULW cycle: verified typecheck/lint/build/test green (2,695 tests); synced audit + toolchain drift (15 vulns: braces/postcss/source-map-js/shell-quote/sharp-librsvg, eslint 10.11.0 peer) without breaking changes
 **Maintainer**: Documentation Specialist
