@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-07: Security Engineer Audit — Changed-files scan (16→8 files), stale-reversion remediation
+
+- **Finding**: 16-file diff mixed BUG-058 hardening (0 introduced issues) with 8 stale reversions of main's newer commits (merge-base 7dcfe59f predates #3715/#3716/#3724/#3727): focus-ring removal, act() unwrapping, reduced-motion deletion, audit-docs rollback. Restored all 8 forward from origin/main; final diff = 8 files, zero dep moves.
+- **Verification**: Added-lines real-secret 0x; fallback 0x in code; execFileSync safe argv-array; `scan:secrets` ✅ 338 files; `npm audit --omit=dev` ✅ 0 vulns (full 15 all pre-existing, lockfile zero-diff — newly disclosed shell-quote critical + sharp high need override bumps, deferred per no-churn); `validate:wrangler` ✅; typecheck ✅; shared 801/801; web env 22/22.
+- **Lesson**: Never run `git stash` + `git checkout -- <file>` mid-audit without a re-verification pass — the sequence silently dropped the `validate:secrets` script from worktree+index. Always re-grep the intended addition (`grep validate package.json`) and re-check `git diff origin/main --stat` after any tree manipulation before committing. Stale-file detection shortcut: if `git diff origin/main` shows DELETIONS of content committed to main after your merge-base (`git log --oneline origin/main -- <file>`), it's staleness — restore forward, don't review it as an intentional change.
+
 ### 2026-10-05: Security Engineer Audit — Dependabot vitest/ui 5.0.3 PR + stale-downgrade remediation
 
 - **Finding**: Invoking PR (`origin/main..origin/dependabot/npm_and_yarn/vitest/ui-5.0.2`: `@vitest/ui` ^4.1.11→^5.0.3, lock +51/-22) introduces 0 vulnerabilities, secrets, or deprecated usage — forward-only dev-only bump, nothing to remove. Working branch carried stale downgrades (`hono` 4.13.12→4.13.9, `openai` 7.27.0→7.23.0; merge-base predates main's #3722 prod-deps bump) — restored forward from `origin/main`; final diff = 8 files, zero dep moves.
