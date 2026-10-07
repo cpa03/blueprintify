@@ -127,7 +127,9 @@ describe("AnimatedCopyButton", () => {
   });
 
   it("sets data-state, data-reduced-motion, data-has-content, and title attributes for micro-UX state tracking", () => {
-    const { rerender } = render(<AnimatedCopyButton {...defaultProps} isCopied={false} hasContent={true} />);
+    const { rerender } = render(
+      <AnimatedCopyButton {...defaultProps} isCopied={false} hasContent={true} />
+    );
     const button = screen.getByRole("button");
     expect(button).toHaveAttribute("data-state", COPY_STATE_VALUES.IDLE);
     expect(button).toHaveAttribute("data-reduced-motion", "false");
