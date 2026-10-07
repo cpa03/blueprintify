@@ -183,6 +183,53 @@ describe("ScrollToTop", () => {
     expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: 0 }));
   });
 
+  it("does not hijack the Home key while typing in a text input", () => {
+    const scrollTo = vi.fn();
+    window.scrollTo = scrollTo;
+
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const input = document.createElement("input");
+    document.body.appendChild(input);
+
+    act(() => {
+      fireEvent.keyDown(input, { key: KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY });
+    });
+
+    expect(scrollTo).not.toHaveBeenCalled();
+
+    document.body.removeChild(input);
+  });
+
+  it("does not hijack the Home key inside the contenteditable editor", () => {
+    const scrollTo = vi.fn();
+    window.scrollTo = scrollTo;
+
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const editor = document.createElement("div");
+    editor.setAttribute("contenteditable", "true");
+    document.body.appendChild(editor);
+
+    act(() => {
+      fireEvent.keyDown(editor, { key: KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY });
+    });
+
+    expect(scrollTo).not.toHaveBeenCalled();
+
+    document.body.removeChild(editor);
+  });
+
   it("does not scroll on the Home key when never scrolled", () => {
     const scrollTo = vi.fn();
     window.scrollTo = scrollTo;

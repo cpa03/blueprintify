@@ -381,7 +381,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         transition={{ duration: ANIMATION.FAST }}
                         onClick={handleClearSearch}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white
-                                   hover:bg-dark-700/50 rounded-md p-1 transition-colors duration-150"
+                                   hover:bg-dark-700/50 rounded-md p-1 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
                         aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLEAR_SEARCH}
                       >
                         <Icon name="close" className="w-4 h-4" />
