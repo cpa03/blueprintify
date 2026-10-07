@@ -128,6 +128,7 @@ import {
   GENERATION_ERROR_PREFIXES,
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
+  SVG_ICON_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -628,8 +629,8 @@ describe("SHARED_DEFAULTS", () => {
     expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
 
-  it("should have a public API key fallback", () => {
-    expect(SHARED_DEFAULTS.PUBLIC_ACCESS_KEY).toBe("blueprintify-public-access-2026");
+  it("should have no hardcoded API key fallback (fail-closed)", () => {
+    expect("PUBLIC_ACCESS_KEY" in SHARED_DEFAULTS).toBe(false);
   });
 });
 
@@ -784,6 +785,11 @@ describe("PLAYWRIGHT_DEFAULTS", () => {
     expect(PLAYWRIGHT_DEFAULTS.EXPECT_TIMEOUT_MS).toBeLessThan(
       PLAYWRIGHT_DEFAULTS.WEB_SERVER_TIMEOUT_MS
     );
+  });
+
+  it("should have visibility timeouts for e2e checks (Flexy Iteration 187)", () => {
+    expect(PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS).toBe(3000);
+    expect(PLAYWRIGHT_DEFAULTS.SHORT_VISIBILITY_TIMEOUT_MS).toBe(2000);
   });
 });
 
@@ -2622,11 +2628,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.LOADING_DOTS_INTERVAL).toBe(500);
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
     expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
+    expect(UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS).toBe(30000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(22);
+    expect(values.length).toBe(23);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -3409,6 +3416,34 @@ describe("SVG_TRANSITION_DEFAULTS", () => {
 
   it("should have 4 entries", () => {
     expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(4);
+  });
+});
+
+describe("SVG_ICON_DEFAULTS", () => {
+  it("should use standard 24x24 viewBox", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX).toBe("0 0 24 24");
+  });
+
+  it("should use none fill and currentColor stroke", () => {
+    expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
+    expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
+  });
+
+  it("should use round line caps and joins", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND).toBe("round");
+    expect(SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND).toBe("round");
+  });
+
+  it("should have numeric stroke widths with bold greater than default", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT).toBe(2);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBe(3);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+  });
+
+  it("should have 9 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(9);
   });
 });
 

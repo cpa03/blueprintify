@@ -1,102 +1,104 @@
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+
 export const ICONS = {
   check: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M5 13l4 4L19 7",
   },
   close: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M6 18L18 6M6 6l12 12",
   },
   chevronRight: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M9 5l7 7-7 7",
   },
   chevronLeft: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M15 19l-7-7 7-7",
   },
   edit: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
   },
   externalLink: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3",
   },
   plus: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 4v16m8-8H4",
   },
   trash: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16",
   },
   layers: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
   },
   helpCircle: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
   },
   helpCircleOutline: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
   },
   github: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z",
   },
   warning: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z",
   },
   search: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
   },
   keyboard: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M4 6a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2H4zm2 4h2v2H6v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-8 4h8v2H6v-2zm10 0h4v2h-4v-2z",
   },
   lightning: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M13 2L4 14h7l-1 8 9-12h-7l1-8z",
   },
   compass: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 2l-3 4h6l-3-4zm0 20l-3-4h6l-3 4zM2 12l4-3v6l-4-3zm20 0l-4-3v6l4-3z",
   },
   eye: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178zM15 12a3 3 0 11-6 0 3 3 0 016 0z",
   },
   columns: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM13 4v16",
   },
   document: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
   },
   clipboard: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
   },
   sparkles: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 2 L13.5 7.5 L19 9 L14.5 12.5 L16.5 18 L12 14.5 L7.5 18 L9.5 12.5 L5 9 L10.5 7.5 Z M17 17 L17.5 18.5 L19 19 L17.5 19.5 L17 21 L16.5 19.5 L15 19 L16.5 18.5 Z",
   },
   sliders: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M4 7 H20 M9 12 H21 M12 17 H16",
   },
   lightbulb: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M12 2a7 7 0 00-7 7c0 2.4 1.19 4.5 3 5.69V17h8v-2.31c1.81-1.19 3-3.29 3-5.69a7 7 0 00-7-7zM9 17h6v2H9zM10 20h4v1h-4z",
   },
   wind: {
-    viewBox: "0 0 24 24",
+    viewBox: SVG_ICON_DEFAULTS.VIEW_BOX,
     path: "M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2",
   },
 } as const;

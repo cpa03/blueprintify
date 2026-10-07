@@ -126,15 +126,28 @@ describe("AnimatedCopyButton", () => {
     expect(screen.getByRole("button")).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.COPIED);
   });
 
-  it("sets data-state and title attributes for micro-UX state tracking", () => {
-    const { rerender } = render(<AnimatedCopyButton {...defaultProps} isCopied={false} />);
+  it("sets data-state, data-reduced-motion, data-has-content, and title attributes for micro-UX state tracking", () => {
+    const { rerender } = render(
+      <AnimatedCopyButton {...defaultProps} isCopied={false} hasContent={true} />
+    );
     const button = screen.getByRole("button");
     expect(button).toHaveAttribute("data-state", COPY_STATE_VALUES.IDLE);
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
+    expect(button).toHaveAttribute("data-has-content", "true");
     expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.COPY);
 
-    rerender(<AnimatedCopyButton {...defaultProps} isCopied={true} />);
+    rerender(<AnimatedCopyButton {...defaultProps} isCopied={true} hasContent={false} />);
     expect(button).toHaveAttribute("data-state", COPY_STATE_VALUES.COPIED);
+    expect(button).toHaveAttribute("data-has-content", "false");
     expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.COPIED);
+  });
+
+  it("sets data-reduced-motion to true when reduced motion is enabled", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<AnimatedCopyButton {...defaultProps} />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("data-reduced-motion", "true");
   });
 
   it("has a screen reader live region for copy announcements", () => {

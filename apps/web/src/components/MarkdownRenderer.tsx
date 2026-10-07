@@ -384,7 +384,7 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
       img({ src, alt, title }) {
         return (
           <img
-            src={src}
+            src={src || undefined}
             alt={getImageAccessibleName(src ?? "", alt ?? "", title ?? "")}
             title={title}
             className={MARKDOWN.IMAGE}

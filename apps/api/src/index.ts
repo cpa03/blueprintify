@@ -144,9 +144,11 @@ app.get(ROUTE_PATHS.ROOT, (c) => {
       export: `${API_ENDPOINTS.EXPORT.method} ${API_ENDPOINTS.EXPORT.path}`,
       import: `${API_ENDPOINTS.IMPORT.method} ${API_ENDPOINTS.IMPORT.path}`,
       storageQuota: `${API_ENDPOINTS.STORAGE_QUOTA.method} ${API_ENDPOINTS.STORAGE_QUOTA.path}`,
+      storageReport: `${API_ENDPOINTS.STORAGE_REPORT.method} ${API_ENDPOINTS.STORAGE_REPORT.path}`,
       storageClear: `${API_ENDPOINTS.STORAGE_CLEAR.method} ${API_ENDPOINTS.STORAGE_CLEAR.path}`,
       shareCreate: `${API_ENDPOINTS.SHARE_CREATE.method} ${API_ENDPOINTS.SHARE_CREATE.path}`,
       shareGet: `${API_ENDPOINTS.SHARE_GET.method} ${API_ENDPOINTS.SHARE_GET.path}`,
+      shareVerify: `${API_ENDPOINTS.SHARE_VERIFY.method} ${API_ENDPOINTS.SHARE_VERIFY.path}`,
       shareDelete: `${API_ENDPOINTS.SHARE_DELETE.method} ${API_ENDPOINTS.SHARE_DELETE.path}`,
     },
   });
@@ -242,15 +244,6 @@ export default {
     }
 
     const response = await app.fetch(req, env, ctx);
-
-    // If API returned 404 and ASSETS binding exists, fallback to ASSETS (SPA routing)
-    if (
-      response.status === HTTP_STATUS.NOT_FOUND &&
-      env.ASSETS &&
-      !url.pathname.startsWith(PROXY_CONFIG.API_PREFIX_SLASH)
-    ) {
-      return env.ASSETS.fetch(request);
-    }
 
     return response;
   },

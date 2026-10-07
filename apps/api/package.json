@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "prebuild": "node -e \"const v=process.version.match(/v(\\d+)/)[1];if(+v<22){console.error('Error: Node.js >=22 required (found '+process.version+'). Use nvm install 22 && nvm use 22');process.exit(1)}\"",
+    "prebuild": "node -e \"const v=process.version.match(/v(\\d+)/)[1];if(+v<22){console.error('Error: Node.js >=22 required (found '+process.version+'). Use nvm install 22 && nvm use 22');process.exit(1)}\" && node -e \"require('node:fs').mkdirSync('../../apps/web/dist',{recursive:true})\"",
     "build": "wrangler deploy --dry-run --outdir=dist --env=\"\"",
     "deploy": "node ../../scripts/validate-wrangler.mjs && wrangler deploy",
     "test": "vitest",
@@ -16,16 +16,16 @@
   },
   "dependencies": {
     "@blueprint/shared": "1.0.0",
-    "hono": "4.13.8",
-    "openai": "7.18.0",
+    "hono": "4.13.12",
+    "openai": "7.27.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.22.0",
-    "@cloudflare/workers-types": "5.20260918.1",
-    "eslint": "10.10.0",
+    "@cloudflare/workers-types": "5.20261002.1",
+    "eslint": "10.11.0",
     "typescript": "6.0.3",
     "vitest": "4.1.11",
-    "wrangler": "4.134.0"
+    "wrangler": "4.146.0"
   }
 }

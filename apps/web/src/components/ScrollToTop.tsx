@@ -33,8 +33,9 @@ import {
   SCROLL_BEHAVIOR,
   DIRECTION,
 } from "../config/constants";
-import { FRAMER_TYPE, MODIFIER_KEYS } from "@blueprint/shared/config";
+import { FRAMER_TYPE, MODIFIER_KEYS, BANNER_STATE_VALUES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { isEditableField } from "../lib/dom";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -179,11 +180,12 @@ const ScrollToPosition = memo(function ScrollToPosition({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === shortCutKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const activeElement = document.activeElement;
-        const isInputFocused =
-          activeElement?.tagName === "INPUT" || activeElement?.tagName === "TEXTAREA";
+        // Don't hijack Home/End inside editable surfaces (e.g. CodeMirror).
+        if (isEditableField(e.target)) {
+          return;
+        }
 
-        if (!isInputFocused && hasScrolled) {
+        if (hasScrolled) {
           e.preventDefault();
           scrollToTarget();
         }
@@ -217,6 +219,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
             ...SPRING_CONFIG.DEFAULT,
           }}
           className={positionClass}
+          data-state={BANNER_STATE_VALUES.VISIBLE}
+          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
               the button first appears, drawing the user's eye to the new UI
@@ -280,6 +284,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-label={ariaLabel}
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
+              data-state={BANNER_STATE_VALUES.VISIBLE}
+              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
             >
@@ -288,13 +294,23 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
                 initial={false}
-                animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
-                transition={{
-                  duration: ANIMATION.FLOAT,
-                  repeat: Infinity,
-                  ease: EASING.easeInOut,
-                }}
+                // Decorative infinite float: disabled when the user prefers
+                // reduced motion (WCAG 2.3.3) — the arrow stays static while
+                // the button itself remains fully functional.
+                animate={
+                  shouldReduceMotion ? { y: 0 } : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: ANIMATION.FLOAT,
+                        repeat: Infinity,
+                        ease: EASING.easeInOut,
+                      }
+                }
               >
                 {isToTop ? (
                   <path

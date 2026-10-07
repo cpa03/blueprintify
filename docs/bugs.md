@@ -2,12 +2,14 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information. Historical cycle-by-cycle audit records live in [`findings.md`](./findings.md).
 
-## Current Defect Status (Sep 2026)
+## Current Defect Status (Oct 2026)
 
-- **Zero code defects**: Typecheck clean; ESLint clean (0 errors, 0 warnings).
+- **Zero code defects**: Typecheck clean; ESLint clean (0 errors, 0 warnings) — verified 2026-10-06.
 - **Zero known unhandled exceptions**: Clean console in production bundles.
-- **Zero security vulnerabilities**: `npm audit` reports 0 vulnerabilities (`ajv` 6.15.0, `hono` 4.13.2, `dompurify` 3.4.13, `sharp` 0.35.3).
-- **Quality gates**: typecheck, lint, build, tests, `scan:secrets`, and `validate:wrangler` all passing.
+- **Zero build/lint fatals**: `build`, `build:api`, `typecheck`, `lint`, `format:check`, `scan:secrets`, `validate:wrangler` all passing.
+- **Tests green**: 2,692 passed (web 1,271 + api 547 + shared 874) — verified 2026-10-06.
+- **Known dependency limitation (no non-breaking fix)**: `npm audit --audit-level=high` reports 9 vulnerabilities (3 moderate, 6 high) via `braces@3.0.3` ← `micromatch/fast-glob/chokidar` ← `tailwindcss@3.4.19` (GHSA-vfj7-8cjw-p6xm) plus `postcss-selector-parser` and `source-map-js` transitives. `braces` has no patched 3.x release; the only audit-suggested path is the breaking `tailwindcss@4.x` upgrade, so this is tracked here and not changed in this cycle. Hardening overrides held: `dompurify@3.4.16`, `undici@7.30.0`, `sharp@0.35.4`, `brace-expansion@5.0.12`, `ajv@6.15.0`, `hono@4.13.9`.
+- **Known toolchain drift (lint still green)**: `eslint@10.11.0` exceeds the peer ranges declared by `eslint-plugin-jsx-a11y`/`eslint-plugin-react` (`^3 || ... || ^9`), so `npm ls eslint` reports invalid peer. `npm run lint` still exits 0 with 0 errors/0 warnings; downgrade to 9.39.5 is deferred to avoid churn.
 
 ---
 
@@ -23,6 +25,7 @@
 | **BUG-048** | ESLint 10 peer dependency conflict | Low | Tooling | ✅ Resolved | ESLint pinned to 9.39.5 to match plugin peer ranges |
 | **BUG-049** | Storage route error response format | Low | API | ✅ Resolved | Standardized via `createErrorJson` |
 | **BUG-050** | Cloudflare placeholder resource IDs | Medium | Infra | ✅ Resolved | Real IDs provisioned in `apps/api/wrangler.toml` (`validate:wrangler` clean) |
+| **BUG-051** | dompurify GHSA-p98j-92pf-mc4p vulnerability | Medium | Deps | ✅ Resolved | Upgraded to `dompurify@3.4.16`; `npm audit` reports 0 vulnerabilities |
 
 ---
 
@@ -31,7 +34,7 @@
 > Over 110 BugFixer and 600+ ULW orchestration cycles have been executed. All individual cycle logs and Phase 1 daily audits are preserved in [`findings.md`](./findings.md) and in `git log -- docs/bugs.md`.
 
 > **Recurring Fix Verification (held across all cycles):**
-> - **BUG-048** (ESLint 9.39.5 pinned, peer dep resolution clean): Verified held
+> - **BUG-048** (ESLint pin, peer dep resolution): Drift noted 2026-10-06 — `eslint@10.11.0` exceeds plugin peer ranges; lint still 0/0, downgrade deferred
 > - **BUG-049** (Storage route error format via `createErrorJson`): Verified held
 > - **BUG-047** (DOMPurify 3.4.13 security pin): Verified held
 > - **BUG-040** (Hono 4.13.2 CORS ReDoS patch): Verified held
@@ -79,5 +82,5 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 
 ---
 
-**Last Updated**: 2026-09-26 — consolidated; per-cycle audit records moved to [`findings.md`](./findings.md) and `git log`  
+**Last Updated**: 2026-10-06 — BugFixer ULW cycle: verified typecheck/lint/build/test green (2,692 tests); synced audit + toolchain drift (9 vulns: braces/postcss/source-map-js, eslint 10.11.0 peer) without breaking changes
 **Maintainer**: Documentation Specialist
