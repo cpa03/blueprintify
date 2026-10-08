@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **SmartTooltip Micro-UX & Reduced Motion State Inspection (Oct 08 2026)**
+- [CONNECT] Connected `useReducedMotion` hook to `SmartTooltip.tsx` and `SmartTooltip.test.tsx`.
+- [STRENGTHEN] Strengthened `SmartTooltip` DOM state inspection with `data-reduced-motion` ("true"/"false") and `data-has-shortcut` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `SmartTooltip` reduced motion behavior (bypassing show/hide delays when reduced motion is preferred) and state tracking attributes across web components.
+- [REMOVE] Removed raw un-inspected tooltip state assertions in `SmartTooltip.test.tsx`.
+
 ## ✅ StorX — **AnimatedCopyButton Micro-UX & State Inspection (Oct 07 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and `data-reduced-motion` / `data-has-content` DOM attributes to `AnimatedCopyButton.tsx`.
 - [STRENGTHEN] Strengthened `AnimatedCopyButton` DOM state inspection with `data-reduced-motion` ("true"/"false") and `data-has-content` ("true"/"false") attributes for state inspection and accessibility testing.
