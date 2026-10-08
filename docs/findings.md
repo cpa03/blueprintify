@@ -2,6 +2,32 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-08 — merge origin/main ed0dd93a, zero safe deletions, typecheck+lint+build green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `ed0dd93a` (Run 93 brocula audit #3733 + repokeeper retention purge 111 audits + undici 7.30.0 bump #3672 + Run 91/92 audits + ScrollToTop Home/End editable-surface fix #3730 + AnimatedCopyButton prettier #3729 + bugs sync #3725) per cleanup request (redundant files, unused exports, commented-out dead code). 1 conflict in `docs/findings.md` (overlapping RepoKeeper cycle prose) resolved by keeping both blocks; remainder auto-merged.
+
+### Removed
+
+- None. No safe deletions — intake is docs/audit purge (intentional retention action by Repokeeper, history in git) + 1 legit DRY fix + prettier-only test tweak. Zero source changes beyond the `origin/main` merge intake + this docs entry.
+
+**Verification**: `npm run typecheck` ✅ exit 0 (web + api; shared build ✅) · `npx eslint` on merge-touched sources ✅ exit 0 · `npm run build --workspace=apps/web` ✅ exit 0 (9.12s vite).
+
+### Verified clean (no action needed)
+
+- **Merge intake introduces no dead code**: source diff = `ScrollToTop.tsx` (+`isEditableField` import + early-return guard, replaces inline INPUT/TEXTAREA check — DRY consolidation, live-tested) + `ScrollToTop.test.tsx` + `AnimatedCopyButton.test.tsx` (prettier reflow only) + docs (`README`, `bugs`, `knowledge-review`, `audits/README`, purge deletions). No new exports; `isEditableField` already live (18 refs).
+- **No commented-out dead code**: `// <code-keyword>` grep over first-party `apps/`+`packages/` → 0 hits (only JSDoc/prose section labels); block `/*` hits are JSDoc only; zero `// console|debugger|alert` corpses.
+- **No production `console.log` to remove**: `console.log` hits all intentional (Workers `middleware/logger.ts` + `secureLog.ts` structured JSON logging, generated-project template strings in `web/src/lib/templates/`, JSDoc `@example`s, e2e capture specs); no stray debug logs.
+- **No dead unused exports**: sampled 19 symbols (`childrenToText`, `getScrollBehavior`, `pageTransition`, `createFadeInUp`, `floatingAnimation`, `pulseAnimation`, `formatForIDE`, `isEditableField`, `getAltKeyLabel`, `sanitizeForStorage`, `checkStorageQuota`, `validateJSONSecurity`, `handleSecurityError`, `secureLogWarn/Info`, `createSecureLogEntry`, `sanitizeError`, `withTimeout`, `TimeoutError`) each with 5–30 refs; shared schema/config constants all consumed via re-export hubs.
+- **No unused deps**: `depcheck` flags are workspace false positives only (`jest-axe` used in 4 web test files; `@blueprint/shared` imported in `playwright.config.ts`); `web`/`api` manifests import-verified, 0 removals.
+- **No orphan/empty/duplicate files**: zero `.bak`/`.orig`/`.tmp`/`~`/`.DS_Store`; zero empty first-party sources; duplicate basenames are expected per-folder `index.ts`/`types.ts` (no identical-content pairs); 0 `.only`/`.skip`/`debugger`; 0 TODO/FIXME/HACK in source; eslint-disables remain the 5 legitimate targeted suppressions.
+- **Hygiene clean**: `*.log`/`task_plan.md`/`notes.md` gitignored (disk-only, no commit effect); `functions/` stays absent (only `apps/web/functions/api/[[path]].ts` deploy entry); 0 merge markers post-resolution.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no duplication found; recommend ownership note, not moves.
+- [Janitor] `scripts/migrate.ts` stub + root `schema.sql` placement persists — implement vs remove needs team decision.
+- [Janitor] `.agent/` vs `.opencode/` duplication + `opencode.json`/`tui.json` plugin-name drift + append-only giants (`findings.md`/`flexy-plan.md`/`CHANGELOG.md`) persist — owner sign-off / quarterly rotation, not janitor deletion.
+
 ## Janitor Cleanup (2026-10-07 — merge origin/main 3120ce33, zero safe deletions, typecheck+lint+build green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `3120ce33` (intake = AnimatedCopyButton reduced-motion/content attrs #3728 + shortcuts-modal focus ring #3727 + ShowEditorButton reduced-motion attr #3724 + bugs/audit docs + prod-dep bumps #3722) per cleanup request (redundant files, unused exports, commented-out dead code). Auto-merge clean, 0 conflicts.
