@@ -2,6 +2,20 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-08 — merge origin/main 7371386f, zero safe deletions, shared+web build green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `7371386f` (shell-quote/sharp/source-map-js hardening #3738 + Run 94 brocula audit #3739) per cleanup request (redundant files, unused exports, commented-out dead code). Auto-merged, no conflicts.
+
+### Removed
+
+- None. No safe deletions — full sweep found zero removable items. No source changes beyond the `origin/main` merge intake + this docs entry.
+
+**Scan**: commented-out statements 0 (first-party `// import|export|const|...` grep = 0; only JSDoc `@example` + prose) · JSX `{/* */}` section labels only (App/HeadingAnchor/CharacterCounter), not dead code · TODO/FIXME/HACK 0 · `.only/.skip/debugger` 0 (first-party) · merge markers 0 · `eslint-disable` 6 legitimate (5× `react-hooks/*`, 1× `require-yield` in `stream.test.ts`) · `console.*` all intentional (Workers structured `middleware/logger.ts`, sanitized `secureLog` + error/warn wrappers, `console.error` test mocks, e2e capture specs, generated-project template strings, `fix-esm.mjs` build output) — 0 debug logs removed · `*.bak/*.orig/*.tmp/*.swp` 0 · empty tracked files 0 · tracked `*.log` 0 (root `build.log`/`lint.log`/`typecheck.log` gitignored, untracked) · first-party `md5sum` sweep → zero identical pairs · zero `formatDate` hits (`formatRelativeTime` single-sourced in `useLastSaved.ts`) · 7 sampled exports each with 2+ consumers (`createDebouncedSaver`, `formatRelativeTime`, `CELEBRATION_STATE_VALUES`, `sanitizeHtml`, `calculateRetryDelay`, `SuccessResponseSchema`, `BlueprintRequestSchema`) · all web/api/root deps import-verified, 0 unused.
+
+**Verification**: `npm run build --workspace=@blueprint/shared` ✅ (tsc + fix-esm) · `npm run build --workspace=apps/web` ✅ (vite 8.74s).
+
+**Structural flags (report-only, no moves)**: prior deferred items unchanged — `.agent/` vs `.opencode/` drift, `opencode.json`/`tui.json` plugin-name drift, `docs/audits/` bloat, `web/src/lib/` vs `web/src/utils/` split (modules disjoint, no duplication found).
+
 ## Janitor Cleanup (2026-10-08 — merge origin/main ed0dd93a, zero safe deletions, typecheck+lint+build green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `ed0dd93a` (Run 93 brocula audit #3733 + repokeeper retention purge 111 audits + undici 7.30.0 bump #3672 + Run 91/92 audits + ScrollToTop Home/End editable-surface fix #3730 + AnimatedCopyButton prettier #3729 + bugs sync #3725) per cleanup request (redundant files, unused exports, commented-out dead code). 1 conflict in `docs/findings.md` (overlapping RepoKeeper cycle prose) resolved by keeping both blocks; remainder auto-merged.
