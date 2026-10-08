@@ -374,3 +374,10 @@
 - [x] DOMPurify with formaction forbidden
 - [x] XSS pattern library includes SVG/math/mutation XSS vectors
 - [ ] Consider distributed rate limiting for production scale
+
+### 2026-10-08: Security Engineer Audit — Changed-files scan, stale-sync fix (134 files vs origin/main)
+
+- **Finding**: 0 introduced vulnerabilities, secrets, or deprecated usage. Branch was stale behind main in 6 files: shell-quote 1.10.0→1.12.0 + sharp 0.35.4→0.35.5 (aa5281f8), AnimatedCopyButton attr removal (3120ce33), ScrollToTop isEditableField narrowing + 2 deleted tests (7a91af3d).
+- **Fix**: Checked out 4 component files + package-lock.json from origin/main (branch had 0 changes since merge-base there); bumped package.json overrides forward, kept validate:secrets script.
+- **Verification**: Added-lines secret/injection/deprecated 0x (execFileSync array-form safe; Math.random = celebration visuals); scan:secrets ✅ 338 files; npm audit 15→8 (prod 0); validate:wrangler ✅; web typecheck ✅; web 52/52, shared 801/801.
+- **Lesson**: When both sides bump the same devDeps identically since merge-base, only the overrides/security lines need surgical merge — checkout the lockfile wholesale from main since npm scripts don't affect it.

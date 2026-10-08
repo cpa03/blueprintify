@@ -35,6 +35,7 @@ import {
 } from "../config/constants";
 import { FRAMER_TYPE, MODIFIER_KEYS, BANNER_STATE_VALUES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { isEditableField } from "../lib/dom";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -179,11 +180,12 @@ const ScrollToPosition = memo(function ScrollToPosition({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === shortCutKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const activeElement = document.activeElement;
-        const isInputFocused =
-          activeElement?.tagName === "INPUT" || activeElement?.tagName === "TEXTAREA";
+        // Don't hijack Home/End inside editable surfaces (e.g. CodeMirror).
+        if (isEditableField(e.target)) {
+          return;
+        }
 
-        if (!isInputFocused && hasScrolled) {
+        if (hasScrolled) {
           e.preventDefault();
           scrollToTarget();
         }
