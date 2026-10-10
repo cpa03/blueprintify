@@ -19,6 +19,7 @@ const mockToasts: Array<{
   message: string;
   type: string;
   duration?: number;
+  ariaLabel?: string;
 }> = [];
 
 const mockRemoveToast = vi.fn();
@@ -177,5 +178,48 @@ describe("ToastContainer", () => {
     expect(screen.getByText("Error toast")).toBeInTheDocument();
     expect(screen.getByText("Warning toast")).toBeInTheDocument();
     expect(screen.getByText("Info toast")).toBeInTheDocument();
+  });
+
+  it("announces error toasts assertively with atomic live region", () => {
+    mockToasts.push({
+      id: "toast-err",
+      message: "Something went wrong",
+      type: TOAST_TYPES.ERROR,
+    });
+
+    render(<ToastContainer />);
+
+    const alert = screen.getByRole("alert");
+    expect(alert).toHaveAttribute("aria-live", "assertive");
+    expect(alert).toHaveAttribute("aria-atomic", "true");
+  });
+
+  it("keeps a single accessible name when a custom ariaLabel is provided", () => {
+    mockToasts.push({
+      id: "toast-tip",
+      message: "Pro tip body",
+      type: TOAST_TYPES.INFO,
+      ariaLabel: "Pro tip: keyboard shortcut",
+    });
+
+    const { container } = render(<ToastContainer />);
+
+    const status = screen.getByRole("status", { name: "Pro tip: keyboard shortcut" });
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveAttribute("aria-atomic", "true");
+    expect(container.querySelector('p[aria-label="Pro tip: keyboard shortcut"]')).toBeNull();
+  });
+
+  it("uses type=button on dismiss controls to avoid accidental form submits", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Dismiss me",
+      type: TOAST_TYPES.SUCCESS,
+    });
+
+    render(<ToastContainer />);
+
+    const dismissButton = screen.getByRole("button", { name: /dismiss/i });
+    expect(dismissButton).toHaveAttribute("type", "button");
   });
 });
