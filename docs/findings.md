@@ -2,6 +2,20 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-10 — merge origin/main 024e1f93, zero new safe deletions, build+typecheck+lint green)
+
+**Scope**: `agent/janitor` merged `origin/main` @ `024e1f93` (SmartTooltip reduced-motion #3737 + StepIndicator reduced-motion #3740 + ShowEditorButton AT fix #3741 + Run 94 brocula audit #3736) per cleanup request (redundant files, unused exports, commented-out dead code). Auto-merged, no conflicts.
+
+### Removed
+
+- None. No new safe deletions — full sweep found zero removable items. No source changes beyond the `origin/main` merge intake + this docs entry.
+
+**Scan**: commented-out statements 0 (first-party `// import|export|const|...` grep = 3 prose false positives only: App.tsx:300, OfflineBanner.tsx:178, CharacterCounter.tsx:51) · JSX `{/* */}` section labels only, not dead code · TODO/FIXME/HACK 0 in source · `.only/.skip/debugger` 0 · merge markers 0 (only historical prose mentions) · `eslint-disable` 6 legitimate (5× `react-hooks/*`, 1× `require-yield` in `stream.test.ts`) · `console.*` all intentional (Workers structured `middleware/logger.ts`, sanitized `secureLog` + JSDoc `@example`s, generated-project template strings in `lib/templates/`, CLI `scripts/migrate.ts` UX, docs comment `config/security.ts:164`) — 0 debug logs removed · `*.bak/*.orig/*.tmp/*.swp` 0 · empty tracked files 0 · tracked `*.log` 0 (root `build.log`/`lint.log`/`typecheck.log` gitignored, untracked) · first-party `md5sum` sweep → zero identical pairs · zero `formatDate` hits (`fadeIn` exact-word 0; 27 substring hits are `fadeInUp` live) · prior removals hold (0 refs: `useRipple`, `StreamCallbacks`, `CreateShareRequest`, `VerifySharePassphraseRequest`, `scaleIn/slideInRight/slideInLeft`, `createStaggerContainer`, `secureLogDebug`, `withTimeoutAndRetry`, `validateXssSafe`, `generateCompletion`, `getStorageErrorMessage`, `RATE_LIMIT_CONFIG`, `DB_ID_CONFIG`, `UI_FALLBACKS`) · new intake exports all live (`STEP_INDICATOR_STATE_VALUES` 6 consumer refs component+test+dist; SmartTooltip named imports only — default/type exports already pruned on this branch with 0 consumers) · all web/api/root deps import-verified, 0 unused (`jest-axe` in 4 test files; renames `m2-workflows.test.ts`→`integration/`, `debounce.test.ts`→`utils/` clean with no leftover duplicates).
+
+**Verification**: `npm run build --workspace=@blueprint/shared` ✅ (tsc + fix-esm) · `npm run build --workspace=apps/web` ✅ (~9.9s vite) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npx eslint` on intake sources ✅ exit 0.
+
+**Structural flags (report-only, no moves)**: prior deferred items unchanged — 4-way util-home split (`api/src/utils`, `web/src/lib`, `web/src/utils`, `shared/src/utils`) disjoint, no duplication · root `bug.md`/`task.md` 3-line stubs duplicate `docs/bugs.md`/`docs/active-tasks.md` but actively updated on main — deletion deferred to owner sign-off · `docs/audits/` bloat + `.agent/` vs `.opencode/` drift persist.
+
 ## Janitor Cleanup (2026-10-08 — merge origin/main 7371386f, zero safe deletions, shared+web build green)
 
 **Scope**: `agent/janitor` merged `origin/main` @ `7371386f` (shell-quote/sharp/source-map-js hardening #3738 + Run 94 brocula audit #3739) per cleanup request (redundant files, unused exports, commented-out dead code). Auto-merged, no conflicts.
