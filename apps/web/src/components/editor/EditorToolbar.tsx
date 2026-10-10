@@ -59,6 +59,7 @@ import {
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -117,6 +118,7 @@ function EditorToolbarComponent({
   isExporting = false,
   exportSuccess = false,
 }: EditorToolbarProps) {
+  const reducedMotion = useReducedMotion();
   const isCopied = copied === activeTab;
 
   const viewModeShortcuts: Record<ViewMode, string> = {
@@ -145,7 +147,13 @@ function EditorToolbarComponent({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2"
+      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-has-content={hasContent ? "true" : "false"}
+      data-is-exporting={isExporting ? "true" : "false"}
+      data-export-success={exportSuccess ? "true" : "false"}
+    >
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
         role="radiogroup"
@@ -232,10 +240,14 @@ function EditorToolbarComponent({
                 ? VIEW_MODE_INDICATOR_POSITION.SPLIT_WIDTH
                 : VIEW_MODE_INDICATOR_POSITION.SINGLE_WIDTH,
           }}
-          transition={{
-            type: FRAMER_TYPE.SPRING,
-            ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
-          }}
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : {
+                  type: FRAMER_TYPE.SPRING,
+                  ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
+                }
+          }
           style={{
             zIndex: Z_INDEX.base,
           }}
@@ -305,12 +317,16 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-2 flex-shrink-0"
                   viewBox="0 0 24 24"
                   fill="none"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: ANIMATION.GENTLE_PULSE,
-                    repeat: Infinity,
-                    ease: EASING.linear,
-                  }}
+                  animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+                  transition={
+                    reducedMotion
+                      ? { duration: 0 }
+                      : {
+                          duration: ANIMATION.GENTLE_PULSE,
+                          repeat: Infinity,
+                          ease: EASING.linear,
+                        }
+                  }
                   aria-hidden="true"
                 >
                   <defs>
