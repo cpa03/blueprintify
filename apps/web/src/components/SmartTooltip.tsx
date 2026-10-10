@@ -14,6 +14,7 @@ import {
 import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS, DIRECTION } from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 
 type Position = (typeof DIRECTION)[keyof typeof DIRECTION];
@@ -91,6 +92,10 @@ function SmartTooltipComponent({
   const generatedId = useId();
   const tooltipId = id || `tooltip-${generatedId}`;
 
+  const prefersReducedMotion = useReducedMotion();
+  const effectiveDelay = prefersReducedMotion ? 0 : delay;
+  const effectiveHideDelay = prefersReducedMotion ? 0 : hideDelay;
+
   const isTouchDevice = typeof window !== "undefined" && "ontouchstart" in window;
   // Clear all timeouts
   const clearTimeouts = useCallback(() => {
@@ -153,8 +158,8 @@ function SmartTooltipComponent({
       setComputedPosition(optimalPosition);
       setIsPositioned(true);
       setIsVisible(true);
-    }, delay);
-  }, [clearTimeouts, calculateOptimalPosition, delay]);
+    }, effectiveDelay);
+  }, [clearTimeouts, calculateOptimalPosition, effectiveDelay]);
 
   const hideTooltip = useCallback(() => {
     clearTimeouts();
@@ -166,8 +171,8 @@ function SmartTooltipComponent({
     hideTimeoutRef.current = setTimeout(() => {
       setIsVisible(false);
       setIsPositioned(false);
-    }, hideDelay);
-  }, [clearTimeouts, hideDelay]);
+    }, effectiveHideDelay);
+  }, [clearTimeouts, effectiveHideDelay]);
 
   const handleTriggerClick = useCallback(() => {
     if (!isTouchDevice) return;
@@ -287,6 +292,7 @@ function SmartTooltipComponent({
       className="relative inline-flex"
       data-state={isVisible ? "visible" : "hidden"}
       data-position={computedPosition}
+      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
@@ -302,6 +308,7 @@ function SmartTooltipComponent({
           role="tooltip"
           data-state="visible"
           data-position={computedPosition}
+          data-reduced-motion={prefersReducedMotion ? "true" : "false"}
           className={`absolute ${positionStyle.container} z-50 pointer-events-none animate-tooltip-in ${className}`}
           style={{ maxWidth }}
         >
@@ -345,7 +352,7 @@ function KeyboardShortcutTooltipComponent({
   const fullShortcut = formatShortcut(shortcut, modifier);
 
   const content = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2" data-has-shortcut="true">
       {description && <span className="text-dark-300">{description}</span>}
       <kbd className="px-2 py-0.5 bg-dark-700 rounded text-xs font-mono text-white border border-dark-600 shadow-inner">
         {fullShortcut}

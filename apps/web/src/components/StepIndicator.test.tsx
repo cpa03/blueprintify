@@ -3,16 +3,21 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { StepIndicator } from "./StepIndicator";
 import { useWizardStore, useEditorStore } from "../store";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+import { WIZARD_STEP_KEYS, STEP_INDICATOR_STATE_VALUES } from "@blueprint/shared/config";
 import type { WizardStore } from "../store/wizard";
 
-const { toast } = vi.hoisted(() => ({
+const { toast, mockUseReducedMotion } = vi.hoisted(() => ({
   toast: {
     success: vi.fn(),
     info: vi.fn(),
     warning: vi.fn(),
     error: vi.fn(),
   },
+  mockUseReducedMotion: vi.fn(() => false),
+}));
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: mockUseReducedMotion,
 }));
 
 vi.mock("../store", () => ({
@@ -124,6 +129,7 @@ const mockWizardStore: WizardStore = {
 describe("StepIndicator", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseReducedMotion.mockReturnValue(false);
     (useWizardStore as unknown as Mock).mockImplementation(
       (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
@@ -166,6 +172,7 @@ describe("StepIndicator", () => {
       "border-primary-500/50",
       "text-primary-300"
     );
+    expect(stackButton).toHaveAttribute("data-state", STEP_INDICATOR_STATE_VALUES.ACTIVE);
     expect(stackButton).toHaveAttribute("data-active", "true");
     expect(stackButton).toHaveAttribute("data-clickable", "true");
   });
@@ -182,11 +189,13 @@ describe("StepIndicator", () => {
       "border-accent-emerald/50",
       "text-accent-emerald"
     );
+    expect(infoButton).toHaveAttribute("data-state", STEP_INDICATOR_STATE_VALUES.COMPLETED);
     expect(stackButton).toHaveClass(
       "bg-accent-emerald/20",
       "border-accent-emerald/50",
       "text-accent-emerald"
     );
+    expect(stackButton).toHaveAttribute("data-state", STEP_INDICATOR_STATE_VALUES.COMPLETED);
   });
 
   it("shows uncompleted steps as locked", () => {
@@ -197,7 +206,9 @@ describe("StepIndicator", () => {
     const generatingButton = screen.getByText("Generating").closest("button");
 
     expect(reviewButton).toHaveClass("bg-dark-800/50", "border-dark-700", "text-dark-300");
+    expect(reviewButton).toHaveAttribute("data-state", STEP_INDICATOR_STATE_VALUES.LOCKED);
     expect(generatingButton).toHaveClass("bg-dark-800/50", "border-dark-700", "text-dark-300");
+    expect(generatingButton).toHaveAttribute("data-state", STEP_INDICATOR_STATE_VALUES.LOCKED);
   });
 
   it("allows navigation to completed and current steps", () => {
@@ -312,5 +323,19 @@ describe("StepIndicator", () => {
 
     const connectors = container.querySelectorAll(".bg-accent-emerald, .bg-dark-700");
     expect(connectors.length).toBeGreaterThan(0);
+  });
+
+  it("exposes data-reduced-motion attribute and suppresses pulse animations when reduced motion is preferred", () => {
+    mockUseReducedMotion.mockReturnValue(true);
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.STACK;
+
+    const { container } = render(<StepIndicator />);
+
+    const rootElement = container.firstChild as HTMLElement;
+    expect(rootElement).toHaveAttribute("data-reduced-motion", "true");
+
+    const stackButton = screen.getByText("Tech Stack").closest("button");
+    expect(stackButton).toHaveAttribute("data-reduced-motion", "true");
+    expect(stackButton).not.toHaveClass("animate-step-pulse");
   });
 });
