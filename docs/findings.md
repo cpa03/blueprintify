@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Pre-Merge Dead-Code Sweep (2026-10-11)
+
+**Branch**: `agent/janitor` synced to `origin/main` (`e3a510af` + merge `7180612a`).
+**Removed**: root `bug.md` + `task.md` (`git rm`; 3-line agent audit logs, redundant with canonical `docs/bugs.md` + `docs/active-tasks.md`, zero refs in `.github/`/package scripts; precedent #313 `51bcac41` deleted `bug.md` for the same reason) + gitignored gatekeeper artifacts `build.log`/`lint.log`/`typecheck.log` (disk-only, regenerable).
+**Scans**: `console.log` 20 hits all legitimate (template strings, JSDoc examples, e2e specs, `secureLog`/`logger` utils) · commented-out code 0 blocks (12 comment hits all prose) · TODO/FIXME 0 in src · `.only`/`.skip`/`debugger` 0 in src · spot-checked `utils/slug|scroll|motion` exports all consumed · no `*.bak`/`*.orig` · no lodash.
+**Verify**: `npm run build` ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ (0 errors).
+**Structural mess (report-only, not moved per constraints)**: 4 utils-like folders (`apps/api/src/utils`, `apps/web/src/utils`, `apps/web/src/lib`, `packages/shared/src/utils`) — recommend unifying web utils under one dir in a follow-up; `sanitizeHtml` duplicated in `apps/web/src/lib/security.ts` vs `apps/api/src/utils/sanitize.ts` (likely intentional browser-vs-Workers split, plus overlapping `sanitizeString`/`sanitizeError` in `secureLog.ts`) — recommend unifying in `packages/shared`; root `tui.json` byte-identical to `.opencode/tui.json` (both added in `2481dd83`) — recommend keeping one canonical location.
+
 ## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.
