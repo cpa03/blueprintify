@@ -54,12 +54,16 @@ describe("Header", () => {
     mockReducedMotionContext(false);
   });
 
-  it("renders the header with proper structure", () => {
-    render(<Header />);
+  it("renders the header with proper structure and DOM state tracking attributes", () => {
+    render(<Header shortcutsDiscovered={false} onShowShortcuts={vi.fn()} />);
 
     const header = screen.getByRole("banner");
     expect(header).toBeInTheDocument();
     expect(header).toHaveClass("fixed", "top-0", "left-0", "right-0", "z-50");
+    expect(header).toHaveAttribute("data-scrolled", "false");
+    expect(header).toHaveAttribute("data-reduced-motion", "false");
+    expect(header).toHaveAttribute("data-shortcuts-discovered", "false");
+    expect(header).toHaveAttribute("data-has-shortcuts", "true");
   });
 
   it("renders the application title and subtitle", () => {
