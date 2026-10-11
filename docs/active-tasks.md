@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **Header Micro-UX & DOM State Inspection (Oct 11 2026)**
+- [CONNECT] Connected `Header.tsx` to DOM state inspection tracking attributes (`data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, `data-has-shortcuts`).
+- [STRENGTHEN] Strengthened `Header` accessibility and DOM state tracking with `data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, and `data-has-shortcuts` attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated header display state tracking across web components.
+- [REMOVE] Removed un-inspected header container assertions in `Header.test.tsx`.
+
 ## ✅ StorX — **EditorToolbar Micro-UX & Reduced Motion State Inspection (Oct 10 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-has-content`, `data-is-exporting`, `data-export-success`) to `EditorToolbar.tsx`.
 - [STRENGTHEN] Strengthened `EditorToolbar` DOM state inspection with `data-reduced-motion` ("true"/"false"), `data-has-content` ("true"/"false"), `data-is-exporting` ("true"/"false"), and `data-export-success` ("true"/"false") attributes for state inspection and accessibility testing.
