@@ -112,6 +112,10 @@ function HeaderComponent({
           ? "border-b border-dark-600/60 shadow-lg shadow-dark-950/30"
           : "border-b border-dark-700/50"
       }`}
+      data-scrolled={isScrolled ? "true" : "false"}
+      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
+      data-shortcuts-discovered={shortcutsDiscovered ? "true" : "false"}
+      data-has-shortcuts={onShowShortcuts ? "true" : "false"}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <button
