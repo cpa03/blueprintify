@@ -220,6 +220,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
           }}
           className={positionClass}
           data-state={BANNER_STATE_VALUES.VISIBLE}
+          data-has-scrolled={hasScrolled}
           data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
@@ -285,6 +286,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
               data-state={BANNER_STATE_VALUES.VISIBLE}
+              data-has-scrolled={hasScrolled}
               data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
