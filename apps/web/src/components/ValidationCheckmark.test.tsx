@@ -38,6 +38,7 @@ describe("ValidationCheckmark", () => {
     expect(icon).toHaveAttribute("data-state", "valid");
     expect(icon).toHaveAttribute("data-size", "inline");
     expect(icon).toHaveAttribute("data-show-invalid", "false");
+    expect(icon).toHaveAttribute("data-reduced-motion", "false");
     expect(icon).toHaveAttribute("title", VALIDATION_LABELS.FIELD_VALID);
   });
 

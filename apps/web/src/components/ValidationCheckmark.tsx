@@ -35,6 +35,11 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
   showInvalid = false,
   className = "",
 }: ValidationCheckmarkProps) {
+  // Respect prefers-reduced-motion (WCAG 2.3.3): the springy pop-in and the
+  // checkmark draw-on are purely decorative, so they are skipped for
+  // vestibular-sensitive users. State colors, labels, and DOM state
+  // attributes stay fully functional.
+  const shouldReduceMotion = useReducedMotion();
   const isInline = size === "inline";
 
   const validClasses = isInline
@@ -52,23 +57,17 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
 
   const shouldShow = isValid || (showInvalid && !isValid);
 
-  // Respect prefers-reduced-motion (WCAG 2.3.3): the springy pop-in and the
-  // checkmark draw-on are purely decorative, so they are skipped for
-  // vestibular-sensitive users. State colors, labels, and DOM state
-  // attributes stay fully functional.
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <AnimatePresence>
       {shouldShow && (
         <motion.span
           key={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
           initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { scale: 0, opacity: 0 }}
           transition={
             shouldReduceMotion
-              ? { duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }
+              ? { duration: ANIMATION.QUICK_FADE }
               : {
                   type: FRAMER_TYPE.SPRING,
                   ...ANIMATION_TIMING.easing.spring,
@@ -90,9 +89,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                 strokeLinejoin="round"
                 strokeWidth={strokeWidth}
                 d="M5 13l4 4L19 7"
-                initial={
-                  shouldReduceMotion ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }
-                }
+                initial={shouldReduceMotion ? { opacity: 1 } : { pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={
                   shouldReduceMotion
