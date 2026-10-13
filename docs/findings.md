@@ -12065,3 +12065,12 @@ left to owning team per no-functionality-reduction constraint.
 **Structural notes (report-only, no action)**: `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy (kept); `.agent/` ↔ `.opencode/` mirror pending canonical-loader decision (kept); 8/8 scripts wired; single `utils`/`lib` per workspace — no 5-folder mess. No `agent/janitor` branch created (see scope note).
 **Verification**: typecheck ✅ exit 0 (shared/api/web) · lint ✅ 0 errors · build ✅ exit 0 (vite 8.69s). No test run (zero code changes, zero risk).
 **Result**: No commit of source changes — tree left clean. This `docs/findings.md` entry is the cycle's only deliverable.
+
+## Security Engineer Audit — Dependabot dev-deps PR stale-downgrade fix (2026-10-13)
+
+**Scope**: `dependabot/npm_and_yarn/development-dependencies-3ebd07bf6e` vs `origin/main` — 5 files (apps/api/package.json, apps/web/package.json, package.json, packages/shared/package.json, package-lock.json). Manifest-only diff, no source changes.
+**Finding**: Dependabot computed bumps against a stale base; PR pinned 3 deps BELOW origin/main (lockfile mirrored). All other bumps forward-only; overrides match main (dompurify 3.4.16, brace-expansion 5.0.12, shell-quote 1.12.0, undici 7.30.0, ws 8.21.0).
+**Fixes applied (this cycle)**: restored `hono` 4.13.12→4.13.13, `openai` 7.27.0→7.32.0 (api prod), `react-syntax-highlighter` 16.1.1→16.1.2 (web prod); re-resolved with `npm install --package-lock-only`. Post-fix manifest diff vs main is forward-only (eslint 10.12.0, wrangler 4.149.0, vite 8.3.4, playwright 1.64.0, cssnano 9.5.0, postcss 8.5.29, jsdom 30.1.2, etc.).
+**Scans**: added-lines secret regex CLEAN (sole `token` hits = `@csstools/css-tokenizer` package names in lockfile, false positives) · eval/innerHTML/dangerouslySetInnerHTML/child_process/Math.random/substr/max_tokens 0x · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns · full audit 8 (3 moderate, 5 high) ALL pre-existing on main (identical braces@3.0.3 GHSA-vfj7-8cjw-p6xm + postcss-selector-parser@6.0.10 GHSA-rj75-hqrm-r3gf transitive versions in both lockfiles; dev-only tailwind chain, no fix available, risk accepted).
+**Verification**: typecheck ✅ (shared/api/web) · shared 874/874 ✅.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage remaining. No rotation needed (no secrets involved).

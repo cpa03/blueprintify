@@ -31,6 +31,13 @@
 
 ## Lessons Learned
 
+### 2026-10-13: Security Engineer Audit — Dependabot dev-deps PR stale-base downgrades fixed
+
+- **Finding**: 5-file manifest-only diff carried 3 stale downgrades (dependabot based on older main): `hono` 4.13.13→4.13.12, `openai` 7.32.0→7.27.0, `react-syntax-highlighter` 16.1.2→16.1.1 — lockfile mirrored all three.
+- **Fix**: Restored the 3 to main's versions + `npm install --package-lock-only`; post-fix diff forward-only (eslint 10.12.0, wrangler 4.149.0, vite 8.3.4, playwright 1.64.0). Overrides already matched main.
+- **Verification**: Added-lines secret 0x (sole `token` hits = `@csstools/css-tokenizer` lockfile names) · injection/deprecated 0x · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns · full audit 8 pre-existing (braces GHSA-vfj7-8cjw-p6xm + postcss-selector-parser GHSA-rj75-hqrm-r3gf, identical transitive versions both sides) · typecheck ✅ all 3 workspaces · shared 874/874.
+- **Lesson**: Manifest-only PRs still need direction checks — a stale dependabot base silently downgrades prod deps (`openai` 5 minors back). Diff every version move, not just code lines.
+
 ### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
 
 - **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
