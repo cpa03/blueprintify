@@ -2,6 +2,36 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **Header Micro-UX & DOM State Inspection (Oct 11 2026)**
+- [CONNECT] Connected `Header.tsx` to DOM state inspection tracking attributes (`data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, `data-has-shortcuts`).
+- [STRENGTHEN] Strengthened `Header` accessibility and DOM state tracking with `data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, and `data-has-shortcuts` attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated header display state tracking across web components.
+- [REMOVE] Removed un-inspected header container assertions in `Header.test.tsx`.
+
+## ✅ StorX — **EditorToolbar Micro-UX & Reduced Motion State Inspection (Oct 10 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-has-content`, `data-is-exporting`, `data-export-success`) to `EditorToolbar.tsx`.
+- [STRENGTHEN] Strengthened `EditorToolbar` DOM state inspection with `data-reduced-motion` ("true"/"false"), `data-has-content` ("true"/"false"), `data-is-exporting` ("true"/"false"), and `data-export-success` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated editor toolbar reduced motion and export state tracking across web components.
+- [REMOVE] Removed un-inspected toolbar export states in `EditorToolbar.test.tsx`.
+
+## ✅ StorX — **StepIndicator Micro-UX & Reduced Motion State Inspection (Oct 09 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `STEP_INDICATOR_STATE_VALUES` shared config export from `@blueprint/shared` to `StepIndicator.tsx`.
+- [STRENGTHEN] Strengthened `StepIndicator` DOM state inspection with `data-state` ("active"/"completed"/"available"/"locked") and `data-reduced-motion` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated step indicator display state tracking constants in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed hardcoded "active"/"completed"/"available"/"locked" string literals in `StepIndicator.tsx` and `StepIndicator.test.tsx`.
+
+## ✅ StorX — **SmartTooltip Micro-UX & Reduced Motion State Inspection (Oct 08 2026)**
+- [CONNECT] Connected `useReducedMotion` hook to `SmartTooltip.tsx` and `SmartTooltip.test.tsx`.
+- [STRENGTHEN] Strengthened `SmartTooltip` DOM state inspection with `data-reduced-motion` ("true"/"false") and `data-has-shortcut` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `SmartTooltip` reduced motion behavior (bypassing show/hide delays when reduced motion is preferred) and state tracking attributes across web components.
+- [REMOVE] Removed raw un-inspected tooltip state assertions in `SmartTooltip.test.tsx`.
+
+## ✅ StorX — **AnimatedCopyButton Micro-UX & State Inspection (Oct 07 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `data-reduced-motion` / `data-has-content` DOM attributes to `AnimatedCopyButton.tsx`.
+- [STRENGTHEN] Strengthened `AnimatedCopyButton` DOM state inspection with `data-reduced-motion` ("true"/"false") and `data-has-content` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `AnimatedCopyButton` reduced motion and copy state tracking across web components.
+- [REMOVE] Removed raw un-inspected button state assertions in `AnimatedCopyButton.test.tsx`.
+
 ## ✅ BugLover Audit — **Phase 1 Complete (Oct 06 2026)**
 - [x] bug Fixed React act(...) warnings in TemplateGrid test fixtures.
 - [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean (0 errors, 0 warnings), test suite passing across workspaces, BroCula 0 console errors.

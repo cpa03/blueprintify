@@ -50,6 +50,13 @@
 **Scans**: added-lines secrets/injection/XSS/deprecated CLEAN · PR-head full-file secrets/injection/deprecated CLEAN · `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full audit 5 high pre-existing dev-only `braces` GHSA-vfj7-8cjw-p6xm via chokidar/micromatch→fast-glob 3.3.3→tailwindcss 3.4.19, no fix available, `--force` not run) · web typecheck ✅ · StepReview 19/19 ✅.
 **Result**: No code fixes required on `agent/security-engineer` — nothing to remove. No rotation needed (no real secrets). No structural rewrite (report-only per constraints).
 
+## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.
+**Hygiene CLEAN** — 700 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy; 8/8 scripts wired (`opencode-run.sh`↔workflows, `lh-warm`↔`lh:warm`, `brocula-sweep`↔`brocula:sweep` verified); 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; TODO/FIXME 0; console.log only intentional (secureLog/e2e/docs-example).
+**Doc-sync CLEAN** — README tree matches on-disk; `openapi.yaml` 14 paths ↔ README/API table; `API_ENDPOINTS` carries `STORAGE_REPORT`/`SHARE_VERIFY`; env docs cover all code vars; no drift found, no sync edits needed.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 337 files · audit prod ✅ 0 vulns (full 5 high pre-existing `braces` dev-chain, risk accepted) · tests ✅ 2691/2691 (web 1270/86 + api 547/33 + shared 874/4).
+
 ## Security Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main, 2026-10-04)
 
 **Scope**: `git diff origin/main...c50ff06 --name-only` (3 files: `apps/web/src/components/PageScrollProgressBar.tsx` +1, `PageScrollProgressBar.test.tsx` +15/-3, `docs/active-tasks.md` +6 prose; the audit commit 7743e74 then added this entry + `.opencode/memory/security.md`, bringing the PR head to 5 files). Task: remove introduced vulnerabilities, secrets, deprecated usage.
@@ -215,6 +222,21 @@
 **Hygiene CLEAN** — 697 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy (Pages + Web deploys); `.agent/` ↔ `.opencode/agent/` intentional mirror (both tracked, contents differ); scripts wired (`brocula-hunt`↔`brocula`, `migrate`↔`db:*`, `normalize`↔`normalize:issues`, `scan-secrets`, `validate-wrangler`; `brocula-sweep.mjs`+`lh-warm.mjs` documented helpers).
 **Doc-sync**: README architecture tree indexed missing `docs/ocr-review-summary-2026-09-26.md` + `docs/issues/` (7 files); tree now matches on-disk.
 **Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors/0 warnings · build ✅ exit 0 (PLUGIN_TIMINGS informational) · prettier ✅ README.
+
+
+## RepoKeeper Cycle 2026-09-29 (RETENTION PURGE + HYGIENE AUDIT)
+
+**Mandate**: RepoKeeper — efficient/organized repo, no redundant/temp/unused files, docs in sync, PR after done with branch synced to main, build/lint error/warning = fatal.
+**Phase 0**: `main` HEAD `e56f56bf` = `origin/main` (fetch verified, 0-behind, clean tree); branch `agent/repokeeper-cleanup-20260929` created from main.
+**Hygiene audit**: 697 tracked files; 0 `*.bak/*.tmp/*.log/*.patch`, 0 tracked `dist/`/`coverage/`/`node_modules/`, 0 untracked files; `functions/api/[[path]].ts` Pages proxy verified still referenced (deploy wiring, kept); `.agent/` vs `.opencode/` drift noted but out of scope (no certainty, untouched); all 5 workflows `ubuntu-24.04-arm` ✅.
+**Retention — FULL PURGE EXECUTED (98 current + 13 archive, all >30d)**: 40-day gap since last RepoKeeper (latest audit commit `850f576b` 2026-08-20); `git log --since="30 days ago" -- docs/audits/` empty; youngest file-dated 2026-08-20 = 40d, oldest created 2026-07-21 = 70d (spot-verified creation ≤ filename date) → `git rm docs/audits/brocula-*.md docs/audits/archive/brocula-*.md`; `docs/audits/` 852K → 96K; history preserved in git.
+**Doc-sync**: `docs/audits/README.md` table (89 rows) replaced with purge notice + Run 89 last-known-green state; `archive/CONSOLIDATED-README.md` purge row + empty-archive note + Last cleanup line; `README.md` BroCula range `(Jul 21–Aug 20)` → purge note; `docs/knowledge-review.md` Last Review refreshed; this record.
+**Dependency hygiene**: `npm audit` (pre-existing, unrelated to docs diff) reported 5 vulns via
+`undici@7.29.0` (pinned override) in jsdom/miniflare/openai chains → bumped override to `7.30.0`
+(patch, fixes GHSA-3wwx/1240036/1240038/1240041 + 6 more) + `npm update undici` → **0 vulnerabilities**.
+**Baseline ALL GREEN**: typecheck ✅ · lint ✅ 0/0 · build ✅ · build:api ✅ · tests **2,651/2,651**
+(web 1,248/85 + api 535/33 + shared 868/4) · audit **0 vulns** ✅ · scan:secrets ✅ 338 files · prettier ✅.
+**Final state: PR pending** — branch sync + PR creation follows verification.
 
 
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
@@ -12099,3 +12121,11 @@ left to owning team per no-functionality-reduction constraint.
 **Fixes applied (this cycle)**: checked out the 4 component files + `package-lock.json` forward from `origin/main` (branch had 0 changes since merge-base there — zero loss); surgically bumped `package.json` overrides to `shell-quote 1.12.0` / `sharp 0.35.5` (kept branch's `validate:secrets` script). Remaining code diff is the intentional BUG-058 hardening only.
 **Verification**: `scan:secrets` ✅ 338 files · `validate:wrangler` ✅ · `npm audit` 15→8 (prod 0; remainder pre-existing dev-only) · web typecheck ✅ · web AnimatedCopyButton/ScrollToTop/env 52/52 ✅ · shared config 801/801 ✅.
 **Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed.
+
+## Janitor Pre-Merge Hygiene Scan (2026-10-12)
+
+**Scope**: Assigned branch `agent-7193575801754416397` (stayed on orchestrator-assigned branch instead of `agent/janitor` to avoid diverging from session — deviation logged in task plan). Scan for redundant files, unused exports, commented-out dead code; delete-only mandate, build must stay green.
+**Finding**: TREE ALREADY LEAN — 0 deletions, nothing to remove. 598 tracked files; 0 tracked temp artifacts (`*.tmp/*.bak/*.orig/*.log/*.patch` empty); 0 untracked files besides this cycle's own `task_plan.md`/`notes.md` (removed before commit); 0 empty dirs; 0 tracked `dist/`/`coverage/`/`node_modules/`. Commented-out dead code 0x (comment greps hit prose explanations + JSX section labels only, no 5+ line dead blocks). `console.log` only intentional (secureLog/logger utilities, e2e console-audit specs, template generator strings, `fix-esm.mjs`, docs examples). TODO/FIXME 0x in source. Duplicate logic 0x (no `formatDate` defs; single `generateSlug`/`childrenToText` in `utils/slug.ts`; web `debounce.test.ts` imports `createDebouncedSaver` from `@blueprint/shared` — already DRY; `persistence.ts` closure is a distinct use-site, not a copy). All 12 web deps + 3 api deps verified referenced; 13 spot-checked exports (slug/clipboard/hooks/prompts/security/ExportContext) all have live consumers; 6 `eslint-disable` hits are targeted react-hooks/test-rule suppressions, not blanket ignores.
+**Structural notes (report-only, no action)**: `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy (kept); `.agent/` ↔ `.opencode/` mirror pending canonical-loader decision (kept); 8/8 scripts wired; single `utils`/`lib` per workspace — no 5-folder mess. No `agent/janitor` branch created (see scope note).
+**Verification**: typecheck ✅ exit 0 (shared/api/web) · lint ✅ 0 errors · build ✅ exit 0 (vite 8.69s). No test run (zero code changes, zero risk).
+**Result**: No commit of source changes — tree left clean. This `docs/findings.md` entry is the cycle's only deliverable.

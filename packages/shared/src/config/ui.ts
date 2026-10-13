@@ -1016,3 +1016,21 @@ export const CELEBRATION_STATE_VALUES = {
   /** Celebration animation idle state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * Step Indicator Display State Values
+ * Centralized state tracking values for wizard navigation indicators (StepIndicator).
+ * Flexy says: No hardcoded "active"/"completed"/"locked"/"available" strings in StepIndicator!
+ * Usage: import { STEP_INDICATOR_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isActive ? STEP_INDICATOR_STATE_VALUES.ACTIVE : ...}
+ */
+export const STEP_INDICATOR_STATE_VALUES = {
+  /** Active step identifier */
+  ACTIVE: "active" as const,
+  /** Completed step identifier */
+  COMPLETED: "completed" as const,
+  /** Available step identifier */
+  AVAILABLE: "available" as const,
+  /** Locked step identifier */
+  LOCKED: "locked" as const,
+} as const;

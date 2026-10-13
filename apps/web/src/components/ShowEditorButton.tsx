@@ -185,6 +185,7 @@ function ShowEditorButtonComponent({
               </span>
             )}
             <kbd
+              aria-hidden="true"
               className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
               style={{
                 animationDelay: `${ANIMATION_ENTRANCE_DELAYS.NEARLY_HALF}s`,

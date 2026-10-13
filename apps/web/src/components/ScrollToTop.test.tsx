@@ -127,10 +127,12 @@ describe("ScrollToTop", () => {
     expect(button).toHaveAttribute("aria-keyshortcuts", KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY);
     expect(button).toHaveAttribute("data-direction", "top");
     expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+    expect(button).toHaveAttribute("data-has-scrolled", "true");
     expect(button).toHaveAttribute("data-reduced-motion", "false");
     // Wrapper carries the same inspection pair (tooltip mock renders a fragment,
     // so the button's parent is the positioned wrapper div).
     expect(button.parentElement).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+    expect(button.parentElement).toHaveAttribute("data-has-scrolled", "true");
     expect(button.parentElement).toHaveAttribute("data-reduced-motion", "false");
   });
 
