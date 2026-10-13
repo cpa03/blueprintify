@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Pre-Merge Dead-Code Re-Sweep (2026-10-13)
+
+**Branch**: `agent/janitor` synced to `origin/main`.
+**Removed**: nothing — re-sweep confirms the 2026-10-11 janitor cycle left the tree clean; every deletion candidate verified live, so no code changes this cycle (delete-only mandate, zero safe targets).
+**Scans**: `console.log` 20 hits all legitimate (logger/secureLog utils, e2e specs, template-string sample code, JSDoc examples, README prose) · commented-out code 0 blocks (all `//` hits explanatory prose; block comments are CSS section headers + JSDoc) · TODO/FIXME/HACK 0 in src (1 hit is README grep-recipe prose) · `*.bak/*.orig/*.tmp` 0 · all 12 web deps imported (`@codemirror/lang-markdown` + `@codemirror/theme-one-dark` used via dynamic `import()` in `LazyCodeMirror.tsx` — classic false positive avoided) · all 34 web components referenced · spot-checked exports (`motion`/`scroll`/`slug` utils, api `circuitBreaker`/`retry`/`sanitize`/`secureLog`/`stream`/`timeout`) all have 2+ consumers · root tracked files all legitimate (`schema.sql` wired to `scripts/migrate.ts`).
+**Structural mess (report-only, not touched per constraints)**: (1) NEW — `apps/web/src/lib/debounce.test.ts` tests shared `createDebouncedSaver` from `@blueprint/shared` but lives in web's `lib/` with no sibling `debounce.ts`; recommend moving it to `packages/shared/src/utils/` in a follow-up (or keep as consumer-side integration coverage — owner call). (2) CONFIRMED STILL DUAL — `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical (both created together in #3610 `c4e95857`; deployment serves frontend via Workers Static Assets per `apps/api/wrangler.toml` `[assets]`, Pages project root not determinable from repo) — recommend keeping both until Cloudflare dashboard confirms the Pages root, per prior RepoKeeper verdict. (3) Prior 2026-10-11 flags still open: 4 utils-like folders, `sanitizeHtml` browser-vs-Workers split, root `tui.json` vs `.opencode/tui.json` — no change, left for owner follow-up.
+
 ## Janitor Cleanup — Pre-Merge Dead-Code Sweep (2026-10-11)
 
 **Branch**: `agent/janitor` synced to `origin/main` (`e3a510af` + merge `7180612a`).
