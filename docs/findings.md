@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-13, 2nd cycle)
+
+**Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — flagged **disabled**, so read-only + sync, zero new deletions.
+**Sync**: `agent/janitor` reset to `origin/agent/janitor` (`c05e69b9`) then merged `origin/main` forward (`b4dcc54a`: framer-motion 13.4.4→14.1.0 + lockfile, resolving stale reversion). Post-merge diff vs main is `bug.md` + `task.md` deletions + this entry only; no new code deletions this cycle. Converged with parallel runs: `bug.md` + `task.md` stay deleted (shared-branch consensus per tip `23d304f3`, precedent #313 + enabled 2026-10-11 cycle).
+**Scans**: `console.log` hits all legitimate (secureLog/logger utils, e2e specs, template sample strings, JSDoc/README prose, fix-esm.mjs) · commented-out dead code 0 (`^// (import|const|function|export|...)` 0 matches; 1325 `//` hits all explanatory prose) · TODO/FIXME/HACK 0 in apps+packages · tracked `*.bak/*.orig/*.tmp` 0 · `.only`/`.skip`/`debugger` 0 · empty `.ts` 0 · `as any` 0 · `formatDate` 0 · `createDebouncedSaver` already DRY in `@blueprint/shared` · `dompurify` via dynamic `import()` in `lib/security.ts` (false positive avoided) · `generateSlug`/`childrenToText` have live consumers (MarkdownRenderer + HeadingAnchor) · 6 `eslint-disable` are targeted react-hooks/test suppressions.
+**Verify**: typecheck ✅ exit 0 (shared/api/web) · lint ✅ 0 errors · build ✅ exit 0 (vite 8.80s).
+**Structural mess (report-only)**: same 4 open flags as prior re-sweep (debounce test placement, dual `[[path]].ts` proxy IDENTICAL, 4 utils dirs + `sanitizeHtml` split + `tui.json` differs only by trailing newline) — untouched per NO-logic-change constraint.
+
 ## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-13)
 
 **Request**: "Scan for redundant file, unused exports, commented-out dead code. Remove them" — flagged **disabled**, so read-only + sync, zero new deletions.
