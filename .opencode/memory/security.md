@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-13: Security Engineer Audit — Dependabot vitest 5.0.3 stale-base downgrade sync, 1 regression fixed
+
+- **Finding**: PR diff vs origin/main showed prod downgrades (hono 4.13.13→4.13.12, openai 7.32.0→7.27.0, rsh 16.1.2→16.1.1) — stale base (MB 8644f65f; MB..HEAD vitest-only; MB..main ff59018d prod bump), but merge-as-is would regress. Fixed by forward-syncing prod deps, keeping vitest 5.0.3, re-resolving lockfile. Final diff forward-only.
+- **Verification**: Added-lines secret/injection/deprecated 0x; `scan:secrets` ✅ 337 files; `npm audit --omit=dev` ✅ 0 vulns (full 8 pre-existing tailwind dev-chain, risk accepted); typecheck ✅ shared/api/web; lockfile prod versions match main.
+- **Lesson**: Apparent downgrades in a dependabot diff need merge-base triage before blaming the PR — but staleness still must be fixed (sync forward) since merge would regress. Also check peer coherence on major dev-tool bumps: vitest 5.0.3 outruns @vitest/ui/coverage-v8 4.1.11 + @cloudflare/vitest-pool-workers ^4.1.0 (`npm ls` invalid) — flag report-only, leave coordinated bump to follow-ups.
+
 ### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
 
 - **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.

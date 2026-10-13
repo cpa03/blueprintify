@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — Dependabot vitest 5.0.3 stale-base downgrade sync (2026-10-13)
+
+**Scope**: `git diff --name-only origin/main` on `dependabot/npm_and_yarn/vitest-5.0.3` @3aa96f50 (4 files: `apps/api/package.json`, `apps/web/package.json`, `package-lock.json`, `packages/shared/package.json`). Task: remove introduced vulnerabilities, secrets, deprecated usage.
+**Finding**: 1 merge-regression class FIXED — stale base (merge-base `8644f65f`) carried apparent downgrades vs `origin/main` (`hono` 4.13.13→4.13.12, `openai` 7.32.0→7.27.0, `react-syntax-highlighter` 16.1.2→16.1.1 from `ff59018d` production-deps bump). MB..HEAD is vitest-only, so staleness not authorship — but merge-as-is would regress prod deps. Fix forward-synced prod deps to `origin/main` versions, kept `vitest` 5.0.3 in all 3 manifests, re-resolved lockfile (`npm install --package-lock-only`). Final diff vs main is vitest 4.1.11→5.0.3 forward-only + lock. No secrets (added-lines secret regex 0x, full-file 0x), no injection/XSS (`eval`/`innerHTML`/`dangerouslySetInnerHTML`/`child_process` 0x), no deprecated (`max_tokens`/`substr`/`Math.random`/`new Buffer` 0x) in added lines.
+**Scans**: `scan:secrets` ✅ 337 files · `npm audit --omit=dev` ✅ 0 vulns (full audit 8 vulns: 3 moderate + 5 high pre-existing tailwindcss/fast-glob/micromatch/braces/chokidar dev-chain, no fix without breaking majors, risk accepted) · typecheck ✅ (shared/api/web) · lockfile prod versions match main (`hono` 4.13.13, `openai` 7.32.0, `rsh` 16.1.2; `vitest` 5.0.3 all workspaces).
+**Result**: Code fix applied on PR branch. No rotation needed (no secrets). Structural flag (report-only, no rewrite): `vitest` 5.0.3 outruns its ecosystem — `@cloudflare/vitest-pool-workers@0.22.0` wants `vitest ^4.1.0`, `@vitest/coverage-v8@4.1.11` + `@vitest/ui@4.1.11` peer-require 4.1.11 (`npm ls` ELSPROBLEMS invalid). Coordinated 5.x bump (coverage-v8 + ui + pool-workers) left to dependabot follow-ups.
+
+
 ## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.
