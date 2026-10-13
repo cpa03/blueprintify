@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-13)
+
+**Request**: "Scan for redundant file, unused exports, commented-out dead code. Remove them" — flagged **disabled**, so read-only + sync, zero deletions.
+**Sync**: `agent/janitor` was 3 behind `origin/main` carrying stale reversions (packages `hono` 4.13.13→4.13.12 / `openai` 7.32.0→7.27.0 / `react-syntax-highlighter` 16.1.2→16.1.1, `ScrollToTop` `data-has-scrolled` removal reverting #3751, `Run95` audit + README Latest rollback). Merged `origin/main` forward (`8cefbaa3`); `task.md` delete/modify conflict + `bug.md` deletion resolved by restoring both stubs from main per disabled mandate. Post-merge diff vs main was findings-only; no code deletions this cycle.
+**Scans**: `console.log` 20 hits all legitimate (secureLog/logger utils, e2e specs, template sample strings, JSDoc/README prose) · commented-out dead code 0 · TODO/FIXME/HACK 0 in `apps` · tracked `*.bak/*.orig/*.tmp/*.rej/*.log/*.patch` 0 · empty source dirs 0 · `formatDate` duplicates 0 · `createDebouncedSaver` already DRY in `@blueprint/shared` (web test is consumer-side coverage) · 4 utils-like folders unchanged (report-only).
+**Verify**: typecheck ✅ · lint ✅ 0 errors · build ✅ (vite 9.15s).
+**Structural mess (report-only)**: same 4 open flags as prior re-sweep (debounce test placement, dual `[[path]].ts` proxy, 4 utils dirs + `sanitizeHtml` split + `tui.json` duplicate) — untouched per NO-logic-change constraint.
+
 ## Janitor Cleanup — Pre-Merge Dead-Code Re-Sweep (2026-10-13)
 
 **Branch**: `agent/janitor` synced to `origin/main`.
