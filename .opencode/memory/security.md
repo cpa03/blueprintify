@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-13: Security Engineer Audit — Dependabot vitest/ui 5.0.3 PR scan + merge sync (150→8 files)
+
+- **Finding**: Invoking PR (3 files: `@vitest/ui` ^4.1.11→^5.0.3) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove. Apparent hono/openai/react-syntax-highlighter backward moves = stale-behind-main (merge-base 8644f65f predates ff59018d), not introduced; PR needs rebase (dependabot's job). Merge of origin/main had 6 conflicts; packages + stale docs resolved forward to main, findings kept both sides; post-merge diff 150→8 files (BUG-058 gates + audit docs only).
+- **Verification**: Added-lines secret/injection/deprecated 0x; lockfile URLs registry.npmjs.org + 10x sha512 CLEAN; `scan:secrets` ✅ 337 files; `npm audit --omit=dev` ✅ 0 vulns (full 8 pre-existing dev-only braces + postcss-selector-parser tailwind chain); `max_completion_tokens` intact, 0x `max_tokens`; `validate:wrangler` ✅; typecheck ✅.
+- **Lesson**: On a dependabot PR branch, always compute merge-base before triaging apparent downgrades — a diff showing older versions than main with zero branch-side edits since merge-base is staleness, not introduction. For findings.md merge conflicts, strip only exact-line markers (`^<<<<<<< HEAD$`, `^=======$`, `^>>>>>>> origin/main$`) to keep both audit histories; prose mentions of markers mid-line must be preserved.
+
 ### 2026-10-07: Security Engineer Audit — Changed-files scan (16→8 files), stale-reversion remediation
 
 - **Finding**: 16-file diff mixed BUG-058 hardening (0 introduced issues) with 8 stale reversions of main's newer commits (merge-base 7dcfe59f predates #3715/#3716/#3724/#3727): focus-ring removal, act() unwrapping, reduced-motion deletion, audit-docs rollback. Restored all 8 forward from origin/main; final diff = 8 files, zero dep moves.
