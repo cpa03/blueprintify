@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Pre-Merge Sweep, merge-conflict resolution (2026-10-13, 2nd cycle)
+
+**Branch**: `agent/janitor` merged with `origin/main` (forward dep bumps hono 4.13.12→13 / openai 7.27→7.32 / highlighter 16.1.1→1.2 + ScrollToTop `data-has-scrolled` + Run 95 audit report).
+**Removed**: root `task.md` — resolved delete-vs-modify merge conflict by keeping deletion (`git rm task.md`; 5-line agent audit log on main, redundant with canonical `docs/active-tasks.md`, zero refs, precedent #313 + 2026-10-11 cycle). No other safe deletion targets (delete-only mandate).
+**Scans**: `console.log` 20 hits all legitimate (secureLog/logger utils + tests, e2e specs, generated template boilerplate, JSDoc examples, README prose) · commented-out code 0 blocks · TODO/FIXME/HACK 0 in apps/* + packages/* source (1 hit = api README grep-recipe prose) · `.only`/`.skip`/`debugger` 0 · `as any`/`ts-ignore`/`ts-expect-error` 0 · empty catch 0 · `*.bak/*.orig/*.tmp/*.rej` 0 · all 15 web prod deps imported (`dompurify` via dynamic `import()` in `lib/security.ts`, codemirror pair via dynamic `import()` in `LazyCodeMirror.tsx` — false positives avoided) · all 3 api prod deps used (hono/openai/zod) · all 34 web components have 3+ consumers · 97 files import `@blueprint/shared` · root tracked files all legitimate.
+**Verify**: `npm run build` ✅ · `npm run typecheck` ✅ · `npm run lint` ✅ (0 errors).
+**Structural mess (report-only, not touched per constraints)**: (1) `tui.json` vs `.opencode/tui.json` now differ only by trailing newline (was byte-identical) — recommend one canonical location in a follow-up. (2) CONFIRMED STILL DUAL — `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical — keep both until Cloudflare dashboard confirms Pages root. (3) Prior flags still open, no change: `debounce.test.ts` location, 4 utils-like folders, `sanitizeHtml` browser-vs-Workers split.
+
 ## Janitor Cleanup — Pre-Merge Dead-Code Re-Sweep (2026-10-13)
 
 **Branch**: `agent/janitor` synced to `origin/main`.
