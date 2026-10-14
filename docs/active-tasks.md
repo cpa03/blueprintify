@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **MarkdownRenderer Micro-UX & Reduced Motion State Inspection (Oct 12 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `COPY_STATE_VALUES` shared config export from `@blueprint/shared` to `CodeBlockHeader` in `MarkdownRenderer.tsx`.
+- [STRENGTHEN] Strengthened `MarkdownRenderer` code block header with `data-state` ("copied"/"idle"), `data-reduced-motion` ("true"/"false"), and `data-language` DOM state inspection attributes for accessibility testing.
+- [CONSOLIDATE] Consolidated code block copy state tracking in `@blueprint/shared` config export.
+- [REMOVE] Removed raw hardcoded "copied"/"idle" string literals in `MarkdownRenderer.tsx` and `MarkdownRenderer.test.tsx`.
+
 ## ✅ StorX — **Header Micro-UX & DOM State Inspection (Oct 11 2026)**
 - [CONNECT] Connected `Header.tsx` to DOM state inspection tracking attributes (`data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, `data-has-shortcuts`).
 - [STRENGTHEN] Strengthened `Header` accessibility and DOM state tracking with `data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, and `data-has-shortcuts` attributes for state inspection and accessibility testing.
