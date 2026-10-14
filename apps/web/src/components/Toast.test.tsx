@@ -147,6 +147,9 @@ describe("ToastContainer", () => {
     expect(toastStatus).toHaveAttribute("aria-live", "polite");
     expect(toastStatus).toHaveAttribute("data-toast-type", TOAST_TYPES.SUCCESS);
     expect(toastStatus).toHaveAttribute("data-is-alert", "false");
+    expect(toastStatus).toHaveAttribute("data-state", "visible");
+    expect(toastStatus).toHaveAttribute("data-progress", "100");
+    expect(toastStatus).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("sets container state inspection attributes based on toast count", () => {
@@ -161,6 +164,8 @@ describe("ToastContainer", () => {
     const region = screen.getByRole("region");
     expect(region).toHaveAttribute("data-count", "1");
     expect(region).toHaveAttribute("data-has-toasts", "true");
+    expect(region).toHaveAttribute("data-state", "visible");
+    expect(region).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("renders different toast types correctly", () => {
