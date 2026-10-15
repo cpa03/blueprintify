@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-15)
+
+**Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — flagged **disabled**, so read-only + sync, zero new deletions.
+**Sync**: `agent/janitor` was 4 behind `origin/main` (merge-base `3d6bef6a` #3760) carrying a 9-file stale reversion of main's Toast/LastSavedIndicator/StepTransition DOM-state + reduced-motion feats (#3761/#3767/#3768) and README/docs sync (#3762). Merged `origin/main` forward (`30d6bbfd`, ort, no conflicts); post-merge diff vs main is findings-only; no new code deletions this cycle.
+**Scans**: `console.log` 20 hits in apps/* all legitimate (secureLog/logger utils + JSDoc, lib/api.ts JSDoc, template sample strings, e2e brocula-console-check specs, api README SSE prose) + 4 in fix-esm.mjs build script · commented-out dead code 0 (3 `^// (import|const|...)` hits all prose: "while the inner banner slides…", "while staying on an active wizard step…", "for vestibular-sensitive users…") · TODO/FIXME/HACK 0 in src (1 hit = api README grep-recipe prose) · tracked `*.bak/*.orig/*.tmp/*.rej/*.patch` 0 · stray tracked `task.md`/`bug.md` 0 (stay deleted) · `.only`/`.skip`/`debugger` 0 · empty `.ts` 0 · `as any`/`ts-ignore`/`ts-expect-error` 0 · `formatDate` 0 · `createDebouncedSaver` already DRY in `@blueprint/shared` (web `debounce.test.ts` is consumer-side coverage) · `dompurify` via dynamic `import()` in `lib/security.ts` (false positive avoided) · 6 `eslint-disable` are targeted react-hooks/test suppressions.
+**Verify**: typecheck ✅ exit 0 (shared/api/web) · lint ✅ 0 errors · build ✅ exit 0 (vite 9.08s).
+**Structural mess (report-only)**: same 4 open flags (debounce test placement, dual `[[path]].ts` proxy IDENTICAL via worktree diff, 4 utils dirs, `tui.json` differs only by trailing newline) — untouched per NO-logic-change constraint.
+
 ## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-13, 2nd cycle)
 
 **Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — flagged **disabled**, so read-only + sync, zero new deletions.
