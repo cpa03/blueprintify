@@ -204,7 +204,8 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         data-slug={slug}
         aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
         title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
-        tabIndex={0}
+        aria-hidden={!isVisible}
+        tabIndex={isVisible ? 0 : -1}
       >
         <AnimatePresence mode="wait">
           {showCopied ? (
