@@ -35,6 +35,7 @@ import {
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -491,7 +492,12 @@ export const StepStack = memo(function StepStack({
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={ICON_PATHS.CHEVRON_RIGHT}
+              />
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>

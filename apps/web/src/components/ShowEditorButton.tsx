@@ -26,6 +26,7 @@ import {
   MODIFIER_KEYS,
   BUTTON_TRANSITION_DEFAULTS,
   EDITOR_BUTTON_STATE_VALUES,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -166,7 +167,12 @@ function ShowEditorButtonComponent({
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={ICON_PATHS.CHEVRON_RIGHT}
+              />
             </svg>
             {isGenerating && (
               <>

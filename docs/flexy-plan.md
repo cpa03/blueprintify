@@ -4,6 +4,44 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 190: Centralize Chevron Icon Path & Share Route Param Key
+
+**Problem**: 4× hardcoded chevron `d="M9 5l7 7-7 7"` in web components bypassing shared config, plus 5× hardcoded `c.req.param("id")` in API share routes bypassing route-param constants. Flexy says: no hardcoded SVG paths or route param keys!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ICON_PATHS.CHEVRON_RIGHT` (`"M9 5l7 7-7 7"`) — single source of truth for chevron direction-arrow path |
+| `packages/shared/src/index.ts` | Exported `ICON_PATHS` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/web/src/components/ShowEditorButton.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/api/src/config/constants/share.ts` | Added `SHARE_ROUTE_PARAMS.ID` (`"id"`) — single source of truth for share route param key |
+| `apps/api/src/config/constants.ts` | Re-exported `SHARE_ROUTE_PARAMS` |
+| `apps/api/src/routes/share.ts` | 5× `c.req.param("id")` → `c.req.param(SHARE_ROUTE_PARAMS.ID)` |
+| `packages/shared/src/config.test.ts` | Added `ICON_PATHS` import + 2 tests (chevron value, entry count) |
+| `apps/api/src/config/constants/config-iteration-190.test.ts` | NEW — 3 tests asserting `SHARE_ROUTE_PARAMS.ID` + `SHARE_QUERY_PARAMS.TOKEN` regression |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run typecheck` — clean (shared/api/web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build --workspace=apps/web` — clean (9.14s)
+- ✅ `npm run build --workspace=apps/api` — clean (dry-run)
+- ✅ `npm run scan:secrets` — clean (341 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test --workspace=packages/shared` — **876 tests passing** (+2 new)
+- ✅ `npm run test --workspace=apps/api -- --run src/config/constants/config-iteration-190.test.ts` — **3 tests passing**
+- ✅ `npm run test --workspace=apps/web -- --run ShowEditorButton/StepInfo/StepStack/StepFeatures` — **126 tests passing**
+- ✅ `npm run test --workspace=apps/api -- --run src/routes/share.test.ts` — **15 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-190-chevron-share-param` | refactor(flexy): centralize chevron icon path & share route param key into config (Iteration 190) |
+
 ### ✅ Flexy Iteration 187b: Centralize SVG Icon Rendering Defaults
 
 **Problem**: `apps/web/src/components/Icon.tsx` rendered `<svg>` with hardcoded `fill="none"`, `stroke="currentColor"`, `strokeLinecap/Linejoin="round"`, default `className="w-5 h-5"` and `strokeWidth=2`; `apps/web/src/config/icons.ts` repeated `viewBox: "0 0 24 24"` 25× across every icon. Flexy says: no hardcoded SVG icon literals!
