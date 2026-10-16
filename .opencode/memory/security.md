@@ -387,3 +387,10 @@
 - **Fix**: Checked out 4 component files + package-lock.json from origin/main (branch had 0 changes since merge-base there); bumped package.json overrides forward, kept validate:secrets script.
 - **Verification**: Added-lines secret/injection/deprecated 0x (execFileSync array-form safe; Math.random = celebration visuals); scan:secrets ✅ 338 files; npm audit 15→8 (prod 0); validate:wrangler ✅; web typecheck ✅; web 52/52, shared 801/801.
 - **Lesson**: When both sides bump the same devDeps identically since merge-base, only the overrides/security lines need surgical merge — checkout the lockfile wholesale from main since npm scripts don't affect it.
+
+### 2026-10-16: Security Engineer Audit — Changed-files scan (25→8 files), stale-reversion remediation
+
+- **Finding**: 25-file diff mixed BUG-058 hardening (0 introduced issues) with 17 stale reversions (merge-base ff59018d predates main #3760-#3772): framer-motion 14.1.0→13.4.4 downgrade, 4 components + 3 tests reverting reduced-motion/DOM-state work, 5 doc rollbacks + deleted Run 96 audit, stray bug.md/task.md.
+- **Fix**: Checked out 15 stale tracked files forward from origin/main; git rm stray logs; package.json left untouched (diff already exactly the 1 intended line); findings.md merged via section-parse keeping main ULW 2026-10-15 + 9 branch audit blocks + new entry, 0 residual markers. Final diff = 8 files, zero dep moves.
+- **Verification**: Added-lines real-secret 0x; fallback 0x; XSS/injection 0x; deprecated 0x (all hits audit-prose); scan:secrets ✅ 338 files; npm audit --omit=dev ✅ 0 vulns; validate:wrangler ✅.
+- **Lesson**: For findings.md merges, parse sections by `^## ` headers and keep branch-only sections (by exact header) + main's new top entry — avoids hand-editing a 12k-line append-only log and guarantees both histories survive.
