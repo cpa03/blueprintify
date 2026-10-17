@@ -127,7 +127,12 @@ function HeaderComponent({
                        motion-safe:transition-transform motion-safe:duration-150
                        motion-safe:hover:scale-102 motion-safe:active:scale-98"
           title={ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
-          aria-description={ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
+          // aria-describedby (not the experimental aria-description) so screen
+          // readers reliably announce the scroll-to-top action when the brand
+          // button receives focus. The hint lives in a sibling sr-only span
+          // rather than inside the button so it doesn't pollute the accessible
+          // name computed from the button's visible text content.
+          aria-describedby="header-brand-scroll-hint"
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center animate-logo-breathe pointer-events-none">
             <svg
@@ -149,6 +154,9 @@ function HeaderComponent({
             <p className="text-xs text-dark-400">{UI_CONTENT.APP.TAGLINE}</p>
           </div>
         </button>
+        <span id="header-brand-scroll-hint" className="sr-only">
+          {ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
+        </span>
 
         <nav
           className="flex items-center gap-2 animate-slide-in-right"
