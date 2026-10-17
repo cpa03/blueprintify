@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-17: Security Engineer Audit — Changed-files scan vs origin/main (7 files, branch agent-3036180958738456946), 0 introduced issues
+
+- **Finding**: 7-file two-dot diff = 3 true branch changes (`CharacterCounter.tsx` +5 static `data-*` booleans, `CharacterCounter.test.tsx` assertions, `GenerationCelebration.test.tsx` real→fake timer migration) + 4 STALENESS files (`MarkdownRenderer.tsx/.test.tsx`, `PageScrollProgressBar.tsx`, `docs/active-tasks.md`) that are main-only commits `d321baaa`/`6ba69469` shown in reverse — branch behind main (merge-base `bf987372`), nothing introduced there. 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
+- **Verification**: added-lines secret/injection/XSS/deprecated 0x · full-file greps on changed source 0x · `scan:secrets` ✅ 339 files · `npm audit --omit=dev` ✅ 0 vulns (full 8 pre-existing: `braces` no-fix GHSA-vfj7-8cjw-p6xm + `postcss-selector-parser` via tailwind nesting; no dep files in diff → not introduced) · web typecheck ✅ · targeted 68/68 · full web 1281/1281 · `git merge-tree --write-tree HEAD origin/main` **0 conflicts**.
+- **Lesson**: `git merge-tree --write-tree HEAD origin/main` is the fastest non-destructive proof that an behind-main two-dot diff's apparent *reverts* are view artifacts (0 conflicts ⇒ three-way merge keeps both sides) — it converts "is this deletion real?" from speculation into a one-command check. Decision boundary vs the 2026-10-01 sync-forward lesson: report staleness WITHOUT syncing when the reversed hunks contain zero security controls (a11y/data-attr/scroll-behavior only) and merge is conflict-free; sync forward only when staleness would delete main's *hardening* (DOMPurify guards, secret removals).
+
 ### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
 
 - **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
