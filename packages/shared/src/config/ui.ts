@@ -971,6 +971,10 @@ export const EDITOR_BUTTON_STATE_VALUES = {
 export const SVG_ICON_DEFAULTS = {
   /** Default viewBox for 24x24 stroke icons */
   VIEW_BOX: "0 0 24 24" as const,
+  /** Small viewBox for 16x16 icons (e.g., inline copy buttons, compact UI) */
+  VIEW_BOX_SMALL: "0 0 16 16" as const,
+  /** Large viewBox for 48x48 celebration/status icons */
+  VIEW_BOX_LARGE: "0 0 48 48" as const,
   /** Default fill for stroke-only icons */
   FILL_NONE: "none" as const,
   /** Default stroke color inheriting surrounding text color */
