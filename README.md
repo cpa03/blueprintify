@@ -344,7 +344,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Active Issue Specs](./docs/issues/)** - Active issue specifications (ISSUE-01..07)
 - **[OCR Review Summary](./docs/ocr-review-summary-2026-09-26.md)** - OCR review summary and findings
 
-- **[BroCula Audits](./docs/audits/README.md)** - Audit reports (latest 7 runs retained per 30-day policy; older history in git)
+- **[BroCula Audits](./docs/audits/README.md)** - Audit reports (30-day retention policy; older history in git)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
