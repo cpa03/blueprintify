@@ -10,7 +10,7 @@
  * - Cleans up timers when isComplete toggles off
  */
 
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
 import { GenerationCelebration } from "./GenerationCelebration";
@@ -83,11 +83,13 @@ vi.mock("../hooks/useReducedMotion", () => ({
 
 describe("GenerationCelebration", () => {
   beforeEach(() => {
+    vi.useFakeTimers();
     vi.mocked(useReducedMotion).mockReset();
     vi.mocked(useReducedMotion).mockReturnValue(false);
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
 
@@ -97,12 +99,10 @@ describe("GenerationCelebration", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
-  it("renders a status region announcing completion when complete", async () => {
+  it("renders a status region announcing completion when complete", () => {
     render(<GenerationCelebration isComplete={true} />);
 
-    await waitFor(() => {
-      expect(screen.getByRole("status")).toBeInTheDocument();
-    });
+    expect(screen.getByRole("status")).toBeInTheDocument();
 
     const statusElement = screen.getByRole("status");
     expect(statusElement).toHaveAttribute("aria-live", "polite");
@@ -110,23 +110,21 @@ describe("GenerationCelebration", () => {
     expect(statusElement).toHaveAttribute("data-reduced-motion", "false");
   });
 
-  it("reflects reduced motion preference on data-reduced-motion attribute", async () => {
+  it("reflects reduced motion preference on data-reduced-motion attribute", () => {
     vi.mocked(useReducedMotion).mockReturnValue(true);
     render(<GenerationCelebration isComplete={true} />);
 
-    await waitFor(() => {
-      expect(screen.getByRole("status")).toBeInTheDocument();
-    });
+    expect(screen.getByRole("status")).toBeInTheDocument();
 
     expect(screen.getByRole("status")).toHaveAttribute("data-reduced-motion", "true");
   });
 
-  it("calls onComplete after the completion delay", async () => {
+  it("calls onComplete after the completion delay", () => {
     const onComplete = vi.fn();
     render(<GenerationCelebration isComplete={true} onComplete={onComplete} />);
 
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, CELEBRATION_TIMING.COMPLETION_DELAY + 50));
+    act(() => {
+      vi.advanceTimersByTime(CELEBRATION_TIMING.COMPLETION_DELAY + 50);
     });
 
     expect(onComplete).toHaveBeenCalledTimes(1);
@@ -139,20 +137,20 @@ describe("GenerationCelebration", () => {
     expect(onComplete).not.toHaveBeenCalled();
   });
 
-  it("cleans up timers on unmount", async () => {
+  it("cleans up timers on unmount", () => {
     const onComplete = vi.fn();
     const { unmount } = render(<GenerationCelebration isComplete={true} onComplete={onComplete} />);
 
     unmount();
 
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, CELEBRATION_TIMING.COMPLETION_DELAY + 100));
+    act(() => {
+      vi.advanceTimersByTime(CELEBRATION_TIMING.COMPLETION_DELAY + 100);
     });
 
     expect(onComplete).not.toHaveBeenCalled();
   });
 
-  it("cleans up timers when completion toggles off", async () => {
+  it("cleans up timers when completion toggles off", () => {
     const onComplete = vi.fn();
     const { rerender } = render(
       <GenerationCelebration isComplete={true} onComplete={onComplete} />
@@ -160,8 +158,8 @@ describe("GenerationCelebration", () => {
 
     rerender(<GenerationCelebration isComplete={false} onComplete={onComplete} />);
 
-    await act(async () => {
-      await new Promise((r) => setTimeout(r, CELEBRATION_TIMING.COMPLETION_DELAY + 100));
+    act(() => {
+      vi.advanceTimersByTime(CELEBRATION_TIMING.COMPLETION_DELAY + 100);
     });
 
     expect(onComplete).not.toHaveBeenCalled();

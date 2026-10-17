@@ -34,6 +34,7 @@ import {
   MODIFIER_KEYS,
   RATIO_LIMITS,
   UI_TIMEOUTS,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -306,7 +307,12 @@ export const StepInfo = memo(function StepInfo({
         viewBox="0 0 24 24"
         aria-hidden="true"
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d={ICON_PATHS.CHEVRON_RIGHT}
+        />
       </svg>
     </RippleButton>
   );
