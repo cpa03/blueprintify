@@ -129,6 +129,7 @@ import {
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
+  ICON_PATHS,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -3444,6 +3445,16 @@ describe("SVG_ICON_DEFAULTS", () => {
 
   it("should have 9 entries", () => {
     expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(9);
+  });
+});
+
+describe("ICON_PATHS", () => {
+  it("should define right-pointing chevron path", () => {
+    expect(ICON_PATHS.CHEVRON_RIGHT).toBe("M9 5l7 7-7 7");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(1);
   });
 });
 
