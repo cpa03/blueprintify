@@ -86,6 +86,9 @@ describe("CharacterCounter", () => {
     const visualParent = container.querySelector("[aria-hidden]");
     expect(visualParent).toHaveAttribute("aria-hidden", "true");
     expect(visualParent).toHaveAttribute("data-state", "valid");
+    expect(visualParent).toHaveAttribute("data-at-limit", "false");
+    expect(visualParent).toHaveAttribute("data-warning", "false");
+    expect(visualParent).toHaveAttribute("data-valid", "true");
     expect(visualParent).toHaveAttribute("data-has-min", "true");
   });
 
@@ -156,10 +159,13 @@ describe("CharacterCounterCompact", () => {
     const { container, rerender } = render(<CharacterCounterCompact current={90} max={100} />);
     let compactContainer = container.firstElementChild;
     expect(compactContainer).toHaveAttribute("data-state", "warning");
+    expect(compactContainer).toHaveAttribute("data-warning", "true");
+    expect(compactContainer).toHaveAttribute("data-at-limit", "false");
 
     rerender(<CharacterCounterCompact current={100} max={100} />);
     compactContainer = container.firstElementChild;
     expect(compactContainer).toHaveAttribute("data-state", "at-limit");
+    expect(compactContainer).toHaveAttribute("data-at-limit", "true");
   });
 
   it("keeps compact pop animation enabled by default", () => {
