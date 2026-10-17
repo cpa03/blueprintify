@@ -28,7 +28,7 @@ Affected files: ErrorFallback, Editor, KeyboardShortcutsModal, MarkdownRenderer,
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-191-svg-viewbox` | refactor(flexy): replace 59 hardcoded SVG viewBox literals with shared constant (Iteration 191) |
+| #3784 | `flexy/iteration-191-svg-viewbox` | refactor(flexy): replace 59 hardcoded SVG viewBox literals with shared constant (Iteration 191) |
 
 ### ✅ Flexy Iteration 190: Centralize Chevron Icon Path & Share Route Param Key
 
