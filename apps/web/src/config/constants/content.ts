@@ -301,6 +301,10 @@ export const ACCESSIBILITY_LABELS = {
   HEADING_ANCHOR: {
     COPY_LINK_TITLE: "Copy anchor link",
     COPY_LINK_ARIA: (section: string) => `Copy link to "${section}" section`,
+    /** Screen reader accessible name while in the copied state (replaces COPY_LINK_ARIA) */
+    COPIED_ARIA: "Link copied to clipboard",
+    /** Tooltip while in the copied state (replaces COPY_LINK_TITLE) */
+    COPIED_TITLE: "Copied!",
   },
   CELEBRATION: {
     COMPLETE: "Generation complete",
