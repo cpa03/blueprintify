@@ -8,17 +8,17 @@ beforeAll(async () => {
   await ensureDOMPurifyLoaded();
 });
 
-  beforeEach(() => {
-    vi.stubGlobal("navigator", {
-      clipboard: {
-        writeText: vi.fn().mockResolvedValue(undefined),
-      },
-    });
+beforeEach(() => {
+  vi.stubGlobal("navigator", {
+    clipboard: {
+      writeText: vi.fn().mockResolvedValue(undefined),
+    },
   });
+});
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe("MarkdownRenderer", () => {
   describe("Basic Rendering", () => {
