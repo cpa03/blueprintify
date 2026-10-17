@@ -33,6 +33,7 @@ import {
 } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Staggered entrance variants for the fallback UI elements.
@@ -169,7 +170,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                 className="w-10 h-10 text-accent-pink relative z-10"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <motion.path
@@ -273,7 +274,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                           className="w-3 h-3"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
+                          viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden="true"
                         >
                           <path
@@ -297,7 +298,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                           className="w-3 h-3"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
+                          viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden="true"
                         >
                           <path
@@ -321,7 +322,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                           className="w-3 h-3"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
+                          viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden="true"
                         >
                           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -375,7 +376,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path
@@ -410,7 +411,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path

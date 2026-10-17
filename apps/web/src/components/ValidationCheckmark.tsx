@@ -6,6 +6,7 @@ import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
 import { Icon } from "./Icon";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -72,7 +73,12 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
           title={isValid ? ariaLabel : invalidAriaLabel}
         >
           {isValid ? (
-            <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className={iconSize}
+              fill="none"
+              stroke="currentColor"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+            >
               <motion.path
                 strokeLinecap="round"
                 strokeLinejoin="round"

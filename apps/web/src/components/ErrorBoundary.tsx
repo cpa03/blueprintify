@@ -22,6 +22,7 @@ import { useCallback, useMemo, lazy, Suspense } from "react";
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
 import { ERROR_BOUNDARY_TEXT, DEBUG_MESSAGES } from "../config/constants/content";
 import { isDev } from "../config/env";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Lazy-loaded animated error fallback. framer-motion is only loaded
@@ -56,7 +57,7 @@ function LoadingFallback(): JSX.Element {
             className="w-10 h-10 text-accent-pink"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
+            viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             aria-hidden="true"
           >
             <path

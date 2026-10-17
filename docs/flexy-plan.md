@@ -4,6 +4,32 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 191: Replace Remaining Hardcoded SVG viewBox Literals Across All Components
+
+**Problem**: 59× hardcoded `viewBox="0 0 24 24"` remained across 24 web component files, bypassing the `SVG_ICON_DEFAULTS.VIEW_BOX` constant introduced in Iteration 187b. `apps/web/src/config/icons.ts` was already migrated but inline `<svg>` JSX across components still hard-coded the literal. Flexy says: no hardcoded viewBox literals!
+
+| File | Change |
+|------|--------|
+| 24 files in `apps/web/src/components/` | 59× `viewBox="0 0 24 24"` → `viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}` |
+| +25 files | Added `import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config"` where missing |
+
+Affected files: ErrorFallback, Editor, KeyboardShortcutsModal, MarkdownRenderer, CharacterCounter, HeadingAnchor, EditorToolbar, OfflineBanner, StepStack, Header, ScrollToTop, StepReview, ErrorBoundary, SkipLink, StepGenerating, TemplateGrid, StepFeatures, ValidationCheckmark, Toast, LastSavedIndicator, StepInfo, PreviewEmptyState, AnimatedCopyButton, GenerationCelebration (+ ShowEditorButton import dedup).
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.99s)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,286 web + 550 api + 876 shared = 2,712 tests passing**
+- ✅ Remaining hardcoded `viewBox="0 0 24 24"` — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-191-svg-viewbox` | refactor(flexy): replace 59 hardcoded SVG viewBox literals with shared constant (Iteration 191) |
+
 ### ✅ Flexy Iteration 190: Centralize Chevron Icon Path & Share Route Param Key
 
 **Problem**: 4× hardcoded chevron `d="M9 5l7 7-7 7"` in web components bypassing shared config, plus 5× hardcoded `c.req.param("id")` in API share routes bypassing route-param constants. Flexy says: no hardcoded SVG paths or route param keys!
