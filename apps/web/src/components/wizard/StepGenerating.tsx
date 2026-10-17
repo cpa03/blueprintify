@@ -133,6 +133,7 @@ import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { getScrollBehavior } from "../../utils/scroll";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepGeneratingProps {
   direction?: AnimationDirection;
@@ -496,7 +497,12 @@ export const StepGenerating = memo(function StepGenerating({
                 className="flex items-center justify-center"
                 aria-hidden="true"
               >
-                <svg className="w-9 h-9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg
+                  className="w-9 h-9"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  fill="none"
+                  aria-hidden="true"
+                >
                   <defs>
                     <linearGradient id="gen-lightning-grad" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stopColor={COLORS.primary[400]} />
@@ -831,7 +837,7 @@ export const StepGenerating = memo(function StepGenerating({
                     className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path
@@ -881,7 +887,7 @@ export const StepGenerating = memo(function StepGenerating({
                     className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path
@@ -933,7 +939,7 @@ export const StepGenerating = memo(function StepGenerating({
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <path
@@ -960,7 +966,7 @@ export const StepGenerating = memo(function StepGenerating({
                   className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path

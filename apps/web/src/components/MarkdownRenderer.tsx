@@ -43,6 +43,7 @@ import { Icon } from "./Icon";
 import { generateSlug, childrenToText } from "../utils/slug";
 import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Props for the MarkdownRenderer component.
@@ -141,7 +142,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               className={ICON.SM}
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -160,7 +161,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               className={ICON.SM}
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}

@@ -58,6 +58,7 @@ import { CharacterCounterCompact } from "../CharacterCounter";
 import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -274,7 +275,7 @@ export const StepFeatures = memo(function StepFeatures({
                   className="w-3.5 h-3.5 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path
@@ -310,7 +311,12 @@ export const StepFeatures = memo(function StepFeatures({
                 className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-1 transition-colors flex items-center gap-1"
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES}
               >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -423,7 +429,7 @@ export const StepFeatures = memo(function StepFeatures({
                         className="w-3.5 h-3.5"
                         fill="none"
                         stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                         aria-hidden="true"
                       >
                         <path
@@ -538,7 +544,7 @@ export const StepFeatures = memo(function StepFeatures({
                             className="w-4 h-4"
                             fill="none"
                             stroke="currentColor"
-                            viewBox="0 0 24 24"
+                            viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                             aria-hidden="true"
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
@@ -593,7 +599,7 @@ export const StepFeatures = memo(function StepFeatures({
                 className="w-4 h-4 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
                   strokeLinecap="round"
@@ -633,7 +639,7 @@ export const StepFeatures = memo(function StepFeatures({
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
                 strokeLinecap="round"
@@ -666,7 +672,7 @@ export const StepFeatures = memo(function StepFeatures({
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
                 strokeLinecap="round"

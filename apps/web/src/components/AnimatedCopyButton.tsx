@@ -29,6 +29,7 @@ import {
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -303,7 +304,7 @@ function AnimatedCopyButtonComponent({
               <motion.svg
                 width="16"
                 height="16"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"

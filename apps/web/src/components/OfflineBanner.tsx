@@ -48,6 +48,7 @@ import {
 } from "../config/constants";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation
@@ -221,7 +222,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                       className="w-3 h-3 text-accent-pink"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
                         strokeLinecap="round"
