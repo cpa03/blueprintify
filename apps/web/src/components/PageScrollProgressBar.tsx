@@ -113,6 +113,8 @@ function PageScrollProgressBarComponent({
       const bar = barRef.current;
       if (!bar) return;
 
+      const behavior = prefersReducedMotion ? SCROLL_BEHAVIOR.AUTO : SCROLL_BEHAVIOR.SMOOTH;
+
       let clickRatio: number;
 
       if ("clientX" in e) {
@@ -153,7 +155,7 @@ function PageScrollProgressBarComponent({
             return;
         }
 
-        window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
+        window.scrollTo({ top: targetScroll, behavior });
         return;
       }
 
@@ -161,9 +163,9 @@ function PageScrollProgressBarComponent({
       if (scrollHeight <= 0) return;
 
       const targetScroll = clickRatio * scrollHeight;
-      window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
+      window.scrollTo({ top: targetScroll, behavior });
     },
-    []
+    [prefersReducedMotion]
   );
 
   const springConfig = prefersReducedMotion

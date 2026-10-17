@@ -51,6 +51,48 @@ describe("HeadingAnchor", () => {
     expect(button).toHaveAttribute("data-slug", "getting-started");
   });
 
+  it("keeps the anchor button keyboard-reachable before it is visible", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+    expect(button).toHaveAttribute("tabindex", "0");
+    expect(button).not.toHaveAttribute("aria-hidden");
+  });
+
+  it("reveals the anchor button when it receives keyboard focus", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.HIDDEN);
+
+    fireEvent.focus(button);
+
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+  });
+
+  it("hides the anchor button again after focus leaves", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    fireEvent.focus(button);
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+
+    fireEvent.blur(button);
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.HIDDEN);
+  });
+
+  it("copies the link when activated via keyboard", async () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    fireEvent.focus(button);
+    await act(async () => {
+      fireEvent.keyDown(button, { key: "Enter" });
+      fireEvent.click(button);
+    });
+
+    const expectedUrl = `${window.location.origin}${window.location.pathname}#installation`;
+    expect(copyToClipboard).toHaveBeenCalledWith(expectedUrl);
+  });
+
   it("updates data-copied-state and data-state when clicked", async () => {
     vi.useFakeTimers();
     render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);

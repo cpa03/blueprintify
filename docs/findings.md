@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 2026-10-15 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261015` from `origin/main` (`bebc9cb7`), clean tree, 0-behind.
+**Hygiene CLEAN** — 596 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy; 8/8 scripts wired; 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; TODO/FIXME 0 in code (agent-guide prose only); console.log 0 in src; audits 7 files all within 30d retention (Run 90–95, Oct 04–11) KEEP; `tui.json` root ↔ `.opencode/tui.json` byte-identical dual-loader KEEP (no certainty per repo-rules); `.agent/` ↔ `.opencode/` structural mirror KEEP (pending canonical loader decision).
+**Doc-sync CLEAN** — README tree matches on-disk; `openapi.yaml` 14 paths / 15 ops ↔ README/API table; `API_ENDPOINTS` carries `STORAGE_REPORT`/`SHARE_VERIFY`; env docs cover all code vars; no drift found, no sync edits needed.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 337 files · audit prod ✅ 0 vulns (full 8 vulns: 3 moderate + 5 high, all pre-existing transitive, breaking-upgrade only) · tests ✅ 2702/2702 (web 1281/86 + api 547/33 + shared 874/4).
+
 ## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261005` from `origin/main` (`7dcfe59f`), clean tree, 0-behind.
@@ -12065,3 +12072,12 @@ left to owning team per no-functionality-reduction constraint.
 **Structural notes (report-only, no action)**: `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy (kept); `.agent/` ↔ `.opencode/` mirror pending canonical-loader decision (kept); 8/8 scripts wired; single `utils`/`lib` per workspace — no 5-folder mess. No `agent/janitor` branch created (see scope note).
 **Verification**: typecheck ✅ exit 0 (shared/api/web) · lint ✅ 0 errors · build ✅ exit 0 (vite 8.69s). No test run (zero code changes, zero risk).
 **Result**: No commit of source changes — tree left clean. This `docs/findings.md` entry is the cycle's only deliverable.
+
+## RepoKeeper Hygiene + Doc-Sync Cycle (2026-10-17)
+
+**Scope**: `agent/repokeeper-20261017` from `origin/main` (`c5902086`, 0-behind). 2 files: `apps/web/src/components/MarkdownRenderer.test.tsx` (formatting fix), `docs/findings.md` (this entry).
+**Finding (fatal gate fix)**: `prettier --check .` exited 1 on `MarkdownRenderer.test.tsx` — `beforeEach`/`afterEach` blocks over-indented 2 spaces (landed with recent main MarkdownRenderer work). Per RepoKeeper rules (build/lint warnings = fatal), fixed via `prettier --write` (9+/9-, whitespace-only, no behavior change). Post-fix: prettier ✅ all files, eslint ✅ on file.
+**Hygiene CLEAN**: 600 tracked files · 0 tracked temp artifacts (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty) · 0 tracked build artifacts (`dist/`/`coverage/`/`node_modules/`/`.wrangler/` clean) · 0 untracked non-ignored files · 0 empty dirs · only `.env.example` template tracked (safe). Dual-proxy `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional KEEP · `.agent/` ↔ `.opencode/` mirror KEEP (canonical-loader decision still pending) · all 8 `scripts/` wired (refs ≥1 in package.json/workflows) · 0 orphan docs (28/28 have inbound links) · CI runners 20/20 `ubuntu-24.04-arm` COMPLIANT.
+**Doc-sync CLEAN**: README directory tree matches filesystem (apps/api, apps/web, packages/shared, docs/ 34 entries, scripts/, functions/) · `docs/openapi.yaml` 14 paths / 15 operations IN SYNC with code (`ROUTE_PATHS` + sub-routes verified: ROOT/WARMUP/HEALTH GET, generate/tasks/refine/export/import POST, storage quota GET + report POST + clear DELETE, share POST + GET/DELETE `/:id` + POST `/:id/verify`).
+**Baselines ALL GREEN** (post-fix): typecheck exit 0 (shared/web/api) · lint 0 errors / 0 warnings · prettier clean (exit 0) · scan:secrets ✅ 339 files · build exit 0 (vite) · build:api exit 0 (wrangler dry-run) · tests **2708/2708** (web 1282 + api 550 + shared 876).
+**Result**: 1 fatal formatting regression fixed; 0 redundant/temp/unused files to delete; docs in sync. No structural deferrals beyond standing items (audits archive, .agent/.opencode canonical loader, functions/ Pages legacy, migrate.ts stub).
