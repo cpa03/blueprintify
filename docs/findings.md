@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 2026-10-17 (REPOKEEPER HYGIENE + DOC-SYNC + PR DISPOSITION)
+
+**Phase 0**: Branch `agent/repokeeper-20261007-rebased` from `origin/main` (`b5cc5862`), clean tree, 0-behind; rebased stale #3734 head `b93cc3e5` (merge-base `ed0dd93a`, 32 behind) onto main, resolved `docs/findings.md` conflict by keeping BOTH cycle sections (Cycle 2026-10-15 + Cycle 2026-10-07), 0 residual conflict markers, prettier clean.
+**Hygiene CLEAN** — 601 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md/lighthouse-*.json/.DS_Store` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy KEEP; 8/8 scripts wired; 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; audits 11 files all within 30d retention (Run 90–97, Oct 04–16) KEEP; `tui.json` root ↔ `.opencode/tui.json` byte-identical dual-loader KEEP; `.agent/` ↔ `.opencode/` structural mirror KEEP (pending canonical loader decision).
+**Doc-sync FIX (2 items)** — `docs/environment-variables.md` (from rebased #3734): +`ASSETS` Static Assets binding row (was missing vs `wrangler.toml` `[assets]`), staging/production custom domains → actual `workers.dev` URLs (were stale `api-staging.blueprintify.dev`/`api.blueprintify.dev`), env sections `NODE_ENV=` → `ENVIRONMENT=` (Workers never sets `NODE_ENV`), `NODE_ENV` row clarified legacy/test-only; `README.md`: audits retention wording "latest 7 runs retained per 30-day policy" → "30-day retention policy" (11 files currently retained, count-based wording was inaccurate). `openapi.yaml` 14 paths + README API table + `api-documentation.md` verified SYNC.
+**PR DISPOSITION** — **#3734** (`agent/repokeeper-20261007`) rebased onto main (32→0 behind), findings conflict resolved (both sections kept), force-pushed; env-docs content still valid on main (ASSETS section absent, custom domains stale). **#3664/#3656/#3653** (Sep 28–29 hygiene records) superseded by merged #3769/#3762/#3779 cycle records — close as stale. 20+ other open PRs (palette/flexy/bugfix/brocula/convoy) left untouched — human disposition pending.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 342 files · audit ✅ 8 vulns all pre-existing transitive (3 moderate + 5 high, braces/postcss-selector-parser via tailwindcss 3.x, breaking-upgrade only, no package.json/lock change) · tests ✅ 2708/2708 (web 1282/86 + api 550/34 + shared 876/4).
+
 ## ULW Loop Cycle 2026-10-15 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261015` from `origin/main` (`bebc9cb7`), clean tree, 0-behind.
