@@ -26,6 +26,7 @@ import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
 import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 const { CIRCLE_REVEAL_DURATION_S, CHECKMARK_PATH_DELAY_S, TEXT_DELAY_S } = CELEBRATION_ANIMATION;
 
@@ -124,7 +125,7 @@ const ParticleShape = memo(function ParticleShape({
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
       fill={color}
       style={{
         filter: `drop-shadow(0 0 ${size * RATIO_LIMITS.HALF}px ${color})`,

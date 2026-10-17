@@ -53,6 +53,7 @@ import {
 import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -232,7 +233,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 className="w-3.5 h-3.5 flex-shrink-0 text-accent-emerald"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <motion.path
@@ -289,7 +290,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 className="w-3.5 h-3.5 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <path
