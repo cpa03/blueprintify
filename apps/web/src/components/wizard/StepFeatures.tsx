@@ -30,6 +30,7 @@ import {
   MODIFIER_KEYS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -667,7 +668,12 @@ export const StepFeatures = memo(function StepFeatures({
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={ICON_PATHS.CHEVRON_RIGHT}
+              />
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>
