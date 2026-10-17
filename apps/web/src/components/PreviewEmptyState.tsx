@@ -90,14 +90,14 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
         <div className="relative">
           <motion.div
             className="w-20 h-24 glass-card rounded-lg border border-dashed border-dark-500 flex flex-col items-center justify-center"
-            animate={floatingAnimation}
+            animate={shouldReduceMotion ? {} : floatingAnimation}
           >
             <motion.span
               className="mb-1"
-              animate={{ scale: [1, 1.1, 1] }}
+              animate={shouldReduceMotion ? {} : { scale: [1, 1.1, 1] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: Infinity,
+                repeat: shouldReduceMotion ? 0 : Infinity,
                 ease: EASING.easeInOut,
               }}
               aria-hidden="true"
@@ -152,8 +152,12 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           <>
             <motion.span
               className="inline-flex"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: EASING.easeInOut }}
+              animate={shouldReduceMotion ? {} : { opacity: [0.5, 1, 0.5] }}
+              transition={{
+                duration: ANIMATION.FLOAT,
+                repeat: shouldReduceMotion ? 0 : Infinity,
+                ease: EASING.easeInOut,
+              }}
               aria-hidden="true"
             >
               <Icon name="sparkles" className="w-4 h-4" />
