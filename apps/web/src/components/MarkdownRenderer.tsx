@@ -26,6 +26,8 @@ import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
 import { FRAMER_TYPE } from "@blueprint/shared/config";
+import { COPY_STATE_VALUES } from "@blueprint/shared";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   TIMEOUTS,
   ACCESSIBILITY_LABELS,
@@ -67,6 +69,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
   language: string;
   code: string;
 }) {
+  const reducedMotion = useReducedMotion();
   const [copied, setCopied] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [copyAnnouncement, setCopyAnnouncement] = useState("");
@@ -86,6 +89,9 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
   return (
     <div
       className={MARKDOWN.CODE_HEADER}
+      data-state={copied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
+      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-language={language}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -115,8 +121,10 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
         animate={{
           scale: 1,
         }}
-        whileHover={HOVER_SCALE.MICRO}
-        whileTap={TAP_SCALE.MICRO}
+        whileHover={reducedMotion ? undefined : HOVER_SCALE.MICRO}
+        whileTap={reducedMotion ? undefined : TAP_SCALE.MICRO}
+        data-state={copied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
+        data-reduced-motion={reducedMotion ? "true" : "false"}
         aria-label={
           copied ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE
         }
