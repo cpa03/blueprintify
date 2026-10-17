@@ -502,6 +502,14 @@ function ToastContainerComponent(): JSX.Element {
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
+        // While a modal dialog is open (ConfirmDialog, KeyboardShortcutsModal),
+        // Escape belongs exclusively to the modal. Without this guard the same
+        // keypress would both close the dialog and silently dismiss an
+        // underlying toast the user never targeted — a surprising loss of a
+        // notification mid-interaction.
+        if (document.querySelector('[role="dialog"][aria-modal="true"]')) {
+          return;
+        }
         e.preventDefault();
         if (e.shiftKey) {
           const count = toasts.length;
