@@ -82,5 +82,5 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 
 ---
 
-**Last Updated**: 2026-10-15 — BugFixer ULW cycle: verified typecheck/lint/build/test green (2,702 tests: web 1,281 + api 547 + shared 874); audit 8 vulns held (braces/postcss chain via tailwindcss 3.4.19, no non-breaking fix), build/lint 0 fatal
+**Last Updated**: 2026-10-17 — BugFixer ULW cycle: fixed fatal `format:check` failure (prettier indentation in `MarkdownRenderer.test.tsx`); verified typecheck/lint/build/tests green (2,708 tests: web 1,282 + api 550 + shared 876); audit 8 vulns held (braces/postcss chain via tailwindcss 3.4.19, no non-breaking fix), build/lint/format 0 fatal
 **Maintainer**: Documentation Specialist
