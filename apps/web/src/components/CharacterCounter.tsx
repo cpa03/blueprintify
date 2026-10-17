@@ -104,6 +104,9 @@ function CharacterCounterComponent({
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden="true"
         data-state={stateValue}
+        data-at-limit={isAtLimit ? "true" : "false"}
+        data-warning={isWarning ? "true" : "false"}
+        data-valid={isValid ? "true" : "false"}
         data-has-min={min !== undefined ? "true" : "false"}
         data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       >
@@ -185,6 +188,8 @@ function CharacterCounterCompactComponent({
     <div
       className={`flex items-center gap-1.5 ${className}`}
       data-state={compactStateValue}
+      data-at-limit={isAtLimit ? "true" : "false"}
+      data-warning={isWarning ? "true" : "false"}
       data-reduced-motion={shouldReduceMotion ? "true" : "false"}
     >
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
