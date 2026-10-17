@@ -183,4 +183,65 @@ describe("ToastContainer", () => {
     expect(screen.getByText("Warning toast")).toBeInTheDocument();
     expect(screen.getByText("Info toast")).toBeInTheDocument();
   });
+
+  it("dismisses the most recent toast on Escape when no modal is open", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Older toast", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Newest toast", type: TOAST_TYPES.SUCCESS }
+    );
+
+    render(<ToastContainer />);
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(mockRemoveToast).toHaveBeenCalledTimes(1);
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-2");
+  });
+
+  it("does not dismiss any toast on Escape while a modal dialog is open", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Toast under modal",
+      type: TOAST_TYPES.INFO,
+    });
+
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    document.body.appendChild(dialog);
+
+    try {
+      render(<ToastContainer />);
+
+      fireEvent.keyDown(document, { key: "Escape" });
+
+      expect(mockRemoveToast).not.toHaveBeenCalled();
+      expect(mockClearAll).not.toHaveBeenCalled();
+    } finally {
+      dialog.remove();
+    }
+  });
+
+  it("does not dismiss all toasts on Shift+Escape while a modal dialog is open", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
+    );
+
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    document.body.appendChild(dialog);
+
+    try {
+      render(<ToastContainer />);
+
+      fireEvent.keyDown(document, { key: "Escape", shiftKey: true });
+
+      expect(mockClearAll).not.toHaveBeenCalled();
+      expect(mockRemoveToast).not.toHaveBeenCalled();
+    } finally {
+      dialog.remove();
+    }
+  });
 });

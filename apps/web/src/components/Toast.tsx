@@ -59,6 +59,7 @@ import {
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -343,7 +344,7 @@ const ToastItem = memo(
               <svg
                 className="w-2.5 h-2.5"
                 fill="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -365,7 +366,7 @@ const ToastItem = memo(
                 <svg
                   className="w-2.5 h-2.5"
                   fill="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -501,6 +502,14 @@ function ToastContainerComponent(): JSX.Element {
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
+        // While a modal dialog is open (ConfirmDialog, KeyboardShortcutsModal),
+        // Escape belongs exclusively to the modal. Without this guard the same
+        // keypress would both close the dialog and silently dismiss an
+        // underlying toast the user never targeted — a surprising loss of a
+        // notification mid-interaction.
+        if (document.querySelector('[role="dialog"][aria-modal="true"]')) {
+          return;
+        }
         e.preventDefault();
         if (e.shiftKey) {
           const count = toasts.length;

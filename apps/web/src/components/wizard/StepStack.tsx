@@ -62,6 +62,7 @@ import { Icon } from "../Icon";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import clsx from "clsx";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 const attentionKeyframes = `@keyframes stack-card-attention {
   0%, 100% {
@@ -166,7 +167,7 @@ const TechChip = memo(function TechChip({
               className="w-4 h-4"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               aria-hidden="true"
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -423,7 +424,7 @@ export const StepStack = memo(function StepStack({
               className="w-4 h-4 flex-shrink-0"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               aria-hidden="true"
             >
               <path
@@ -457,7 +458,7 @@ export const StepStack = memo(function StepStack({
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
                 strokeLinecap="round"
@@ -490,7 +491,7 @@ export const StepStack = memo(function StepStack({
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
                 strokeLinecap="round"
