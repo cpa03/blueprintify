@@ -204,8 +204,11 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         data-slug={slug}
         aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
         title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
-        aria-hidden={!isVisible}
-        tabIndex={isVisible ? 0 : -1}
+        // Always Tab-reachable (WCAG 2.1.1). A conditional tabIndex gated on
+        // isVisible was a chicken-and-egg trap: focus set isVisible, but
+        // tabIndex=0 required isVisible — so keyboard users could never focus
+        // the button. onFocus below flips isVisible, fading the button in.
+        tabIndex={0}
       >
         <AnimatePresence mode="wait">
           {showCopied ? (
