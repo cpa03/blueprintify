@@ -990,6 +990,18 @@ export const SVG_ICON_DEFAULTS = {
 } as const;
 
 /**
+ * Icon Path Data
+ * Centralized source of truth for inline SVG path `d` attributes.
+ * Flexy says: No hardcoded "M9 5l7 7-7 7" chevron paths in components!
+ * Usage: import { ICON_PATHS } from "@blueprint/shared";
+ *        <path d={ICON_PATHS.CHEVRON_RIGHT} ... />
+ */
+export const ICON_PATHS = {
+  /** Right-pointing chevron (direction arrow) */
+  CHEVRON_RIGHT: "M9 5l7 7-7 7" as const,
+} as const;
+
+/**
  * Review Step Display State Values
  * Centralized state tracking values for the wizard review step (StepReview).
  * Flexy says: No hardcoded "generating"/"idle" strings in StepReview!
