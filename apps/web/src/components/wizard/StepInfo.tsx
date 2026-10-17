@@ -34,6 +34,7 @@ import {
   MODIFIER_KEYS,
   RATIO_LIMITS,
   UI_TIMEOUTS,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -77,6 +78,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 import { getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepInfoProps {
   direction?: AnimationDirection;
@@ -303,10 +305,15 @@ export const StepInfo = memo(function StepInfo({
         className={CSS_CLASSES.ICON_HOVER_SHIFT}
         fill="none"
         stroke="currentColor"
-        viewBox="0 0 24 24"
+        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
         aria-hidden="true"
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d={ICON_PATHS.CHEVRON_RIGHT}
+        />
       </svg>
     </RippleButton>
   );
@@ -334,7 +341,7 @@ export const StepInfo = memo(function StepInfo({
                     className="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path

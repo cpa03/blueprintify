@@ -153,9 +153,9 @@ describe("Header", () => {
     const brandButton = screen.getByRole("button", {
       name: `${UI_CONTENT.APP.NAME} AI-Powered Project Architecture`,
     });
-    expect(brandButton).toHaveAttribute(
-      "aria-description",
-      ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP
+    expect(brandButton).toHaveAttribute("aria-describedby", "header-brand-scroll-hint");
+    expect(screen.getByText(ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP)).toHaveClass(
+      "sr-only"
     );
     expect(brandButton).toHaveAttribute("title", ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP);
   });
