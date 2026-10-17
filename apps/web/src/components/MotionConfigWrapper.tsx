@@ -16,6 +16,7 @@
  */
 
 import { memo, useEffect, type ReactNode } from "react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
  * Props for the MotionConfigWrapper component.
@@ -48,9 +49,19 @@ export const MotionConfigWrapper = memo(function MotionConfigWrapper({
   children,
   onMount,
 }: MotionConfigWrapperProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
+
   useEffect(() => {
     onMount?.();
   }, [onMount]);
 
-  return <>{children}</>;
+  return (
+    <div
+      className="contents"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-motion-wrapper="true"
+    >
+      {children}
+    </div>
+  );
 });
