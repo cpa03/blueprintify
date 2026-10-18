@@ -3462,8 +3462,13 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.CHEVRON_RIGHT).toBe("M9 5l7 7-7 7");
   });
 
-  it("should have 1 entry", () => {
-    expect(Object.keys(ICON_PATHS).length).toBe(1);
+  it("should define brand logo and github paths", () => {
+    expect(ICON_PATHS.BRAND_LOGO).toBeTruthy();
+    expect(ICON_PATHS.GITHUB).toBeTruthy();
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(3);
   });
 });
 
