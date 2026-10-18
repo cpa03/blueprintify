@@ -146,6 +146,7 @@ function HeaderComponent({
               fill={SVG_ICON_DEFAULTS.FILL_NONE}
               stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+              aria-hidden="true"
             >
               <path
                 d={ICON_PATHS.BRAND_LOGO}
@@ -208,6 +209,7 @@ function HeaderComponent({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -224,7 +226,12 @@ function HeaderComponent({
             className="btn-ghost flex items-center gap-2 group"
             ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}>
+            <svg
+              className="w-5 h-5"
+              fill="currentColor"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              aria-hidden="true"
+            >
               <path d={ICON_PATHS.GITHUB} />
             </svg>
             <span className="hidden sm:inline">{UI_CONTENT.BUTTONS.GITHUB}</span>
