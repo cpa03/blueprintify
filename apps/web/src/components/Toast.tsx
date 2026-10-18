@@ -123,7 +123,7 @@ const ProgressRing = memo(function ProgressRing({
         fill="none"
         stroke={color}
         strokeWidth={strokeWidth}
-        strokeLinecap="round"
+        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         style={{
@@ -382,7 +382,7 @@ const ToastItem = memo(
           <ProgressRing
             progress={progress}
             size={28}
-            strokeWidth={2}
+            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
             noTransition={shouldReduceMotion}
           />
           {shouldReduceMotion ? (

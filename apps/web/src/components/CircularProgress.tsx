@@ -20,6 +20,7 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -204,7 +205,7 @@ function CircularProgressComponent({
           fill="none"
           stroke={color}
           strokeWidth={strokeWidth}
-          strokeLinecap="round"
+          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
           strokeDasharray={circumference}
           style={
             shouldReduceMotion

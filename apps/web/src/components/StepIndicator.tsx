@@ -26,6 +26,7 @@ import {
   WIZARD_STEP_KEYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   STEP_INDICATOR_STATE_VALUES,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
@@ -170,7 +171,7 @@ function StepIndicatorComponent(): JSX.Element {
           <CircularProgress
             value={progressPercentage}
             size={36}
-            strokeWidth={3}
+            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
             color={
               isGenerationComplete || effectiveIndex >= STEPS.length - 1
                 ? PROGRESS_COLORS.COMPLETED
