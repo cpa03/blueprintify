@@ -96,5 +96,5 @@
 
 ### CMZ Orchestration Cycle 2026-10-18
 - Verified `Header.tsx` micro-UX and DOM state attributes (`data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, `data-has-shortcuts`).
-- Verified test suite stability (2,725 total tests passing: web 1,297 + api 550 + shared 878).
+- Verified test suite stability (2,726 total tests passing: web 1,297 + api 550 + shared 879 — shared count includes the 2 new `ICON_PATHS` assertions added in this cycle).
 - Verified 0 typecheck, lint, secret scan, or wrangler validation errors.
