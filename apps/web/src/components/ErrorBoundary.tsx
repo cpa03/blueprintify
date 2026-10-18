@@ -22,7 +22,7 @@ import { useCallback, useMemo, lazy, Suspense } from "react";
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
 import { ERROR_BOUNDARY_TEXT, DEBUG_MESSAGES } from "../config/constants/content";
 import { isDev } from "../config/env";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ARIA_LIVE_VALUES, ARIA_ROLES, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Lazy-loaded animated error fallback. framer-motion is only loaded
@@ -44,8 +44,8 @@ function LoadingFallback(): JSX.Element {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4 animate-fade-in"
-      role="alert"
-      aria-live="assertive"
+      role={ARIA_ROLES.ALERT}
+      aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
     >
       <div className="glass-card p-8 max-w-md w-full text-center">
         <div

@@ -30,17 +30,18 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
-  VIEW_MODES as SHARED_VIEW_MODES,
-  VIEW_MODE_LABELS,
-  TOOLTIP_LABELS,
-  TOOLTIP_DEFAULTS,
-  SHORTCUT_LABELS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ROLES,
   CIRCLE_GEOMETRY,
-  VIEW_MODE_INDICATOR_POSITION,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  SHORTCUT_LABELS,
+  TOOLTIP_DEFAULTS,
+  TOOLTIP_LABELS,
+  VIEW_MODES as SHARED_VIEW_MODES,
+  VIEW_MODE_INDICATOR_POSITION,
+  VIEW_MODE_LABELS,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -157,7 +158,7 @@ function EditorToolbarComponent({
     >
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
-        role="radiogroup"
+        role={ARIA_ROLES.RADIOGROUP}
         aria-label={EDITOR_LABELS.VIEW_MODES_ARIA_LABEL}
         // Horizontal orientation: the view-mode radios are arranged in a row
         // and navigated with ArrowLeft/ArrowRight (see handleViewModeKeyDown).
@@ -183,7 +184,7 @@ function EditorToolbarComponent({
             <button
               onClick={() => setViewMode(mode)}
               data-view-mode={mode}
-              role="radio"
+              role={ARIA_ROLES.RADIO}
               aria-checked={viewMode === mode}
               // Roving tabindex (ARIA radio-group pattern): only the checked
               // radio stays in the tab order; arrow keys move between options.

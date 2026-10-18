@@ -7,7 +7,7 @@ import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ARIA_ROLES, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -74,7 +74,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                   ...ANIMATION_TIMING.easing.spring,
                 }
           }
-          role="img"
+          role={ARIA_ROLES.IMG}
           className={`${containerClasses} ${isValid ? validClasses : invalidClasses} ${className}`}
           aria-label={isValid ? ariaLabel : invalidAriaLabel}
           data-state={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
