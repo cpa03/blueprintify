@@ -26,15 +26,18 @@
 
 import {
   ANIMATION_DIRECTIONS,
-  SHORTCUT_DESCRIPTIONS,
-  UI_MESSAGES,
-  FRAMER_TYPE,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  FRAMER_TYPE,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   RATIO_LIMITS,
+  SHORTCUT_DESCRIPTIONS,
+  UI_MESSAGES,
   UI_TIMEOUTS,
-  ICON_PATHS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -365,7 +368,7 @@ export const StepInfo = memo(function StepInfo({
             </div>
             <span
               className="text-dark-400 tabular-nums flex items-center gap-0.5"
-              aria-live="polite"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
                 formProgress.completed,
                 formProgress.total
@@ -504,7 +507,7 @@ export const StepInfo = memo(function StepInfo({
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
                 <motion.p
                   id="projectName-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -519,7 +522,7 @@ export const StepInfo = memo(function StepInfo({
             {projectNameErrorVisible && (
               <motion.p
                 id="projectName-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -656,7 +659,7 @@ export const StepInfo = memo(function StepInfo({
               description.length < FORM_LIMITS.DESCRIPTION.MAX && (
                 <motion.p
                   id="description-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -671,7 +674,7 @@ export const StepInfo = memo(function StepInfo({
             {descriptionErrorVisible && (
               <motion.p
                 id="description-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -835,9 +838,9 @@ export const StepInfo = memo(function StepInfo({
           clear-all button unmounts from the DOM without a visible confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {clearAnnouncement}
       </div>

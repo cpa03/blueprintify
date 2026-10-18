@@ -2,11 +2,14 @@ import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
-  SVG_ICON_DEFAULTS,
-  CHAR_COUNTER_THRESHOLDS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
+  CHAR_COUNTER_THRESHOLDS,
   RATIO_LIMITS,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -135,9 +138,9 @@ function CharacterCounterComponent({
       {/* Screen-reader-only announcement with descriptive label */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {announcement}
       </span>
@@ -215,9 +218,9 @@ function CharacterCounterCompactComponent({
       </span>
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {compactAnnouncement}
       </span>

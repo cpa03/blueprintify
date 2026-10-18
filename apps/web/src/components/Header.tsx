@@ -18,11 +18,14 @@
 
 import { memo, useState, useEffect, useCallback } from "react";
 import {
-  SHORTCUT_LABELS,
-  SHORTCUT_DESCRIPTIONS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  ICON_PATHS,
   MODIFIER_KEYS,
   SCROLL_BEHAVIOR,
-  ICON_PATHS,
+  SHORTCUT_DESCRIPTIONS,
+  SHORTCUT_LABELS,
   SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 import {
@@ -249,9 +252,9 @@ function HeaderComponent({
       {/* Live region announcing the reduce-motion preference toggle */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {motionAnnouncement}
       </div>
