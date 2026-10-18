@@ -167,6 +167,10 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  ARIA_ROLES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_MODAL_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -4853,5 +4857,135 @@ describe("PROXY_CONFIG (Flexy Iteration 186)", () => {
     expect(PROXY_CONFIG.ASSETS_PREFIX).toBe("/assets/");
     expect(PROXY_CONFIG.ROOT_FALLBACK).toBe("/");
     expect(PROXY_CONFIG.FILE_EXTENSION_MARKER).toBe(".");
+  });
+});
+
+describe("ARIA_ROLES (Flexy Iteration 194)", () => {
+  it("should have status role", () => {
+    expect(ARIA_ROLES.STATUS).toBe("status");
+  });
+
+  it("should have alert role", () => {
+    expect(ARIA_ROLES.ALERT).toBe("alert");
+  });
+
+  it("should have dialog role", () => {
+    expect(ARIA_ROLES.DIALOG).toBe("dialog");
+  });
+
+  it("should have img role", () => {
+    expect(ARIA_ROLES.IMG).toBe("img");
+  });
+
+  it("should have group role", () => {
+    expect(ARIA_ROLES.GROUP).toBe("group");
+  });
+
+  it("should have region role", () => {
+    expect(ARIA_ROLES.REGION).toBe("region");
+  });
+
+  it("should have progressbar role", () => {
+    expect(ARIA_ROLES.PROGRESSBAR).toBe("progressbar");
+  });
+
+  it("should have tooltip role", () => {
+    expect(ARIA_ROLES.TOOLTIP).toBe("tooltip");
+  });
+
+  it("should have tabpanel/tablist/tab roles", () => {
+    expect(ARIA_ROLES.TABPANEL).toBe("tabpanel");
+    expect(ARIA_ROLES.TABLIST).toBe("tablist");
+    expect(ARIA_ROLES.TAB).toBe("tab");
+  });
+
+  it("should have slider role", () => {
+    expect(ARIA_ROLES.SLIDER).toBe("slider");
+  });
+
+  it("should have searchbox role", () => {
+    expect(ARIA_ROLES.SEARCHBOX).toBe("searchbox");
+  });
+
+  it("should have radiogroup/radio roles", () => {
+    expect(ARIA_ROLES.RADIOGROUP).toBe("radiogroup");
+    expect(ARIA_ROLES.RADIO).toBe("radio");
+  });
+
+  it("should have option role", () => {
+    expect(ARIA_ROLES.OPTION).toBe("option");
+  });
+
+  it("should have listitem role", () => {
+    expect(ARIA_ROLES.LISTITEM).toBe("listitem");
+  });
+
+  it("should have list role", () => {
+    expect(ARIA_ROLES.LIST).toBe("list");
+  });
+
+  it("should have listbox role", () => {
+    expect(ARIA_ROLES.LISTBOX).toBe("listbox");
+  });
+
+  it("should contain exactly 19 roles", () => {
+    expect(Object.keys(ARIA_ROLES).length).toBe(19);
+  });
+
+  it("should have unique role values", () => {
+    const values = Object.values(ARIA_ROLES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_LIVE_VALUES (Flexy Iteration 194)", () => {
+  it("should have polite value", () => {
+    expect(ARIA_LIVE_VALUES.POLITE).toBe("polite");
+  });
+
+  it("should have assertive value", () => {
+    expect(ARIA_LIVE_VALUES.ASSERTIVE).toBe("assertive");
+  });
+
+  it("should have off value", () => {
+    expect(ARIA_LIVE_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 3 unique values", () => {
+    expect(Object.keys(ARIA_LIVE_VALUES).length).toBe(3);
+    const values = Object.values(ARIA_LIVE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_ATOMIC_VALUES (Flexy Iteration 194)", () => {
+  it("should have true value", () => {
+    expect(ARIA_ATOMIC_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_ATOMIC_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_ATOMIC_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_ATOMIC_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_MODAL_VALUES (Flexy Iteration 194)", () => {
+  it("should have true value", () => {
+    expect(ARIA_MODAL_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_MODAL_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_MODAL_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_MODAL_VALUES);
+    expect(new Set(values).size).toBe(values.length);
   });
 });

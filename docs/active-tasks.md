@@ -407,7 +407,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **BUG-001**: Frontend Bundle Size Performance Issue (In Progress)
 - **BUG-008**: ajv Package Security Vulnerabilities — ✅ **RESOLVED** (see [security assessment](./security/assessment-ajv-vulnerabilities.md))
 - **BUG-013**: ✅ **RESOLVED** — 0 vulnerabilities
-- **BUG-014**: Stale Doc References in main.yml (Reopened — still present on main, push blocked)
+- **BUG-014**: ✅ **RESOLVED** — Stale Doc References in main.yml (verified 2026-10-18: zero stale refs in `.github/workflows/` and `scripts/`; all `docs/*.md` refs point to existing files — consistent with bugs.md)
 
 ---
 
@@ -422,4 +422,4 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 - Status: ✅ Complete
 
-> **Last Updated**: 2026-09-26 (documentation consolidation — historical cycle records moved to [`findings.md`](./findings.md))
+> **Last Updated**: 2026-10-18 (BugFixer ULW cycle — BUG-014 status corrected to Resolved after verification; prior: 2026-09-26 documentation consolidation moved historical cycle records to [`findings.md`](./findings.md))

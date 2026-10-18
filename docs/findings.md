@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 2026-10-18 Cycle 7 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261018-cycle7` from `origin/main` (`325f248d` = cycle-6 record #3803, 0-behind). Cycle-5 removal of root stubs `bug.md` + `task.md` held — no re-introduction this cycle.
+**Hygiene CLEAN** — 608 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 tracked build artifacts (`dist/`/`coverage/`/`node_modules/`/`.wrangler/` clean); 0 untracked non-ignored files; 0 empty dirs; root `tui.json` ↔ `.opencode/tui.json` byte-identical dual-loader KEEP; `.agent/` ↔ `.opencode/` structural mirror KEEP (28 agents + 25 skills + 8 commands 1:1; canonical-loader decision still pending); `opencode.json` plugin-name drift + root `muse-spark` model-resolution failure KEPT (re-observed this cycle: subagent spawns hard-fail `ProviderModelNotFoundError` while top-level sessions fall back per AGENTS.md hierarchy — known standing item, agent-infra domain); dual-proxy `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical KEEP; all 8 `scripts/` wired (refs ≥1 in package.json/workflows); CI runners 20/20 `ubuntu-24.04-arm` + 11/11 `node-version-file` COMPLIANT; audits 19 files (README + 18 runs) all within 30d retention (oldest Oct 04 = 14d) NO PURGE.
+**Doc-sync CLEAN** — `openapi.yaml` 14 paths / 15 operations IN SYNC with code routes; README tree + links + counts (28 agents / 25 skills) match; env docs cover code vars; no drift found, no sync edits needed.
+**Baselines ALL GREEN** — typecheck ✅ exit 0 (shared/web/api) · lint ✅ 0 errors / 0 warnings · prettier ✅ · build ✅ exit 0 · build:api ✅ exit 0 (wrangler dry-run) · scan:secrets ✅ 342 files · audit ✅ prod 0 vulns · tests ✅ 2733/2733 (web 1304/86 + api 550/34 + shared 879/4 — unchanged vs cycle 6).
+**Standing deferrals unchanged**: audits archive rotation for giants, `.agent`/`.opencode` canonical loader, `opencode.json` plugin-name + model resolution, `functions/` Pages legacy dual-proxy, `migrate.ts` stub + root `schema.sql` placement.
+
 ## ULW Loop Cycle 2026-10-18 Cycle 6 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261018-cycle6` from `origin/main` (`0d14ffdb`, 0-behind). Cycle-5 removal of root stubs `bug.md` + `task.md` held — no re-introduction this cycle.

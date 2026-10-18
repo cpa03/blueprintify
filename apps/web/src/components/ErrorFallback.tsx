@@ -28,6 +28,9 @@ import {
 } from "../config/constants";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   COPY_STATE_VALUES,
   FRAMER_TYPE,
 } from "@blueprint/shared/config";
@@ -109,8 +112,8 @@ export const ErrorFallback = memo(function ErrorFallback({
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4"
-      role="alert"
-      aria-live="assertive"
+      role={ARIA_ROLES.ALERT}
+      aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
       data-has-error={error !== undefined ? "true" : "false"}
       data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       data-has-details={error !== undefined ? "true" : "false"}
@@ -337,9 +340,9 @@ export const ErrorFallback = memo(function ErrorFallback({
               {/* Screen reader announcement for copy action */}
               <span
                 className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
+                role={ARIA_ROLES.STATUS}
+                aria-live={ARIA_LIVE_VALUES.POLITE}
+                aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
               >
                 {copyFailed
                   ? ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPY_FAILED

@@ -23,7 +23,7 @@ import {
   SPRING_CONFIG,
 } from "../config/constants";
 import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
-import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
+import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
@@ -204,8 +204,8 @@ function GenerationCelebrationComponent({
   return (
     <div
       className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
-      role="status"
-      aria-live="polite"
+      role={ARIA_ROLES.STATUS}
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       aria-label={ACCESSIBILITY_LABELS.CELEBRATION.COMPLETE}
       data-state={isComplete ? CELEBRATION_STATE_VALUES.ACTIVE : CELEBRATION_STATE_VALUES.IDLE}
       data-reduced-motion={String(prefersReducedMotion)}

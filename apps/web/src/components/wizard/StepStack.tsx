@@ -27,15 +27,18 @@ import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
   ANIMATION_DIRECTIONS,
-  STYLE_ID_STRINGS,
-  SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  ICON_PATHS,
+  SHORTCUT_DESCRIPTIONS,
+  STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -326,8 +329,8 @@ export const StepStack = memo(function StepStack({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
-              aria-live="polite"
-              aria-atomic="true"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
             >
               {techStack.length}/{minRequired}
             </motion.span>
@@ -338,7 +341,7 @@ export const StepStack = memo(function StepStack({
 
       <div
         className={`glass-card p-6 space-y-6 ${invalidField ? "stack-card-attention" : ""}`}
-        role="group"
+        role={ARIA_ROLES.GROUP}
         aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.TECH_STACK_SELECTION}
       >
         {categories.map(([category, options]) => (
@@ -352,7 +355,7 @@ export const StepStack = memo(function StepStack({
             </h3>
             <div
               className="flex flex-wrap gap-2"
-              role="group"
+              role={ARIA_ROLES.GROUP}
               aria-labelledby={`category-${category}`}
             >
               {options.map((tech, chipIdx) => {
@@ -413,7 +416,7 @@ export const StepStack = memo(function StepStack({
       <AnimatePresence>
         {invalidField && (
           <motion.p
-            role="alert"
+            role={ARIA_ROLES.ALERT}
             initial={{ opacity: 0, y: -6, x: -3 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -508,9 +511,9 @@ export const StepStack = memo(function StepStack({
           — provides explicit feedback since the milestone pulse is purely visual. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {milestoneAnnouncement}
       </div>

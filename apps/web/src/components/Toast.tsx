@@ -46,15 +46,19 @@ import {
 } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
 import {
+  ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_MODAL_VALUES,
+  ARIA_ROLES,
+  BANNER_STATE_VALUES,
+  FRAMER_TYPE,
+  KEYBOARD_EVENT_KEYS,
+  PERCENT_SCALE,
+  SHORTCUT_LABELS,
+  TIME_UNITS,
   TOAST_TYPES,
   UI_TIMEOUTS,
-  ANIMATION_ENTRANCE_DELAYS,
-  KEYBOARD_EVENT_KEYS,
-  FRAMER_TYPE,
-  SHORTCUT_LABELS,
-  PERCENT_SCALE,
-  TIME_UNITS,
-  BANNER_STATE_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
@@ -283,7 +287,7 @@ const ToastItem = memo(
         onBlur={handleMouseLeave}
         role={toastRole}
         aria-live={toastAriaLive}
-        aria-atomic="true"
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
         data-hovered={isHovered ? "true" : "false"}
@@ -508,7 +512,11 @@ function ToastContainerComponent(): JSX.Element {
         // keypress would both close the dialog and silently dismiss an
         // underlying toast the user never targeted — a surprising loss of a
         // notification mid-interaction.
-        if (document.querySelector('[role="dialog"][aria-modal="true"]')) {
+        if (
+          document.querySelector(
+            `[role="${ARIA_ROLES.DIALOG}"][aria-modal="${ARIA_MODAL_VALUES.TRUE}"]`
+          )
+        ) {
           return;
         }
         e.preventDefault();
@@ -563,7 +571,7 @@ function ToastContainerComponent(): JSX.Element {
   return (
     <motion.div
       className={TOAST_SPRING.CONTAINER_CLASSES}
-      role="region"
+      role={ARIA_ROLES.REGION}
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
       data-count={toasts.length}
       data-has-toasts={toasts.length > 0 ? "true" : "false"}
@@ -663,9 +671,9 @@ function ToastContainerComponent(): JSX.Element {
           context that a batch dismiss occurred. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {dismissAnnouncement}
       </div>

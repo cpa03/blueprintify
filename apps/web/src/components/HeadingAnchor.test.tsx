@@ -219,4 +219,69 @@ describe("HeadingAnchor", () => {
     const particles = document.querySelectorAll(".absolute.rounded-full.pointer-events-none");
     expect(particles.length).toBe(0);
   });
+
+  it("mounts a persistent empty live region before any interaction", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const liveRegion = screen.getByRole("status");
+    expect(liveRegion).toHaveAttribute("aria-live", "polite");
+    expect(liveRegion).toHaveAttribute("aria-atomic", "true");
+    expect(liveRegion).toBeEmptyDOMElement();
+  });
+
+  it("announces a successful copy through the persistent live region", async () => {
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(screen.getByRole("status")).toHaveTextContent("Anchor link copied to clipboard");
+
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  });
+
+  it("announces a failed copy through the persistent live region", async () => {
+    vi.mocked(copyToClipboard).mockResolvedValueOnce(false);
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(screen.getByRole("status")).toHaveTextContent("Failed to copy anchor link to clipboard");
+    expect(screen.queryByText("Copied!")).not.toBeInTheDocument();
+
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  });
+
+  it("keeps a single live region across repeated copy cycles", async () => {
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    act(() => {
+      vi.runAllTimers();
+    });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(screen.getAllByRole("status")).toHaveLength(1);
+    expect(screen.getByRole("status")).toHaveTextContent("Anchor link copied to clipboard");
+  });
 });
