@@ -5,7 +5,9 @@ import { FRAMER_TYPE, VALIDATION_STATE_VALUES } from "@blueprint/shared";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -34,6 +36,11 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
   showInvalid = false,
   className = "",
 }: ValidationCheckmarkProps) {
+  // Respect prefers-reduced-motion (WCAG 2.3.3): the springy pop-in and the
+  // checkmark draw-on are purely decorative, so they are skipped for
+  // vestibular-sensitive users. State colors, labels, and DOM state
+  // attributes stay fully functional.
+  const shouldReduceMotion = useReducedMotion();
   const isInline = size === "inline";
 
   const validClasses = isInline
@@ -56,37 +63,51 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
       {shouldShow && (
         <motion.span
           key={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0, opacity: 0 }}
-          transition={{
-            type: FRAMER_TYPE.SPRING,
-            ...ANIMATION_TIMING.easing.spring,
-          }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0, opacity: 0 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1 }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { scale: 0, opacity: 0 }}
+          transition={
+            shouldReduceMotion
+              ? { duration: ANIMATION.QUICK_FADE }
+              : {
+                  type: FRAMER_TYPE.SPRING,
+                  ...ANIMATION_TIMING.easing.spring,
+                }
+          }
           role="img"
           className={`${containerClasses} ${isValid ? validClasses : invalidClasses} ${className}`}
           aria-label={isValid ? ariaLabel : invalidAriaLabel}
           data-state={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
           data-size={size}
           data-show-invalid={showInvalid}
+          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
           title={isValid ? ariaLabel : invalidAriaLabel}
         >
           {isValid ? (
-            <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className={iconSize}
+              fill="none"
+              stroke="currentColor"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+            >
               <motion.path
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={strokeWidth}
                 d="M5 13l4 4L19 7"
-                initial={{ pathLength: 0, opacity: 0 }}
+                initial={shouldReduceMotion ? { opacity: 1 } : { pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={{
-                  pathLength: {
-                    duration: ANIMATION.CHECKMARK_REVEAL,
-                    ease: EASING.easeOut,
-                  },
-                  opacity: { duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut },
-                }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        pathLength: {
+                          duration: ANIMATION.CHECKMARK_REVEAL,
+                          ease: EASING.easeOut,
+                        },
+                        opacity: { duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut },
+                      }
+                }
               />
             </svg>
           ) : (

@@ -2,6 +2,7 @@ import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
+  SVG_ICON_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
@@ -104,6 +105,9 @@ function CharacterCounterComponent({
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden="true"
         data-state={stateValue}
+        data-at-limit={isAtLimit ? "true" : "false"}
+        data-warning={isWarning ? "true" : "false"}
+        data-valid={isValid ? "true" : "false"}
         data-has-min={min !== undefined ? "true" : "false"}
         data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       >
@@ -116,12 +120,12 @@ function CharacterCounterComponent({
           >
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
             >
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
@@ -185,6 +189,8 @@ function CharacterCounterCompactComponent({
     <div
       className={`flex items-center gap-1.5 ${className}`}
       data-state={compactStateValue}
+      data-at-limit={isAtLimit ? "true" : "false"}
+      data-warning={isWarning ? "true" : "false"}
       data-reduced-motion={shouldReduceMotion ? "true" : "false"}
     >
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">

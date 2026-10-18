@@ -779,6 +779,8 @@ export const COPY_STATE_VALUES = {
   COPIED: "copied" as const,
   /** Idle / ready to copy state identifier */
   IDLE: "idle" as const,
+  /** Clipboard write failed (both API and fallback) state identifier */
+  FAILED: "failed" as const,
 } as const;
 
 /**
@@ -971,6 +973,10 @@ export const EDITOR_BUTTON_STATE_VALUES = {
 export const SVG_ICON_DEFAULTS = {
   /** Default viewBox for 24x24 stroke icons */
   VIEW_BOX: "0 0 24 24" as const,
+  /** Small viewBox for 16x16 icons (e.g., inline copy buttons, compact UI) */
+  VIEW_BOX_SMALL: "0 0 16 16" as const,
+  /** Large viewBox for 48x48 celebration/status icons */
+  VIEW_BOX_LARGE: "0 0 48 48" as const,
   /** Default fill for stroke-only icons */
   FILL_NONE: "none" as const,
   /** Default stroke color inheriting surrounding text color */
@@ -979,14 +985,37 @@ export const SVG_ICON_DEFAULTS = {
   STROKE_LINECAP_ROUND: "round" as const,
   /** Default rounded line joins */
   STROKE_LINEJOIN_ROUND: "round" as const,
+  /** Light stroke width for fine-detail icons (hairline emphasis) */
+  STROKE_WIDTH_LIGHT: 1.5 as const,
   /** Default stroke width for regular icons */
   STROKE_WIDTH_DEFAULT: 2 as const,
+  /** Medium stroke width for slightly emphasized icons (between default and bold) */
+  STROKE_WIDTH_MEDIUM: 2.5 as const,
   /** Bold stroke width for emphasis icons */
   STROKE_WIDTH_BOLD: 3 as const,
+  /** Heavy stroke width for progress rings and thick-stroke indicators */
+  STROKE_WIDTH_HEAVY: 4 as const,
   /** Default icon size class */
   SIZE_DEFAULT: "w-5 h-5" as const,
   /** Small icon size class */
   SIZE_SMALL: "w-4 h-4" as const,
+} as const;
+
+/**
+ * Icon Path Data
+ * Centralized source of truth for inline SVG path `d` attributes.
+ * Flexy says: No hardcoded "M9 5l7 7-7 7" chevron paths in components!
+ * Usage: import { ICON_PATHS } from "@blueprint/shared";
+ *        <path d={ICON_PATHS.CHEVRON_RIGHT} ... />
+ */
+export const ICON_PATHS = {
+  /** Right-pointing chevron (direction arrow) */
+  CHEVRON_RIGHT: "M9 5l7 7-7 7" as const,
+  /** App brand logo layered diamond stack path */
+  BRAND_LOGO: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" as const,
+  /** GitHub brand octocat logo path */
+  GITHUB:
+    "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" as const,
 } as const;
 
 /**
@@ -1015,4 +1044,22 @@ export const CELEBRATION_STATE_VALUES = {
   ACTIVE: "active" as const,
   /** Celebration animation idle state identifier */
   IDLE: "idle" as const,
+} as const;
+
+/**
+ * Step Indicator Display State Values
+ * Centralized state tracking values for wizard navigation indicators (StepIndicator).
+ * Flexy says: No hardcoded "active"/"completed"/"locked"/"available" strings in StepIndicator!
+ * Usage: import { STEP_INDICATOR_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isActive ? STEP_INDICATOR_STATE_VALUES.ACTIVE : ...}
+ */
+export const STEP_INDICATOR_STATE_VALUES = {
+  /** Active step identifier */
+  ACTIVE: "active" as const,
+  /** Completed step identifier */
+  COMPLETED: "completed" as const,
+  /** Available step identifier */
+  AVAILABLE: "available" as const,
+  /** Locked step identifier */
+  LOCKED: "locked" as const,
 } as const;

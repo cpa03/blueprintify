@@ -129,6 +129,7 @@ import {
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
+  ICON_PATHS,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -2037,13 +2038,14 @@ describe("STORAGE_FALLBACK_MESSAGES", () => {
 });
 
 describe("COPY_STATE_VALUES", () => {
-  it("should have COPIED and IDLE states", () => {
+  it("should have COPIED, IDLE, and FAILED states", () => {
     expect(COPY_STATE_VALUES.COPIED).toBe("copied");
     expect(COPY_STATE_VALUES.IDLE).toBe("idle");
+    expect(COPY_STATE_VALUES.FAILED).toBe("failed");
   });
 
-  it("should have 2 properties", () => {
-    expect(Object.keys(COPY_STATE_VALUES).length).toBe(2);
+  it("should have 3 properties", () => {
+    expect(Object.keys(COPY_STATE_VALUES).length).toBe(3);
   });
 });
 
@@ -3424,6 +3426,14 @@ describe("SVG_ICON_DEFAULTS", () => {
     expect(SVG_ICON_DEFAULTS.VIEW_BOX).toBe("0 0 24 24");
   });
 
+  it("should use 16x16 viewBox for small icons", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX_SMALL).toBe("0 0 16 16");
+  });
+
+  it("should use 48x48 viewBox for large celebration icons", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX_LARGE).toBe("0 0 48 48");
+  });
+
   it("should use none fill and currentColor stroke", () => {
     expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
     expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
@@ -3434,16 +3444,43 @@ describe("SVG_ICON_DEFAULTS", () => {
     expect(SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND).toBe("round");
   });
 
-  it("should have numeric stroke widths with bold greater than default", () => {
+  it("should have numeric stroke widths ordered light < default < medium < bold < heavy", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT).toBe(1.5);
     expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT).toBe(2);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM).toBe(2.5);
     expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBe(3);
-    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY).toBe(4);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT).toBeLessThan(
       SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD
     );
   });
 
-  it("should have 9 entries", () => {
-    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(9);
+  it("should have 14 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(14);
+  });
+});
+
+describe("ICON_PATHS", () => {
+  it("should define right-pointing chevron path", () => {
+    expect(ICON_PATHS.CHEVRON_RIGHT).toBe("M9 5l7 7-7 7");
+  });
+
+  it("should define brand logo and github paths", () => {
+    expect(ICON_PATHS.BRAND_LOGO).toBeTruthy();
+    expect(ICON_PATHS.GITHUB).toBeTruthy();
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(3);
   });
 });
 

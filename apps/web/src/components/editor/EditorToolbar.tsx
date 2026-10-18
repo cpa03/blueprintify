@@ -59,6 +59,8 @@ import {
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -117,6 +119,7 @@ function EditorToolbarComponent({
   isExporting = false,
   exportSuccess = false,
 }: EditorToolbarProps) {
+  const reducedMotion = useReducedMotion();
   const isCopied = copied === activeTab;
 
   const viewModeShortcuts: Record<ViewMode, string> = {
@@ -145,7 +148,13 @@ function EditorToolbarComponent({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2"
+      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-has-content={hasContent ? "true" : "false"}
+      data-is-exporting={isExporting ? "true" : "false"}
+      data-export-success={exportSuccess ? "true" : "false"}
+    >
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
         role="radiogroup"
@@ -232,10 +241,14 @@ function EditorToolbarComponent({
                 ? VIEW_MODE_INDICATOR_POSITION.SPLIT_WIDTH
                 : VIEW_MODE_INDICATOR_POSITION.SINGLE_WIDTH,
           }}
-          transition={{
-            type: FRAMER_TYPE.SPRING,
-            ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
-          }}
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : {
+                  type: FRAMER_TYPE.SPRING,
+                  ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
+                }
+          }
           style={{
             zIndex: Z_INDEX.base,
           }}
@@ -303,14 +316,18 @@ function EditorToolbarComponent({
               >
                 <motion.svg
                   className="w-4 h-4 mr-2 flex-shrink-0"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   fill="none"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: ANIMATION.GENTLE_PULSE,
-                    repeat: Infinity,
-                    ease: EASING.linear,
-                  }}
+                  animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+                  transition={
+                    reducedMotion
+                      ? { duration: 0 }
+                      : {
+                          duration: ANIMATION.GENTLE_PULSE,
+                          repeat: Infinity,
+                          ease: EASING.linear,
+                        }
+                  }
                   aria-hidden="true"
                 >
                   <defs>
@@ -324,7 +341,7 @@ function EditorToolbarComponent({
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="currentColor"
-                    strokeWidth="3"
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                     strokeOpacity={0.15}
                     fill="none"
                   />
@@ -333,8 +350,8 @@ function EditorToolbarComponent({
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="url(#toolbar-export-spinner-grad)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     fill="none"
                     strokeDasharray={CIRCLE_GEOMETRY.CIRCUMFERENCE}
                     strokeDashoffset={CIRCLE_GEOMETRY.STROKE_DASHOFFSET}
@@ -365,16 +382,16 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                 >
                   <motion.path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                     d="M5 13l4 4L19 7"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -404,13 +421,13 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
@@ -447,15 +464,15 @@ function EditorToolbarComponent({
             className="w-4 h-4"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
+            viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             aria-hidden="true"
             whileHover={ROTATION.HALF}
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
             <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </motion.svg>

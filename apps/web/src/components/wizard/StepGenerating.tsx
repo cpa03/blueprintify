@@ -37,6 +37,7 @@ import {
   LOADING_DOTS_COUNT,
   MODIFIER_KEYS,
   TIME_UNITS,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -383,7 +384,7 @@ export const StepGenerating = memo(function StepGenerating({
             <svg
               width="48"
               height="48"
-              viewBox="0 0 48 48"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
               fill="none"
               className="text-accent-emerald"
             >
@@ -392,7 +393,7 @@ export const StepGenerating = memo(function StepGenerating({
                 cy="24"
                 r="22"
                 stroke="currentColor"
-                strokeWidth="3"
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{
@@ -403,9 +404,9 @@ export const StepGenerating = memo(function StepGenerating({
               <motion.path
                 d="M14 24L21 31L34 17"
                 stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 transition={{
@@ -428,7 +429,7 @@ export const StepGenerating = memo(function StepGenerating({
             <svg
               width="48"
               height="48"
-              viewBox="0 0 48 48"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
               fill="none"
               className="text-accent-pink"
               role="img"
@@ -439,7 +440,7 @@ export const StepGenerating = memo(function StepGenerating({
                 cy="24"
                 r="22"
                 stroke="currentColor"
-                strokeWidth="3"
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{
@@ -450,8 +451,8 @@ export const StepGenerating = memo(function StepGenerating({
               <motion.path
                 d="M16 16L32 32M32 16L16 32"
                 stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 transition={{
@@ -496,7 +497,12 @@ export const StepGenerating = memo(function StepGenerating({
                 className="flex items-center justify-center"
                 aria-hidden="true"
               >
-                <svg className="w-9 h-9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg
+                  className="w-9 h-9"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  fill="none"
+                  aria-hidden="true"
+                >
                   <defs>
                     <linearGradient id="gen-lightning-grad" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stopColor={COLORS.primary[400]} />
@@ -831,19 +837,19 @@ export const StepGenerating = memo(function StepGenerating({
                     className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     />
                   </svg>
@@ -881,13 +887,13 @@ export const StepGenerating = memo(function StepGenerating({
                     className="w-4 h-4"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M15 19l-7-7 7-7"
                     />
                   </svg>
@@ -933,13 +939,13 @@ export const StepGenerating = memo(function StepGenerating({
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 />
               </svg>
@@ -960,13 +966,13 @@ export const StepGenerating = memo(function StepGenerating({
                   className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M15 19l-7-7 7-7"
                   />
                 </svg>

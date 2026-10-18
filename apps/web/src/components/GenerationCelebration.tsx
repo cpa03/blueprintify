@@ -26,6 +26,7 @@ import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
 import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 const { CIRCLE_REVEAL_DURATION_S, CHECKMARK_PATH_DELAY_S, TEXT_DELAY_S } = CELEBRATION_ANIMATION;
 
@@ -124,7 +125,7 @@ const ParticleShape = memo(function ParticleShape({
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
       fill={color}
       style={{
         filter: `drop-shadow(0 0 ${size * RATIO_LIMITS.HALF}px ${color})`,
@@ -282,7 +283,7 @@ function GenerationCelebrationComponent({
               <svg
                 width="48"
                 height="48"
-                viewBox="0 0 48 48"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
                 fill="none"
                 className="text-accent-emerald"
               >
@@ -291,7 +292,7 @@ function GenerationCelebrationComponent({
                   cy="24"
                   r="22"
                   stroke="currentColor"
-                  strokeWidth="3"
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
@@ -302,9 +303,9 @@ function GenerationCelebrationComponent({
                 <motion.path
                   d="M14 24L21 31L34 17"
                   stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: CIRCLE_REVEAL_DURATION_S, delay: CHECKMARK_PATH_DELAY_S }}

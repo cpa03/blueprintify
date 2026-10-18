@@ -75,6 +75,7 @@ export const MARKDOWN = {
   COPY_BUTTON_BASE:
     "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50",
   COPY_BUTTON_COPIED: "bg-accent-emerald/20 text-accent-emerald",
+  COPY_BUTTON_FAILED: "bg-accent-pink/20 text-accent-pink",
   COPY_BUTTON_HOVER: "bg-primary-500/20 text-dark-300",
   COPY_BUTTON_IDLE: "bg-dark-700/50 text-dark-400",
   /** Inline code */
