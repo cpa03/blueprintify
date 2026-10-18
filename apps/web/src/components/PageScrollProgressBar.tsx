@@ -113,6 +113,11 @@ function PageScrollProgressBarComponent({
       const bar = barRef.current;
       if (!bar) return;
 
+      // Respect vestibular / reduced-motion preference (WCAG 2.3.3):
+      // keyboard scrub and click-to-jump must not smooth-animate when
+      // the user asked to reduce motion. Mirrors ScrollToTop pattern.
+      const behavior = prefersReducedMotion ? SCROLL_BEHAVIOR.AUTO : SCROLL_BEHAVIOR.SMOOTH;
+
       let clickRatio: number;
 
       if ("clientX" in e) {
@@ -153,7 +158,7 @@ function PageScrollProgressBarComponent({
             return;
         }
 
-        window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
+        window.scrollTo({ top: targetScroll, behavior });
         return;
       }
 
@@ -161,9 +166,9 @@ function PageScrollProgressBarComponent({
       if (scrollHeight <= 0) return;
 
       const targetScroll = clickRatio * scrollHeight;
-      window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
+      window.scrollTo({ top: targetScroll, behavior });
     },
-    []
+    [prefersReducedMotion]
   );
 
   const springConfig = prefersReducedMotion

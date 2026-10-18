@@ -22,9 +22,14 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared/config";
+import {
+  WIZARD_STEP_KEYS,
+  ANIMATION_ENTRANCE_DELAYS_MS,
+  STEP_INDICATOR_STATE_VALUES,
+} from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import type { IconName } from "../config/icons";
 import {
@@ -60,6 +65,7 @@ function StepIndicatorComponent(): JSX.Element {
   const [activatingStep, setActivatingStep] = useState<string | null>(null);
   const prevStepRef = useRef(currentStep);
   const toast = useToast();
+  const shouldReduceMotion = useReducedMotion();
 
   // Screen reader announcement for step transitions — announces the completed
   // step and the newly activated step so screen reader users receive the same
@@ -149,7 +155,10 @@ function StepIndicatorComponent(): JSX.Element {
   }, [setStep, canNavigateTo]);
 
   return (
-    <div className="flex items-center justify-center gap-3 mb-8 max-w-full overflow-x-auto scrollbar-none py-1">
+    <div
+      className="flex items-center justify-center gap-3 mb-8 max-w-full overflow-x-auto scrollbar-none py-1"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+    >
       <SmartTooltip
         content={ACCESSIBILITY_LABELS.PROGRESS.STEPS_COMPLETE(
           progressPercentage,
@@ -207,9 +216,19 @@ function StepIndicatorComponent(): JSX.Element {
               onClick={() => handleStepClick(step.key, step.label)}
               data-step-index={index}
               data-step-key={step.key}
+              data-state={
+                isActive
+                  ? STEP_INDICATOR_STATE_VALUES.ACTIVE
+                  : isCompleted
+                    ? STEP_INDICATOR_STATE_VALUES.COMPLETED
+                    : isClickable
+                      ? STEP_INDICATOR_STATE_VALUES.AVAILABLE
+                      : STEP_INDICATOR_STATE_VALUES.LOCKED
+              }
               data-active={isActive ? "true" : "false"}
               data-completed={isCompleted ? "true" : "false"}
               data-clickable={isClickable ? "true" : "false"}
+              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               // aria-disabled keeps locked steps focusable so keyboard, touch,
               // and screen reader users can discover WHY the step is locked via
               // the aria-describedby hint (a native `disabled` attribute removes
@@ -246,10 +265,10 @@ function StepIndicatorComponent(): JSX.Element {
                       : "bg-dark-800/50 border border-dark-700 text-dark-300 focus-visible:ring-2 focus-visible:ring-dark-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 }
                 ${isClickable ? "cursor-pointer hover:bg-dark-700 motion-safe:hover:scale-102 motion-safe:active:scale-98" : "cursor-default"}
-                ${isActive ? "animate-step-pulse" : ""}
+                ${isActive && !shouldReduceMotion ? "animate-step-pulse" : ""}
                 ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}
-                ${justCompletedStep === step.key ? "step-complete-flash" : ""}
-                ${activatingStep === step.key ? "step-activate" : ""}
+                ${justCompletedStep === step.key && !shouldReduceMotion ? "step-complete-flash" : ""}
+                ${activatingStep === step.key && !shouldReduceMotion ? "step-activate" : ""}
               `}
               style={{
                 animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,
@@ -277,7 +296,7 @@ function StepIndicatorComponent(): JSX.Element {
               <div
                 className={`w-3 sm:w-8 h-0.5 mx-1 sm:mx-2 shrink-0 rounded-full transition-all duration-500 ease-in-out animate-fade-in ${
                   isCompleted ? "bg-accent-emerald" : "bg-dark-700"
-                } ${justCompletedStep === step.key ? "connector-flash" : ""}`}
+                } ${justCompletedStep === step.key && !shouldReduceMotion ? "connector-flash" : ""}`}
                 style={{
                   ...(isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : {}),
                   animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,

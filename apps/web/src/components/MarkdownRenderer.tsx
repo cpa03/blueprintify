@@ -26,6 +26,8 @@ import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
 import { FRAMER_TYPE } from "@blueprint/shared/config";
+import { COPY_STATE_VALUES } from "@blueprint/shared";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   TIMEOUTS,
   ACCESSIBILITY_LABELS,
@@ -41,6 +43,7 @@ import { Icon } from "./Icon";
 import { generateSlug, childrenToText } from "../utils/slug";
 import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Props for the MarkdownRenderer component.
@@ -67,7 +70,9 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
   language: string;
   code: string;
 }) {
+  const reducedMotion = useReducedMotion();
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [copyAnnouncement, setCopyAnnouncement] = useState("");
 
@@ -75,9 +80,23 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
     const success = await copyToClipboard(code);
     if (success) {
       setCopied(true);
+      setCopyFailed(false);
       setCopyAnnouncement(ACCESSIBILITY_LABELS.MARKDOWN.COPIED);
       setTimeout(() => {
         setCopied(false);
+        setCopyAnnouncement("");
+      }, TIMEOUTS.COPY_FEEDBACK);
+    } else {
+      // Clipboard write AND the execCommand fallback both failed (permissions,
+      // insecure context, private-mode restrictions). Without this branch the
+      // button silently returns to idle — sighted and screen-reader users get
+      // no feedback that the copy did not happen. Mirrors ErrorFallback's
+      // copy-failed handling so the failure is visible and announced.
+      setCopyFailed(true);
+      setCopied(false);
+      setCopyAnnouncement(ACCESSIBILITY_LABELS.MARKDOWN.COPY_FAILED_ANNOUNCEMENT);
+      setTimeout(() => {
+        setCopyFailed(false);
         setCopyAnnouncement("");
       }, TIMEOUTS.COPY_FEEDBACK);
     }
@@ -86,6 +105,22 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
   return (
     <div
       className={MARKDOWN.CODE_HEADER}
+      data-state={
+        copied
+          ? COPY_STATE_VALUES.COPIED
+          : copyFailed
+            ? COPY_STATE_VALUES.FAILED
+            : COPY_STATE_VALUES.IDLE
+      }
+      data-copy-state={
+        copied
+          ? COPY_STATE_VALUES.COPIED
+          : copyFailed
+            ? COPY_STATE_VALUES.FAILED
+            : COPY_STATE_VALUES.IDLE
+      }
+      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-language={language}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -108,22 +143,38 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
           MARKDOWN.COPY_BUTTON_BASE,
           copied
             ? MARKDOWN.COPY_BUTTON_COPIED
-            : isHovered
-              ? MARKDOWN.COPY_BUTTON_HOVER
-              : MARKDOWN.COPY_BUTTON_IDLE
+            : copyFailed
+              ? MARKDOWN.COPY_BUTTON_FAILED
+              : isHovered
+                ? MARKDOWN.COPY_BUTTON_HOVER
+                : MARKDOWN.COPY_BUTTON_IDLE
         )}
         animate={{
           scale: 1,
         }}
-        whileHover={HOVER_SCALE.MICRO}
-        whileTap={TAP_SCALE.MICRO}
+        whileHover={reducedMotion ? undefined : HOVER_SCALE.MICRO}
+        whileTap={reducedMotion ? undefined : TAP_SCALE.MICRO}
+        data-state={
+          copied
+            ? COPY_STATE_VALUES.COPIED
+            : copyFailed
+              ? COPY_STATE_VALUES.FAILED
+              : COPY_STATE_VALUES.IDLE
+        }
+        data-reduced-motion={reducedMotion ? "true" : "false"}
         aria-label={
-          copied ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE
+          copied
+            ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED
+            : copyFailed
+              ? ACCESSIBILITY_LABELS.MARKDOWN.COPY_FAILED
+              : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE
         }
         title={
           copied
             ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED_TITLE
-            : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE_TITLE
+            : copyFailed
+              ? ACCESSIBILITY_LABELS.MARKDOWN.COPY_FAILED_TITLE
+              : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE_TITLE
         }
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -133,7 +184,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               className={ICON.SM}
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -146,13 +197,32 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
                 d="M5 13l4 4L19 7"
               />
             </motion.svg>
+          ) : copyFailed ? (
+            <motion.svg
+              key="failed"
+              className={ICON.SM}
+              fill="none"
+              stroke="currentColor"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK_ICON }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </motion.svg>
           ) : (
             <motion.svg
               key="copy"
               className={ICON.SM}
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -167,7 +237,13 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             </motion.svg>
           )}
         </AnimatePresence>
-        <span>{copied ? MARKDOWN_COPY_LABELS.COPIED : MARKDOWN_COPY_LABELS.COPY}</span>
+        <span>
+          {copied
+            ? MARKDOWN_COPY_LABELS.COPIED
+            : copyFailed
+              ? MARKDOWN_COPY_LABELS.COPY_FAILED
+              : MARKDOWN_COPY_LABELS.COPY}
+        </span>
       </motion.button>
     </div>
   );
