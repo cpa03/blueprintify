@@ -10,12 +10,27 @@
 **Baselines ALL GREEN**: typecheck ✅ exit 0 (shared/web/api) · lint ✅ 0 errors / 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ · audit ✅ (prod 0 vulns; full pre-existing transitive only) · tests ✅ (web + api + shared).
 **Standing deferrals unchanged**: audits archive rotation for giants, `.agent`/`.opencode` canonical loader, `opencode.json` plugin-name resolution, `functions/` Pages legacy dual-proxy, `migrate.ts` stub + root `schema.sql` placement.
 
+## ULW Loop Cycle 2026-10-17 (REPOKEEPER HYGIENE + DOC-SYNC + PR DISPOSITION)
+
+**Phase 0**: Branch `agent/repokeeper-20261007-rebased` from `origin/main` (`b5cc5862`), clean tree, 0-behind; rebased stale #3734 head `b93cc3e5` (merge-base `ed0dd93a`, 32 behind) onto main, resolved `docs/findings.md` conflict by keeping BOTH cycle sections (Cycle 2026-10-15 + Cycle 2026-10-07), 0 residual conflict markers, prettier clean.
+**Hygiene CLEAN** — 601 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md/lighthouse-*.json/.DS_Store` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy KEEP; 8/8 scripts wired; 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; audits 11 files all within 30d retention (Run 90–97, Oct 04–16) KEEP; `tui.json` root ↔ `.opencode/tui.json` byte-identical dual-loader KEEP; `.agent/` ↔ `.opencode/` structural mirror KEEP (pending canonical loader decision).
+**Doc-sync FIX (2 items)** — `docs/environment-variables.md` (from rebased #3734): +`ASSETS` Static Assets binding row (was missing vs `wrangler.toml` `[assets]`), staging/production custom domains → actual `workers.dev` URLs (were stale `api-staging.blueprintify.dev`/`api.blueprintify.dev`), env sections `NODE_ENV=` → `ENVIRONMENT=` (Workers never sets `NODE_ENV`), `NODE_ENV` row clarified legacy/test-only; `README.md`: audits retention wording "latest 7 runs retained per 30-day policy" → "30-day retention policy" (11 files currently retained, count-based wording was inaccurate). `openapi.yaml` 14 paths + README API table + `api-documentation.md` verified SYNC.
+**PR DISPOSITION** — **#3734** (`agent/repokeeper-20261007`) rebased onto main (32→0 behind), findings conflict resolved (both sections kept), force-pushed; env-docs content still valid on main (ASSETS section absent, custom domains stale). **#3664/#3656/#3653** (Sep 28–29 hygiene records) superseded by merged #3769/#3762/#3779 cycle records — close as stale. 20+ other open PRs (palette/flexy/bugfix/brocula/convoy) left untouched — human disposition pending.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 342 files · audit ✅ 8 vulns all pre-existing transitive (3 moderate + 5 high, braces/postcss-selector-parser via tailwindcss 3.x, breaking-upgrade only, no package.json/lock change) · tests ✅ 2708/2708 (web 1282/86 + api 550/34 + shared 876/4).
+
 ## ULW Loop Cycle 2026-10-15 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261015` from `origin/main` (`bebc9cb7`), clean tree, 0-behind.
 **Hygiene CLEAN** — 596 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy; 8/8 scripts wired; 28/28 agents + 25/25 skills + 8/8 commands match; 5/5 workflows `ubuntu-24.04-arm`; TODO/FIXME 0 in code (agent-guide prose only); console.log 0 in src; audits 7 files all within 30d retention (Run 90–95, Oct 04–11) KEEP; `tui.json` root ↔ `.opencode/tui.json` byte-identical dual-loader KEEP (no certainty per repo-rules); `.agent/` ↔ `.opencode/` structural mirror KEEP (pending canonical loader decision).
 **Doc-sync CLEAN** — README tree matches on-disk; `openapi.yaml` 14 paths / 15 ops ↔ README/API table; `API_ENDPOINTS` carries `STORAGE_REPORT`/`SHARE_VERIFY`; env docs cover all code vars; no drift found, no sync edits needed.
 **Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 337 files · audit prod ✅ 0 vulns (full 8 vulns: 3 moderate + 5 high, all pre-existing transitive, breaking-upgrade only) · tests ✅ 2702/2702 (web 1281/86 + api 547/33 + shared 874/4).
+
+## ULW Loop Cycle 2026-10-07 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261007` from `origin/main` (`ed0dd93a`), clean tree, 0-behind.
+**Hygiene CLEAN** — 0 redundant/temp/unused tracked (`*.bak/*.tmp/*.log/*.patch/task_plan.md/lighthouse-*.json/.DS_Store` empty); `audit-reports/`/`coverage/`/`tmp/` absent; `packages/shared/dist` local-only gitignored; 8/8 scripts wired; `docs/audits` Run 90-93 all <30d RETAIN; `docs/issues` 7 specs active KEEP.
+**Doc-sync FIX (4 items)** — `docs/environment-variables.md`: +`ASSETS` Static Assets binding row (was missing vs `wrangler.toml` `[assets]`), staging/production custom domains → actual `workers.dev` URLs, env sections `NODE_ENV=` → `ENVIRONMENT=` (Workers never sets `NODE_ENV`), `NODE_ENV` row clarified legacy/test-only; `docs/knowledge-review.md` DOC-003 stale "32 endpoints" → verified 14 paths / 15 ops. `openapi.yaml` 14 paths + README API table + `api-documentation.md` verified SYNC, untouched.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 339 files.
 
 ## ULW Loop Cycle 2026-10-05 (REPOKEEPER HYGIENE + DOC-SYNC)
 
@@ -530,7 +545,6 @@ Skills used: `docs-update` loaded per contract (docs record append). Subagents u
 **Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4`, `agent/repokeeper-cycle-567` HEAD `c48abe2c` — not merged, not deleted, human disposition pending (all 4 verified present via `ls-remote`). All 3 processed branches (`ulw-loop-cycle-584`/`repokeeper-cycle-584`/`bugfixer-cycle-108`) verified deleted post-merge.
 
 **Baseline ALL GREEN 2,607/2,607 CONFIRMED LIVE**: typecheck ✅ · lint ✅ **0 errors/0 warnings** (300 files) · build ✅ · tests **2,607/2,607** ✅ (web 1,220/85 + api 535/33 + shared 852/4) · audit **0 vulns** ✅ · scan:secrets ✅ **328 files** · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165. **Skills used**: `docs-update` (docs record append). **Subagents used**: none — deterministic CLI probes + direct PR handling per contract (all targets known-file; no parallel exploration needed). **Final state: PR pending** — Cycle 585 record appended to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
-
 
 
 ## ULW Loop Cycle 584 (2026-08-20 — ISSUE MANAGER MODE)
@@ -4568,7 +4582,6 @@ PR introduces **no vulnerabilities, no secrets, no deprecated function usage**. 
 | Tests | ✅ 2,314/2,314 (971 web + 509 api + 834 shared) |
 | STEP 1-3 (labels / dedup / consolidation) | ⚠️ STILL BLOCKED — token lacks `issues: write` (403); tooling staged (`scripts/normalize-issue-labels.mjs`) |
 | External CI (Vercel rate limit, Workers placeholder IDs) | ⚠️ Pre-existing, non-required, fail on all PRs (#1045/#1165) |
-
 
 
 > **ULW Loop run (2026-08-01)**: **Phase 0 → ISSUE MANAGER MODE** (0 open PRs; 104 open issues). STEP 1-3 (label normalization, duplicate detection, consolidation) computed in full — **86 issues need canonical category/P-priority labels**, 14 duplicate clusters and 2 consolidation clusters identified with canonicals — but API application remains **BLOCKED** (`issues: write` missing — 403 on `addLabelsToLabelable`; also `addComment`/`closeIssue`). To stop re-deriving this mapping every cycle, the full deterministic logic was shipped as **`scripts/normalize-issue-labels.mjs`** (dry-run default, `--apply` to mutate; idempotent; staged for any permission-capable cycle). STEP 4 (repair): full baseline re-run → **typecheck ✅ lint ✅ (0 warnings) build ✅ build:api ✅ tests 2,304/2,304 (964 web + 506 api + 834 shared) ✅ secrets ✅ npm audit 0 vulns ✅**. **All P1 audit issues verified FIXED on current `main`** with file evidence: #1077 (prompt injection), #1078 (RBAC), #1082 (hook tests), #1014 (component tests), #1045 (mitigated via `validate-wrangler.mjs` + docs — remains open, needs human Cloudflare resources). Two NEW observations: (1) `vercel.json` CSP hash (`sha256-87uI…`) does **not** match any form of the `preloadCssPlugin`-generated `onload` handler text — async font loading may be blocked on Vercel prod (needs human verification/deploy test, not touched per fail-safe); (2) `pr-gatekeeper.yml` health stage runs typecheck/lint/build but **no tests** — #849/#953 confirmed still-open but `workflows: write`-blocked.
@@ -11692,7 +11705,6 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 - **`apps/web/README.md`** referenced the deleted `storageAdapter.ts` — updated.
 
 
-
 ## ULW Loop Cycle 482 (2026-08-15 — PR HANDLER MODE → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **1 open PR (#3294)** → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `c151162b` = #3293 Cycle 481 record; 0-behind/0-ahead, clean tree; `node_modules` absent → resolved via `npm ci` 894 pkgs **0 vulns**).
@@ -12089,6 +12101,14 @@ left to owning team per no-functionality-reduction constraint.
 **Doc-sync CLEAN**: README directory tree matches filesystem (apps/api, apps/web, packages/shared, docs/ 34 entries, scripts/, functions/) · `docs/openapi.yaml` 14 paths / 15 operations IN SYNC with code (`ROUTE_PATHS` + sub-routes verified: ROOT/WARMUP/HEALTH GET, generate/tasks/refine/export/import POST, storage quota GET + report POST + clear DELETE, share POST + GET/DELETE `/:id` + POST `/:id/verify`).
 **Baselines ALL GREEN** (post-fix): typecheck exit 0 (shared/web/api) · lint 0 errors / 0 warnings · prettier clean (exit 0) · scan:secrets ✅ 339 files · build exit 0 (vite) · build:api exit 0 (wrangler dry-run) · tests **2708/2708** (web 1282 + api 550 + shared 876).
 **Result**: 1 fatal formatting regression fixed; 0 redundant/temp/unused files to delete; docs in sync. No structural deferrals beyond standing items (audits archive, .agent/.opencode canonical loader, functions/ Pages legacy, migrate.ts stub).
+
+## RepoKeeper ULW Loop — Post-Drift Re-verification (2026-10-17)
+
+**Scope**: Rebase + re-audit of PR #3734 (`agent/repokeeper-20261007`) after `main` advanced 5 commits (`b16314cf`..`42597170`: brocula runs 96/98, ShowEditorButton SVG, heading-anchor a11y, bugs.md audit-number sync). Rebased 5-behind → 0-behind (clean, no conflicts — new main commits touched only `docs/audits/README.md`/`docs/bugs.md`, disjoint from the PR's 4 files).
+**Re-verification (main moved; re-ran full RepoKeeper audit from scratch)**: Hygiene CLEAN — 603 tracked files · 0 tracked temp artifacts (`*.tmp/*.bak/*.orig/*.log/*.patch/*.rej/*.swp`/`task_plan`/`notes.md` empty) · 0 tracked build artifacts (`dist/`/`coverage/`/`.wrangler/`/`node_modules/` clean) · 0 untracked non-ignored files · 0 empty dirs. `.agent/` (86 files) ↔ `.opencode/` (83 files) mirror re-confirmed KEEP (`.agent/README` declares framework-agnostic catalog; 0 refs from any workflow/script/config — canonical-loader decision still pending owner). Root `tui.json` ≡ `.opencode/tui.json` (byte-identical except trailing newline) KEEP (which one OpenCode resolves unverified). Dual-proxy `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` KEEP (intentional).
+**Doc-sync CLEAN**: README tree matches filesystem · `docs/openapi.yaml` 14 paths / 15 operations IN SYNC · 0 orphan docs (28/28 inbound-linked; `CONTRIBUTING.md` link resolves — earlier grep hit was a regex artifact stripping `.md`) · `docs/audits/` 13 run files all within 30-day window (oldest 2026-10-04), none purge-eligible; count-based purge still deferred pending owner (retention is date-based, not count-based).
+**Baselines ALL GREEN** (fatal gate = any error/warning): typecheck exit 0 (shared/api/web) · lint 0 errors / 0 warnings (exit 0) · prettier clean (exit 0) · scan:secrets ✅ 344 files · build exit 0 (vite) · tests **2712/2712** (web 1286 + api 550 + shared 876) · CI runners 20/20 `ubuntu-24.04-arm` COMPLIANT.
+**Result**: 0 redundant/temp/unused files to delete; docs in sync; all fatal gates green. PR #3734 rebased to 0-behind and updated. No new structural deferrals beyond standing items (audits archive, .agent/.opencode canonical loader, functions/ Pages legacy, migrate.ts stub, append-only giants rotation).
 
 ## RepoKeeper Hygiene + Doc-Sync Cycle 2 (2026-10-17)
 
