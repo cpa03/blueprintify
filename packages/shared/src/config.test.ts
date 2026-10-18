@@ -2038,13 +2038,14 @@ describe("STORAGE_FALLBACK_MESSAGES", () => {
 });
 
 describe("COPY_STATE_VALUES", () => {
-  it("should have COPIED and IDLE states", () => {
+  it("should have COPIED, IDLE, and FAILED states", () => {
     expect(COPY_STATE_VALUES.COPIED).toBe("copied");
     expect(COPY_STATE_VALUES.IDLE).toBe("idle");
+    expect(COPY_STATE_VALUES.FAILED).toBe("failed");
   });
 
-  it("should have 2 properties", () => {
-    expect(Object.keys(COPY_STATE_VALUES).length).toBe(2);
+  it("should have 3 properties", () => {
+    expect(Object.keys(COPY_STATE_VALUES).length).toBe(3);
   });
 });
 
