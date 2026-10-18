@@ -423,6 +423,14 @@ export const StepInfo = memo(function StepInfo({
               name="projectName"
               type="text"
               autoComplete="off"
+              // Mobile keyboard hygiene: project names are often technical
+              // identifiers. Without these, iOS/Android autocapitalize the
+              // first letter and Safari autocorrect rewrites tokens
+              // ("auth" -> "author"), mangling the typed name. Matches the
+              // spellCheck={false} precedent in KeyboardShortcutsModal.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               enterKeyHint="next"
               dir="auto"
               value={projectName}
