@@ -1,10 +1,23 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
+import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { ensureDOMPurifyLoaded } from "../lib/security";
 
 beforeAll(async () => {
   await ensureDOMPurifyLoaded();
+});
+
+beforeEach(() => {
+  vi.stubGlobal("navigator", {
+    clipboard: {
+      writeText: vi.fn().mockResolvedValue(undefined),
+    },
+  });
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 describe("MarkdownRenderer", () => {
@@ -67,6 +80,50 @@ describe("MarkdownRenderer", () => {
       render(<MarkdownRenderer content="Inline `code` here" />);
       const codeElement = screen.getByText("code");
       expect(codeElement.tagName).toBe("CODE");
+    });
+
+    it("renders code blocks with language label, copy button, and DOM state inspection attributes", async () => {
+      render(<MarkdownRenderer content={"```typescript\nconst x = 1;\n```"} />);
+      const header = document.querySelector(".markdown-content [data-language='typescript']");
+      expect(header).not.toBeNull();
+      expect(header).toHaveAttribute("data-state", COPY_STATE_VALUES.IDLE);
+      expect(header).toHaveAttribute("data-reduced-motion", "false");
+
+      const copyBtn = screen.getByRole("button", { name: /copy code/i });
+      expect(copyBtn).toHaveAttribute("data-state", COPY_STATE_VALUES.IDLE);
+
+      fireEvent.click(copyBtn);
+
+      await waitFor(() => {
+        expect(copyBtn).toHaveAttribute("data-state", COPY_STATE_VALUES.COPIED);
+      });
+    });
+
+    it("announces and shows failure feedback when clipboard copy fails", async () => {
+      vi.stubGlobal("navigator", {
+        clipboard: {
+          writeText: vi.fn().mockRejectedValue(new Error("denied")),
+        },
+      });
+      const execCommandSpy = vi.fn().mockReturnValue(false);
+      document.execCommand = execCommandSpy;
+
+      render(<MarkdownRenderer content={"```typescript\nconst x = 1;\n```"} />);
+
+      const copyBtn = screen.getByRole("button", { name: /copy code/i });
+      fireEvent.click(copyBtn);
+
+      await waitFor(() => {
+        expect(copyBtn).toHaveAttribute("data-state", COPY_STATE_VALUES.FAILED);
+      });
+      expect(copyBtn).toHaveAccessibleName("Copy failed — try again");
+      expect(copyBtn).toHaveAttribute("title", "Copy failed");
+      expect(screen.getByText("Failed")).toBeInTheDocument();
+      expect(screen.getByText("Failed to copy code to clipboard")).toBeInTheDocument();
+
+      const header = document.querySelector(".markdown-content [data-language='typescript']");
+      expect(header).toHaveAttribute("data-state", COPY_STATE_VALUES.FAILED);
+      expect(header).toHaveAttribute("data-copy-state", COPY_STATE_VALUES.FAILED);
     });
   });
 

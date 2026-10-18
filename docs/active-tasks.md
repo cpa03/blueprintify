@@ -2,6 +2,86 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **MotionConfigWrapper Micro-UX & DOM State Inspection (Oct 16 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-motion-wrapper`) to `MotionConfigWrapper.tsx`.
+- [STRENGTHEN] Strengthened `MotionConfigWrapper` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-motion-wrapper` ("true") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated motion configuration wrapper accessibility and reduced motion state tracking across web components.
+- [REMOVE] Removed un-inspected fragment rendering in `MotionConfigWrapper.tsx`.
+
+## ✅ StorX — **StepTransition Micro-UX & DOM State Inspection (Oct 15 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-mode`) to `StepTransition.tsx`.
+- [STRENGTHEN] Strengthened `StepTransition` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-mode` ("wait"/"sync"/"popLayout") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated step transition animation preference and mode state tracking across web components.
+- [REMOVE] Removed un-inspected step transition container assertions in `StepTransition.test.tsx`.
+
+## ✅ StorX — **MarkdownRenderer Micro-UX & Reduced Motion State Inspection (Oct 12 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `COPY_STATE_VALUES` shared config export from `@blueprint/shared` to `CodeBlockHeader` in `MarkdownRenderer.tsx`.
+- [STRENGTHEN] Strengthened `MarkdownRenderer` code block header with `data-state` ("copied"/"idle"), `data-reduced-motion` ("true"/"false"), and `data-language` DOM state inspection attributes for accessibility testing.
+- [CONSOLIDATE] Consolidated code block copy state tracking in `@blueprint/shared` config export.
+- [REMOVE] Removed raw hardcoded "copied"/"idle" string literals in `MarkdownRenderer.tsx` and `MarkdownRenderer.test.tsx`.
+
+## ✅ StorX — **Header Micro-UX & DOM State Inspection (Oct 11 2026)**
+- [CONNECT] Connected `Header.tsx` to DOM state inspection tracking attributes (`data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, `data-has-shortcuts`).
+- [STRENGTHEN] Strengthened `Header` accessibility and DOM state tracking with `data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, and `data-has-shortcuts` attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated header display state tracking across web components.
+- [REMOVE] Removed un-inspected header container assertions in `Header.test.tsx`.
+
+## ✅ StorX — **EditorToolbar Micro-UX & Reduced Motion State Inspection (Oct 10 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-has-content`, `data-is-exporting`, `data-export-success`) to `EditorToolbar.tsx`.
+- [STRENGTHEN] Strengthened `EditorToolbar` DOM state inspection with `data-reduced-motion` ("true"/"false"), `data-has-content` ("true"/"false"), `data-is-exporting` ("true"/"false"), and `data-export-success` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated editor toolbar reduced motion and export state tracking across web components.
+- [REMOVE] Removed un-inspected toolbar export states in `EditorToolbar.test.tsx`.
+
+## ✅ StorX — **StepIndicator Micro-UX & Reduced Motion State Inspection (Oct 09 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `STEP_INDICATOR_STATE_VALUES` shared config export from `@blueprint/shared` to `StepIndicator.tsx`.
+- [STRENGTHEN] Strengthened `StepIndicator` DOM state inspection with `data-state` ("active"/"completed"/"available"/"locked") and `data-reduced-motion` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated step indicator display state tracking constants in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed hardcoded "active"/"completed"/"available"/"locked" string literals in `StepIndicator.tsx` and `StepIndicator.test.tsx`.
+
+## ✅ StorX — **SmartTooltip Micro-UX & Reduced Motion State Inspection (Oct 08 2026)**
+- [CONNECT] Connected `useReducedMotion` hook to `SmartTooltip.tsx` and `SmartTooltip.test.tsx`.
+- [STRENGTHEN] Strengthened `SmartTooltip` DOM state inspection with `data-reduced-motion` ("true"/"false") and `data-has-shortcut` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `SmartTooltip` reduced motion behavior (bypassing show/hide delays when reduced motion is preferred) and state tracking attributes across web components.
+- [REMOVE] Removed raw un-inspected tooltip state assertions in `SmartTooltip.test.tsx`.
+
+## ✅ StorX — **AnimatedCopyButton Micro-UX & State Inspection (Oct 07 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `data-reduced-motion` / `data-has-content` DOM attributes to `AnimatedCopyButton.tsx`.
+- [STRENGTHEN] Strengthened `AnimatedCopyButton` DOM state inspection with `data-reduced-motion` ("true"/"false") and `data-has-content` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `AnimatedCopyButton` reduced motion and copy state tracking across web components.
+- [REMOVE] Removed raw un-inspected button state assertions in `AnimatedCopyButton.test.tsx`.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Oct 06 2026)**
+- [x] bug Fixed React act(...) warnings in TemplateGrid test fixtures.
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean (0 errors, 0 warnings), test suite passing across workspaces, BroCula 0 console errors.
+
+## ✅ StorX — **ShowEditorButton Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook to `ShowEditorButton.tsx`.
+- [STRENGTHEN] Strengthened `ShowEditorButton` DOM state inspection with `data-reduced-motion` ("true"/"false") attribute for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `ShowEditorButton` reduced motion state tracking across web components.
+- [REMOVE] Removed raw string literals for editor button state inspection in test fixtures (`ShowEditorButton.test.tsx`).
+
+## ✅ StorX — **GenerationCelebration Micro-UX & State Inspection**
+- [CONNECT] Connected `CELEBRATION_STATE_VALUES` shared config export from `@blueprint/shared` and `useReducedMotion` hook to `GenerationCelebration.tsx`.
+- [STRENGTHEN] Strengthened `GenerationCelebration` DOM state inspection with `data-state` ("active"/"idle") and `data-reduced-motion` ("true"/"false") attributes.
+- [CONSOLIDATE] Consolidated celebration display state tracking constants in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed raw string literals for celebration states in `GenerationCelebration.tsx` and `GenerationCelebration.test.tsx`, and cleaned up un-destructured framer-motion props in test mocks.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Oct 05 2026)**
+- [x] bug Zero code or console bugs found.
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean (0 errors, 0 warnings), test suite 2,671/2,671 passing across workspaces, BroCula 0 console errors.
+
+## ✅ StorX — **PageScrollProgressBar Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Wired the existing `useReducedMotion` hook to a new `data-reduced-motion` ("true"/"false") DOM inspection attribute on `PageScrollProgressBar.tsx`, and adopted the shared `BANNER_STATE_VALUES` export in `PageScrollProgressBar.test.tsx` state assertions.
+- [STRENGTHEN] Strengthened `PageScrollProgressBar` DOM state tracking with `data-reduced-motion` ("true"/"false") attribute for accessibility testing.
+- [CONSOLIDATE] Consolidated `PageScrollProgressBar` display-state assertions onto the shared `BANNER_STATE_VALUES` export (single component; no new shared constant added).
+- [REMOVE] Removed the raw `"visible"` string literal from the `data-state` assertion in `PageScrollProgressBar.test.tsx` in favor of `BANNER_STATE_VALUES` (other attribute literals `"41"`/`"false"`/`"true"` remain literal-pinned).
+
+## ✅ StorX — **StepReview Micro-UX & Reduced Motion State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and centralized step keys to `StepReview.tsx`.
+- [STRENGTHEN] Strengthened `StepReview` DOM state tracking with `data-state` ("generating"/"idle") and `data-reduced-motion` ("true"/"false") attributes for accessibility testing.
+- [CONSOLIDATE] Consolidated wizard review step state inspection via `REVIEW_STATE_VALUES` shared config in `packages/shared/src/config/ui.ts`.
+- [REMOVE] Removed raw "generating"/"idle" string literals in `StepReview.tsx`/`StepReview.test.tsx` in favor of `REVIEW_STATE_VALUES`; fixed weak `data-reduced-motion` assertion and gated entrance/hover animations on reduced motion.
+
 ## ✅ StorX — **ScrollToTop Micro-UX & State Inspection**
 - [CONNECT] Connected `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx` for DOM state inspection (`useReducedMotion` was already wired for scroll behavior).
 - [STRENGTHEN] Strengthened `ScrollToTop` / `ScrollToPosition` DOM state inspection with `data-state` ("visible") and `data-reduced-motion` ("true"/"false") attributes on wrapper and button.

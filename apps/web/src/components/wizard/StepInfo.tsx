@@ -34,6 +34,7 @@ import {
   MODIFIER_KEYS,
   RATIO_LIMITS,
   UI_TIMEOUTS,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -77,6 +78,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 import { getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepInfoProps {
   direction?: AnimationDirection;
@@ -303,10 +305,15 @@ export const StepInfo = memo(function StepInfo({
         className={CSS_CLASSES.ICON_HOVER_SHIFT}
         fill="none"
         stroke="currentColor"
-        viewBox="0 0 24 24"
+        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
         aria-hidden="true"
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <path
+          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+          strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+          strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+          d={ICON_PATHS.CHEVRON_RIGHT}
+        />
       </svg>
     </RippleButton>
   );
@@ -334,13 +341,13 @@ export const StepInfo = memo(function StepInfo({
                     className="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
@@ -416,6 +423,14 @@ export const StepInfo = memo(function StepInfo({
               name="projectName"
               type="text"
               autoComplete="off"
+              // Mobile keyboard hygiene: project names are often technical
+              // identifiers. Without these, iOS/Android autocapitalize the
+              // first letter and Safari autocorrect rewrites tokens
+              // ("auth" -> "author"), mangling the typed name. Matches the
+              // spellCheck={false} precedent in KeyboardShortcutsModal.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               enterKeyHint="next"
               dir="auto"
               value={projectName}

@@ -14,7 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES } from "@blueprint/shared";
+import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES, SVG_ICON_DEFAULTS } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -159,6 +159,8 @@ function AnimatedCopyButtonComponent({
         className
       )}
       data-state={isCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-has-content={hasContent ? "true" : "false"}
       title={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       animate={{
@@ -256,7 +258,7 @@ function AnimatedCopyButtonComponent({
               <motion.svg
                 width="16"
                 height="16"
-                viewBox="0 0 16 16"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_SMALL}
                 fill="none"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -269,9 +271,9 @@ function AnimatedCopyButtonComponent({
                 <motion.path
                   d="M3 8L6.5 11.5L13 5"
                   stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{
@@ -301,12 +303,12 @@ function AnimatedCopyButtonComponent({
               <motion.svg
                 width="16"
                 height="16"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 whileHover={
                   !shouldReduceMotion && hasContent
                     ? {

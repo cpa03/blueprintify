@@ -245,15 +245,6 @@ export default {
 
     const response = await app.fetch(req, env, ctx);
 
-    // If API returned 404 and ASSETS binding exists, fallback to ASSETS (SPA routing)
-    if (
-      response.status === HTTP_STATUS.NOT_FOUND &&
-      env.ASSETS &&
-      !url.pathname.startsWith(PROXY_CONFIG.API_PREFIX_SLASH)
-    ) {
-      return env.ASSETS.fetch(request);
-    }
-
     return response;
   },
 };

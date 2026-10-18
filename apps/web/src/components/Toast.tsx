@@ -54,10 +54,12 @@ import {
   SHORTCUT_LABELS,
   PERCENT_SCALE,
   TIME_UNITS,
+  BANNER_STATE_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -121,7 +123,7 @@ const ProgressRing = memo(function ProgressRing({
         fill="none"
         stroke={color}
         strokeWidth={strokeWidth}
-        strokeLinecap="round"
+        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         style={{
@@ -255,7 +257,7 @@ const ToastItem = memo(
     // Custom ariaLabel (e.g., for pro tips) overrides the default role/announcement.
     const isAlert = toast.type === TOAST_TYPES.ERROR || toast.type === TOAST_TYPES.WARNING;
     const toastRole = toast.ariaLabel ? "status" : isAlert ? "alert" : "status";
-    const toastAriaLive = toast.ariaLabel ? "polite" : isAlert ? undefined : "polite";
+    const toastAriaLive = toast.ariaLabel ? "polite" : isAlert ? "assertive" : "polite";
 
     return (
       <motion.div
@@ -281,17 +283,24 @@ const ToastItem = memo(
         onBlur={handleMouseLeave}
         role={toastRole}
         aria-live={toastAriaLive}
+        aria-atomic="true"
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
         data-hovered={isHovered ? "true" : "false"}
         data-is-alert={isAlert ? "true" : "false"}
+        data-state={BANNER_STATE_VALUES.VISIBLE}
+        data-progress={Math.round(progress)}
+        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       >
         <div
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
           style={{
             width: `${progress}%`,
             opacity: isHovered ? 0 : 0.3,
-            transition: TOAST_SPRING.PROGRESS_BAR_TRANSITION,
+            // Match ProgressRing's noTransition behavior above (WCAG 2.3.3):
+            // the width countdown is decorative motion, so snap instantly
+            // when the user prefers reduced motion.
+            transition: shouldReduceMotion ? "none" : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
           }}
           aria-hidden="true"
         />
@@ -336,7 +345,7 @@ const ToastItem = memo(
               <svg
                 className="w-2.5 h-2.5"
                 fill="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -358,7 +367,7 @@ const ToastItem = memo(
                 <svg
                   className="w-2.5 h-2.5"
                   fill="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -373,7 +382,7 @@ const ToastItem = memo(
           <ProgressRing
             progress={progress}
             size={28}
-            strokeWidth={2}
+            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
             noTransition={shouldReduceMotion}
           />
           {shouldReduceMotion ? (
@@ -401,9 +410,7 @@ const ToastItem = memo(
               {toast.title}
             </p>
           )}
-          <p className="text-sm font-medium" aria-label={toast.ariaLabel}>
-            {toast.message}
-          </p>
+          <p className="text-sm font-medium">{toast.message}</p>
         </div>
         {shouldReduceMotion ? (
           <motion.span
@@ -418,6 +425,7 @@ const ToastItem = memo(
               delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
             >
               <button
+                type="button"
                 onClick={() => onRemove(toast.id)}
                 className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
                 aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
@@ -433,6 +441,7 @@ const ToastItem = memo(
             delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
           >
             <motion.button
+              type="button"
               onClick={() => onRemove(toast.id)}
               className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
@@ -494,6 +503,14 @@ function ToastContainerComponent(): JSX.Element {
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
+        // While a modal dialog is open (ConfirmDialog, KeyboardShortcutsModal),
+        // Escape belongs exclusively to the modal. Without this guard the same
+        // keypress would both close the dialog and silently dismiss an
+        // underlying toast the user never targeted — a surprising loss of a
+        // notification mid-interaction.
+        if (document.querySelector('[role="dialog"][aria-modal="true"]')) {
+          return;
+        }
         e.preventDefault();
         if (e.shiftKey) {
           const count = toasts.length;
@@ -550,6 +567,8 @@ function ToastContainerComponent(): JSX.Element {
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
       data-count={toasts.length}
       data-has-toasts={toasts.length > 0 ? "true" : "false"}
+      data-state={toasts.length > 0 ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       {...containerAnimation}
     >
       <AnimatePresence mode="popLayout">
@@ -566,6 +585,7 @@ function ToastContainerComponent(): JSX.Element {
       {shouldReduceMotion ? (
         showDismissAll && (
           <button
+            type="button"
             onClick={handleClearAll}
             className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                        text-xs font-medium text-dark-400
@@ -595,6 +615,7 @@ function ToastContainerComponent(): JSX.Element {
         <AnimatePresence>
           {showDismissAll && (
             <motion.button
+              type="button"
               initial={{ opacity: 0, y: -8, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
