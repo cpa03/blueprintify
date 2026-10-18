@@ -779,6 +779,8 @@ export const COPY_STATE_VALUES = {
   COPIED: "copied" as const,
   /** Idle / ready to copy state identifier */
   IDLE: "idle" as const,
+  /** Clipboard write failed (both API and fallback) state identifier */
+  FAILED: "failed" as const,
 } as const;
 
 /**

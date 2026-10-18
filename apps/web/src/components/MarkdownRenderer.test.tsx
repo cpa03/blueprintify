@@ -98,6 +98,33 @@ describe("MarkdownRenderer", () => {
         expect(copyBtn).toHaveAttribute("data-state", COPY_STATE_VALUES.COPIED);
       });
     });
+
+    it("announces and shows failure feedback when clipboard copy fails", async () => {
+      vi.stubGlobal("navigator", {
+        clipboard: {
+          writeText: vi.fn().mockRejectedValue(new Error("denied")),
+        },
+      });
+      const execCommandSpy = vi.fn().mockReturnValue(false);
+      document.execCommand = execCommandSpy;
+
+      render(<MarkdownRenderer content={"```typescript\nconst x = 1;\n```"} />);
+
+      const copyBtn = screen.getByRole("button", { name: /copy code/i });
+      fireEvent.click(copyBtn);
+
+      await waitFor(() => {
+        expect(copyBtn).toHaveAttribute("data-state", COPY_STATE_VALUES.FAILED);
+      });
+      expect(copyBtn).toHaveAccessibleName("Copy failed — try again");
+      expect(copyBtn).toHaveAttribute("title", "Copy failed");
+      expect(screen.getByText("Failed")).toBeInTheDocument();
+      expect(screen.getByText("Failed to copy code to clipboard")).toBeInTheDocument();
+
+      const header = document.querySelector(".markdown-content [data-language='typescript']");
+      expect(header).toHaveAttribute("data-state", COPY_STATE_VALUES.FAILED);
+      expect(header).toHaveAttribute("data-copy-state", COPY_STATE_VALUES.FAILED);
+    });
   });
 
   describe("Links and Images", () => {
