@@ -60,6 +60,7 @@ import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -315,7 +316,7 @@ function EditorToolbarComponent({
               >
                 <motion.svg
                   className="w-4 h-4 mr-2 flex-shrink-0"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   fill="none"
                   animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
                   transition={
@@ -381,7 +382,7 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -420,7 +421,7 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                 >
                   <path
@@ -463,7 +464,7 @@ function EditorToolbarComponent({
             className="w-4 h-4"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
+            viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             aria-hidden="true"
             whileHover={ROTATION.HALF}
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}

@@ -47,6 +47,7 @@ import {
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
@@ -217,7 +218,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                       className={`${ICON.MD} text-white`}
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
                         strokeLinecap="round"

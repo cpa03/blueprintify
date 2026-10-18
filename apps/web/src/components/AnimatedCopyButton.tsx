@@ -14,7 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES } from "@blueprint/shared";
+import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES, SVG_ICON_DEFAULTS } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -258,7 +258,7 @@ function AnimatedCopyButtonComponent({
               <motion.svg
                 width="16"
                 height="16"
-                viewBox="0 0 16 16"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_SMALL}
                 fill="none"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -303,7 +303,7 @@ function AnimatedCopyButtonComponent({
               <motion.svg
                 width="16"
                 height="16"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"

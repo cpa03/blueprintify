@@ -51,6 +51,48 @@ describe("HeadingAnchor", () => {
     expect(button).toHaveAttribute("data-slug", "getting-started");
   });
 
+  it("keeps the anchor button keyboard-reachable before it is visible", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+    expect(button).toHaveAttribute("tabindex", "0");
+    expect(button).not.toHaveAttribute("aria-hidden");
+  });
+
+  it("reveals the anchor button when it receives keyboard focus", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.HIDDEN);
+
+    fireEvent.focus(button);
+
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+  });
+
+  it("hides the anchor button again after focus leaves", () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    fireEvent.focus(button);
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
+
+    fireEvent.blur(button);
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.HIDDEN);
+  });
+
+  it("copies the link when activated via keyboard", async () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    fireEvent.focus(button);
+    await act(async () => {
+      fireEvent.keyDown(button, { key: "Enter" });
+      fireEvent.click(button);
+    });
+
+    const expectedUrl = `${window.location.origin}${window.location.pathname}#installation`;
+    expect(copyToClipboard).toHaveBeenCalledWith(expectedUrl);
+  });
+
   it("updates data-copied-state and data-state when clicked", async () => {
     vi.useFakeTimers();
     render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
@@ -92,6 +134,53 @@ describe("HeadingAnchor", () => {
     act(() => {
       vi.runAllTimers();
     });
+    expect(screen.queryByText("Copied!")).not.toBeInTheDocument();
+  });
+
+  it("swaps aria-label and title to the copied state after a successful copy", async () => {
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByRole("button", { name: 'Copy link to "Installation" section' });
+    expect(button).toHaveAttribute("title", "Copy anchor link");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(button).toHaveAccessibleName("Link copied to clipboard");
+    expect(button).toHaveAttribute("title", "Copied!");
+  });
+
+  it("restores the idle aria-label and title after the copied state expires", async () => {
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByRole("button", { name: 'Copy link to "Installation" section' });
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    expect(button).toHaveAccessibleName("Link copied to clipboard");
+
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    expect(button).toHaveAccessibleName('Copy link to "Installation" section');
+    expect(button).toHaveAttribute("title", "Copy anchor link");
+  });
+
+  it("keeps the idle accessible name when the copy fails", async () => {
+    vi.mocked(copyToClipboard).mockResolvedValueOnce(false);
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByRole("button", { name: 'Copy link to "Installation" section' });
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(button).toHaveAccessibleName('Copy link to "Installation" section');
+    expect(button).toHaveAttribute("title", "Copy anchor link");
     expect(screen.queryByText("Copied!")).not.toBeInTheDocument();
   });
 
