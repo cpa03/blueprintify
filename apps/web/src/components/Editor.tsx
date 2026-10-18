@@ -68,6 +68,7 @@ import { useAutoScroll } from "../hooks/useAutoScroll";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 import "../styles/markdown.css";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
@@ -590,7 +591,7 @@ function EditorComponent(): JSX.Element {
                               className="w-3.5 h-3.5 text-primary-400"
                               fill="none"
                               stroke="currentColor"
-                              viewBox="0 0 24 24"
+                              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                             >
                               <path
                                 strokeLinecap="round"
@@ -699,7 +700,7 @@ function EditorComponent(): JSX.Element {
                               className="w-3.5 h-3.5 text-accent-cyan"
                               fill="none"
                               stroke="currentColor"
-                              viewBox="0 0 24 24"
+                              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                             >
                               <path
                                 strokeLinecap="round"

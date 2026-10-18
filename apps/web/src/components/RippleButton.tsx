@@ -104,10 +104,15 @@ function RippleButtonComponent({
 
   const handleClick = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
+      // The children span is pointer-events-none while loading, but the <button>
+      // itself still receives clicks — without this guard a double-click fires
+      // the action twice. Deliberately not using native `disabled`: it would drop
+      // focus to <body> and strand keyboard users (WCAG 2.4.3).
+      if (isLoading) return;
       createRipple(e);
       onClick?.(e);
     },
-    [createRipple, onClick]
+    [createRipple, onClick, isLoading]
   );
 
   const handleMouseEnter = useCallback(() => {

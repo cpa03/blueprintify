@@ -20,6 +20,7 @@
  */
 
 import { lazy, Suspense, type ReactNode } from "react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const AnimatePresence = lazy(() =>
   import("framer-motion").then((m) => ({ default: m.AnimatePresence }))
@@ -36,9 +37,17 @@ interface StepTransitionProps {
  * then seamlessly enables AnimatePresence with the specified mode.
  */
 export function StepTransition({ children, mode = "wait" }: StepTransitionProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <Suspense fallback={<>{children}</>}>
-      <AnimatePresence mode={mode}>{children}</AnimatePresence>
-    </Suspense>
+    <div
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-mode={mode}
+      className="contents"
+    >
+      <Suspense fallback={<>{children}</>}>
+        <AnimatePresence mode={mode}>{children}</AnimatePresence>
+      </Suspense>
+    </div>
   );
 }

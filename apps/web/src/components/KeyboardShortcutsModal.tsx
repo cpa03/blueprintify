@@ -35,6 +35,7 @@ import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -344,7 +345,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 pointer-events-none"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path
@@ -465,7 +466,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       className="w-12 h-12 mb-4 text-dark-600"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                       aria-hidden="true"
                     >
                       <path

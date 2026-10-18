@@ -36,6 +36,7 @@ import {
 import { FRAMER_TYPE, MODIFIER_KEYS, BANNER_STATE_VALUES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { isEditableField } from "../lib/dom";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -220,6 +221,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
           }}
           className={positionClass}
           data-state={BANNER_STATE_VALUES.VISIBLE}
+          data-has-scrolled={hasScrolled}
           data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
@@ -285,6 +287,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               aria-keyshortcuts={shortCutKey}
               data-direction={direction}
               data-state={BANNER_STATE_VALUES.VISIBLE}
+              data-has-scrolled={hasScrolled}
               data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
@@ -293,7 +296,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
                 initial={false}
                 // Decorative infinite float: disabled when the user prefers

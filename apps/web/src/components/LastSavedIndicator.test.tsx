@@ -111,6 +111,17 @@ describe("LastSavedIndicator", () => {
     expect(region).toHaveAttribute("aria-atomic", "true");
   });
 
+  it("keeps saved-state semantics for screen readers when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(<LastSavedIndicator text="Saved" isVisible={true} />);
+
+    expect(screen.getByText("Saved")).toBeInTheDocument();
+    expect(container.querySelector("div")).toHaveAttribute("data-reduced-motion", "true");
+    const region = screen.getByText("Saved").closest("[aria-live]");
+    expect(region).toHaveAttribute("aria-live", "polite");
+    expect(region).toHaveAttribute("aria-atomic", "true");
+  });
+
   it("accepts custom text prop", () => {
     render(<LastSavedIndicator text="Custom save text" isVisible={true} />);
 
