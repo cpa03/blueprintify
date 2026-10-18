@@ -33,11 +33,14 @@ import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useToastStore } from "../store";
 import {
-  STYLE_ID_STRINGS,
-  UI_TIMEOUTS,
-  NETWORK_DEFAULTS,
-  TOAST_TYPES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   BANNER_STATE_VALUES,
+  NETWORK_DEFAULTS,
+  STYLE_ID_STRINGS,
+  TOAST_TYPES,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -275,9 +278,9 @@ function OfflineBannerComponent(): JSX.Element | null {
           banner auto-hides without a user-facing confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {dismissAnnouncement}
       </div>

@@ -37,12 +37,15 @@ import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { isEditableField } from "../lib/dom";
 import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   EDITOR_FILENAMES,
-  VIEW_MODES,
-  PANE_LABELS,
-  UI_TIMING,
-  SKELETON_DEFAULTS,
   KEYBOARD_EVENT_KEYS,
+  PANE_LABELS,
+  SKELETON_DEFAULTS,
+  UI_TIMING,
+  VIEW_MODES,
 } from "@blueprint/shared/config";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
@@ -94,7 +97,7 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
   return (
     <div
       className="editor-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.SKELETON_GENERATING}
     >
       <div className="editor-skeleton-gutter">
@@ -137,7 +140,7 @@ function PreviewSkeleton(): JSX.Element {
   return (
     <div
       className="preview-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}
     >
       <div className="skeleton-block preview-skeleton-heading" />
@@ -565,7 +568,7 @@ function EditorComponent(): JSX.Element {
                       ease: ANIMATION_TIMING.easing.easeOut,
                     }}
                     id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
-                    role="tabpanel"
+                    role={ARIA_ROLES.TABPANEL}
                     aria-labelledby={`tab-${activeTab}`}
                     aria-busy={isGenerating || undefined}
                     className="h-full flex flex-col lg:flex-row"
@@ -833,9 +836,9 @@ function EditorComponent(): JSX.Element {
           via useRef to prevent re-announcement on re-renders */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {mountAnnouncement}
       </div>
