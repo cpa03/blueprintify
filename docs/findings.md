@@ -2,6 +2,14 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 2026-10-18 Cycle 6 (REPOKEEPER HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20261018-cycle6` from `origin/main` (`0d14ffdb`, 0-behind). Cycle-5 removal of root stubs `bug.md` + `task.md` held — no re-introduction this cycle.
+**Hygiene CLEAN** — 608 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.orig/*.log/*.patch/task_plan.md` empty); 0 tracked build artifacts; 0 untracked non-ignored files; 0 empty dirs; `tui.json` root ↔ `.opencode/tui.json` byte-identical dual-loader KEEP; `.agent/` ↔ `.opencode/` structural mirror KEEP (28 agents + 25 skills + 8 commands 1:1; canonical-loader decision still pending); `opencode.json` plugin-name drift KEPT pending CLI-resolution verification; dual-proxy `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical KEEP; all 8 `scripts/` wired; CI runners 20/20 `ubuntu-24.04-arm` + 11/11 `node-version-file` COMPLIANT; audits 15 files all within 30d retention (oldest Oct 04 = 14d) NO PURGE.
+**Doc-sync CLEAN** — `openapi.yaml` 14 paths ↔ README API table 15 rows IN SYNC; env docs cover all code vars; README tree + links + counts (28 agents / 25 skills / 8 commands) match; no drift found, no sync edits needed.
+**Baselines ALL GREEN**: typecheck ✅ exit 0 (shared/web/api) · lint ✅ 0 errors / 0 warnings · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 339 files · audit ✅ (prod 0 vulns) · tests ✅ 2733/2733 (web 1304/86 + api 550/34 + shared 879/4).
+**Standing deferrals unchanged**: audits archive rotation for giants, `.agent`/`.opencode` canonical loader, `opencode.json` plugin-name resolution, `functions/` Pages legacy dual-proxy, `migrate.ts` stub + root `schema.sql` placement.
+
 ## ULW Loop Cycle 2026-10-18 Cycle 5 (REPOKEEPER HYGIENE + DOC-SYNC)
 
 **Phase 0**: Branch `agent/repokeeper-20261018-cycle5` from `origin/main` (`b5f3323b`, 0-behind). Prior cycle-4 PR #3795 (`agent/repokeeper-20261018-cycle4`, commit `bacb10a3`) was cut from `0e7172e7` — **1 commit behind** this main; its "0 defects" claim predates `b5f3323b` (#3794, CMZ/Header SVG cycle) which **re-introduced 2 redundant root stubs** below. Cycle 5 opened as a fresh branch per branch-per-cycle precedent; #3795 left untouched for human disposition.
