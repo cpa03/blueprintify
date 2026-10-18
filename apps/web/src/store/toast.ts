@@ -77,12 +77,14 @@ interface ToastStore extends ToastState {
   clearAll: () => void;
 }
 
-export const useToastStore = create<ToastStore>()((set, get) => ({
+export const useToastStore = create<ToastStore>()((set) => ({
   toasts: [],
 
   /**
    * Adds a new toast notification to the queue.
-   * Automatically schedules removal after the specified duration.
+   * Dismissal is owned by the ToastItem component (startDismissTimer with
+   * pause-on-hover/focus) so hovering or focusing a toast extends its
+   * visible lifetime for extended reading time.
    *
    * @param message - The notification message to display
    * @param type - The toast type (success, info, warning, error)
@@ -107,10 +109,6 @@ export const useToastStore = create<ToastStore>()((set, get) => ({
     set((state) => ({
       toasts: [...state.toasts, toast],
     }));
-
-    setTimeout(() => {
-      get().removeToast(id);
-    }, duration);
   },
 
   /**

@@ -22,6 +22,7 @@ import {
   SAVE_STATE_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -137,7 +138,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   className="w-3.5 h-3.5 text-accent-emerald"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
                   initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
                   animate={{ scale: 1 }}

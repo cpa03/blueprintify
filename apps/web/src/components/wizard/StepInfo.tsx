@@ -78,6 +78,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 import { getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepInfoProps {
   direction?: AnimationDirection;
@@ -304,7 +305,7 @@ export const StepInfo = memo(function StepInfo({
         className={CSS_CLASSES.ICON_HOVER_SHIFT}
         fill="none"
         stroke="currentColor"
-        viewBox="0 0 24 24"
+        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
         aria-hidden="true"
       >
         <path
@@ -340,7 +341,7 @@ export const StepInfo = memo(function StepInfo({
                     className="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden="true"
                   >
                     <path

@@ -2,6 +2,7 @@ import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
+  SVG_ICON_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
@@ -119,7 +120,7 @@ function CharacterCounterComponent({
           >
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               fill="none"
               stroke="currentColor"
               strokeWidth="2"

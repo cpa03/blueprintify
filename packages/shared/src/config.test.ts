@@ -3425,6 +3425,14 @@ describe("SVG_ICON_DEFAULTS", () => {
     expect(SVG_ICON_DEFAULTS.VIEW_BOX).toBe("0 0 24 24");
   });
 
+  it("should use 16x16 viewBox for small icons", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX_SMALL).toBe("0 0 16 16");
+  });
+
+  it("should use 48x48 viewBox for large celebration icons", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX_LARGE).toBe("0 0 48 48");
+  });
+
   it("should use none fill and currentColor stroke", () => {
     expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
     expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
@@ -3443,8 +3451,8 @@ describe("SVG_ICON_DEFAULTS", () => {
     );
   });
 
-  it("should have 9 entries", () => {
-    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(9);
+  it("should have 11 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(11);
   });
 });
 
