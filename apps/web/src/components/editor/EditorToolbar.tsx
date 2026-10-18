@@ -341,7 +341,7 @@ function EditorToolbarComponent({
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="currentColor"
-                    strokeWidth="3"
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                     strokeOpacity={0.15}
                     fill="none"
                   />
@@ -350,8 +350,8 @@ function EditorToolbarComponent({
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="url(#toolbar-export-spinner-grad)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     fill="none"
                     strokeDasharray={CIRCLE_GEOMETRY.CIRCUMFERENCE}
                     strokeDashoffset={CIRCLE_GEOMETRY.STROKE_DASHOFFSET}
@@ -389,9 +389,9 @@ function EditorToolbarComponent({
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                 >
                   <motion.path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                     d="M5 13l4 4L19 7"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -425,9 +425,9 @@ function EditorToolbarComponent({
                   aria-hidden="true"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
@@ -470,9 +470,9 @@ function EditorToolbarComponent({
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
             <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </motion.svg>

@@ -985,10 +985,16 @@ export const SVG_ICON_DEFAULTS = {
   STROKE_LINECAP_ROUND: "round" as const,
   /** Default rounded line joins */
   STROKE_LINEJOIN_ROUND: "round" as const,
+  /** Light stroke width for fine-detail icons (hairline emphasis) */
+  STROKE_WIDTH_LIGHT: 1.5 as const,
   /** Default stroke width for regular icons */
   STROKE_WIDTH_DEFAULT: 2 as const,
+  /** Medium stroke width for slightly emphasized icons (between default and bold) */
+  STROKE_WIDTH_MEDIUM: 2.5 as const,
   /** Bold stroke width for emphasis icons */
   STROKE_WIDTH_BOLD: 3 as const,
+  /** Heavy stroke width for progress rings and thick-stroke indicators */
+  STROKE_WIDTH_HEAVY: 4 as const,
   /** Default icon size class */
   SIZE_DEFAULT: "w-5 h-5" as const,
   /** Small icon size class */
