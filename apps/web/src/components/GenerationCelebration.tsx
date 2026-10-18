@@ -283,7 +283,7 @@ function GenerationCelebrationComponent({
               <svg
                 width="48"
                 height="48"
-                viewBox="0 0 48 48"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
                 fill="none"
                 className="text-accent-emerald"
               >
