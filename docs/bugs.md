@@ -7,7 +7,7 @@
 - **Zero code defects**: Typecheck clean; ESLint clean (0 errors, 0 warnings) — verified 2026-10-17.
 - **Zero known unhandled exceptions**: Clean console in production bundles.
 - **Zero build/lint fatals**: `build`, `build:api`, `typecheck`, `lint`, `format:check`, `scan:secrets`, `validate:wrangler` all passing.
-- **Tests green**: 2,708 passed (web 1,282 + api 550 + shared 876) — verified 2026-10-17.
+- **Tests green**: 2,714 passed (web 1,288 + api 550 + shared 876) — verified 2026-10-17.
 - **Known dependency limitation (no non-breaking fix)**: `npm audit --audit-level=high` reports 8 vulnerabilities (3 moderate, 5 high) via `braces@3.0.3` ← `micromatch/fast-glob/chokidar` ← `tailwindcss@3.4.19` (GHSA-vfj7-8cjw-p6xm) plus `postcss-selector-parser` transitives. `braces` has no patched 3.x release; the only audit-suggested path is the breaking `tailwindcss@4.x` upgrade, so this is tracked here and not changed in this cycle. Fixed this cycle (non-breaking): `shell-quote` critical GHSA-pqg4-j6r4-53mv via override `1.12.0`, `sharp` high GHSA-wq5f-xc86-pv6w via override `0.35.5`, `source-map-js` high GHSA-68fv-2mgg-jv7q via `1.2.2`. Hardening overrides held: `dompurify@3.4.16`, `undici@7.30.0`, `sharp@0.35.5`, `brace-expansion@5.0.12`, `shell-quote@1.12.0`, `ajv@6.15.0`, `hono@4.13.9`.
 - **Known toolchain drift (lint still green)**: `eslint@10.11.0` exceeds the peer ranges declared by `eslint-plugin-jsx-a11y`/`eslint-plugin-react` (`^3 || ... || ^9`), so `npm ls eslint` reports invalid peer. `npm run lint` still exits 0 with 0 errors/0 warnings; downgrade to 9.39.5 is deferred to avoid churn.
 
@@ -22,7 +22,7 @@
 | **BUG-013** | esbuild/lighthouse tooling vulnerabilities | Low | Deps | ✅ Resolved | Dependencies pinned; 0 vulnerabilities |
 | **BUG-014** | Stale doc references in workflows | Low | CI | ✅ Resolved | All workflow refs point to current `docs/*.md` filenames |
 | **BUG-017** | Hardcoded Node.js 20 in workflows | Low | CI | ✅ Resolved | All 5 workflows use `node-version-file: ".node-version"` |
-| **BUG-048** | ESLint 10 peer dependency conflict | Low | Tooling | ✅ Resolved | ESLint pinned to 9.39.5 to match plugin peer ranges |
+| **BUG-048** | ESLint 10 peer dependency conflict | Low | Tooling | ⚠️ Drift held | `eslint@10.11.0` exceeds plugin peer ranges (`npm ls eslint` invalid); lint still 0 errors/0 warnings; downgrade deferred to avoid churn |
 | **BUG-049** | Storage route error response format | Low | API | ✅ Resolved | Standardized via `createErrorJson` |
 | **BUG-050** | Cloudflare placeholder resource IDs | Medium | Infra | ✅ Resolved | Real IDs provisioned in `apps/api/wrangler.toml` (`validate:wrangler` clean) |
 | **BUG-051** | dompurify GHSA-p98j-92pf-mc4p vulnerability | Medium | Deps | ✅ Resolved | Upgraded to `dompurify@3.4.16`; `npm audit` reports 0 vulnerabilities |
@@ -82,5 +82,5 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 
 ---
 
-**Last Updated**: 2026-10-17 — BugFixer ULW cycle: synced body audit numbers with verified counts (2,708 tests: web 1,282 + api 550 + shared 876); verified typecheck/lint/build/tests green; audit 8 vulns held (braces/postcss chain via tailwindcss 3.4.19, no non-breaking fix), build/lint/format 0 fatal
+**Last Updated**: 2026-10-17 — BugFixer ULW cycle: re-synced test counts with verified run (2,714 tests: web 1,288 + api 550 + shared 876); BUG-048 row corrected to reflect held ESLint 10 peer drift (lint still 0/0); typecheck/lint/build/build:api/format:check/scan:secrets/validate:wrangler green; audit 8 vulns held (braces/postcss chain via tailwindcss 3.4.19, no non-breaking fix; braces latest is 3.0.3 = still vulnerable, only tailwindcss@4.x upgrades it)
 **Maintainer**: Documentation Specialist

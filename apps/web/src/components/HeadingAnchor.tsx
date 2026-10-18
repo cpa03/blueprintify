@@ -53,6 +53,7 @@ import {
 import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -202,8 +203,16 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-copied-state={showCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
         data-slug={slug}
-        aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
-        title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
+        aria-label={
+          showCopied
+            ? ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPIED_ARIA
+            : ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)
+        }
+        title={
+          showCopied
+            ? ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPIED_TITLE
+            : ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE
+        }
         // Always Tab-reachable (WCAG 2.1.1). A conditional tabIndex gated on
         // isVisible was a chicken-and-egg trap: focus set isVisible, but
         // tabIndex=0 required isVisible — so keyboard users could never focus
@@ -232,7 +241,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 className="w-3.5 h-3.5 flex-shrink-0 text-accent-emerald"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <motion.path
@@ -289,7 +298,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 className="w-3.5 h-3.5 flex-shrink-0"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden="true"
               >
                 <path
