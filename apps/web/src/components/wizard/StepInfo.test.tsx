@@ -246,6 +246,14 @@ describe("StepInfo", () => {
     expect(mockStore.setProjectName).toHaveBeenCalledWith("My Project");
   });
 
+  it("disables mobile autocapitalize/autocorrect/spellcheck on project name", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("autocapitalize", "off");
+    expect(input).toHaveAttribute("autocorrect", "off");
+    expect(input).toHaveAttribute("spellcheck", "false");
+  });
+
   it("shows project name character counter", () => {
     render(<StepInfo />);
     const counters = screen.getAllByTestId("character-counter");

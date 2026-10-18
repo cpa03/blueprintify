@@ -349,9 +349,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     aria-hidden="true"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
@@ -470,9 +470,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       aria-hidden="true"
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT}
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>

@@ -91,8 +91,8 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <motion.path
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={strokeWidth}
                 d="M5 13l4 4L19 7"
                 initial={shouldReduceMotion ? { opacity: 1 } : { pathLength: 0, opacity: 0 }}

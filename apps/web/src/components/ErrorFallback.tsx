@@ -174,9 +174,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                 aria-hidden="true"
               >
                 <motion.path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                   initial={shouldReduceMotion ? undefined : { pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
@@ -278,9 +278,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                           aria-hidden="true"
                         >
                           <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2.5}
+                            strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                            strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                             d="M5 13l4 4L19 7"
                           />
                         </svg>
@@ -302,9 +302,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                           aria-hidden="true"
                         >
                           <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2.5}
+                            strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                            strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                             d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
@@ -380,9 +380,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                   aria-hidden="true"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
@@ -415,9 +415,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                   aria-hidden="true"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>

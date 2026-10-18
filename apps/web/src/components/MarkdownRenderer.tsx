@@ -191,9 +191,9 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                 d="M5 13l4 4L19 7"
               />
             </motion.svg>
@@ -210,9 +210,9 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M6 18L18 6M6 6l12 12"
               />
             </motion.svg>
@@ -229,9 +229,9 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
               />
             </motion.svg>

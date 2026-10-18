@@ -317,16 +317,16 @@ const ScrollToPosition = memo(function ScrollToPosition({
               >
                 {isToTop ? (
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M5 10l7-7m0 0l7 7m-7-7v18"
                   />
                 ) : (
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M19 14l-7 7m0 0l-7-7m7 7V3"
                   />
                 )}

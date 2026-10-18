@@ -3444,16 +3444,28 @@ describe("SVG_ICON_DEFAULTS", () => {
     expect(SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND).toBe("round");
   });
 
-  it("should have numeric stroke widths with bold greater than default", () => {
+  it("should have numeric stroke widths ordered light < default < medium < bold < heavy", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT).toBe(1.5);
     expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT).toBe(2);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM).toBe(2.5);
     expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBe(3);
-    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY).toBe(4);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT).toBeLessThan(
       SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD
     );
   });
 
-  it("should have 11 entries", () => {
-    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(11);
+  it("should have 14 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(14);
   });
 });
 

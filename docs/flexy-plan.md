@@ -4,6 +4,36 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 193: Centralize Remaining SVG Stroke Attribute Literals Across All Components
+
+**Problem**: 185 hardcoded SVG stroke attribute literals remained across 26 web component files, bypassing the existing `SVG_ICON_DEFAULTS` constants (`STROKE_WIDTH_DEFAULT`, `STROKE_WIDTH_BOLD`, `STROKE_LINECAP_ROUND`, `STROKE_LINEJOIN_ROUND`) introduced in Iteration 187b. Breakdown: 43× `strokeWidth={2}`, 11× string-form `strokeWidth="N"` (`"2"`/`"2.5"`/`"3"`/`"4"`), 7× `strokeWidth={2.5}`, 1× `strokeWidth={1.5}`, 3× `strokeWidth={3}`, 62× `strokeLinecap="round"`, 58× `strokeLinejoin="round"`. Values 1.5, 2.5 and 4 had no constant at all. Flexy says: no hardcoded stroke attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `STROKE_WIDTH_LIGHT: 1.5`, `STROKE_WIDTH_MEDIUM: 2.5`, `STROKE_WIDTH_HEAVY: 4` to `SVG_ICON_DEFAULTS` — completes the light→default→medium→bold→heavy stroke-width scale |
+| `packages/shared/src/config.test.ts` | Updated stroke-width ordering test (light < default < medium < bold < heavy); entry count 11→14 |
+| 26 files in `apps/web/src/components/` | 185× hardcoded strokeWidth / strokeLinecap / strokeLinejoin literals → `SVG_ICON_DEFAULTS.*` (both JSX `{2}` and string `"3"` forms) |
+| `StepIndicator.tsx`, `CircularProgress.tsx` | Added `SVG_ICON_DEFAULTS` import where missing |
+
+Affected files: AnimatedCopyButton, CharacterCounter, CircularProgress, Editor, ErrorBoundary, ErrorFallback, GenerationCelebration, Header, HeadingAnchor, KeyboardShortcutsModal, LastSavedIndicator, MarkdownRenderer, OfflineBanner, PreviewEmptyState, ScrollToTop, SkipLink, StepIndicator, TemplateGrid, Toast, ValidationCheckmark, StepFeatures, StepGenerating, StepInfo, StepReview, StepStack, EditorToolbar.
+
+Intentionally untouched: `Icon.test.tsx` (`strokeWidth={1.5}` custom-prop test) and `CircularProgress.test.tsx` (`strokeWidth={6}` custom-prop test) — these exercise component prop plumbing, not default values.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.81s)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,303 web + 550 api + 879 shared = 2,732 tests passing**
+- ✅ Remaining hardcoded strokeWidth / strokeLinecap / strokeLinejoin literals (excluding intentional test props) — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-193-svg-stroke-attrs` | refactor(flexy): centralize 185 hardcoded SVG stroke attribute literals into shared config (Iteration 193) |
+
 ### ✅ Flexy Iteration 191: Replace Remaining Hardcoded SVG viewBox Literals Across All Components
 
 **Problem**: 59× hardcoded `viewBox="0 0 24 24"` remained across 24 web component files, bypassing the `SVG_ICON_DEFAULTS.VIEW_BOX` constant introduced in Iteration 187b. `apps/web/src/config/icons.ts` was already migrated but inline `<svg>` JSX across components still hard-coded the literal. Flexy says: no hardcoded viewBox literals!

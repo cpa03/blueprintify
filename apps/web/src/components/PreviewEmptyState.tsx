@@ -130,9 +130,9 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   d="M5 13l4 4L19 7"
                 />
               </svg>

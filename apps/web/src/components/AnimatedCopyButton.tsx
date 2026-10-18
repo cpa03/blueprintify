@@ -271,9 +271,9 @@ function AnimatedCopyButtonComponent({
                 <motion.path
                   d="M3 8L6.5 11.5L13 5"
                   stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{
@@ -306,9 +306,9 @@ function AnimatedCopyButtonComponent({
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 whileHover={
                   !shouldReduceMotion && hasContent
                     ? {

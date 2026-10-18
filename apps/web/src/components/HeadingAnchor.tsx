@@ -245,9 +245,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 aria-hidden="true"
               >
                 <motion.path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                   d="M5 13l4 4L19 7"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
@@ -302,9 +302,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 aria-hidden="true"
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                   d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
                 />
               </svg>
