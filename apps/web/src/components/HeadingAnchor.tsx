@@ -49,6 +49,7 @@ import {
   ACCESSIBILITY_LABELS,
   PARTICLE_CONFIG,
   CELEBRATION_COLORS,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
@@ -81,8 +82,10 @@ export const HeadingAnchor = memo(function HeadingAnchor({
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [announcement, setAnnouncement] = useState("");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const particleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const announcementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const particleIdRef = useRef(0);
   const shouldReduceMotion = useReducedMotion();
@@ -95,7 +98,21 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       if (particleTimeoutRef.current) {
         clearTimeout(particleTimeoutRef.current);
       }
+      if (announcementTimeoutRef.current) {
+        clearTimeout(announcementTimeoutRef.current);
+      }
     };
+  }, []);
+
+  const announce = useCallback((message: string) => {
+    if (announcementTimeoutRef.current) {
+      clearTimeout(announcementTimeoutRef.current);
+    }
+    setAnnouncement(message);
+    announcementTimeoutRef.current = setTimeout(() => {
+      setAnnouncement("");
+      announcementTimeoutRef.current = null;
+    }, UI_TIMEOUTS.COPY_FEEDBACK);
   }, []);
 
   const slug = generateSlug(headingText);
@@ -149,14 +166,17 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       }
       createParticles();
       setShowCopied(true);
+      announce(ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPIED_ANNOUNCEMENT);
       timeoutRef.current = setTimeout(() => {
         setShowCopied(false);
       }, UI_TIMEOUTS.COPY_FEEDBACK);
 
       // Update URL hash without scrolling
       history.replaceState(null, "", url.toString());
+    } else {
+      announce(ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_FAILED_ANNOUNCEMENT);
     }
-  }, [slug, createParticles]);
+  }, [slug, createParticles, announce]);
 
   const isVisible = isHovered || isFocused || showCopied;
 
@@ -169,6 +189,19 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       onBlur={() => setIsFocused(false)}
     >
       {children}
+
+      {/* Persistent live region: must exist in the DOM before its text
+          changes, otherwise screen readers routinely skip the announcement.
+          The visible "Copied!" chip mounts at the same moment as its own
+          text, so it cannot serve as a reliable live region itself. */}
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {announcement}
+      </span>
 
       {/* Anchor link button — visible on hover/focus/active */}
       <motion.button
@@ -273,7 +306,6 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                   ease: EASING.easeOut,
                   delay: ANIMATION_ENTRANCE_DELAYS.FAST,
                 }}
-                aria-live="polite"
               >
                 {TOOLTIP_LABELS.EDITOR.COPIED}
               </motion.span>

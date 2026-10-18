@@ -311,6 +311,10 @@ export const ACCESSIBILITY_LABELS = {
     COPIED_ARIA: "Link copied to clipboard",
     /** Tooltip while in the copied state (replaces COPY_LINK_TITLE) */
     COPIED_TITLE: "Copied!",
+    /** Screen reader announcement for the persistent live region after a successful copy */
+    COPIED_ANNOUNCEMENT: "Anchor link copied to clipboard",
+    /** Screen reader announcement for the persistent live region when the copy fails */
+    COPY_FAILED_ANNOUNCEMENT: "Failed to copy anchor link to clipboard",
   },
   CELEBRATION: {
     COMPLETE: "Generation complete",
