@@ -47,7 +47,12 @@ import {
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 
 function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
@@ -149,7 +154,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
 
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        role="listbox"
+        role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
         aria-orientation="horizontal"
       >
@@ -180,7 +185,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               data-template-id={template.id}
               data-loading={isSelected && isLoading ? "true" : "false"}
               data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-              role="option"
+              role={ARIA_ROLES.OPTION}
               tabIndex={focusIndex === index ? 0 : -1}
               style={
                 {
@@ -327,9 +332,9 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       {/* Intentionally blank when idle — live region for loading announcements */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {isLoading && selectedId
           ? ACCESSIBILITY_LABELS.TEMPLATES.LOADING(

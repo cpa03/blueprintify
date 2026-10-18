@@ -24,13 +24,15 @@
 
 import {
   ANIMATION_DIRECTIONS,
-  SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
+  FRAMER_TYPE,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
-  ICON_PATHS,
+  SHORTCUT_DESCRIPTIONS,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -264,7 +266,7 @@ export const StepFeatures = memo(function StepFeatures({
           <AnimatePresence>
             {isAtMaxCount && (
               <motion.p
-                role="status"
+                role={ARIA_ROLES.STATUS}
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
@@ -329,7 +331,7 @@ export const StepFeatures = memo(function StepFeatures({
             </div>
             <div
               className="flex flex-wrap gap-2"
-              role="list"
+              role={ARIA_ROLES.LIST}
               aria-labelledby="added-features-label"
             >
               <AnimatePresence mode="popLayout">
@@ -362,7 +364,7 @@ export const StepFeatures = memo(function StepFeatures({
                           ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald"
                           : "bg-primary-500/20 border border-primary-500/30 text-primary-300"
                       }`}
-                      role="listitem"
+                      role={ARIA_ROLES.LISTITEM}
                     >
                       <span className="text-accent-emerald" aria-hidden="true">
                         ✓
@@ -459,7 +461,7 @@ export const StepFeatures = memo(function StepFeatures({
             </div>
             <motion.div
               className="flex flex-wrap gap-2"
-              role="group"
+              role={ARIA_ROLES.GROUP}
               aria-labelledby="suggestions-label"
               initial="hidden"
               animate="visible"
@@ -582,8 +584,8 @@ export const StepFeatures = memo(function StepFeatures({
       <AnimatePresence>
         {(justAdded || showAllAddedMsg) && (
           <motion.div
-            role="alert"
-            aria-live="assertive"
+            role={ARIA_ROLES.ALERT}
+            aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}

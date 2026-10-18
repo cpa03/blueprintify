@@ -35,12 +35,15 @@ import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
-  TOOLTIP_LABELS,
-  TIME_UNITS,
-  UI_TIMEOUTS,
-  FRAMER_TYPE,
-  COPY_STATE_VALUES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   BANNER_STATE_VALUES,
+  COPY_STATE_VALUES,
+  FRAMER_TYPE,
+  TIME_UNITS,
+  TOOLTIP_LABELS,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -196,9 +199,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           text, so it cannot serve as a reliable live region itself. */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {announcement}
       </span>

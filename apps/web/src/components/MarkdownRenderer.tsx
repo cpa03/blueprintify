@@ -25,7 +25,12 @@ import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
-import { FRAMER_TYPE } from "@blueprint/shared/config";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  FRAMER_TYPE,
+} from "@blueprint/shared/config";
 import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -130,9 +135,9 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
           "Copied!" feedback via the button text change. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {copyAnnouncement}
       </div>

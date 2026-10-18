@@ -17,9 +17,11 @@ import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
   FRAMER_TYPE,
-  UI_TIMEOUTS,
   SAVE_STATE_VALUES,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
@@ -94,8 +96,8 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           className={`flex items-center gap-2 text-xs ${
             hasChanges ? "text-amber-400" : "text-dark-400"
           }`}
-          aria-live="polite"
-          aria-atomic="true"
+          aria-live={ARIA_LIVE_VALUES.POLITE}
+          aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
           data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
           data-has-changes={hasChanges}
           data-reduced-motion={shouldReduceMotion}
