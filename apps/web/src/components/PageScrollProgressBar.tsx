@@ -37,12 +37,13 @@ import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import {
-  SCROLL_PROGRESS_DEFAULTS,
-  SPRING_SCROLL_HOVER,
+  ARIA_ROLES,
+  BANNER_STATE_VALUES,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
   RATIO_LIMITS,
-  BANNER_STATE_VALUES,
+  SCROLL_PROGRESS_DEFAULTS,
+  SPRING_SCROLL_HOVER,
 } from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
@@ -203,7 +204,7 @@ function PageScrollProgressBarComponent({
 
   return (
     <motion.div
-      role="slider"
+      role={ARIA_ROLES.SLIDER}
       aria-orientation="horizontal"
       aria-valuenow={Math.round(scrollProgress)}
       aria-valuemin={0}

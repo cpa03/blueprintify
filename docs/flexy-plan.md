@@ -4,6 +4,36 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 194: Centralize ARIA Role, Live-Region, Atomic & Modal Literals Across All Components
+
+**Problem**: 131 hardcoded ARIA attribute literals remained across 35 web component files: `role="..."` (status/alert/dialog/img/group/region/progressbar/tooltip/tabpanel/tablist/tab/slider/searchbox/radiogroup/radio/option/listitem/list/listbox), `aria-live="polite"/"assertive"`, `aria-atomic="true"`, and `aria-modal="true"` — no `ARIA_ROLES`/`ARIA_LIVE_VALUES`/`ARIA_ATOMIC_VALUES`/`ARIA_MODAL_VALUES` constants existed. Supersedes stale PRs #3645 (Iteration 188) and #3668 (Iteration 189), which were 106+ commits behind main. Flexy says: no hardcoded ARIA attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_ROLES` (19 roles), `ARIA_LIVE_VALUES` (POLITE/ASSERTIVE/OFF), `ARIA_ATOMIC_VALUES` (TRUE/FALSE), `ARIA_MODAL_VALUES` (TRUE/FALSE) |
+| `packages/shared/src/index.ts` | Exported the 4 new constants |
+| `packages/shared/src/config.test.ts` | 28 new value/count/uniqueness tests (entry coverage for all 19 roles + 3 live + 2 atomic + 2 modal) |
+| 35 files in `apps/web/src/` | 131× hardcoded role / aria-live / aria-atomic / aria-modal literals → `ARIA_*` constants; Toast.tsx querySelector string → template literal with constants |
+| `docs/flexy-plan.md` | Iteration 194 entry |
+
+Intentionally untouched: test files (querySelector assertions test rendered output), code comments/JSDoc, hooks JSDoc examples (`useScrollLock`/`useFocusTrap`), `lib/templates/react.ts` (generated-project template string).
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.33s)
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,304 web + 550 api + 907 shared = 2,761 tests passing**
+- ✅ Remaining hardcoded role / aria-live / aria-atomic / aria-modal literals in components (excluding comments & test queries) — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-194-aria-roles-live-modal` | refactor(flexy): centralize ARIA role, live-region, atomic & modal literals into shared config (Iteration 194) |
+
 ### ✅ Flexy Iteration 193: Centralize Remaining SVG Stroke Attribute Literals Across All Components
 
 **Problem**: 185 hardcoded SVG stroke attribute literals remained across 26 web component files, bypassing the existing `SVG_ICON_DEFAULTS` constants (`STROKE_WIDTH_DEFAULT`, `STROKE_WIDTH_BOLD`, `STROKE_LINECAP_ROUND`, `STROKE_LINEJOIN_ROUND`) introduced in Iteration 187b. Breakdown: 43× `strokeWidth={2}`, 11× string-form `strokeWidth="N"` (`"2"`/`"2.5"`/`"3"`/`"4"`), 7× `strokeWidth={2.5}`, 1× `strokeWidth={1.5}`, 3× `strokeWidth={3}`, 62× `strokeLinecap="round"`, 58× `strokeLinejoin="round"`. Values 1.5, 2.5 and 4 had no constant at all. Flexy says: no hardcoded stroke attribute literals!

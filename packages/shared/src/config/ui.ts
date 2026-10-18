@@ -1063,3 +1063,96 @@ export const STEP_INDICATOR_STATE_VALUES = {
   /** Locked step identifier */
   LOCKED: "locked" as const,
 } as const;
+
+/**
+ * WAI-ARIA Role Literals
+ * Centralized source of truth for `role="..."` attribute values across all
+ * web components. Keeps ARIA usage greppable and prevents literal drift.
+ * Flexy says: No hardcoded role="status"/"alert"/"dialog" strings in components!
+ * Usage: import { ARIA_ROLES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.STATUS} aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_ROLES = {
+  /** Live status announcer — polite updates for assistive tech */
+  STATUS: "status" as const,
+  /** Urgent alert announcer — immediately interrupts screen readers */
+  ALERT: "alert" as const,
+  /** Modal dialog container — traps focus, blocks background */
+  DIALOG: "dialog" as const,
+  /** Semantic image role for SVG/icon graphics exposed to AT */
+  IMG: "img" as const,
+  /** Grouped controls/elements container */
+  GROUP: "group" as const,
+  /** Named landmark region for page sections */
+  REGION: "region" as const,
+  /** Progress indicator with aria-valuenow/min/max */
+  PROGRESSBAR: "progressbar" as const,
+  /** Hover/focus tooltip popup */
+  TOOLTIP: "tooltip" as const,
+  /** Tab panel content container */
+  TABPANEL: "tabpanel" as const,
+  /** Tab list container */
+  TABLIST: "tablist" as const,
+  /** Individual tab */
+  TAB: "tab" as const,
+  /** Slider input role */
+  SLIDER: "slider" as const,
+  /** Editable search input role */
+  SEARCHBOX: "searchbox" as const,
+  /** Radio button group container */
+  RADIOGROUP: "radiogroup" as const,
+  /** Individual radio button */
+  RADIO: "radio" as const,
+  /** Selectable option in a listbox */
+  OPTION: "option" as const,
+  /** Plain list item */
+  LISTITEM: "listitem" as const,
+  /** List container */
+  LIST: "list" as const,
+  /** Listbox container (selectable list) */
+  LISTBOX: "listbox" as const,
+} as const;
+
+/**
+ * ARIA Live Region Politeness Values
+ * Centralized source of truth for `aria-live` attribute values.
+ * Flexy says: No hardcoded aria-live="polite"/"assertive" strings in components!
+ * Usage: import { ARIA_LIVE_VALUES } from "@blueprint/shared";
+ *        <span role={ARIA_ROLES.STATUS} aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_LIVE_VALUES = {
+  /** Polite — waits for a pause before announcing (default for status) */
+  POLITE: "polite" as const,
+  /** Assertive — interrupts immediately (use for errors/alerts) */
+  ASSERTIVE: "assertive" as const,
+  /** Off — disables live region announcements */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * ARIA Atomic Values
+ * Centralized source of truth for `aria-atomic` attribute values.
+ * Flexy says: No hardcoded aria-atomic="true"/"false" strings in components!
+ * Usage: import { ARIA_ATOMIC_VALUES } from "@blueprint/shared";
+ *        <p role={ARIA_ROLES.STATUS} aria-atomic={ARIA_ATOMIC_VALUES.TRUE}>
+ */
+export const ARIA_ATOMIC_VALUES = {
+  /** Announce the entire live region as a whole */
+  TRUE: "true" as const,
+  /** Announce only the changed portions */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Modal Values
+ * Centralized source of truth for `aria-modal` attribute values.
+ * Flexy says: No hardcoded aria-modal="true" strings in components!
+ * Usage: import { ARIA_MODAL_VALUES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.DIALOG} aria-modal={ARIA_MODAL_VALUES.TRUE}>
+ */
+export const ARIA_MODAL_VALUES = {
+  /** Modal dialog — background is inert to assistive tech */
+  TRUE: "true" as const,
+  /** Non-modal dialog — background remains accessible */
+  FALSE: "false" as const,
+} as const;

@@ -35,12 +35,13 @@ import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
-  TOOLTIP_LABELS,
-  TIME_UNITS,
-  UI_TIMEOUTS,
-  FRAMER_TYPE,
-  COPY_STATE_VALUES,
+  ARIA_LIVE_VALUES,
   BANNER_STATE_VALUES,
+  COPY_STATE_VALUES,
+  FRAMER_TYPE,
+  TIME_UNITS,
+  TOOLTIP_LABELS,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -273,7 +274,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                   ease: EASING.easeOut,
                   delay: ANIMATION_ENTRANCE_DELAYS.FAST,
                 }}
-                aria-live="polite"
+                aria-live={ARIA_LIVE_VALUES.POLITE}
               >
                 {TOOLTIP_LABELS.EDITOR.COPIED}
               </motion.span>

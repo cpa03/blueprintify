@@ -22,15 +22,18 @@
  */
 
 import {
-  WIZARD_STEP_KEYS,
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   REVIEW_STATE_VALUES,
+  WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
@@ -620,9 +623,9 @@ export const StepReview = memo(function StepReview({
                 initial={shouldReduceMotion ? undefined : { opacity: 0, y: -5 }}
                 animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
+                role={ARIA_ROLES.STATUS}
+                aria-live={ARIA_LIVE_VALUES.POLITE}
+                aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
               >
                 <span
                   className={
