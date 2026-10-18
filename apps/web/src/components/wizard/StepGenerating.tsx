@@ -37,6 +37,7 @@ import {
   LOADING_DOTS_COUNT,
   MODIFIER_KEYS,
   TIME_UNITS,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -133,7 +134,6 @@ import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { getScrollBehavior } from "../../utils/scroll";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepGeneratingProps {
   direction?: AnimationDirection;
@@ -384,7 +384,7 @@ export const StepGenerating = memo(function StepGenerating({
             <svg
               width="48"
               height="48"
-              viewBox="0 0 48 48"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
               fill="none"
               className="text-accent-emerald"
             >
@@ -429,7 +429,7 @@ export const StepGenerating = memo(function StepGenerating({
             <svg
               width="48"
               height="48"
-              viewBox="0 0 48 48"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
               fill="none"
               className="text-accent-pink"
               role="img"
