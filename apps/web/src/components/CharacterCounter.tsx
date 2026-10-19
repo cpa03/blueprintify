@@ -1,10 +1,15 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
-  CHAR_COUNTER_THRESHOLDS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
+  CHAR_COUNTER_THRESHOLDS,
   RATIO_LIMITS,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -45,6 +50,12 @@ function CharacterCounterComponent({
 
   const remaining = max - current;
 
+  // Respect prefers-reduced-motion (WCAG 2.3.3): the limit shake, warning
+  // pulse, and min-met celebration are purely decorative, so they are skipped
+  // for vestibular-sensitive users. State colors and screen-reader
+  // announcements stay fully functional.
+  const shouldReduceMotion = useReducedMotion();
+
   const [showLimitShake, setShowLimitShake] = useState(false);
   const prevAtLimitRef = useRef(false);
 
@@ -74,9 +85,10 @@ function CharacterCounterComponent({
     prevBelowMinRef.current = belowMin;
   }, [belowMin, min]);
 
-  const shakeClass = showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
-  const pulseClass = shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
-  const celebrateClass = showCelebrate ? "counter-celebrate-pop" : "";
+  const shakeClass = !shouldReduceMotion && showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
+  const pulseClass =
+    !shouldReduceMotion && shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
+  const celebrateClass = !shouldReduceMotion && showCelebrate ? "counter-celebrate-pop" : "";
 
   // Intentionally empty during normal typing: a live region that changes on
   // every keystroke makes screen readers announce each character typed.
@@ -96,20 +108,27 @@ function CharacterCounterComponent({
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden="true"
         data-state={stateValue}
+        data-at-limit={isAtLimit ? "true" : "false"}
+        data-warning={isWarning ? "true" : "false"}
+        data-valid={isValid ? "true" : "false"}
         data-has-min={min !== undefined ? "true" : "false"}
+        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
         <span className="text-dark-600">/{max}</span>
         {isAtLimit && (
-          <span className="ml-1 inline-flex animate-warning-icon" aria-hidden="true">
+          <span
+            className={`ml-1 inline-flex ${shouldReduceMotion ? "" : "animate-warning-icon"}`}
+            aria-hidden="true"
+          >
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
-              viewBox="0 0 24 24"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
             >
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
@@ -119,9 +138,9 @@ function CharacterCounterComponent({
       {/* Screen-reader-only announcement with descriptive label */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {announcement}
       </span>
@@ -148,6 +167,10 @@ function CharacterCounterCompactComponent({
   const remaining = max - current;
   const isAtLimit = current >= max;
 
+  // Same reduced-motion policy as the main counter above (WCAG 2.3.3): the
+  // per-keystroke count pop and the fill-width transition are decorative.
+  const shouldReduceMotion = useReducedMotion();
+
   const compactStateValue = isAtLimit
     ? CHAR_COUNTER_STATE_VALUES.AT_LIMIT
     : isDanger
@@ -166,29 +189,38 @@ function CharacterCounterCompactComponent({
         : "";
 
   return (
-    <div className={`flex items-center gap-1.5 ${className}`} data-state={compactStateValue}>
+    <div
+      className={`flex items-center gap-1.5 ${className}`}
+      data-state={compactStateValue}
+      data-at-limit={isAtLimit ? "true" : "false"}
+      data-warning={isWarning ? "true" : "false"}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+    >
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${
             isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
           }`}
-          style={{ width: `${Math.min(percentage, 100)}%` }}
+          style={{
+            width: `${Math.min(percentage, 100)}%`,
+            transition: shouldReduceMotion ? "none" : undefined,
+          }}
         />
       </div>
       <span
         key={`compact-count-${current}`}
-        className={`text-2xs tabular-nums inline-block animate-compact-counter-pop ${
-          isDanger ? "text-accent-pink font-bold" : "text-dark-500"
-        }`}
+        className={`text-2xs tabular-nums inline-block ${
+          shouldReduceMotion ? "" : "animate-compact-counter-pop"
+        } ${isDanger ? "text-accent-pink font-bold" : "text-dark-500"}`}
         aria-hidden="true"
       >
         {current}/{max}
       </span>
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {compactAnnouncement}
       </span>

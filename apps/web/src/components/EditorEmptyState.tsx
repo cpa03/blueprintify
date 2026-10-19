@@ -23,6 +23,9 @@ import {
 } from "../config/constants";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   DISPLAY_SYMBOLS,
   EMPTY_STATE_VALUES,
 } from "@blueprint/shared/config";
@@ -90,7 +93,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL}
       data-state={EMPTY_STATE_VALUES.WAITING}
       data-step={currentStep}
@@ -190,8 +193,8 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       <motion.div
         className="flex items-center gap-3 glass-card px-6 py-3 rounded-full"
         variants={fadeInUp}
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         <div className="flex items-center gap-1">
           {WIZARD_STEPS.map((step, index) => {
