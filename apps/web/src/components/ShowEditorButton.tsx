@@ -112,6 +112,10 @@ function ShowEditorButtonComponent({
     ? UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON
     : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON;
 
+  // WCAG 2.5.3 Label in Name: the accessible name must contain the visible
+  // text verbatim ("Show Editor Ctrl+E"), so mirror the kbd hint exactly.
+  const ariaLabel = `${buttonTitle} ${modifierKey}+E`;
+
   return (
     <KeyboardShortcutTooltip
       shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
@@ -128,7 +132,7 @@ function ShowEditorButtonComponent({
             KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
             MODIFIER_KEYS.CMD
           )}
-          aria-label={buttonTitle}
+          aria-label={ariaLabel}
           title={buttonTitle}
           data-editor-toggle="true"
           data-has-content={hasContent}
