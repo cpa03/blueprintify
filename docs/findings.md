@@ -2,6 +2,15 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup — Enabled Request (2026-10-19)
+
+**Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — **enabled** this cycle (prior cycles 10-13/10-15/10-17/10-18 were disabled/sync-only).
+**Sync**: `agent/janitor` merged `origin/main` (`325f248d`); 1 conflict in `docs/findings.md` resolved by keeping both sides (append-only record — Janitor 10-13/10-15/10-17/10-18 blocks + RepoKeeper 10-17/10-18 cycles 1-7 blocks). Post-merge: 605 tracked files.
+**Scans**: redundant files **0** (0 tracked `*.tmp/*.bak/*.orig/*.log/*.patch`, 0 tracked build dirs, 0 untracked non-ignored files, 0 empty source dirs) · commented-out dead code **0** (code-shaped `//` hits 0; all hits prose/JSDoc) · exported symbols: **628 scanned → 1 genuine dead export removed**: `RATE_LIMIT_CONFIG` (carried flag from 10-17; deleted this cycle) · deps: depcheck root+3 workspaces → 0 true unused (`jest-axe`/`@types/jest-axe` serve 4 web a11y tests; `autoprefixer`/`cssnano` used in `postcss.config.js` — false positives) · `console.log` 15 in src all legitimate (logger/secureLog impls + JSDoc, template sample strings) · TODO/FIXME 0 · `.only`/`.skip`/`debugger` 0 · `as any`/`@ts-ignore` 0 · duplicate-by-hash only intentional sets (`.agent`↔`.opencode` mirror, dual `functions/api/[[path]].ts` proxy) · orphan-file scan: 7 candidates all false positives (e2e specs via playwright config, `.d.ts` auto-included, vitest setup) · CI runners 20/20 `ubuntu-24.04-arm` COMPLIANT.
+**Removed**: `RATE_LIMIT_CONFIG` getter object (`apps/api/src/config/constants/ratelimit.ts:16-29`, 14 lines — env-based WINDOW_MS/STRICT_MAX/STANDARD_MAX/LENIENT_MAX getters) + its re-export line in `apps/api/src/config/constants.ts:61` (now exports only `RATE_LIMIT_CONSTANTS`). Verified 0 consumers repo-wide: `middleware/rateLimit.ts`/`routes/share.ts` read thresholds directly via `getConfig().RATE_LIMIT_*`/`env.RATE_LIMIT_*` and use the live `RATE_LIMIT_CONSTANTS` for limiter bindings. Removed now-unused `getEnvConfig` import from `ratelimit.ts`. Net: -15 lines, 1 dead export eliminated.
+**Verify**: typecheck ✅ exit 0 (shared/api/web) · lint ✅ 0 errors · build ✅ exit 0 (vite 11.20s).
+**Structural mess (report-only)**: `RATE_LIMIT_CONFIG` flag now RESOLVED. Standing flags unchanged: `debounce.test.ts` placement, dual `[[path]].ts` proxy (byte-identical, intentional), 4 utils dirs + `sanitizeHtml` split, `tui.json` trailing-newline diff.
+
 ## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-18)
 
 **Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — flagged **disabled**, so read-only + sync, zero deletions (precedent: identical string in 2026-10-13/10-15/10-17 cycles).
