@@ -196,6 +196,11 @@ function CharacterCounterCompactComponent({
       data-at-limit={isAtLimit ? "true" : "false"}
       data-warning={isWarning ? "true" : "false"}
       data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      role="progressbar"
+      aria-label={compactCountLabel}
+      aria-valuemin={0}
+      aria-valuemax={max}
+      aria-valuenow={Math.min(current, max)}
     >
       <div
         className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden"
