@@ -197,6 +197,8 @@ export const ENV_VAR_KEYS = {
   WEB: {
     /** API base URL for web client */
     VITE_API_BASE_URL: "VITE_API_BASE_URL",
+    /** Public API key for web client requests */
+    VITE_API_KEY: "VITE_API_KEY",
     /** Enable analytics tracking */
     VITE_ENABLE_ANALYTICS: "VITE_ENABLE_ANALYTICS",
     /** Project homepage URL */
@@ -488,6 +490,12 @@ export const API_ERROR_MESSAGES = {
   NO_RESPONSE_BODY: "Server returned empty response. Check if API server is running.",
   /** SSE stream connection interrupted */
   STREAM_ERROR: "Connection interrupted. Check your network and try again.",
+  /** API endpoint unavailable (e.g. 405 from unreachable backend) */
+  ENDPOINT_UNAVAILABLE: (status: number): string =>
+    `API endpoint unavailable (${status} Method Not Allowed). Please ensure backend is reachable.`,
+  /** Generic 5xx server error with status code */
+  SERVER_ERROR: (status: number): string =>
+    `Server error (${status}). Service temporarily unavailable.`,
 } as const;
 
 /**

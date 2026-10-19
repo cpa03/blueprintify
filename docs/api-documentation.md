@@ -63,9 +63,11 @@ API metadata endpoint - provides service identity, version, runtime information,
     "export": "POST /export",
     "import": "POST /import",
     "storageQuota": "GET /storage/quota",
+    "storageReport": "POST /storage/report",
     "storageClear": "DELETE /storage/clear",
     "shareCreate": "POST /share",
     "shareGet": "GET /share/:id",
+    "shareVerify": "POST /share/:id/verify",
     "shareDelete": "DELETE /share/:id"
   }
 }

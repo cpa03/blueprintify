@@ -3,6 +3,7 @@ import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
 import { SKIP_LINK_ANIMATION, ACCESSIBILITY_LABELS_SKIP } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Z_INDEX } from "../config/theme";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 export const SkipLink = memo(function SkipLink(): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
@@ -37,15 +38,15 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
           className="w-4 h-4"
           fill="none"
           stroke="currentColor"
-          viewBox="0 0 24 24"
+          viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
           style={{
             animation: shouldReduceMotion ? "none" : SKIP_LINK_ANIMATION.ARROW_BOUNCE,
           }}
         >
           <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2.5}
+            strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+            strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
             d="M13 7l5 5m0 0l-5 5m5-5H6"
           />
         </svg>

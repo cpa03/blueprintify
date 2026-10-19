@@ -352,6 +352,10 @@ export const UI_TIMEOUTS = {
   /** Interval for elapsed time counter tick in StepGenerating (1s).
    * Used as the setInterval period for the MM:SS elapsed time display during AI generation. */
   ELAPSED_TIMER_INTERVAL_MS: 1000,
+  /** Interval for throttled screen-reader announcements of elapsed time in StepGenerating (30s).
+   * Announcing every second is an a11y anti-pattern — only the SR live region is throttled,
+   * the on-screen timer still ticks at ELAPSED_TIMER_INTERVAL_MS. */
+  ELAPSED_ANNOUNCEMENT_INTERVAL_MS: 30000,
 } as const;
 
 /**
@@ -775,6 +779,8 @@ export const COPY_STATE_VALUES = {
   COPIED: "copied" as const,
   /** Idle / ready to copy state identifier */
   IDLE: "idle" as const,
+  /** Clipboard write failed (both API and fallback) state identifier */
+  FAILED: "failed" as const,
 } as const;
 
 /**
@@ -820,6 +826,20 @@ export const TYPING_STATE_VALUES = {
   /** Typing / active generation state identifier */
   TYPING: "typing" as const,
   /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Starter Template Selection State Values
+ * Centralized state tracking values for starter template cards (TemplateGrid).
+ * Flexy says: No hardcoded "selected"/"idle" strings in TemplateGrid!
+ * Usage: import { TEMPLATE_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
+ */
+export const TEMPLATE_STATE_VALUES = {
+  /** Selected template state identifier */
+  SELECTED: "selected" as const,
+  /** Idle/unselected template state identifier */
   IDLE: "idle" as const,
 } as const;
 
@@ -930,6 +950,20 @@ export const COUNTER_DIRECTION_VALUES = {
 } as const;
 
 /**
+ * Counter Pulse State Values
+ * Centralized state tracking values for animated card counter active/idle states (AnimatedCounter).
+ * Flexy says: No hardcoded "active"/"idle" strings in AnimatedCounter!
+ * Usage: import { COUNTER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
+ */
+export const COUNTER_STATE_VALUES = {
+  /** Pulse active state identifier */
+  ACTIVE: "active" as const,
+  /** Counter idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Editor Button Display State Values
  * Centralized state tracking values for editor toggle button (ShowEditorButton).
  * Flexy says: No hardcoded "content-ready"/"idle" strings in ShowEditorButton!
@@ -941,4 +975,242 @@ export const EDITOR_BUTTON_STATE_VALUES = {
   CONTENT_READY: "content-ready" as const,
   /** Idle state identifier */
   IDLE: "idle" as const,
+} as const;
+
+/**
+ * SVG Icon Rendering Defaults
+ * Centralized source of truth for inline SVG icon attributes.
+ * Flexy says: No hardcoded "0 0 24 24"/"none"/"currentColor"/"round"/strokeWidth in Icon components!
+ * Usage: import { SVG_ICON_DEFAULTS } from "@blueprint/shared";
+ *        <svg viewBox={SVG_ICON_DEFAULTS.VIEW_BOX} fill={SVG_ICON_DEFAULTS.FILL_NONE} ...>
+ */
+export const SVG_ICON_DEFAULTS = {
+  /** Default viewBox for 24x24 stroke icons */
+  VIEW_BOX: "0 0 24 24" as const,
+  /** Small viewBox for 16x16 icons (e.g., inline copy buttons, compact UI) */
+  VIEW_BOX_SMALL: "0 0 16 16" as const,
+  /** Large viewBox for 48x48 celebration/status icons */
+  VIEW_BOX_LARGE: "0 0 48 48" as const,
+  /** Default fill for stroke-only icons */
+  FILL_NONE: "none" as const,
+  /** Default stroke color inheriting surrounding text color */
+  STROKE_CURRENT: "currentColor" as const,
+  /** Default rounded line caps */
+  STROKE_LINECAP_ROUND: "round" as const,
+  /** Default rounded line joins */
+  STROKE_LINEJOIN_ROUND: "round" as const,
+  /** Light stroke width for fine-detail icons (hairline emphasis) */
+  STROKE_WIDTH_LIGHT: 1.5 as const,
+  /** Default stroke width for regular icons */
+  STROKE_WIDTH_DEFAULT: 2 as const,
+  /** Medium stroke width for slightly emphasized icons (between default and bold) */
+  STROKE_WIDTH_MEDIUM: 2.5 as const,
+  /** Bold stroke width for emphasis icons */
+  STROKE_WIDTH_BOLD: 3 as const,
+  /** Heavy stroke width for progress rings and thick-stroke indicators */
+  STROKE_WIDTH_HEAVY: 4 as const,
+  /** Default icon size class */
+  SIZE_DEFAULT: "w-5 h-5" as const,
+  /** Small icon size class */
+  SIZE_SMALL: "w-4 h-4" as const,
+} as const;
+
+/**
+ * Icon Path Data
+ * Centralized source of truth for inline SVG path `d` attributes.
+ * Flexy says: No hardcoded "M9 5l7 7-7 7" chevron paths in components!
+ * Usage: import { ICON_PATHS } from "@blueprint/shared";
+ *        <path d={ICON_PATHS.CHEVRON_RIGHT} ... />
+ */
+export const ICON_PATHS = {
+  /** Right-pointing chevron (direction arrow) */
+  CHEVRON_RIGHT: "M9 5l7 7-7 7" as const,
+  /** App brand logo layered diamond stack path */
+  BRAND_LOGO: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" as const,
+  /** GitHub brand octocat logo path */
+  GITHUB:
+    "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" as const,
+} as const;
+
+/**
+ * Review Step Display State Values
+ * Centralized state tracking values for the wizard review step (StepReview).
+ * Flexy says: No hardcoded "generating"/"idle" strings in StepReview!
+ * Usage: import { REVIEW_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isGenerating ? REVIEW_STATE_VALUES.GENERATING : REVIEW_STATE_VALUES.IDLE}
+ */
+export const REVIEW_STATE_VALUES = {
+  /** Generation in progress state identifier */
+  GENERATING: "generating" as const,
+  /** Idle / ready to review state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Celebration Display State Values
+ * Centralized state tracking values for completion celebration animations (GenerationCelebration).
+ * Flexy says: No hardcoded "active"/"idle" strings in GenerationCelebration!
+ * Usage: import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isComplete ? CELEBRATION_STATE_VALUES.ACTIVE : CELEBRATION_STATE_VALUES.IDLE}
+ */
+export const CELEBRATION_STATE_VALUES = {
+  /** Celebration animation active state identifier */
+  ACTIVE: "active" as const,
+  /** Celebration animation idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Step Indicator Display State Values
+ * Centralized state tracking values for wizard navigation indicators (StepIndicator).
+ * Flexy says: No hardcoded "active"/"completed"/"locked"/"available" strings in StepIndicator!
+ * Usage: import { STEP_INDICATOR_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isActive ? STEP_INDICATOR_STATE_VALUES.ACTIVE : ...}
+ */
+export const STEP_INDICATOR_STATE_VALUES = {
+  /** Active step identifier */
+  ACTIVE: "active" as const,
+  /** Completed step identifier */
+  COMPLETED: "completed" as const,
+  /** Available step identifier */
+  AVAILABLE: "available" as const,
+  /** Locked step identifier */
+  LOCKED: "locked" as const,
+} as const;
+
+/**
+ * WAI-ARIA Role Literals
+ * Centralized source of truth for `role="..."` attribute values across all
+ * web components. Keeps ARIA usage greppable and prevents literal drift.
+ * Flexy says: No hardcoded role="status"/"alert"/"dialog" strings in components!
+ * Usage: import { ARIA_ROLES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.STATUS} aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_ROLES = {
+  /** Live status announcer — polite updates for assistive tech */
+  STATUS: "status" as const,
+  /** Urgent alert announcer — immediately interrupts screen readers */
+  ALERT: "alert" as const,
+  /** Modal dialog container — traps focus, blocks background */
+  DIALOG: "dialog" as const,
+  /** Semantic image role for SVG/icon graphics exposed to AT */
+  IMG: "img" as const,
+  /** Grouped controls/elements container */
+  GROUP: "group" as const,
+  /** Named landmark region for page sections */
+  REGION: "region" as const,
+  /** Progress indicator with aria-valuenow/min/max */
+  PROGRESSBAR: "progressbar" as const,
+  /** Hover/focus tooltip popup */
+  TOOLTIP: "tooltip" as const,
+  /** Tab panel content container */
+  TABPANEL: "tabpanel" as const,
+  /** Tab list container */
+  TABLIST: "tablist" as const,
+  /** Individual tab */
+  TAB: "tab" as const,
+  /** Slider input role */
+  SLIDER: "slider" as const,
+  /** Editable search input role */
+  SEARCHBOX: "searchbox" as const,
+  /** Radio button group container */
+  RADIOGROUP: "radiogroup" as const,
+  /** Individual radio button */
+  RADIO: "radio" as const,
+  /** Selectable option in a listbox */
+  OPTION: "option" as const,
+  /** Plain list item */
+  LISTITEM: "listitem" as const,
+  /** List container */
+  LIST: "list" as const,
+  /** Listbox container (selectable list) */
+  LISTBOX: "listbox" as const,
+} as const;
+
+/**
+ * ARIA Live Region Politeness Values
+ * Centralized source of truth for `aria-live` attribute values.
+ * Flexy says: No hardcoded aria-live="polite"/"assertive" strings in components!
+ * Usage: import { ARIA_LIVE_VALUES } from "@blueprint/shared";
+ *        <span role={ARIA_ROLES.STATUS} aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_LIVE_VALUES = {
+  /** Polite — waits for a pause before announcing (default for status) */
+  POLITE: "polite" as const,
+  /** Assertive — interrupts immediately (use for errors/alerts) */
+  ASSERTIVE: "assertive" as const,
+  /** Off — disables live region announcements */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * ARIA Atomic Values
+ * Centralized source of truth for `aria-atomic` attribute values.
+ * Flexy says: No hardcoded aria-atomic="true"/"false" strings in components!
+ * Usage: import { ARIA_ATOMIC_VALUES } from "@blueprint/shared";
+ *        <p role={ARIA_ROLES.STATUS} aria-atomic={ARIA_ATOMIC_VALUES.TRUE}>
+ */
+export const ARIA_ATOMIC_VALUES = {
+  /** Announce the entire live region as a whole */
+  TRUE: "true" as const,
+  /** Announce only the changed portions */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Modal Values
+ * Centralized source of truth for `aria-modal` attribute values.
+ * Flexy says: No hardcoded aria-modal="true" strings in components!
+ * Usage: import { ARIA_MODAL_VALUES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.DIALOG} aria-modal={ARIA_MODAL_VALUES.TRUE}>
+ */
+export const ARIA_MODAL_VALUES = {
+  /** Modal dialog — background is inert to assistive tech */
+  TRUE: "true" as const,
+  /** Non-modal dialog — background remains accessible */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Hidden Values
+ * Centralized source of truth for `aria-hidden` attribute values.
+ * Flexy says: No hardcoded aria-hidden="true" strings in components!
+ * Usage: import { ARIA_HIDDEN_VALUES } from "@blueprint/shared";
+ *        <svg aria-hidden={ARIA_HIDDEN_VALUES.TRUE} focusable="false">
+ */
+export const ARIA_HIDDEN_VALUES = {
+  /** Element is hidden from the accessibility tree (decorative content) */
+  TRUE: "true" as const,
+  /** Element is exposed to assistive tech (visible semantic content) */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Orientation Values
+ * Centralized source of truth for `aria-orientation` attribute values
+ * used by scrollbars, toolbars, and listbox-style widgets.
+ * Flexy says: No hardcoded aria-orientation="horizontal" strings in components!
+ * Usage: import { ARIA_ORIENTATION_VALUES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.SLIDER} aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}>
+ */
+export const ARIA_ORIENTATION_VALUES = {
+  /** Widget is laid out horizontally (e.g., top toolbars, horizontal sliders) */
+  HORIZONTAL: "horizontal" as const,
+  /** Widget is laid out vertically (e.g., scrollbars, vertical sliders) */
+  VERTICAL: "vertical" as const,
+} as const;
+
+/**
+ * ARIA Required Values
+ * Centralized source of truth for `aria-required` attribute values
+ * marking form fields as required inputs.
+ * Flexy says: No hardcoded aria-required="true" strings in components!
+ * Usage: import { ARIA_REQUIRED_VALUES } from "@blueprint/shared";
+ *        <input aria-required={ARIA_REQUIRED_VALUES.TRUE} />
+ */
+export const ARIA_REQUIRED_VALUES = {
+  /** Input is required for successful form submission */
+  TRUE: "true" as const,
+  /** Input is optional */
+  FALSE: "false" as const,
 } as const;

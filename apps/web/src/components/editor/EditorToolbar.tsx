@@ -30,17 +30,20 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
-  VIEW_MODES as SHARED_VIEW_MODES,
-  VIEW_MODE_LABELS,
-  TOOLTIP_LABELS,
-  TOOLTIP_DEFAULTS,
-  SHORTCUT_LABELS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_ORIENTATION_VALUES,
+  ARIA_ROLES,
   CIRCLE_GEOMETRY,
-  VIEW_MODE_INDICATOR_POSITION,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  SHORTCUT_LABELS,
+  TOOLTIP_DEFAULTS,
+  TOOLTIP_LABELS,
+  VIEW_MODE_INDICATOR_POSITION,
+  VIEW_MODE_LABELS,
+  VIEW_MODES as SHARED_VIEW_MODES,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -59,6 +62,8 @@ import {
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -117,6 +122,7 @@ function EditorToolbarComponent({
   isExporting = false,
   exportSuccess = false,
 }: EditorToolbarProps) {
+  const reducedMotion = useReducedMotion();
   const isCopied = copied === activeTab;
 
   const viewModeShortcuts: Record<ViewMode, string> = {
@@ -145,16 +151,22 @@ function EditorToolbarComponent({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2"
+      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-has-content={hasContent ? "true" : "false"}
+      data-is-exporting={isExporting ? "true" : "false"}
+      data-export-success={exportSuccess ? "true" : "false"}
+    >
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
-        role="radiogroup"
+        role={ARIA_ROLES.RADIOGROUP}
         aria-label={EDITOR_LABELS.VIEW_MODES_ARIA_LABEL}
         // Horizontal orientation: the view-mode radios are arranged in a row
         // and navigated with ArrowLeft/ArrowRight (see handleViewModeKeyDown).
         // Without the explicit attribute the group may be announced as
         // vertical by screen readers, implying wrong arrow-key navigation.
-        aria-orientation="horizontal"
+        aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
         onKeyDown={handleViewModeKeyDown}
       >
         {VIEW_MODES.map((mode) => (
@@ -174,7 +186,7 @@ function EditorToolbarComponent({
             <button
               onClick={() => setViewMode(mode)}
               data-view-mode={mode}
-              role="radio"
+              role={ARIA_ROLES.RADIO}
               aria-checked={viewMode === mode}
               // Roving tabindex (ARIA radio-group pattern): only the checked
               // radio stays in the tab order; arrow keys move between options.
@@ -232,10 +244,14 @@ function EditorToolbarComponent({
                 ? VIEW_MODE_INDICATOR_POSITION.SPLIT_WIDTH
                 : VIEW_MODE_INDICATOR_POSITION.SINGLE_WIDTH,
           }}
-          transition={{
-            type: FRAMER_TYPE.SPRING,
-            ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
-          }}
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : {
+                  type: FRAMER_TYPE.SPRING,
+                  ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
+                }
+          }
           style={{
             zIndex: Z_INDEX.base,
           }}
@@ -303,15 +319,19 @@ function EditorToolbarComponent({
               >
                 <motion.svg
                   className="w-4 h-4 mr-2 flex-shrink-0"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   fill="none"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: ANIMATION.GENTLE_PULSE,
-                    repeat: Infinity,
-                    ease: EASING.linear,
-                  }}
-                  aria-hidden="true"
+                  animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+                  transition={
+                    reducedMotion
+                      ? { duration: 0 }
+                      : {
+                          duration: ANIMATION.GENTLE_PULSE,
+                          repeat: Infinity,
+                          ease: EASING.linear,
+                        }
+                  }
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <defs>
                     <linearGradient id="toolbar-export-spinner-grad" x1="0" y1="0" x2="1" y2="1">
@@ -324,7 +344,7 @@ function EditorToolbarComponent({
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="currentColor"
-                    strokeWidth="3"
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                     strokeOpacity={0.15}
                     fill="none"
                   />
@@ -333,8 +353,8 @@ function EditorToolbarComponent({
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="url(#toolbar-export-spinner-grad)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     fill="none"
                     strokeDasharray={CIRCLE_GEOMETRY.CIRCUMFERENCE}
                     strokeDashoffset={CIRCLE_GEOMETRY.STROKE_DASHOFFSET}
@@ -365,16 +385,16 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                 >
                   <motion.path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                     d="M5 13l4 4L19 7"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
@@ -404,13 +424,13 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-1.5"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
@@ -447,22 +467,22 @@ function EditorToolbarComponent({
             className="w-4 h-4"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+            viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             whileHover={ROTATION.HALF}
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
             <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </motion.svg>
           {EDITOR_LABELS.BUTTONS.NEW_PROJECT}
           <kbd
             className="ml-1.5 px-1 py-0.5 bg-dark-700/80 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none"
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           >
             {getModifierLabel()}+N
           </kbd>

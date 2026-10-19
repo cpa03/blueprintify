@@ -303,6 +303,24 @@ code --install-extension editorconfig.editorconfig
 - Documentation effectiveness
 - Developer satisfaction surveys
 
+### Local Quality Gates
+
+Run these before pushing — any error or warning is a fatal failure:
+
+```bash
+npm run typecheck      # strict TS across workspaces
+npm run lint           # eslint, must be 0 errors / 0 warnings
+npm run build          # shared + web production build
+npm run build:api      # workers API bundle check
+npm run scan:secrets   # no leaked keys/tokens
+npm run validate:wrangler  # wrangler.toml resource IDs valid
+npm run test:all       # full suite (web + api + shared)
+# or all-in-one:
+npm run check
+```
+
+Pre-push hook (`.husky/pre-push`) enforces typecheck + lint + secrets scan.
+
 ---
 
-_This workflow is continuously evolving based on project needs and team feedback. Last updated: 2026-02-19_
+_This workflow is continuously evolving based on project needs and team feedback. Last updated: 2026-10-13_

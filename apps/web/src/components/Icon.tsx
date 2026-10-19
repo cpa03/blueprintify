@@ -12,6 +12,7 @@
  */
 
 import { memo } from "react";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 import { ICONS, type IconName } from "../config/icons";
 
 interface IconProps {
@@ -27,9 +28,9 @@ interface IconProps {
 
 const Icon = memo(function Icon({
   name,
-  className = "w-5 h-5",
+  className = SVG_ICON_DEFAULTS.SIZE_DEFAULT,
   ariaLabel,
-  strokeWidth = 2,
+  strokeWidth = SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT,
 }: IconProps) {
   const icon = ICONS[name];
   if (!icon) return null;
@@ -37,14 +38,19 @@ const Icon = memo(function Icon({
   return (
     <svg
       className={className}
-      fill="none"
-      stroke="currentColor"
+      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
       viewBox={icon.viewBox}
       role={ariaLabel ? "img" : undefined}
       aria-hidden={!ariaLabel}
       aria-label={ariaLabel}
     >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} d={icon.path} />
+      <path
+        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+        strokeWidth={strokeWidth}
+        d={icon.path}
+      />
     </svg>
   );
 });
