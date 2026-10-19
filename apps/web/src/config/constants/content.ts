@@ -426,6 +426,8 @@ export const ACCESSIBILITY_LABELS = {
       `${completed} of ${total} fields completed`,
     NEXT_DISABLED_TOOLTIP: "Fill in the project name and description to continue",
     NEXT_DISABLED_ARIA: "Next button is disabled. Fill in the project name and description first.",
+    FORM_READY_ANNOUNCEMENT:
+      "Form complete. The Next button is now enabled to continue to the next step.",
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",

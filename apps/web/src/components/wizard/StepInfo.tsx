@@ -175,6 +175,12 @@ export const StepInfo = memo(function StepInfo({
   // One-shot pulse on the Next button when form becomes valid; skip initial mount
   const prevCanProceed = useRef<boolean | null>(null);
   const [showReadyPulse, setShowReadyPulse] = useState(false);
+  // Polite live-region announcement when the form transitions from incomplete
+  // to complete. Sighted users get the ready pulse above; screen-reader users
+  // need an explicit spoken cue that the Next button is now enabled, otherwise
+  // the disabled→enabled transition is silent. Auto-clears so the live region
+  // does not accumulate stale text (mirrors clearAnnouncement below).
+  const [formReadyAnnouncement, setFormReadyAnnouncement] = useState("");
 
   useEffect(() => {
     if (prevCanProceed.current === null) {
@@ -183,12 +189,21 @@ export const StepInfo = memo(function StepInfo({
     }
     if (canProceed && !prevCanProceed.current) {
       setShowReadyPulse(true);
+      setFormReadyAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT);
       const timer = setTimeout(() => setShowReadyPulse(false), UI_TIMEOUTS.READY_PULSE_MS);
       prevCanProceed.current = canProceed;
       return () => clearTimeout(timer);
     }
     prevCanProceed.current = canProceed;
   }, [canProceed]);
+
+  // Clear the form-ready announcement after screen readers have had time to
+  // announce it, preventing stale text from lingering in the live region.
+  useEffect(() => {
+    if (!formReadyAnnouncement) return;
+    const timer = setTimeout(() => setFormReadyAnnouncement(""), TIMEOUTS.LIVE_REGION_CLEAR);
+    return () => clearTimeout(timer);
+  }, [formReadyAnnouncement]);
 
   const formProgress = useMemo(() => {
     const requiredFields = [
@@ -845,6 +860,19 @@ export const StepInfo = memo(function StepInfo({
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {clearAnnouncement}
+      </div>
+      {/* Screen reader announcement for form-ready transition — parity with
+          the visual ready pulse on the Next button, so screen-reader users
+          hear that the form became submittable. Polite (not assertive): this
+          is a positive status update, not an urgent alert. */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="form-ready-announcer"
+      >
+        {formReadyAnnouncement}
       </div>
     </motion.div>
   );
