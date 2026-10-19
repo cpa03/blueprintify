@@ -31,7 +31,7 @@ Deliberately skipped: 4 gradient paint refs (`fill="url(#gen-lightning-grad)"` i
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-196-svg-fill-stroke-colors` | refactor(flexy): centralize SVG fill & stroke color literals into shared config (Iteration 196) |
+| #3822 | `flexy/iteration-196-svg-fill-stroke-colors` | refactor(flexy): centralize SVG fill & stroke color literals into shared config (Iteration 196) |
 
 ### ✅ Flexy Iteration 195: Centralize ARIA Hidden, Orientation & Required Literals Across All Components
 
