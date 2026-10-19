@@ -223,8 +223,8 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   >
                     <svg
                       className={`${ICON.MD} text-white`}
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path

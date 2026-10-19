@@ -224,8 +224,8 @@ function OfflineBannerComponent(): JSX.Element | null {
                   <span className="relative inline-flex rounded-full h-5 w-5 bg-accent-pink/20 items-center justify-center">
                     <svg
                       className="w-3 h-3 text-accent-pink"
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path

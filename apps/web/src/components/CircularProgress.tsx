@@ -192,7 +192,7 @@ function CircularProgressComponent({
           cx={center}
           cy={center}
           r={radius}
-          fill="none"
+          fill={SVG_ICON_DEFAULTS.FILL_NONE}
           stroke={trackColor}
           strokeWidth={strokeWidth}
           opacity={OPACITY[30]}
@@ -202,7 +202,7 @@ function CircularProgressComponent({
           cx={center}
           cy={center}
           r={radius}
-          fill="none"
+          fill={SVG_ICON_DEFAULTS.FILL_NONE}
           stroke={color}
           strokeWidth={strokeWidth}
           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}

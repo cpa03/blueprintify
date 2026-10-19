@@ -149,8 +149,8 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                 >
                   <motion.svg
                     className="w-3.5 h-3.5 text-accent-emerald"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                     initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
