@@ -200,7 +200,6 @@ function ShowEditorButtonComponent({
             <kbd
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
-              aria-hidden="true"
               style={{
                 animationDelay: `${ANIMATION_ENTRANCE_DELAYS.NEARLY_HALF}s`,
                 animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
