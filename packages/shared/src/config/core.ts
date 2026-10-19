@@ -99,7 +99,7 @@ export const ID_GENERATION_CONFIG = {
  * Flexy says: No hardcoded "SHA-256" / toString(16) / padStart(2) literals!
  * Usage: import { CRYPTO_CONFIG } from "@blueprint/shared";
  *        crypto.subtle.digest(CRYPTO_CONFIG.HASH_ALGORITHM, data)
- *        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+ *        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
  */
 export const CRYPTO_CONFIG = {
   /** Hash algorithm used for password hashing and identity derivation */
@@ -108,6 +108,8 @@ export const CRYPTO_CONFIG = {
   HEX_RADIX: 16,
   /** Minimum width for zero-padded hex byte output */
   HEX_PADDING_WIDTH: 2,
+  /** Pad character used to left-pad single-digit hex bytes to HEX_PADDING_WIDTH */
+  HEX_PAD_CHAR: "0" as const,
   /** Length of the derived user-ID hash (hex chars kept from the full digest) */
   USER_ID_HASH_LENGTH: 16,
   /** WebCrypto key import format for raw key material */
@@ -145,6 +147,9 @@ export const DB_ID_PREFIXES = {
   SESSION: "session",
 } as const;
 
+/** Separator joining a DB_ID_PREFIXES value to its hash suffix (e.g. `user_<hex>`). */
+export const DB_ID_SEPARATOR = "_" as const;
+
 // ============================================================================
 // Shared Route Paths
 // Centralized source of truth for API route paths
@@ -180,8 +185,6 @@ export const SHARED_DEFAULTS = {
   CORS_MAX_AGE: 86400,
   /** Namespace prefix for all localStorage keys */
   STORAGE_NAMESPACE: "blueprint" as const,
-  /** Public fallback client key for web requests when no env key is set */
-  PUBLIC_ACCESS_KEY: "blueprintify-public-access-2026" as const,
 } as const;
 
 /**
@@ -233,6 +236,10 @@ export const PLAYWRIGHT_DEFAULTS = {
   SCREENSHOT_MAX_DIFF_PIXELS: 100,
   /** Snapshot comparison threshold */
   SNAPSHOT_THRESHOLD: 0.2,
+  /** Default element visibility timeout in ms for e2e isVisible checks */
+  VISIBILITY_TIMEOUT_MS: 3000,
+  /** Short element visibility timeout in ms for optional e2e isVisible checks */
+  SHORT_VISIBILITY_TIMEOUT_MS: 2000,
 } as const;
 
 /**

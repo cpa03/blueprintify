@@ -15,12 +15,16 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import {
+  ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
   FRAMER_TYPE,
-  UI_TIMEOUTS,
   SAVE_STATE_VALUES,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -81,15 +85,19 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
       {isVisible && (
         <motion.div
           key={hasChanges ? "unsaved" : "saved"}
-          initial={{ opacity: 0, y: -5 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -5 }}
-          transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+          transition={
+            shouldReduceMotion
+              ? ANIMATION_DEFAULTS.ZERO_DURATION
+              : { duration: ANIMATION.NORMAL, ease: EASING.easeOut }
+          }
           className={`flex items-center gap-2 text-xs ${
             hasChanges ? "text-amber-400" : "text-dark-400"
           }`}
-          aria-live="polite"
-          aria-atomic="true"
+          aria-live={ARIA_LIVE_VALUES.POLITE}
+          aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
           data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
           data-has-changes={hasChanges}
           data-reduced-motion={shouldReduceMotion}
@@ -99,9 +107,13 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             <>
               <motion.span
                 className="relative flex h-2 w-2"
-                initial={{ scale: 0 }}
+                initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
+                transition={
+                  shouldReduceMotion
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
+                    : { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }
+                }
               >
                 {!shouldReduceMotion && (
                   <motion.span
@@ -128,44 +140,60 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   className="w-3.5 h-3.5 text-accent-emerald"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden="true"
-                  initial={{ scale: 0 }}
+                  initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{
-                    type: FRAMER_TYPE.SPRING,
-                    ...SPRING_CONFIG.CHECKMARK_ICON,
-                  }}
+                  transition={
+                    shouldReduceMotion
+                      ? ANIMATION_DEFAULTS.ZERO_DURATION
+                      : {
+                          type: FRAMER_TYPE.SPRING,
+                          ...SPRING_CONFIG.CHECKMARK_ICON,
+                        }
+                  }
                 >
                   <motion.path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M5 13l4 4L19 7"
-                    initial={{ pathLength: 0, opacity: 0 }}
+                    initial={
+                      shouldReduceMotion
+                        ? { pathLength: 1, opacity: 1 }
+                        : { pathLength: 0, opacity: 0 }
+                    }
                     animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{
-                      pathLength: {
-                        type: FRAMER_TYPE.SPRING,
-                        ...SPRING_CONFIG.DEFAULT,
-                        delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
-                      },
-                      opacity: {
-                        duration: ANIMATION.QUICK_FADE,
-                        delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
-                      },
-                    }}
+                    transition={
+                      shouldReduceMotion
+                        ? ANIMATION_DEFAULTS.ZERO_DURATION
+                        : {
+                            pathLength: {
+                              type: FRAMER_TYPE.SPRING,
+                              ...SPRING_CONFIG.DEFAULT,
+                              delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                            },
+                            opacity: {
+                              duration: ANIMATION.QUICK_FADE,
+                              delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                            },
+                          }
+                    }
                   />
                 </motion.svg>
               </motion.span>
               <motion.span
-                initial={{ opacity: 0, x: -4 }}
+                initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: ANIMATION.NORMAL,
-                  delay: ANIMATION_ENTRANCE_DELAYS.FAST,
-                  ease: EASING.easeOut,
-                }}
+                transition={
+                  shouldReduceMotion
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
+                    : {
+                        duration: ANIMATION.NORMAL,
+                        delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                        ease: EASING.easeOut,
+                      }
+                }
               >
                 {text}
               </motion.span>

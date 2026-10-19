@@ -22,19 +22,24 @@
  */
 
 import {
-  WIZARD_STEP_KEYS,
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  REVIEW_STATE_VALUES,
+  WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   ANIMATION,
   GENERATION_ESTIMATES,
@@ -53,6 +58,7 @@ import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -70,6 +76,7 @@ export const StepReview = memo(function StepReview({
   const features = useWizardStore((s) => s.features);
   const setStep = useWizardStore((s) => s.setStep);
   const { startGeneration, isGenerating, progress } = useBlueprintStream();
+  const shouldReduceMotion = useReducedMotion();
 
   const handleEditInfo = useCallback(() => setStep(WIZARD_STEP_KEYS.INFO), [setStep]);
   const handleEditStack = useCallback(() => setStep(WIZARD_STEP_KEYS.STACK), [setStep]);
@@ -100,13 +107,25 @@ export const StepReview = memo(function StepReview({
   }, [handleEditInfo, handleEditStack, handleEditFeatures]);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...(shouldReduceMotion
+        ? {
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            exit: { opacity: 0 },
+            transition: { duration: 0 },
+          }
+        : pageTransition(direction))}
+      className="space-y-6"
+      data-state={isGenerating ? REVIEW_STATE_VALUES.GENERATING : REVIEW_STATE_VALUES.IDLE}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+    >
       {/* Heading - guides attention first */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeInUp}
-        transition={{ delay: ANIMATION.SUBTLE_MOVE }}
+        initial={shouldReduceMotion ? undefined : "hidden"}
+        animate={shouldReduceMotion ? undefined : "visible"}
+        variants={shouldReduceMotion ? undefined : fadeInUp}
+        transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE }}
       >
         <h2 className="text-2xl font-bold text-white mb-2">Review your project</h2>
         <p className="text-dark-400">
@@ -116,10 +135,10 @@ export const StepReview = memo(function StepReview({
 
       {/* Main review card with project details - appears second */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeInUp}
-        transition={{ delay: ANIMATION.SUBTLE_MOVE + 0.08 }}
+        initial={shouldReduceMotion ? undefined : "hidden"}
+        animate={shouldReduceMotion ? undefined : "visible"}
+        variants={shouldReduceMotion ? undefined : fadeInUp}
+        transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE + 0.08 }}
       >
         <div className="glass-card p-6 space-y-6">
           {/* Project Info */}
@@ -153,12 +172,12 @@ export const StepReview = memo(function StepReview({
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
@@ -232,12 +251,12 @@ export const StepReview = memo(function StepReview({
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
@@ -250,29 +269,37 @@ export const StepReview = memo(function StepReview({
             </div>
             <motion.div
               className="flex flex-wrap gap-2"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: {},
-                visible: {
-                  transition: {
-                    staggerChildren: STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S,
-                    delayChildren: ANIMATION.SUBTLE_MOVE + 0.12,
-                  },
-                },
-              }}
+              initial={shouldReduceMotion ? undefined : "hidden"}
+              animate={shouldReduceMotion ? undefined : "visible"}
+              variants={
+                shouldReduceMotion
+                  ? undefined
+                  : {
+                      hidden: {},
+                      visible: {
+                        transition: {
+                          staggerChildren: STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S,
+                          delayChildren: ANIMATION.SUBTLE_MOVE + 0.12,
+                        },
+                      },
+                    }
+              }
             >
               {techStack.map((tech) => (
                 <motion.span
                   key={tech.name}
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.9 },
-                    visible: {
-                      opacity: 1,
-                      scale: 1,
-                      transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
-                    },
-                  }}
+                  variants={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          hidden: { opacity: 0, scale: 0.9 },
+                          visible: {
+                            opacity: 1,
+                            scale: 1,
+                            transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
+                          },
+                        }
+                  }
                   className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-dark-200"
                 >
                   {tech.name}
@@ -314,12 +341,12 @@ export const StepReview = memo(function StepReview({
                       className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                       />
                     </svg>
@@ -332,29 +359,37 @@ export const StepReview = memo(function StepReview({
               </div>
               <motion.ul
                 className="space-y-2"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: {},
-                  visible: {
-                    transition: {
-                      staggerChildren: STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S,
-                      delayChildren: ANIMATION.SUBTLE_MOVE + 0.14,
-                    },
-                  },
-                }}
+                initial={shouldReduceMotion ? undefined : "hidden"}
+                animate={shouldReduceMotion ? undefined : "visible"}
+                variants={
+                  shouldReduceMotion
+                    ? undefined
+                    : {
+                        hidden: {},
+                        visible: {
+                          transition: {
+                            staggerChildren: STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S,
+                            delayChildren: ANIMATION.SUBTLE_MOVE + 0.14,
+                          },
+                        },
+                      }
+                }
               >
                 {features.map((feature) => (
                   <motion.li
                     key={feature}
-                    variants={{
-                      hidden: { opacity: 0, x: -10 },
-                      visible: {
-                        opacity: 1,
-                        x: 0,
-                        transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
-                      },
-                    }}
+                    variants={
+                      shouldReduceMotion
+                        ? undefined
+                        : {
+                            hidden: { opacity: 0, x: -10 },
+                            visible: {
+                              opacity: 1,
+                              x: 0,
+                              transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
+                            },
+                          }
+                    }
                     className="flex items-center gap-2 text-dark-200"
                     dir="auto"
                   >
@@ -362,12 +397,12 @@ export const StepReview = memo(function StepReview({
                       className="w-4 h-4 text-accent-emerald"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
@@ -382,10 +417,10 @@ export const StepReview = memo(function StepReview({
 
       {/* "What happens next?" info card - appears third */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeInUp}
-        transition={{ delay: ANIMATION.SUBTLE_MOVE + 0.16 }}
+        initial={shouldReduceMotion ? undefined : "hidden"}
+        animate={shouldReduceMotion ? undefined : "visible"}
+        variants={shouldReduceMotion ? undefined : fadeInUp}
+        transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE + 0.16 }}
       >
         <div className="bg-gradient-to-r from-primary-500/10 to-accent-purple/10 border border-primary-500/20 rounded-xl p-4">
           <div className="flex items-start gap-3">
@@ -409,10 +444,10 @@ export const StepReview = memo(function StepReview({
 
       {/* Action buttons - appear last to cap the visual hierarchy */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeInUp}
-        transition={{ delay: ANIMATION.SUBTLE_MOVE + 0.24 }}
+        initial={shouldReduceMotion ? undefined : "hidden"}
+        animate={shouldReduceMotion ? undefined : "visible"}
+        variants={shouldReduceMotion ? undefined : fadeInUp}
+        transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE + 0.24 }}
       >
         <div className="flex justify-between">
           <KeyboardShortcutTooltip
@@ -430,21 +465,34 @@ export const StepReview = memo(function StepReview({
                 MODIFIER_KEYS.ALT
               )}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
               {UI_CONTENT.BUTTONS.BACK_TO_FEATURES}
               <kbd
-                className={`${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
-                style={{
-                  animationDelay: `${ANIMATION_ENTRANCE_DELAYS.TWO_THIRDS}s`,
-                  animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
-                }}
+                className={
+                  shouldReduceMotion
+                    ? `${CSS_CLASSES.KBD_SHORTCUT}`
+                    : `${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`
+                }
+                style={
+                  shouldReduceMotion
+                    ? undefined
+                    : {
+                        animationDelay: `${ANIMATION_ENTRANCE_DELAYS.TWO_THIRDS}s`,
+                        animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
+                      }
+                }
                 aria-hidden="true"
               >
                 {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
@@ -481,7 +529,13 @@ export const StepReview = memo(function StepReview({
                 >
                   {isGenerating ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <div
+                        className={
+                          shouldReduceMotion
+                            ? "w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                            : "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                        }
+                      ></div>
                       Generating...
                     </>
                   ) : (
@@ -490,12 +544,12 @@ export const StepReview = memo(function StepReview({
                         className="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                       >
                         <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                          strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                          strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                           d="M13 10V3L4 14h7v7l9-11h-7z"
                         />
                       </svg>
@@ -513,29 +567,50 @@ export const StepReview = memo(function StepReview({
                 <RippleButton
                   onClick={startGeneration}
                   disabled={false}
-                  whileHover={{ ...HOVER_SCALE.STANDARD, filter: "brightness(1.1)" }}
-                  whileTap={TAP_SCALE.STANDARD}
-                  className="btn-primary flex items-center gap-2 animate-glow animate-cta-ring"
+                  whileHover={
+                    shouldReduceMotion
+                      ? undefined
+                      : { ...HOVER_SCALE.STANDARD, filter: "brightness(1.1)" }
+                  }
+                  whileTap={shouldReduceMotion ? undefined : TAP_SCALE.STANDARD}
+                  className={
+                    shouldReduceMotion
+                      ? "btn-primary flex items-center gap-2"
+                      : "btn-primary flex items-center gap-2 animate-glow animate-cta-ring"
+                  }
                   aria-keyshortcuts={getAriaShortcutKey(
                     KEYBOARD_EVENT_KEYS.ENTER,
                     MODIFIER_KEYS.CMD
                   )}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
                   Generate Blueprint
                   <kbd
-                    className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
-                    style={{
-                      animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SEVEN_TENTHS}s`,
-                      animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
-                    }}
+                    className={
+                      shouldReduceMotion
+                        ? `ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`
+                        : `ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`
+                    }
+                    style={
+                      shouldReduceMotion
+                        ? undefined
+                        : {
+                            animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SEVEN_TENTHS}s`,
+                            animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
+                          }
+                    }
                     aria-hidden="true"
                   >
                     {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
@@ -545,14 +620,20 @@ export const StepReview = memo(function StepReview({
             )}
             {isGenerating && progress && (
               <motion.span
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={shouldReduceMotion ? undefined : { opacity: 0, y: -5 }}
+                animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
+                role={ARIA_ROLES.STATUS}
+                aria-live={ARIA_LIVE_VALUES.POLITE}
+                aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
               >
-                <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-pulse" />
+                <span
+                  className={
+                    shouldReduceMotion
+                      ? "w-1.5 h-1.5 bg-primary-400 rounded-full"
+                      : "w-1.5 h-1.5 bg-primary-400 rounded-full animate-pulse"
+                  }
+                />
                 {progress}
               </motion.span>
             )}

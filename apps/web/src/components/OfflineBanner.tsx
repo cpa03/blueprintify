@@ -33,11 +33,14 @@ import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useToastStore } from "../store";
 import {
-  STYLE_ID_STRINGS,
-  UI_TIMEOUTS,
-  NETWORK_DEFAULTS,
-  TOAST_TYPES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   BANNER_STATE_VALUES,
+  NETWORK_DEFAULTS,
+  STYLE_ID_STRINGS,
+  TOAST_TYPES,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -48,6 +51,7 @@ import {
 } from "../config/constants";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation
@@ -221,12 +225,12 @@ function OfflineBannerComponent(): JSX.Element | null {
                       className="w-3 h-3 text-accent-pink"
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                         d="M18.364 5.636a9 9 0 010 12.728m-2.829-2.829a5 5 0 000-7.07m-4.243 4.243a1 1 0 010-1.414"
                       />
                     </svg>
@@ -274,9 +278,9 @@ function OfflineBannerComponent(): JSX.Element | null {
           banner auto-hides without a user-facing confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {dismissAnnouncement}
       </div>
