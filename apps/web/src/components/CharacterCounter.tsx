@@ -3,6 +3,7 @@ import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "..
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   CHAR_COUNTER_COLORS,
@@ -106,7 +107,7 @@ function CharacterCounterComponent({
       {/* Visual counter — hidden from screen readers */}
       <span
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         data-state={stateValue}
         data-at-limit={isAtLimit ? "true" : "false"}
         data-warning={isWarning ? "true" : "false"}
@@ -119,7 +120,7 @@ function CharacterCounterComponent({
         {isAtLimit && (
           <span
             className={`ml-1 inline-flex ${shouldReduceMotion ? "" : "animate-warning-icon"}`}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           >
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
@@ -196,7 +197,10 @@ function CharacterCounterCompactComponent({
       data-warning={isWarning ? "true" : "false"}
       data-reduced-motion={shouldReduceMotion ? "true" : "false"}
     >
-      <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
+      <div
+        className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+      >
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${
             isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
@@ -212,7 +216,7 @@ function CharacterCounterCompactComponent({
         className={`text-2xs tabular-nums inline-block ${
           shouldReduceMotion ? "" : "animate-compact-counter-pop"
         } ${isDanger ? "text-accent-pink font-bold" : "text-dark-500"}`}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
         {current}/{max}
       </span>

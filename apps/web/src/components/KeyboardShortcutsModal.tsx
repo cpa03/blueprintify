@@ -37,6 +37,7 @@ import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
 import {
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
@@ -293,7 +294,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             transition={{ duration: ANIMATION.MODAL_FADE }}
             className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50"
             onClick={onClose}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
 
           <motion.div
@@ -352,7 +353,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     fill="none"
                     stroke="currentColor"
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -411,7 +412,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       }}
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-lg flex items-center" aria-hidden="true">
+                        <span
+                          className="text-lg flex items-center"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                        >
                           <Icon name={categoryIcons[category]!} className="w-4 h-4 text-dark-300" />
                         </span>
                         <h3 className="text-sm font-semibold text-dark-300 uppercase tracking-wider">
@@ -473,7 +477,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       fill="none"
                       stroke="currentColor"
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                      aria-hidden="true"
+                      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                     >
                       <path
                         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}

@@ -31,7 +31,9 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
+  ARIA_HIDDEN_VALUES,
   ARIA_KEYSHORTCUTS,
+  ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   EDITOR_FILENAMES,
   FRAMER_TYPE,
@@ -161,7 +163,7 @@ const TabButton = React.memo(function TabButton({
                 entrance of the core dot settles (~0.6s delay in keyframes). */}
             <span
               className="absolute inset-0 rounded-full bg-accent-emerald content-dot-breathe"
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             />
             {/* Core dot with spring entrance. role={ARIA_ROLES.STATUS} makes the
                 sibling-tab content-availability cue audible: the green dot is
@@ -296,7 +298,7 @@ const ContentStats = React.memo(function ContentStats({
                 {charCount.toLocaleString()}
               </motion.span>
             </span>
-            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+            <span className="w-px h-2 bg-dark-700" aria-hidden={ARIA_HIDDEN_VALUES.TRUE} />
           </motion.span>
 
           {/* Word count — staggers in second */}
@@ -326,7 +328,7 @@ const ContentStats = React.memo(function ContentStats({
                 {wordCount.toLocaleString()}
               </motion.span>
             </span>
-            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+            <span className="w-px h-2 bg-dark-700" aria-hidden={ARIA_HIDDEN_VALUES.TRUE} />
           </motion.span>
 
           {/* Line count — staggers in third */}
@@ -356,7 +358,7 @@ const ContentStats = React.memo(function ContentStats({
                 {lineCount.toLocaleString()}
               </motion.span>
             </span>
-            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+            <span className="w-px h-2 bg-dark-700" aria-hidden={ARIA_HIDDEN_VALUES.TRUE} />
           </motion.span>
 
           {/* Reading time — staggers in fourth */}
@@ -382,7 +384,7 @@ const ContentStats = React.memo(function ContentStats({
                 {readingTimeDisplay}
               </motion.span>
             </span>
-            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+            <span className="w-px h-2 bg-dark-700" aria-hidden={ARIA_HIDDEN_VALUES.TRUE} />
           </motion.span>
 
           {/* Tab navigation keyboard hint — staggers in fifth */}
@@ -406,20 +408,20 @@ const ContentStats = React.memo(function ContentStats({
             >
               <kbd
                 className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 ←
               </kbd>
               <span className="text-dark-500 text-3xs">/</span>
               <kbd
                 className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 →
               </kbd>
               <span className="text-dark-500">{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
             </motion.div>
-            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+            <span className="w-px h-2 bg-dark-700" aria-hidden={ARIA_HIDDEN_VALUES.TRUE} />
           </motion.span>
 
           {/* Shortcut hint badge — staggers in sixth */}
@@ -460,7 +462,7 @@ const ContentStats = React.memo(function ContentStats({
               >
                 <kbd
                   className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   ?
                 </kbd>
@@ -537,7 +539,7 @@ function EditorHeaderComponent({
           // with ArrowLeft/ArrowRight (see handleTabKeyDown). Matches the
           // explicit orientation used by the other horizontal groups in the
           // app (TemplateGrid listbox, PageScrollProgressBar).
-          aria-orientation="horizontal"
+          aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
           aria-keyshortcuts={ARIA_KEYSHORTCUTS.EDITOR_TABS}
           id="editor-tabs"
           onKeyDown={handleTabKeyDown}
