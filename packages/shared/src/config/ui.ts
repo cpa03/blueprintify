@@ -993,8 +993,12 @@ export const SVG_ICON_DEFAULTS = {
   VIEW_BOX_LARGE: "0 0 48 48" as const,
   /** Default fill for stroke-only icons */
   FILL_NONE: "none" as const,
+  /** Fill color inheriting surrounding text color (filled glyph variants) */
+  FILL_CURRENT: "currentColor" as const,
   /** Default stroke color inheriting surrounding text color */
   STROKE_CURRENT: "currentColor" as const,
+  /** Stroke color for invisible/transparent strokes (contrast fills, masks) */
+  STROKE_NONE: "none" as const,
   /** Default rounded line caps */
   STROKE_LINECAP_ROUND: "round" as const,
   /** Default rounded line joins */

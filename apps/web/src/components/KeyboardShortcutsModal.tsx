@@ -350,8 +350,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 <div className="relative">
                   <svg
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 pointer-events-none"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
@@ -474,8 +474,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   >
                     <svg
                       className="w-12 h-12 mb-4 text-dark-600"
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                       aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                     >

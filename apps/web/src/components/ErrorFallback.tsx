@@ -172,8 +172,8 @@ export const ErrorFallback = memo(function ErrorFallback({
               />
               <svg
                 className="w-10 h-10 text-accent-pink relative z-10"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
@@ -276,8 +276,8 @@ export const ErrorFallback = memo(function ErrorFallback({
                       >
                         <svg
                           className="w-3 h-3"
-                          fill="none"
-                          stroke="currentColor"
+                          fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                          stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
@@ -300,8 +300,8 @@ export const ErrorFallback = memo(function ErrorFallback({
                       >
                         <svg
                           className="w-3 h-3"
-                          fill="none"
-                          stroke="currentColor"
+                          fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                          stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
@@ -324,8 +324,8 @@ export const ErrorFallback = memo(function ErrorFallback({
                       >
                         <svg
                           className="w-3 h-3"
-                          fill="none"
-                          stroke="currentColor"
+                          fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                          stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
@@ -378,8 +378,8 @@ export const ErrorFallback = memo(function ErrorFallback({
               <span className="flex items-center gap-2">
                 <svg
                   className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
@@ -413,8 +413,8 @@ export const ErrorFallback = memo(function ErrorFallback({
               <span className="flex items-center gap-2">
                 <svg
                   className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >

@@ -187,8 +187,8 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             <motion.svg
               key="check"
               className={ICON.SM}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -206,8 +206,8 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             <motion.svg
               key="failed"
               className={ICON.SM}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -225,8 +225,8 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             <motion.svg
               key="copy"
               className={ICON.SM}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}

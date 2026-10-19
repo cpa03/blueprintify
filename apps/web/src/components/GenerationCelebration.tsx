@@ -284,14 +284,14 @@ function GenerationCelebrationComponent({
                 width="48"
                 height="48"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
-                fill="none"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
                 className="text-accent-emerald"
               >
                 <motion.circle
                   cx="24"
                   cy="24"
                   r="22"
-                  stroke="currentColor"
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
@@ -302,7 +302,7 @@ function GenerationCelebrationComponent({
                 />
                 <motion.path
                   d="M14 24L21 31L34 17"
-                  stroke="currentColor"
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}

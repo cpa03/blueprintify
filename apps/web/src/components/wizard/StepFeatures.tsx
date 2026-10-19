@@ -276,8 +276,8 @@ export const StepFeatures = memo(function StepFeatures({
               >
                 <svg
                   className="w-3.5 h-3.5 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
@@ -316,8 +316,8 @@ export const StepFeatures = memo(function StepFeatures({
               >
                 <svg
                   className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 >
                   <path
@@ -430,8 +430,8 @@ export const StepFeatures = memo(function StepFeatures({
                     >
                       <svg
                         className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
+                        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                       >
@@ -545,8 +545,8 @@ export const StepFeatures = memo(function StepFeatures({
                           <motion.svg
                             key="checkmark"
                             className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
+                            fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                            stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                             initial={{ scale: 0, rotate: -180 }}
@@ -600,8 +600,8 @@ export const StepFeatures = memo(function StepFeatures({
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
@@ -640,8 +640,8 @@ export const StepFeatures = memo(function StepFeatures({
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
@@ -676,8 +676,8 @@ export const StepFeatures = memo(function StepFeatures({
             </kbd>
             <svg
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path

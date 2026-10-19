@@ -125,8 +125,8 @@ function CharacterCounterComponent({
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
               strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
               strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
