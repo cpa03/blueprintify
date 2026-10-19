@@ -1,7 +1,8 @@
 import type { AIConfig } from "../services/openai";
 import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
-import type { ControllerContext, AppContext } from "../types";
+import type { Context } from "hono";
+import type { ControllerContext, AppContext, Env } from "../types";
 import { CONTEXT_KEYS } from "@blueprint/shared";
 import { CONFIG_MESSAGES, ERROR_MESSAGES, AI_CONFIG } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
@@ -48,19 +49,16 @@ export abstract class BaseController {
 
   /**
    * Retrieves validated request data from the context.
-   * Generic over the data type (not the Zod schema) to avoid
-   * Hono Context variance issues with ValidatedContext<T>.
-   * Callers specify the expected data type explicitly.
    * @param c - Validated context containing parsed request data
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<D>(c: { get: (key: string) => unknown }): D {
-    const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
+  public getValidatedData<V>(c: Context<{ Bindings: Env; Variables: { validatedData: V } }>): V {
+    const data = c.get(CONTEXT_KEYS.VALIDATED_DATA as "validatedData") as V;
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
     }
-    return data as D;
+    return data;
   }
 
   /**

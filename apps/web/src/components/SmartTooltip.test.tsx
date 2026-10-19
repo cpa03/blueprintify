@@ -50,7 +50,27 @@ describe("SmartTooltip", () => {
     const triggerContainer = screen.getByRole("button").parentElement!;
     expect(triggerContainer).toHaveAttribute("data-state", "hidden");
     expect(triggerContainer).toHaveAttribute("data-position", "top");
+    expect(triggerContainer).toHaveAttribute("data-reduced-motion", "false");
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
+
+  it("reflects data-reduced-motion attribute on trigger container and tooltip popup", () => {
+    render(
+      <SmartTooltip content="Reduced motion tooltip">
+        <button>Reduced motion test</button>
+      </SmartTooltip>
+    );
+
+    const triggerContainer = screen.getByRole("button").parentElement!;
+    expect(triggerContainer).toHaveAttribute("data-reduced-motion", "false");
+
+    fireEvent.mouseEnter(triggerContainer);
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    const tooltip = screen.getByRole("tooltip");
+    expect(tooltip).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("shows tooltip on mouse enter after delay", () => {
@@ -333,6 +353,24 @@ describe("KeyboardShortcutTooltip", () => {
 
     expect(screen.getByRole("tooltip")).toBeInTheDocument();
     expect(screen.getByText("Toggle editor")).toBeInTheDocument();
+  });
+
+  it("renders data-has-shortcut attribute on shortcut content container", () => {
+    render(
+      <KeyboardShortcutTooltip shortcut="k" description="Toggle panel">
+        <button>Shortcut btn</button>
+      </KeyboardShortcutTooltip>
+    );
+
+    const container = screen.getByRole("button", { name: "Shortcut btn" }).parentElement!;
+    fireEvent.mouseEnter(container);
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    const tooltip = screen.getByRole("tooltip");
+    const shortcutContainer = tooltip.querySelector('[data-has-shortcut="true"]');
+    expect(shortcutContainer).toBeInTheDocument();
   });
 
   it("shows shortcut without description", () => {

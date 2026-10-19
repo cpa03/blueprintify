@@ -5,6 +5,7 @@ import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemi
 import { isDev } from "../config/env";
 import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
 import { FOCUS_ANNOUNCER } from "../config/constants/accessibility";
+import { ARIA_LIVE_VALUES, ARIA_ROLES, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -25,18 +26,18 @@ function EditorSkeleton(): JSX.Element {
   return (
     <div
       className="editor-skeleton"
-      role="status"
-      aria-live="polite"
+      role={ARIA_ROLES.STATUS}
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       aria-label={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.LOADING}
     >
-      <div className="editor-skeleton-gutter" aria-hidden="true">
+      <div className="editor-skeleton-gutter" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {GUTTER_NUMBERS.map((n) => (
           <div key={n} className="editor-skeleton-line-number">
             {n}
           </div>
         ))}
       </div>
-      <div className="editor-skeleton-code" aria-hidden="true">
+      <div className="editor-skeleton-code" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {SKELETON_LAYOUT.EDITOR_LINE_WIDTHS.map((widthPct, i) => (
           <div key={i} className="editor-skeleton-code-line">
             <div
@@ -101,7 +102,11 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
 
     return (
       <>
-        <div role="status" aria-live="polite" className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+        <div
+          role={ARIA_ROLES.STATUS}
+          aria-live={ARIA_LIVE_VALUES.POLITE}
+          className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        >
           {ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.READY}
         </div>
         <CodeMirrorComponent
