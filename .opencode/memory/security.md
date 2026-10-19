@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-19: Security Engineer Audit — AnimatedNumber counter-state + reduced-motion DOM tracking (commit 14698ce2 5-file diff vs origin/main), 0 introduced issues
+
+- **Finding**: 5-file diff vs origin/main (`AnimatedNumber.tsx` +7/-2 connects `useReducedMotion` + static-string `data-reduced-motion` + `COUNTER_STATE_VALUES` literal replacement; `AnimatedNumber.test.tsx` +4/-2 shared-constant assertions; `ui.ts` +14 shared constant; `index.ts` +1 export; `active-tasks.md` +6 prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
+- **Verification**: Added-lines secret/injection/deprecated 0x (code + docs) · full-file grep on changed source 0x · `scan:secrets` ✅ 339 files · `npm audit --omit=dev` ✅ 0 vulns (full 8 = 5 high + 3 moderate pre-existing tailwindcss dev-chain `braces`/`chokidar`/`micromatch`/`fast-glob` + `postcss-selector-parser`, lockfile byte-identical to origin/main → not introduced) · shared + web typecheck ✅ · eslint changed files ✅ · AnimatedNumber tests 10/10 · `COUNTER_STATE_VALUES` export + gitignored `dist` build verified · `useReducedMotion` hook present and clean.
+- **Lesson**: A DOM-contract assertion written with the same shared constant the component uses (`data-state === COUNTER_STATE_VALUES.IDLE`) cannot detect drift — both sides move together; #3712's review fixed the identical PageScrollProgressBar pattern by pinning the literal in the test and guarding the constant instead. Flag report-only when auditing: literal-replacement refactors are security-neutral but silently weaken the test oracle. Also confirmed again: identical lockfile to origin/main ⇒ the full-audit count (8) can never be "introduced" by the PR — diff `package.json`/`package-lock.json` names first to settle the CVE-surface question before deep-diving audit output.
+
 ### 2026-10-04: Security Engineer Audit — PageScrollProgressBar reduced-motion DOM tracking (commit c50ff06 3-file diff vs origin/main; PR head 5 files incl. audit records), 0 introduced issues
 
 - **Finding**: 3-file diff vs origin/main (`PageScrollProgressBar.tsx` +1 `data-reduced-motion` attr, test mock prop-stripping + shared-constant import, `active-tasks.md` prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
