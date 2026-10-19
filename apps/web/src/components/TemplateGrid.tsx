@@ -28,7 +28,12 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS, TEMPLATE_STATE_VALUES } from "@blueprint/shared";
+import {
+  STARTER_TEMPLATES,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  TEMPLATE_STATE_VALUES,
+} from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -42,6 +47,12 @@ import {
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 
 function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
@@ -143,7 +154,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
 
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        role="listbox"
+        role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
         aria-orientation="horizontal"
       >
@@ -174,7 +185,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               data-template-id={template.id}
               data-loading={isSelected && isLoading ? "true" : "false"}
               data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-              role="option"
+              role={ARIA_ROLES.OPTION}
               tabIndex={focusIndex === index ? 0 : -1}
               style={
                 {
@@ -212,12 +223,12 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                       className={`${ICON.MD} text-white`}
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
@@ -299,7 +310,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                         `}
                       >
                         +{template.techStack.length - 3}
-                        <span className="sr-only">
+                        <span className={CSS_CLASSES.SR_ONLY}>
                           {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
                         </span>
                         <span
@@ -321,9 +332,9 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       {/* Intentionally blank when idle — live region for loading announcements */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {isLoading && selectedId
           ? ACCESSIBILITY_LABELS.TEMPLATES.LOADING(

@@ -32,6 +32,7 @@ import {
   ROUTE_PATHS,
   SHARE_CONFIG,
   SHARE_QUERY_PARAMS,
+  SHARE_ROUTE_PARAMS,
   SHARE_ERROR_MESSAGES,
   CACHE_CONFIG,
   RATE_LIMIT_CONSTANTS,
@@ -183,7 +184,11 @@ async function generateVerifyToken(
     encoder.encode(payload)
   );
   const signatureHex = Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0"))
+    .map((b) =>
+      b
+        .toString(CRYPTO_CONFIG.HEX_RADIX)
+        .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
+    )
     .join("");
   const payloadB64 = btoa(payload).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
   return `${payloadB64}.${signatureHex.slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH)}`;
@@ -224,7 +229,9 @@ async function isValidVerifyToken(
     );
     const expectedSig = Array.from(new Uint8Array(signature))
       .map((b) =>
-        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+        b
+          .toString(CRYPTO_CONFIG.HEX_RADIX)
+          .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
       )
       .join("")
       .slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH);
@@ -317,14 +324,14 @@ const shareEnumerationRateLimit = rateLimit({
       c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
-    const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
+    const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || UNKNOWN_SHARE_ID;
     return `${RATE_LIMIT_KEY_PREFIXES.SHARE}${shareId}:${ip}`;
   },
 });
 
 app.get(ROUTE_SUB_PATHS.ID_PARAM, shareEnumerationRateLimit, async (c) => {
   try {
-    const shareId = c.req.param("id") || "";
+    const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || "";
 
     if (!isValidShareId(shareId)) {
       return c.json(
@@ -457,7 +464,7 @@ const shareVerifyRateLimit = rateLimit({
       c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
-    const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
+    const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || UNKNOWN_SHARE_ID;
     return `${RATE_LIMIT_KEY_PREFIXES.VERIFY}${shareId}:${ip}`;
   },
 });
@@ -475,7 +482,7 @@ app.post(
   shareVerifyRateLimit,
   async (c) => {
     try {
-      const shareId = c.req.param("id") || "";
+      const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || "";
 
       if (!isValidShareId(shareId)) {
         return c.json(
@@ -553,7 +560,9 @@ app.post(
       );
       const hashHex = Array.from(new Uint8Array(hashBuffer))
         .map((b) =>
-          b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+          b
+            .toString(CRYPTO_CONFIG.HEX_RADIX)
+            .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
         )
         .join("");
 
@@ -609,7 +618,7 @@ app.delete(
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
     try {
-      const shareId = c.req.param("id") || "";
+      const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || "";
 
       if (!isValidShareId(shareId)) {
         return c.json(

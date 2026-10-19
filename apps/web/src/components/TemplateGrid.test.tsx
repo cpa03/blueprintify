@@ -158,8 +158,10 @@ describe("TemplateGrid", () => {
     // setTimeout hasn't fired yet
     expect(mockLoadTemplate).not.toHaveBeenCalled();
 
-    // Advance timers to fire setTimeout
-    vi.advanceTimersByTime(300);
+    // Advance timers to fire setTimeout wrapped in act
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
 
     expect(mockLoadTemplate).toHaveBeenCalled();
   });
@@ -234,7 +236,9 @@ describe("TemplateGrid", () => {
     const webAppButton = screen.getByText("Web Application").closest("button")!;
     fireEvent.keyDown(webAppButton, { key: "Enter" });
 
-    vi.advanceTimersByTime(300);
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
     expect(mockLoadTemplate).toHaveBeenCalled();
   });
 
