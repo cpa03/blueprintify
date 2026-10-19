@@ -27,7 +27,9 @@
 import {
   ANIMATION_DIRECTIONS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
+  ARIA_REQUIRED_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
@@ -301,7 +303,7 @@ export const StepInfo = memo(function StepInfo({
       aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
     >
       {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
       </kbd>
       <svg
@@ -309,7 +311,7 @@ export const StepInfo = memo(function StepInfo({
         fill="none"
         stroke="currentColor"
         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
         <path
           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -345,7 +347,7 @@ export const StepInfo = memo(function StepInfo({
                     fill="none"
                     stroke="currentColor"
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -399,7 +401,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex justify-between items-center">
             <label htmlFor="projectName" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
-              <span className="text-accent-pink" aria-hidden="true">
+              <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
               </span>
               <ValidationCheckmark
@@ -455,7 +457,7 @@ export const StepInfo = memo(function StepInfo({
               }`}
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
-              aria-required="true"
+              aria-required={ARIA_REQUIRED_VALUES.TRUE}
               animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
@@ -540,7 +542,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex justify-between items-center">
             <label htmlFor="description" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
-              <span className="text-accent-pink" aria-hidden="true">
+              <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
               </span>
               <ValidationCheckmark
@@ -589,7 +591,7 @@ export const StepInfo = memo(function StepInfo({
               }`}
               maxLength={FORM_LIMITS.DESCRIPTION.MAX}
               required
-              aria-required="true"
+              aria-required={ARIA_REQUIRED_VALUES.TRUE}
               aria-invalid={isDescriptionInvalid || descriptionErrorVisible || undefined}
               animate={descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}

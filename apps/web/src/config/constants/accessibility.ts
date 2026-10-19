@@ -5,6 +5,8 @@
  * Flexy says: No hardcoded accessibility values - everything configurable!
  */
 
+import { ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+
 // ============================================================================
 // CSS Class Combinations
 // ============================================================================
@@ -113,13 +115,13 @@ export const AUTOFOCUS_VALUES = {
 
 /** Focusable element selectors for accessibility */
 const FOCUSABLE_SELECTORS = [
-  'button:not([disabled]):not([aria-hidden="true"])',
-  'a[href]:not([aria-hidden="true"])',
-  'input:not([disabled]):not([type="hidden"]):not([aria-hidden="true"])',
-  'select:not([disabled]):not([aria-hidden="true"])',
-  'textarea:not([disabled]):not([aria-hidden="true"])',
-  '[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="true"])',
-  '[contenteditable]:not([aria-hidden="true"])',
+  `button:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `a[href]:not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `input:not([disabled]):not([type="hidden"]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `select:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `textarea:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `[contenteditable]:not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
 ] as const;
 
 /** Combined selector string for querySelector usage */

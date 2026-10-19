@@ -20,6 +20,7 @@
 import { memo, useState, useEffect, useRef } from "react";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   BUTTON_TRANSITION_DEFAULTS,
   EDITOR_BUTTON_STATE_VALUES,
@@ -146,7 +147,7 @@ function ShowEditorButtonComponent({
               fill={SVG_ICON_DEFAULTS.FILL_NONE}
               stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -167,7 +168,7 @@ function ShowEditorButtonComponent({
               fill={SVG_ICON_DEFAULTS.FILL_NONE}
               stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -180,7 +181,7 @@ function ShowEditorButtonComponent({
               <>
                 <span
                   className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 />
                 <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                   {EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND}
@@ -193,7 +194,7 @@ function ShowEditorButtonComponent({
               </span>
             )}
             <kbd
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
               style={{
                 animationDelay: `${ANIMATION_ENTRANCE_DELAYS.NEARLY_HALF}s`,

@@ -36,6 +36,7 @@ import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
@@ -278,7 +279,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 fill="none"
                 stroke="currentColor"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <motion.path
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -334,7 +335,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 fill="none"
                 stroke="currentColor"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <path
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}

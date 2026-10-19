@@ -39,6 +39,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
   ANIMATION_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
   DIALOG_STATE_VALUES,
@@ -171,7 +172,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             transition={{ duration: ANIMATION.MODAL_FADE }}
             className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50"
             onClick={handleOverlayClick}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
 
           {/* Dialog */}
@@ -201,7 +202,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 <div className="w-12 h-12 rounded-xl bg-accent-pink/20 flex items-center justify-center flex-shrink-0">
                   <motion.span
                     className="text-accent-pink"
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                     initial={shouldReduceMotion ? {} : { scale: 0, rotate: -15 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={

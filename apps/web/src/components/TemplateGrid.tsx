@@ -49,7 +49,9 @@ import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
 import {
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
+  ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
@@ -156,7 +158,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
-        aria-orientation="horizontal"
+        aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       >
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
@@ -237,7 +239,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   {/* Pulsing border using CSS animation (composited, no forced reflow) */}
                   <div
                     className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50 pointer-events-none animate-glow"
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   />
                 </>
               )}
@@ -257,7 +259,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   className={`text-3xl motion-safe:transition-transform motion-safe:duration-200 ${
                     isSelected ? "scale-110" : ""
                   }`}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   {template.icon}
                 </div>
@@ -314,7 +316,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                           {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
                         </span>
                         <span
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                           className="absolute bottom-full left-0 mb-2 z-10 hidden group-hover/overflow:block group-focus-within:block animate-tooltip-in glass-card px-3 py-2 text-xs text-dark-300 shadow-xl whitespace-nowrap pointer-events-none"
                         >
                           {hiddenTechNames}
