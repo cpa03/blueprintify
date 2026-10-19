@@ -310,7 +310,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                         `}
                       >
                         +{template.techStack.length - 3}
-                        <span className="sr-only">
+                        <span className={CSS_CLASSES.SR_ONLY}>
                           {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
                         </span>
                         <span

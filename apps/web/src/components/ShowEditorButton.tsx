@@ -182,13 +182,13 @@ function ShowEditorButtonComponent({
                   className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
                   aria-hidden="true"
                 />
-                <span className="sr-only" aria-live={ARIA_LIVE_VALUES.POLITE}>
+                <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                   {EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND}
                 </span>
               </>
             )}
             {hasContent && !isGenerating && (
-              <span className="sr-only" aria-live={ARIA_LIVE_VALUES.POLITE}>
+              <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                 {EDITOR_ANNOUNCER.CONTENT_READY}
               </span>
             )}
