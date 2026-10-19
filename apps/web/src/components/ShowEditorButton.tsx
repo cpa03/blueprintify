@@ -39,6 +39,7 @@ import {
   UI_CONTENT,
   SHORTCUT_DESCRIPTIONS,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
   EDITOR_ANNOUNCER,
 } from "../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../config/constants/keyboard";
@@ -143,7 +144,7 @@ function ShowEditorButtonComponent({
           data-is-generating={isGenerating}
           data-reduced-motion={String(prefersReducedMotion)}
           aria-expanded={false}
-          aria-controls="editor-panel"
+          aria-controls={DOM_ELEMENT_IDS.EDITOR_PANEL}
         >
           <span className="flex items-center">
             <svg

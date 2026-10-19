@@ -46,6 +46,7 @@ import {
 import {
   NETWORK_MESSAGES,
   ACCESSIBILITY_LABELS,
+  DOM_ELEMENT_IDS,
   OFFLINE_ANIMATION,
   TOOLTIP_CONFIG,
   FOCUS_ANNOUNCER,
@@ -243,7 +244,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                     {NETWORK_MESSAGES.OFFLINE}
                   </span>
                   <span
-                    id="offline-banner-desc"
+                    id={DOM_ELEMENT_IDS.OFFLINE_BANNER_DESC}
                     className="text-xs text-dark-400 hidden sm:inline truncate"
                   >
                     {ACCESSIBILITY_LABELS.OFFLINE_BANNER.DESCRIPTION}
@@ -263,7 +264,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                              rounded-md p-1.5 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
                              motion-safe:hover:scale-110 motion-safe:active:scale-95"
                   aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
-                  aria-describedby="offline-banner-desc"
+                  aria-describedby={DOM_ELEMENT_IDS.OFFLINE_BANNER_DESC}
                 >
                   <Icon name="close" className="w-4 h-4 text-accent-pink" />
                 </button>

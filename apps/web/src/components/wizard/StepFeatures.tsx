@@ -52,6 +52,7 @@ import {
   STAGGER_CONFIG,
   SCALE_PULSE,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
@@ -196,13 +197,13 @@ export const StepFeatures = memo(function StepFeatures({
         {/* Add custom feature */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="feature-input" className="label mb-0">
+            <label htmlFor={DOM_ELEMENT_IDS.FEATURE_INPUT} className="label mb-0">
               {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
               <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
               <span
-                id="feature-input-hint"
+                id={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 className="text-xs text-dark-500 flex items-center gap-1"
               >
                 <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
@@ -216,7 +217,7 @@ export const StepFeatures = memo(function StepFeatures({
             <div className="relative flex-1">
               <input
                 ref={featureInputRef}
-                id="feature-input"
+                id={DOM_ELEMENT_IDS.FEATURE_INPUT}
                 type="text"
                 autoComplete="off"
                 enterKeyHint="done"
@@ -231,7 +232,7 @@ export const StepFeatures = memo(function StepFeatures({
                 }
                 className={`input-field w-full pr-10 ${isAtMaxCount ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 opacity-60 cursor-not-allowed" : newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
-                aria-describedby="feature-input-hint"
+                aria-describedby={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 maxLength={FORM_LIMITS.FEATURE.MAX}
                 readOnly={isAtMaxCount}
                 tabIndex={isAtMaxCount ? -1 : 0}
@@ -306,7 +307,7 @@ export const StepFeatures = memo(function StepFeatures({
         {features.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="label mb-0" id="added-features-label">
+              <label className="label mb-0" id={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}>
                 {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} ({features.length})
               </label>
               <button
@@ -333,7 +334,7 @@ export const StepFeatures = memo(function StepFeatures({
             <div
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.LIST}
-              aria-labelledby="added-features-label"
+              aria-labelledby={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}
             >
               <AnimatePresence mode="popLayout">
                 {features.map((feature, index) => {
@@ -397,7 +398,7 @@ export const StepFeatures = memo(function StepFeatures({
         {!isAtMaxCount && (suggestedNotAdded.length > 0 || showAllAddedMsg) && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="label mb-0" id="suggestions-label">
+              <label className="label mb-0" id={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}>
                 {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
               </label>
               <motion.button
@@ -463,7 +464,7 @@ export const StepFeatures = memo(function StepFeatures({
             <motion.div
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.GROUP}
-              aria-labelledby="suggestions-label"
+              aria-labelledby={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}
               initial="hidden"
               animate="visible"
               variants={{

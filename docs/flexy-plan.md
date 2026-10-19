@@ -5,6 +5,43 @@
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 
+### ✅ Flexy Iteration 197: Centralize ARIA Relationship DOM Element IDs
+
+**Problem**: 29 hardcoded DOM element ID literals across 9 web files duplicated every `id=` ↔ `aria-labelledby`/`aria-describedby`/`aria-controls`/`htmlFor`/skip-link `href`+`data-target` pair — renaming either side alone silently breaks the ARIA relationship, and no `DOM_ELEMENT_IDS` constant existed. Examples: `editor-panel` (1 `id` + 3 `aria-controls`), `main-content` (1 `id` + skip-link `href`/`data-target`), plus 11 label/description pairs (ConfirmDialog, KeyboardShortcutsModal, OfflineBanner, Header, StepFeatures, StepStack, SkipLink). Flexy says: no hardcoded DOM element ID literals!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added `DOM_ELEMENT_IDS` — 13 IDs (`MAIN_CONTENT`, `EDITOR_PANEL`, `CONFIRM_DIALOG_TITLE/DESCRIPTION`, `HEADER_BRAND_SCROLL_HINT`, `KEYBOARD_SHORTCUTS_TITLE/TIP`, `OFFLINE_BANNER_DESC`, `FEATURE_INPUT`, `FEATURE_INPUT_HINT`, `ADDED_FEATURES_LABEL`, `SUGGESTIONS_LABEL`, `SELECTED_TECH_LABEL`) with drift-prevention contract docblock |
+| `apps/web/src/config/constants/accessibility.test.ts` | +2 tests: 13 value assertions + uniqueness check (Set size 13) |
+| `apps/web/src/App.tsx` | 4 literals: `main-content` id, `editor-panel` id + 2× `aria-controls` |
+| `apps/web/src/components/ShowEditorButton.tsx` | 1 literal: `aria-controls` |
+| `apps/web/src/components/ConfirmDialog.tsx` | 4 literals: 2× `id` + `aria-labelledby` + `aria-describedby` |
+| `apps/web/src/components/Header.tsx` | 2 literals: hint `id` + `aria-describedby` |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 4 literals: 2× `id` + `aria-labelledby` + `aria-describedby` |
+| `apps/web/src/components/OfflineBanner.tsx` | 2 literals: desc `id` + `aria-describedby` |
+| `apps/web/src/components/SkipLink.tsx` | 2 literals: `href="#main-content"` → template literal + `data-target` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 8 literals: `htmlFor`, 4× `id`, `aria-describedby`, 2× `aria-labelledby` |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2 literals: label `id` + `aria-labelledby` |
+| `docs/flexy-plan.md` | Iteration 197 entry |
+
+Deliberately skipped: dynamic/template IDs (`tab-${activeTab}`, `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`); variable-based `aria-describedby` (AnimatedCopyButton, StepInfo); `main.tsx` `getElementById("root"/"skeleton-loader")` (paired with `index.html`, which cannot import TS constants); component-test `toHaveAttribute` assertions (Iteration 194/196 precedent — tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 197)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.74s) + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check` (11 touched files) — clean
+- ✅ `npm run test:all` — **1,319 web + 550 api + 926 shared = 2,795 tests passing**
+- ✅ Remaining raw `id=`/`htmlFor`/`data-target`/`aria-labelledby`/`aria-describedby`/`aria-controls`/`href="#main-content"` literals for the 13 IDs (excluding tests, dynamic templates & comments) — **0 occurrences**
+
+## PR (Iteration 197)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-197-aria-rel-dom-ids` | refactor(flexy): centralize ARIA relationship DOM element IDs into config (Iteration 197) |
+
 ### ✅ Flexy Iteration 186: Centralize Agent Model Fallback Hierarchy into Single Source of Truth
 
 **Problem**: Agent model fallback hierarchy (`opencode/muse-spark-1.3-contributor-free` → `mimo-v2.6-flash-free` → `nemotron-3-ultra-free`) was hardcoded in 60+ places: `scripts/opencode-run.sh` MODELS array, 28× `.opencode/agent/*.md` frontmatter, 28× `.agent/agents/*.md` frontmatter, `AGENTS.md`, `opencode.json`. No single source, no sync validation. Flexy says: no hardcoded model strings in scripts!

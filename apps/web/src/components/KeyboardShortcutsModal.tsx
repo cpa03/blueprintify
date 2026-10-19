@@ -21,6 +21,7 @@ import {
   SHORTCUT_CATEGORY_ICONS,
   WIZARD_STEPS,
   EDITOR_LABELS,
+  DOM_ELEMENT_IDS,
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
@@ -308,8 +309,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             role={ARIA_ROLES.DIALOG}
             aria-modal={ARIA_MODAL_VALUES.TRUE}
-            aria-labelledby="keyboard-shortcuts-title"
-            aria-describedby="keyboard-shortcuts-tip"
+            aria-labelledby={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TITLE}
+            aria-describedby={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TIP}
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-has-query={Boolean(searchQuery)}
             data-results-count={filteredShortcuts.length}
@@ -326,7 +327,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     <Icon name="keyboard" className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
-                    <h2 id="keyboard-shortcuts-title" className="text-xl font-bold text-white">
+                    <h2
+                      id={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TITLE}
+                      className="text-xl font-bold text-white"
+                    >
                       Keyboard Shortcuts
                     </h2>
                     <p className="text-sm text-dark-400">
@@ -504,7 +508,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
                 <p
-                  id="keyboard-shortcuts-tip"
+                  id={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TIP}
                   className="text-xs text-dark-500 text-center"
                   role={ARIA_ROLES.STATUS}
                   aria-live={ARIA_LIVE_VALUES.POLITE}
