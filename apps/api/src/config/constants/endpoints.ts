@@ -57,6 +57,11 @@ export const API_ENDPOINTS = {
     method: SHARED_HTTP_METHODS.GET,
     description: "Get storage quota",
   },
+  STORAGE_REPORT: {
+    path: `${SHARED_ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.REPORT}`,
+    method: SHARED_HTTP_METHODS.POST,
+    description: "Report client storage usage",
+  },
   STORAGE_CLEAR: {
     path: `${SHARED_ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.CLEAR}`,
     method: SHARED_HTTP_METHODS.DELETE,
@@ -71,6 +76,11 @@ export const API_ENDPOINTS = {
     path: `${SHARED_ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`,
     method: SHARED_HTTP_METHODS.GET,
     description: "Get shared blueprint by ID",
+  },
+  SHARE_VERIFY: {
+    path: `${SHARED_ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}${ROUTE_SUB_PATHS.VERIFY}`,
+    method: SHARED_HTTP_METHODS.POST,
+    description: "Verify passphrase for protected shared blueprint",
   },
   SHARE_DELETE: {
     path: `${SHARED_ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`,

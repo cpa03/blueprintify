@@ -19,9 +19,19 @@ import { EMPTY_STATE_VALUES } from "@blueprint/shared/config";
 // PreviewEmptyState uses `import * as motion from "framer-motion/m"` (namespace import),
 // so the mock must provide named exports (not a default export) for each used element.
 vi.mock("framer-motion/m", () => ({
-  div: vi.fn(({ children, ...props }: { children?: ReactNode; [key: string]: unknown }) => (
-    <div {...props}>{children}</div>
-  )),
+  div: vi.fn(
+    ({
+      children,
+      whileHover: _wh,
+      whileTap: _wt,
+      ...props
+    }: {
+      children?: ReactNode;
+      whileHover?: unknown;
+      whileTap?: unknown;
+      [key: string]: unknown;
+    }) => <div {...props}>{children}</div>
+  ),
   span: vi.fn(({ children, ...props }: { children?: ReactNode; [key: string]: unknown }) => (
     <span {...props}>{children}</span>
   )),
@@ -145,7 +155,7 @@ describe("PreviewEmptyState", () => {
     expect(screen.getByText("task.md")).toBeInTheDocument();
   });
 
-  it("sets data-state, data-tab, data-has-sibling-content, role, and aria-live attributes correctly", () => {
+  it("sets data-state, data-tab, data-has-sibling-content, data-reduced-motion, role, and aria-live attributes correctly", () => {
     const { container, rerender } = render(
       <PreviewEmptyState
         tab={EDITOR_TABS.BLUEPRINT}
@@ -157,6 +167,7 @@ describe("PreviewEmptyState", () => {
     expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.EMPTY);
     expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.BLUEPRINT);
     expect(rootElement).toHaveAttribute("data-has-sibling-content", "true");
+    expect(rootElement).toHaveAttribute("data-reduced-motion", "false");
     expect(rootElement).toHaveAttribute("role", "status");
     expect(rootElement).toHaveAttribute("aria-live", "polite");
 

@@ -37,6 +37,10 @@ describe("CSS_CLASSES — Iteration 185 additions", () => {
       "w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
     );
   });
+
+  it("defines SR_ONLY for screen-reader-only live regions", () => {
+    expect(CSS_CLASSES.SR_ONLY).toBe("sr-only");
+  });
 });
 
 describe("ACCESSIBILITY_LABELS_SKIP", () => {

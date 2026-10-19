@@ -52,6 +52,26 @@ describe("LastSavedIndicator", () => {
     expect(region).toHaveAttribute("aria-atomic", "true");
   });
 
+  it("exposes the live region with role=status", () => {
+    render(<LastSavedIndicator text="Saved" isVisible={true} />);
+
+    const region = screen.getByText("Saved").closest("[role]");
+    expect(region).toHaveAttribute("role", "status");
+  });
+
+  it("keeps the live region node stable across unsaved↔saved flips", () => {
+    const { rerender } = render(
+      <LastSavedIndicator text="Saved" isVisible={true} hasChanges={false} />
+    );
+    const regionBefore = screen.getByText("Saved").closest("[aria-live]");
+
+    rerender(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />);
+    const regionAfter = screen.getByText("Unsaved changes").closest("[aria-live]");
+
+    expect(regionBefore).not.toBeNull();
+    expect(regionAfter).toBe(regionBefore);
+  });
+
   it("applies amber styling for unsaved changes and sets semantic state data attributes", () => {
     render(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />);
 
@@ -107,6 +127,17 @@ describe("LastSavedIndicator", () => {
     render(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />);
 
     const region = screen.getByText("Unsaved changes").closest("[aria-live]");
+    expect(region).toHaveAttribute("aria-live", "polite");
+    expect(region).toHaveAttribute("aria-atomic", "true");
+  });
+
+  it("keeps saved-state semantics for screen readers when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(<LastSavedIndicator text="Saved" isVisible={true} />);
+
+    expect(screen.getByText("Saved")).toBeInTheDocument();
+    expect(container.querySelector("div")).toHaveAttribute("data-reduced-motion", "true");
+    const region = screen.getByText("Saved").closest("[aria-live]");
     expect(region).toHaveAttribute("aria-live", "polite");
     expect(region).toHaveAttribute("aria-atomic", "true");
   });

@@ -17,7 +17,7 @@ import type { Mock } from "vitest";
 import { StepInfo } from "./StepInfo";
 import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
-import { UI_CONTENT, FORM_LIMITS, VALIDATION_MESSAGES } from "../../config/constants";
+import { UI_CONTENT, FORM_LIMITS, VALIDATION_MESSAGES, TIMEOUTS } from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
@@ -244,6 +244,14 @@ describe("StepInfo", () => {
     const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
     fireEvent.change(input, { target: { value: "My Project" } });
     expect(mockStore.setProjectName).toHaveBeenCalledWith("My Project");
+  });
+
+  it("disables mobile autocapitalize/autocorrect/spellcheck on project name", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("autocapitalize", "off");
+    expect(input).toHaveAttribute("autocorrect", "off");
+    expect(input).toHaveAttribute("spellcheck", "false");
   });
 
   it("shows project name character counter", () => {
@@ -608,9 +616,10 @@ describe("StepInfo", () => {
   it("has live region for clear announcements", () => {
     mockStore.projectName = "My Project";
     render(<StepInfo />);
-    const liveRegion = screen.getByRole("status");
-    expect(liveRegion).toBeInTheDocument();
-    expect(liveRegion).toHaveAttribute("aria-live", "assertive");
+    const assertiveRegion = screen
+      .getAllByRole("status")
+      .find((region) => region.getAttribute("aria-live") === "assertive");
+    expect(assertiveRegion).toBeInTheDocument();
   });
 
   it("announces when form is cleared", () => {
@@ -621,6 +630,51 @@ describe("StepInfo", () => {
     expect(
       screen.getByText(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_ANNOUNCEMENT)
     ).toBeInTheDocument();
+  });
+
+  // ======== Form-Ready Announcement (SR parity with ready pulse) ========
+
+  it("has a polite live region for the form-ready announcement", () => {
+    render(<StepInfo />);
+    const announcer = screen.getByTestId("form-ready-announcer");
+    expect(announcer).toHaveAttribute("role", "status");
+    expect(announcer).toHaveAttribute("aria-live", "polite");
+    expect(announcer).toHaveAttribute("aria-atomic", "true");
+    expect(announcer).toBeEmptyDOMElement();
+  });
+
+  it("announces form-ready when the form transitions from incomplete to complete", () => {
+    const { rerender } = render(<StepInfo />);
+    expect(screen.getByTestId("form-ready-announcer")).toBeEmptyDOMElement();
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets the minimum length.";
+    // StepInfo is memoized; change direction prop to force a re-render so the
+    // canProceed transition effect runs (identical props would be skipped).
+    rerender(<StepInfo direction="backward" />);
+    expect(screen.getByTestId("form-ready-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT
+    );
+  });
+
+  it("does not re-announce form-ready when already complete on mount", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets the minimum length.";
+    render(<StepInfo />);
+    expect(screen.getByTestId("form-ready-announcer")).toBeEmptyDOMElement();
+  });
+
+  it("clears the form-ready announcement after the live-region timeout", () => {
+    const { rerender } = render(<StepInfo />);
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets the minimum length.";
+    rerender(<StepInfo direction="backward" />);
+    expect(screen.getByTestId("form-ready-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT
+    );
+    act(() => {
+      vi.advanceTimersByTime(TIMEOUTS.LIVE_REGION_CLEAR + 100);
+    });
+    expect(screen.getByTestId("form-ready-announcer")).toBeEmptyDOMElement();
   });
 
   // ======== Enter-to-Advance ========
