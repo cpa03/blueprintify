@@ -779,6 +779,8 @@ export const COPY_STATE_VALUES = {
   COPIED: "copied" as const,
   /** Idle / ready to copy state identifier */
   IDLE: "idle" as const,
+  /** Clipboard write failed (both API and fallback) state identifier */
+  FAILED: "failed" as const,
 } as const;
 
 /**
@@ -983,10 +985,16 @@ export const SVG_ICON_DEFAULTS = {
   STROKE_LINECAP_ROUND: "round" as const,
   /** Default rounded line joins */
   STROKE_LINEJOIN_ROUND: "round" as const,
+  /** Light stroke width for fine-detail icons (hairline emphasis) */
+  STROKE_WIDTH_LIGHT: 1.5 as const,
   /** Default stroke width for regular icons */
   STROKE_WIDTH_DEFAULT: 2 as const,
+  /** Medium stroke width for slightly emphasized icons (between default and bold) */
+  STROKE_WIDTH_MEDIUM: 2.5 as const,
   /** Bold stroke width for emphasis icons */
   STROKE_WIDTH_BOLD: 3 as const,
+  /** Heavy stroke width for progress rings and thick-stroke indicators */
+  STROKE_WIDTH_HEAVY: 4 as const,
   /** Default icon size class */
   SIZE_DEFAULT: "w-5 h-5" as const,
   /** Small icon size class */
@@ -1003,6 +1011,11 @@ export const SVG_ICON_DEFAULTS = {
 export const ICON_PATHS = {
   /** Right-pointing chevron (direction arrow) */
   CHEVRON_RIGHT: "M9 5l7 7-7 7" as const,
+  /** App brand logo layered diamond stack path */
+  BRAND_LOGO: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" as const,
+  /** GitHub brand octocat logo path */
+  GITHUB:
+    "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" as const,
 } as const;
 
 /**
@@ -1049,4 +1062,97 @@ export const STEP_INDICATOR_STATE_VALUES = {
   AVAILABLE: "available" as const,
   /** Locked step identifier */
   LOCKED: "locked" as const,
+} as const;
+
+/**
+ * WAI-ARIA Role Literals
+ * Centralized source of truth for `role="..."` attribute values across all
+ * web components. Keeps ARIA usage greppable and prevents literal drift.
+ * Flexy says: No hardcoded role="status"/"alert"/"dialog" strings in components!
+ * Usage: import { ARIA_ROLES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.STATUS} aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_ROLES = {
+  /** Live status announcer — polite updates for assistive tech */
+  STATUS: "status" as const,
+  /** Urgent alert announcer — immediately interrupts screen readers */
+  ALERT: "alert" as const,
+  /** Modal dialog container — traps focus, blocks background */
+  DIALOG: "dialog" as const,
+  /** Semantic image role for SVG/icon graphics exposed to AT */
+  IMG: "img" as const,
+  /** Grouped controls/elements container */
+  GROUP: "group" as const,
+  /** Named landmark region for page sections */
+  REGION: "region" as const,
+  /** Progress indicator with aria-valuenow/min/max */
+  PROGRESSBAR: "progressbar" as const,
+  /** Hover/focus tooltip popup */
+  TOOLTIP: "tooltip" as const,
+  /** Tab panel content container */
+  TABPANEL: "tabpanel" as const,
+  /** Tab list container */
+  TABLIST: "tablist" as const,
+  /** Individual tab */
+  TAB: "tab" as const,
+  /** Slider input role */
+  SLIDER: "slider" as const,
+  /** Editable search input role */
+  SEARCHBOX: "searchbox" as const,
+  /** Radio button group container */
+  RADIOGROUP: "radiogroup" as const,
+  /** Individual radio button */
+  RADIO: "radio" as const,
+  /** Selectable option in a listbox */
+  OPTION: "option" as const,
+  /** Plain list item */
+  LISTITEM: "listitem" as const,
+  /** List container */
+  LIST: "list" as const,
+  /** Listbox container (selectable list) */
+  LISTBOX: "listbox" as const,
+} as const;
+
+/**
+ * ARIA Live Region Politeness Values
+ * Centralized source of truth for `aria-live` attribute values.
+ * Flexy says: No hardcoded aria-live="polite"/"assertive" strings in components!
+ * Usage: import { ARIA_LIVE_VALUES } from "@blueprint/shared";
+ *        <span role={ARIA_ROLES.STATUS} aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_LIVE_VALUES = {
+  /** Polite — waits for a pause before announcing (default for status) */
+  POLITE: "polite" as const,
+  /** Assertive — interrupts immediately (use for errors/alerts) */
+  ASSERTIVE: "assertive" as const,
+  /** Off — disables live region announcements */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * ARIA Atomic Values
+ * Centralized source of truth for `aria-atomic` attribute values.
+ * Flexy says: No hardcoded aria-atomic="true"/"false" strings in components!
+ * Usage: import { ARIA_ATOMIC_VALUES } from "@blueprint/shared";
+ *        <p role={ARIA_ROLES.STATUS} aria-atomic={ARIA_ATOMIC_VALUES.TRUE}>
+ */
+export const ARIA_ATOMIC_VALUES = {
+  /** Announce the entire live region as a whole */
+  TRUE: "true" as const,
+  /** Announce only the changed portions */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Modal Values
+ * Centralized source of truth for `aria-modal` attribute values.
+ * Flexy says: No hardcoded aria-modal="true" strings in components!
+ * Usage: import { ARIA_MODAL_VALUES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.DIALOG} aria-modal={ARIA_MODAL_VALUES.TRUE}>
+ */
+export const ARIA_MODAL_VALUES = {
+  /** Modal dialog — background is inert to assistive tech */
+  TRUE: "true" as const,
+  /** Non-modal dialog — background remains accessible */
+  FALSE: "false" as const,
 } as const;

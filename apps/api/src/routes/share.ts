@@ -184,7 +184,11 @@ async function generateVerifyToken(
     encoder.encode(payload)
   );
   const signatureHex = Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0"))
+    .map((b) =>
+      b
+        .toString(CRYPTO_CONFIG.HEX_RADIX)
+        .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
+    )
     .join("");
   const payloadB64 = btoa(payload).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
   return `${payloadB64}.${signatureHex.slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH)}`;
@@ -225,7 +229,9 @@ async function isValidVerifyToken(
     );
     const expectedSig = Array.from(new Uint8Array(signature))
       .map((b) =>
-        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+        b
+          .toString(CRYPTO_CONFIG.HEX_RADIX)
+          .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
       )
       .join("")
       .slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH);
@@ -554,7 +560,9 @@ app.post(
       );
       const hashHex = Array.from(new Uint8Array(hashBuffer))
         .map((b) =>
-          b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+          b
+            .toString(CRYPTO_CONFIG.HEX_RADIX)
+            .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
         )
         .join("");
 

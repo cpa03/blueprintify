@@ -39,11 +39,13 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
   ANIMATION_DEFAULTS,
-  SHORTCUT_DESCRIPTIONS,
+  ARIA_MODAL_VALUES,
+  ARIA_ROLES,
+  DIALOG_STATE_VALUES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  DIALOG_STATE_VALUES,
+  SHORTCUT_DESCRIPTIONS,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -183,8 +185,8 @@ export const ConfirmDialog = memo(function ConfirmDialog({
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
-            aria-modal="true"
+            role={ARIA_ROLES.DIALOG}
+            aria-modal={ARIA_MODAL_VALUES.TRUE}
             aria-labelledby="confirm-dialog-title"
             aria-describedby="confirm-dialog-description"
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}

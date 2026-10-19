@@ -13,11 +13,13 @@ import * as motion from "framer-motion/m";
 import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
-  EDITOR_FILENAMES,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   DISPLAY_SYMBOLS,
-  FRAMER_TYPE,
+  EDITOR_FILENAMES,
   EMPTY_STATE_VALUES,
+  FRAMER_TYPE,
 } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -70,8 +72,8 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      role="status"
-      aria-live="polite"
+      role={ARIA_ROLES.STATUS}
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
       data-tab={tab}
       data-has-sibling-content={siblingTabHasContent}
@@ -130,9 +132,9 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   d="M5 13l4 4L19 7"
                 />
               </svg>

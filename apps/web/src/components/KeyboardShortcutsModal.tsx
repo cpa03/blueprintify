@@ -35,7 +35,13 @@ import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_MODAL_VALUES,
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -299,8 +305,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
-            aria-modal="true"
+            role={ARIA_ROLES.DIALOG}
+            aria-modal={ARIA_MODAL_VALUES.TRUE}
             aria-labelledby="keyboard-shortcuts-title"
             aria-describedby="keyboard-shortcuts-tip"
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
@@ -349,9 +355,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     aria-hidden="true"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
@@ -367,7 +373,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                                focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50
                                transition-all duration-200"
                     aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
-                    role="searchbox"
+                    role={ARIA_ROLES.SEARCHBOX}
                     autoComplete="off"
                     enterKeyHint="search"
                     spellCheck={false}
@@ -470,9 +476,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       aria-hidden="true"
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT}
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>
@@ -496,9 +502,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 <p
                   id="keyboard-shortcuts-tip"
                   className="text-xs text-dark-500 text-center"
-                  role="status"
-                  aria-live="polite"
-                  aria-atomic="true"
+                  role={ARIA_ROLES.STATUS}
+                  aria-live={ARIA_LIVE_VALUES.POLITE}
+                  aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
                 >
                   {searchQuery ? (
                     <>

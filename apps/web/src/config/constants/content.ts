@@ -270,6 +270,12 @@ export const ACCESSIBILITY_LABELS = {
     COPY_TO_CLIPBOARD: "Copy to clipboard",
     COPIED_TO_CLIPBOARD: "Copied to clipboard",
     OPENS_IN_NEW_TAB: "(opens in new tab)",
+    /** Accessible name while in the failed-copy state (replaces COPY_CODE) */
+    COPY_FAILED: "Copy failed — try again",
+    /** Tooltip while in the failed-copy state (replaces COPY_CODE_TITLE) */
+    COPY_FAILED_TITLE: "Copy failed",
+    /** Screen reader announcement when copying a code block fails */
+    COPY_FAILED_ANNOUNCEMENT: "Failed to copy code to clipboard",
   },
   TOAST: {
     REGION: "Notifications",
@@ -305,6 +311,10 @@ export const ACCESSIBILITY_LABELS = {
     COPIED_ARIA: "Link copied to clipboard",
     /** Tooltip while in the copied state (replaces COPY_LINK_TITLE) */
     COPIED_TITLE: "Copied!",
+    /** Screen reader announcement for the persistent live region after a successful copy */
+    COPIED_ANNOUNCEMENT: "Anchor link copied to clipboard",
+    /** Screen reader announcement for the persistent live region when the copy fails */
+    COPY_FAILED_ANNOUNCEMENT: "Failed to copy anchor link to clipboard",
   },
   CELEBRATION: {
     COMPLETE: "Generation complete",
@@ -504,6 +514,7 @@ export const COPY_BUTTON_LABELS = {
 export const MARKDOWN_COPY_LABELS = {
   COPY: "Copy",
   COPIED: "Copied!",
+  COPY_FAILED: "Failed",
 } as const;
 
 // ============================================================================
@@ -751,6 +762,8 @@ export const EDITOR_EMPTY_STATE_LABELS = {
   SUBMIT_WIZARD: "Submit wizard",
   /** Hint badge — describes the next step keyboard shortcut */
   NEXT_STEP: "Next step",
+  /** Accessible label for the empty-state status region */
+  ARIA_LABEL: "Editor empty state",
 } as const;
 
 export const SKELETON_LAYOUT = {

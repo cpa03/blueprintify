@@ -23,7 +23,7 @@ import {
   SPRING_CONFIG,
 } from "../config/constants";
 import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
-import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
+import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
@@ -204,8 +204,8 @@ function GenerationCelebrationComponent({
   return (
     <div
       className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
-      role="status"
-      aria-live="polite"
+      role={ARIA_ROLES.STATUS}
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       aria-label={ACCESSIBILITY_LABELS.CELEBRATION.COMPLETE}
       data-state={isComplete ? CELEBRATION_STATE_VALUES.ACTIVE : CELEBRATION_STATE_VALUES.IDLE}
       data-reduced-motion={String(prefersReducedMotion)}
@@ -292,7 +292,7 @@ function GenerationCelebrationComponent({
                   cy="24"
                   r="22"
                   stroke="currentColor"
-                  strokeWidth="3"
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
@@ -303,9 +303,9 @@ function GenerationCelebrationComponent({
                 <motion.path
                   d="M14 24L21 31L34 17"
                   stroke="currentColor"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: CIRCLE_REVEAL_DURATION_S, delay: CHECKMARK_PATH_DELAY_S }}

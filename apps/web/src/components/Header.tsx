@@ -17,8 +17,17 @@
  */
 
 import { memo, useState, useEffect, useCallback } from "react";
-import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS, MODIFIER_KEYS } from "@blueprint/shared/config";
-import { SCROLL_BEHAVIOR } from "@blueprint/shared/config";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  ICON_PATHS,
+  MODIFIER_KEYS,
+  SCROLL_BEHAVIOR,
+  SHORTCUT_DESCRIPTIONS,
+  SHORTCUT_LABELS,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -32,7 +41,6 @@ import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { Icon } from "./Icon";
 import { RippleButton } from "./RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "./SmartTooltip";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * Props for the Header component.
@@ -138,14 +146,15 @@ function HeaderComponent({
             <svg
               className="w-6 h-6 text-white"
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+              aria-hidden="true"
             >
               <path
-                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d={ICON_PATHS.BRAND_LOGO}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
               />
             </svg>
           </div>
@@ -203,11 +212,12 @@ function HeaderComponent({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  aria-hidden="true"
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
@@ -219,8 +229,13 @@ function HeaderComponent({
             className="btn-ghost flex items-center gap-2 group"
             ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}>
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+            <svg
+              className="w-5 h-5"
+              fill="currentColor"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              aria-hidden="true"
+            >
+              <path d={ICON_PATHS.GITHUB} />
             </svg>
             <span className="hidden sm:inline">{UI_CONTENT.BUTTONS.GITHUB}</span>
             {/* External link indicator — appears on hover to signal the link
@@ -237,9 +252,9 @@ function HeaderComponent({
       {/* Live region announcing the reduce-motion preference toggle */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {motionAnnouncement}
       </div>

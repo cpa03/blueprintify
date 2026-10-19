@@ -74,6 +74,7 @@ export {
   ID_GENERATION_CONFIG,
   ID_CHARS,
   DB_ID_PREFIXES,
+  DB_ID_SEPARATOR,
   TIME_UNITS,
   PERCENT_SCALE,
   RATIO_LIMITS,
@@ -253,6 +254,10 @@ export {
   PROGRESS_STATE_VALUES,
   REVIEW_STATE_VALUES,
   CELEBRATION_STATE_VALUES,
+  ARIA_ROLES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_MODAL_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

@@ -2,11 +2,14 @@ import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
-  SVG_ICON_DEFAULTS,
-  CHAR_COUNTER_THRESHOLDS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
+  CHAR_COUNTER_THRESHOLDS,
   RATIO_LIMITS,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -123,9 +126,9 @@ function CharacterCounterComponent({
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
             >
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
@@ -135,9 +138,9 @@ function CharacterCounterComponent({
       {/* Screen-reader-only announcement with descriptive label */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {announcement}
       </span>
@@ -215,9 +218,9 @@ function CharacterCounterCompactComponent({
       </span>
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {compactAnnouncement}
       </span>

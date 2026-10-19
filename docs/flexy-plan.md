@@ -4,6 +4,98 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 187: Centralize Hex Pad Char, DB ID Separator, sr-only Class & Empty-State Aria Label
+
+**Problem**: Hex-encoding call sites repeated the raw `"0"` pad character in 4× `padStart` invocations (auth `deriveUserId` + 3× share token/passphrase hashing) despite `CRYPTO_CONFIG.HEX_RADIX`/`HEX_PADDING_WIDTH` already existing; `deriveUserId` joined prefix and hash with a hardcoded `"_"` separator bypassing `DB_ID_PREFIXES`; 4× `<span className="sr-only">` live regions (TemplateGrid, StepFeatures, ShowEditorButton ×2) bypassed `CSS_CLASSES`; and `EditorEmptyState` hardcoded `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded pad chars, ID separators, screen-reader classes, or aria labels!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.HEX_PAD_CHAR` (`"0"`) + `DB_ID_SEPARATOR` (`"_"`); updated `CRYPTO_CONFIG` usage docblock to reference `HEX_PAD_CHAR` |
+| `packages/shared/src/index.ts` | Exported `DB_ID_SEPARATOR` on the root barrel |
+| `packages/shared/src/config.test.ts` | Added `HEX_PAD_CHAR` value + pad-behavior tests; added `DB_ID_SEPARATOR` value + join-format tests (import updated) |
+| `apps/api/src/middleware/auth.ts` | `padStart(..., "0")` → `CRYPTO_CONFIG.HEX_PAD_CHAR`; `` `${DB_ID_PREFIXES.USER}_${...}` `` → `` `${DB_ID_PREFIXES.USER}${DB_ID_SEPARATOR}${...}` `` |
+| `apps/api/src/routes/share.ts` | 3× `padStart(..., "0")` (verify-token sign, verify-token check, passphrase hash) → `CRYPTO_CONFIG.HEX_PAD_CHAR` |
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.SR_ONLY` (`"sr-only"`) |
+| `apps/web/src/config/constants/accessibility.test.ts` | Added `SR_ONLY` value test |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` (`"Editor empty state"`) |
+| `apps/web/src/components/TemplateGrid.tsx` + `wizard/StepFeatures.tsx` + `ShowEditorButton.tsx` (×2) | `className="sr-only"` → `className={CSS_CLASSES.SR_ONLY}` |
+| `apps/web/src/components/EditorEmptyState.tsx` | `aria-label="Editor empty state"` → `aria-label={EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL}` |
+
+## Verification (Iteration 187)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,249 web + 535 api + 872 shared = 2,656 tests passing**
+
+## PR (Iteration 187)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-187-hex-pad-id-separator-sr-only` | refactor(flexy): centralize hex pad char, DB ID separator, sr-only class & empty-state aria label (Iteration 187) |
+
+### ✅ Flexy Iteration 194: Centralize ARIA Role, Live-Region, Atomic & Modal Literals Across All Components
+
+**Problem**: 131 hardcoded ARIA attribute literals remained across 35 web component files: `role="..."` (status/alert/dialog/img/group/region/progressbar/tooltip/tabpanel/tablist/tab/slider/searchbox/radiogroup/radio/option/listitem/list/listbox), `aria-live="polite"/"assertive"`, `aria-atomic="true"`, and `aria-modal="true"` — no `ARIA_ROLES`/`ARIA_LIVE_VALUES`/`ARIA_ATOMIC_VALUES`/`ARIA_MODAL_VALUES` constants existed. Supersedes stale PRs #3645 (Iteration 188) and #3668 (Iteration 189), which were 106+ commits behind main. Flexy says: no hardcoded ARIA attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_ROLES` (19 roles), `ARIA_LIVE_VALUES` (POLITE/ASSERTIVE/OFF), `ARIA_ATOMIC_VALUES` (TRUE/FALSE), `ARIA_MODAL_VALUES` (TRUE/FALSE) |
+| `packages/shared/src/index.ts` | Exported the 4 new constants |
+| `packages/shared/src/config.test.ts` | 28 new value/count/uniqueness tests (entry coverage for all 19 roles + 3 live + 2 atomic + 2 modal) |
+| 35 files in `apps/web/src/` | 131× hardcoded role / aria-live / aria-atomic / aria-modal literals → `ARIA_*` constants; Toast.tsx querySelector string → template literal with constants |
+| `docs/flexy-plan.md` | Iteration 194 entry |
+
+Intentionally untouched: test files (querySelector assertions test rendered output), code comments/JSDoc, hooks JSDoc examples (`useScrollLock`/`useFocusTrap`), `lib/templates/react.ts` (generated-project template string).
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.33s)
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,304 web + 550 api + 907 shared = 2,761 tests passing**
+- ✅ Remaining hardcoded role / aria-live / aria-atomic / aria-modal literals in components (excluding comments & test queries) — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-194-aria-roles-live-modal` | refactor(flexy): centralize ARIA role, live-region, atomic & modal literals into shared config (Iteration 194) |
+
+### ✅ Flexy Iteration 193: Centralize Remaining SVG Stroke Attribute Literals Across All Components
+
+**Problem**: 185 hardcoded SVG stroke attribute literals remained across 26 web component files, bypassing the existing `SVG_ICON_DEFAULTS` constants (`STROKE_WIDTH_DEFAULT`, `STROKE_WIDTH_BOLD`, `STROKE_LINECAP_ROUND`, `STROKE_LINEJOIN_ROUND`) introduced in Iteration 187b. Breakdown: 43× `strokeWidth={2}`, 11× string-form `strokeWidth="N"` (`"2"`/`"2.5"`/`"3"`/`"4"`), 7× `strokeWidth={2.5}`, 1× `strokeWidth={1.5}`, 3× `strokeWidth={3}`, 62× `strokeLinecap="round"`, 58× `strokeLinejoin="round"`. Values 1.5, 2.5 and 4 had no constant at all. Flexy says: no hardcoded stroke attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `STROKE_WIDTH_LIGHT: 1.5`, `STROKE_WIDTH_MEDIUM: 2.5`, `STROKE_WIDTH_HEAVY: 4` to `SVG_ICON_DEFAULTS` — completes the light→default→medium→bold→heavy stroke-width scale |
+| `packages/shared/src/config.test.ts` | Updated stroke-width ordering test (light < default < medium < bold < heavy); entry count 11→14 |
+| 26 files in `apps/web/src/components/` | 185× hardcoded strokeWidth / strokeLinecap / strokeLinejoin literals → `SVG_ICON_DEFAULTS.*` (both JSX `{2}` and string `"3"` forms) |
+| `StepIndicator.tsx`, `CircularProgress.tsx` | Added `SVG_ICON_DEFAULTS` import where missing |
+
+Affected files: AnimatedCopyButton, CharacterCounter, CircularProgress, Editor, ErrorBoundary, ErrorFallback, GenerationCelebration, Header, HeadingAnchor, KeyboardShortcutsModal, LastSavedIndicator, MarkdownRenderer, OfflineBanner, PreviewEmptyState, ScrollToTop, SkipLink, StepIndicator, TemplateGrid, Toast, ValidationCheckmark, StepFeatures, StepGenerating, StepInfo, StepReview, StepStack, EditorToolbar.
+
+Intentionally untouched: `Icon.test.tsx` (`strokeWidth={1.5}` custom-prop test) and `CircularProgress.test.tsx` (`strokeWidth={6}` custom-prop test) — these exercise component prop plumbing, not default values.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.81s)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,303 web + 550 api + 879 shared = 2,732 tests passing**
+- ✅ Remaining hardcoded strokeWidth / strokeLinecap / strokeLinejoin literals (excluding intentional test props) — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-193-svg-stroke-attrs` | refactor(flexy): centralize 185 hardcoded SVG stroke attribute literals into shared config (Iteration 193) |
+
 ### ✅ Flexy Iteration 191: Replace Remaining Hardcoded SVG viewBox Literals Across All Components
 
 **Problem**: 59× hardcoded `viewBox="0 0 24 24"` remained across 24 web component files, bypassing the `SVG_ICON_DEFAULTS.VIEW_BOX` constant introduced in Iteration 187b. `apps/web/src/config/icons.ts` was already migrated but inline `<svg>` JSX across components still hard-coded the literal. Flexy says: no hardcoded viewBox literals!

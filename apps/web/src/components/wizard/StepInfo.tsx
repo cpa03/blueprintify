@@ -26,15 +26,18 @@
 
 import {
   ANIMATION_DIRECTIONS,
-  SHORTCUT_DESCRIPTIONS,
-  UI_MESSAGES,
-  FRAMER_TYPE,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  FRAMER_TYPE,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   RATIO_LIMITS,
+  SHORTCUT_DESCRIPTIONS,
+  UI_MESSAGES,
   UI_TIMEOUTS,
-  ICON_PATHS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -309,9 +312,9 @@ export const StepInfo = memo(function StepInfo({
         aria-hidden="true"
       >
         <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
+          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+          strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+          strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
           d={ICON_PATHS.CHEVRON_RIGHT}
         />
       </svg>
@@ -345,9 +348,9 @@ export const StepInfo = memo(function StepInfo({
                     aria-hidden="true"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
@@ -365,7 +368,7 @@ export const StepInfo = memo(function StepInfo({
             </div>
             <span
               className="text-dark-400 tabular-nums flex items-center gap-0.5"
-              aria-live="polite"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
                 formProgress.completed,
                 formProgress.total
@@ -423,6 +426,14 @@ export const StepInfo = memo(function StepInfo({
               name="projectName"
               type="text"
               autoComplete="off"
+              // Mobile keyboard hygiene: project names are often technical
+              // identifiers. Without these, iOS/Android autocapitalize the
+              // first letter and Safari autocorrect rewrites tokens
+              // ("auth" -> "author"), mangling the typed name. Matches the
+              // spellCheck={false} precedent in KeyboardShortcutsModal.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               enterKeyHint="next"
               dir="auto"
               value={projectName}
@@ -496,7 +507,7 @@ export const StepInfo = memo(function StepInfo({
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
                 <motion.p
                   id="projectName-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -511,7 +522,7 @@ export const StepInfo = memo(function StepInfo({
             {projectNameErrorVisible && (
               <motion.p
                 id="projectName-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -648,7 +659,7 @@ export const StepInfo = memo(function StepInfo({
               description.length < FORM_LIMITS.DESCRIPTION.MAX && (
                 <motion.p
                   id="description-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -663,7 +674,7 @@ export const StepInfo = memo(function StepInfo({
             {descriptionErrorVisible && (
               <motion.p
                 id="description-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -827,9 +838,9 @@ export const StepInfo = memo(function StepInfo({
           clear-all button unmounts from the DOM without a visible confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {clearAnnouncement}
       </div>

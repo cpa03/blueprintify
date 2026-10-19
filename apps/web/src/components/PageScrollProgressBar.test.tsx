@@ -209,4 +209,31 @@ describe("PageScrollProgressBar", () => {
     const slider = screen.getByRole("slider");
     expect(slider.getAttribute("data-reduced-motion")).toBe("true");
   });
+
+  it("smooth-scrolls on keyboard scrub by default", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as typeof window.scrollTo;
+
+    const slider = screen.getByRole("slider");
+    fireEvent.keyDown(slider, { key: "ArrowRight" });
+
+    expect(scrollToSpy).toHaveBeenCalledOnce();
+    expect(scrollToSpy.mock.calls[0]?.[0]).toMatchObject({ behavior: "smooth" });
+  });
+
+  it("jumps instantly on keyboard scrub when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    mockScrolledPage();
+    renderPageProgressBar();
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as typeof window.scrollTo;
+
+    const slider = screen.getByRole("slider");
+    fireEvent.keyDown(slider, { key: "ArrowRight" });
+
+    expect(scrollToSpy).toHaveBeenCalledOnce();
+    expect(scrollToSpy.mock.calls[0]?.[0]).toMatchObject({ behavior: "auto" });
+  });
 });

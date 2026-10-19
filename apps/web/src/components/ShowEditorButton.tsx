@@ -19,15 +19,16 @@
  */
 import { memo, useState, useEffect, useRef } from "react";
 import {
-  UI_TIMING,
-  UI_TIMEOUTS,
   ANIMATION_ENTRANCE_DELAYS,
-  ENTRANCE_STAGGER_DEFAULTS,
-  MODIFIER_KEYS,
+  ARIA_LIVE_VALUES,
   BUTTON_TRANSITION_DEFAULTS,
   EDITOR_BUTTON_STATE_VALUES,
-  SVG_ICON_DEFAULTS,
+  ENTRANCE_STAGGER_DEFAULTS,
   ICON_PATHS,
+  MODIFIER_KEYS,
+  SVG_ICON_DEFAULTS,
+  UI_TIMEOUTS,
+  UI_TIMING,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -181,13 +182,13 @@ function ShowEditorButtonComponent({
                   className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
                   aria-hidden="true"
                 />
-                <span className="sr-only" aria-live="polite">
+                <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                   {EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND}
                 </span>
               </>
             )}
             {hasContent && !isGenerating && (
-              <span className="sr-only" aria-live="polite">
+              <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                 {EDITOR_ANNOUNCER.CONTENT_READY}
               </span>
             )}

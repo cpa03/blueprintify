@@ -27,15 +27,18 @@ import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
   ANIMATION_DIRECTIONS,
-  STYLE_ID_STRINGS,
-  SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  ICON_PATHS,
+  SHORTCUT_DESCRIPTIONS,
+  STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -175,9 +178,9 @@ const TechChip = memo(function TechChip({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
             >
               <motion.path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M5 13l4 4L19 7"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
@@ -326,8 +329,8 @@ export const StepStack = memo(function StepStack({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
-              aria-live="polite"
-              aria-atomic="true"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
             >
               {techStack.length}/{minRequired}
             </motion.span>
@@ -338,7 +341,7 @@ export const StepStack = memo(function StepStack({
 
       <div
         className={`glass-card p-6 space-y-6 ${invalidField ? "stack-card-attention" : ""}`}
-        role="group"
+        role={ARIA_ROLES.GROUP}
         aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.TECH_STACK_SELECTION}
       >
         {categories.map(([category, options]) => (
@@ -352,7 +355,7 @@ export const StepStack = memo(function StepStack({
             </h3>
             <div
               className="flex flex-wrap gap-2"
-              role="group"
+              role={ARIA_ROLES.GROUP}
               aria-labelledby={`category-${category}`}
             >
               {options.map((tech, chipIdx) => {
@@ -413,7 +416,7 @@ export const StepStack = memo(function StepStack({
       <AnimatePresence>
         {invalidField && (
           <motion.p
-            role="alert"
+            role={ARIA_ROLES.ALERT}
             initial={{ opacity: 0, y: -6, x: -3 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -428,9 +431,9 @@ export const StepStack = memo(function StepStack({
               aria-hidden="true"
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               />
             </svg>
@@ -461,9 +464,9 @@ export const StepStack = memo(function StepStack({
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M15 19l-7-7 7-7"
               />
             </svg>
@@ -494,9 +497,9 @@ export const StepStack = memo(function StepStack({
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d={ICON_PATHS.CHEVRON_RIGHT}
               />
             </svg>
@@ -508,9 +511,9 @@ export const StepStack = memo(function StepStack({
           — provides explicit feedback since the milestone pulse is purely visual. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {milestoneAnnouncement}
       </div>
