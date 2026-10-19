@@ -4,6 +4,37 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 195: Centralize ARIA Hidden, Orientation & Required Literals Across All Components
+
+**Problem**: 142 hardcoded ARIA attribute literals remained after Iteration 194 centralized roles/live/atomic/modal: `aria-hidden="true"` (136 JSX attributes across 33 web files + 3 querySelector selector strings in tests + 7 focus-trap CSS selector strings in `accessibility.ts`), `aria-orientation="horizontal"` (4× across TemplateGrid, PageScrollProgressBar, EditorHeader, EditorToolbar), and `aria-required="true"` (2× in StepInfo) — no `ARIA_HIDDEN_VALUES`/`ARIA_ORIENTATION_VALUES`/`ARIA_REQUIRED_VALUES` constants existed. Flexy says: no hardcoded ARIA attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_HIDDEN_VALUES` (TRUE/FALSE), `ARIA_ORIENTATION_VALUES` (HORIZONTAL/VERTICAL), `ARIA_REQUIRED_VALUES` (TRUE/FALSE) with JSDoc matching the Iteration 194 ARIA block style |
+| `packages/shared/src/index.ts` | Exported all three constants on the root barrel |
+| `packages/shared/src/config.test.ts` | Added 9 tests: value assertions + uniqueness checks for all three constants (Iteration 195 describe blocks) |
+| `apps/web/src/config/constants/accessibility.ts` | 7 focus-trap `FOCUSABLE_SELECTORS` strings → template literals interpolating `ARIA_HIDDEN_VALUES.TRUE` |
+| `apps/web/src/components/*` + `App.tsx` (33 files) | Replaced 133 JSX `aria-hidden="true"`, 4 `aria-orientation="horizontal"`, 2 `aria-required="true"` with shared constants (StepGenerating ×14, Toast ×12, EditorHeader ×10, StepReview ×8, ErrorFallback ×8, …) |
+| `apps/web/src/components/Wizard.test.tsx` + `TemplateGrid.test.tsx` | 3 querySelector `'[aria-hidden="true"]'` selector strings → template literals interpolating `ARIA_HIDDEN_VALUES.TRUE` |
+| `docs/flexy-plan.md` | Iteration 195 entry |
+
+Deliberately skipped: `apps/web/src/lib/templates/react.ts` (embedded generated-SVG content template, not application code).
+
+## Verification (Iteration 195)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,309 web + 550 api + 920 shared = 2,779 tests passing**
+
+## PR (Iteration 195)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-195-aria-hidden-orientation-required` | refactor(flexy): centralize ARIA hidden, orientation & required literals into shared config (Iteration 195) |
+
 ### ✅ Flexy Iteration 187: Centralize Hex Pad Char, DB ID Separator, sr-only Class & Empty-State Aria Label
 
 **Problem**: Hex-encoding call sites repeated the raw `"0"` pad character in 4× `padStart` invocations (auth `deriveUserId` + 3× share token/passphrase hashing) despite `CRYPTO_CONFIG.HEX_RADIX`/`HEX_PADDING_WIDTH` already existing; `deriveUserId` joined prefix and hash with a hardcoded `"_"` separator bypassing `DB_ID_PREFIXES`; 4× `<span className="sr-only">` live regions (TemplateGrid, StepFeatures, ShowEditorButton ×2) bypassed `CSS_CLASSES`; and `EditorEmptyState` hardcoded `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded pad chars, ID separators, screen-reader classes, or aria labels!

@@ -1170,3 +1170,47 @@ export const ARIA_MODAL_VALUES = {
   /** Non-modal dialog — background remains accessible */
   FALSE: "false" as const,
 } as const;
+
+/**
+ * ARIA Hidden Values
+ * Centralized source of truth for `aria-hidden` attribute values.
+ * Flexy says: No hardcoded aria-hidden="true" strings in components!
+ * Usage: import { ARIA_HIDDEN_VALUES } from "@blueprint/shared";
+ *        <svg aria-hidden={ARIA_HIDDEN_VALUES.TRUE} focusable="false">
+ */
+export const ARIA_HIDDEN_VALUES = {
+  /** Element is hidden from the accessibility tree (decorative content) */
+  TRUE: "true" as const,
+  /** Element is exposed to assistive tech (visible semantic content) */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Orientation Values
+ * Centralized source of truth for `aria-orientation` attribute values
+ * used by scrollbars, toolbars, and listbox-style widgets.
+ * Flexy says: No hardcoded aria-orientation="horizontal" strings in components!
+ * Usage: import { ARIA_ORIENTATION_VALUES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.SLIDER} aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}>
+ */
+export const ARIA_ORIENTATION_VALUES = {
+  /** Widget is laid out horizontally (e.g., top toolbars, horizontal sliders) */
+  HORIZONTAL: "horizontal" as const,
+  /** Widget is laid out vertically (e.g., scrollbars, vertical sliders) */
+  VERTICAL: "vertical" as const,
+} as const;
+
+/**
+ * ARIA Required Values
+ * Centralized source of truth for `aria-required` attribute values
+ * marking form fields as required inputs.
+ * Flexy says: No hardcoded aria-required="true" strings in components!
+ * Usage: import { ARIA_REQUIRED_VALUES } from "@blueprint/shared";
+ *        <input aria-required={ARIA_REQUIRED_VALUES.TRUE} />
+ */
+export const ARIA_REQUIRED_VALUES = {
+  /** Input is required for successful form submission */
+  TRUE: "true" as const,
+  /** Input is optional */
+  FALSE: "false" as const,
+} as const;

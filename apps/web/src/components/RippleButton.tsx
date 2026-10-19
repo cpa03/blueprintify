@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG, CSS_CLASSES } from "../config/constants";
-import { BUTTON_TRANSITION_DEFAULTS } from "@blueprint/shared";
+import { BUTTON_TRANSITION_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared";
 
 interface Ripple {
   id: number;
@@ -174,7 +174,7 @@ function RippleButtonComponent({
           design language. When reduced motion is preferred, the spinner
           is shown statically without the spin animation. */}
       {isLoading && (
-        <span className={CSS_CLASSES.SPINNER_OVERLAY} aria-hidden="true">
+        <span className={CSS_CLASSES.SPINNER_OVERLAY} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
           <span
             className={`${shouldReduceMotion ? "" : "animate-spin"} ${CSS_CLASSES.LOADING_SPINNER}`}
           />
