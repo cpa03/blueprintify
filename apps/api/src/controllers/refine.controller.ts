@@ -2,6 +2,7 @@ import { BaseController } from "./base.controller";
 import { getContainer } from "../di/container";
 import { REFINER_SYSTEM_PROMPT, buildRefinePrompt } from "../services/prompts";
 import type { RefineContext } from "../types";
+import type { RefineRequest } from "@blueprint/shared";
 
 /**
  * Controller for content refinement endpoints.
@@ -16,7 +17,7 @@ export class RefineController extends BaseController {
    */
   async refineContent(c: RefineContext): Promise<Response> {
     this.validateEnvironment(c);
-    const request = this.getValidatedData(c);
+    const request = this.getValidatedData<RefineRequest>(c);
     const config = this.createAIConfig(c);
 
     const userPrompt = buildRefinePrompt(request);

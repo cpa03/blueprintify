@@ -25,7 +25,7 @@
  * ```
  */
 
-import { HTTP_HEADER_NAMES } from "@blueprint/shared/config";
+import { HTTP_HEADER_NAMES, HTTP_STATUS } from "@blueprint/shared/config";
 import type { BlueprintRequest, TaskGenerationRequest, StreamChunk } from "@blueprint/shared/types";
 import {
   API_ERROR_MESSAGES,
@@ -162,10 +162,10 @@ async function apiCallWithRetry(
             serverError = errorData.message;
           }
         } catch {
-          if (response.status === 405) {
-            serverError = `API endpoint unavailable (405 Method Not Allowed). Please ensure backend is reachable.`;
-          } else if (response.status >= 500) {
-            serverError = `Server error (${response.status}). Service temporarily unavailable.`;
+          if (response.status === HTTP_STATUS.METHOD_NOT_ALLOWED) {
+            serverError = API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE(response.status);
+          } else if (response.status >= HTTP_STATUS.INTERNAL_ERROR) {
+            serverError = API_ERROR_MESSAGES.SERVER_ERROR(response.status);
           }
         }
         const errorMessage = serverError || errorMessageDefault;

@@ -37,12 +37,16 @@ import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { isEditableField } from "../lib/dom";
 import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   EDITOR_FILENAMES,
-  VIEW_MODES,
-  PANE_LABELS,
-  UI_TIMING,
-  SKELETON_DEFAULTS,
   KEYBOARD_EVENT_KEYS,
+  PANE_LABELS,
+  SKELETON_DEFAULTS,
+  UI_TIMING,
+  VIEW_MODES,
 } from "@blueprint/shared/config";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
@@ -68,6 +72,7 @@ import { useAutoScroll } from "../hooks/useAutoScroll";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 import "../styles/markdown.css";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
@@ -93,7 +98,7 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
   return (
     <div
       className="editor-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.SKELETON_GENERATING}
     >
       <div className="editor-skeleton-gutter">
@@ -136,7 +141,7 @@ function PreviewSkeleton(): JSX.Element {
   return (
     <div
       className="preview-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}
     >
       <div className="skeleton-block preview-skeleton-heading" />
@@ -564,7 +569,7 @@ function EditorComponent(): JSX.Element {
                       ease: ANIMATION_TIMING.easing.easeOut,
                     }}
                     id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
-                    role="tabpanel"
+                    role={ARIA_ROLES.TABPANEL}
                     aria-labelledby={`tab-${activeTab}`}
                     aria-busy={isGenerating || undefined}
                     className="h-full flex flex-col lg:flex-row"
@@ -584,18 +589,18 @@ function EditorComponent(): JSX.Element {
                         {viewMode === VIEW_MODES.SPLIT && (
                           <div
                             className="absolute top-2 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-dark-800/80 backdrop-blur-sm border border-dark-700/50 pointer-events-none select-none"
-                            aria-hidden="true"
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                           >
                             <svg
                               className="w-3.5 h-3.5 text-primary-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                             >
                               <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
+                                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                               />
                             </svg>
@@ -659,7 +664,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         {/* Bottom scroll shadow */}
                         <div
@@ -674,7 +679,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                       </div>
                     )}
@@ -693,24 +698,24 @@ function EditorComponent(): JSX.Element {
                         {viewMode === VIEW_MODES.SPLIT && (
                           <div
                             className="absolute top-2 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-dark-800/80 backdrop-blur-sm border border-dark-700/50 pointer-events-none select-none"
-                            aria-hidden="true"
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                           >
                             <svg
                               className="w-3.5 h-3.5 text-accent-cyan"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                             >
                               <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
+                                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               />
                               <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
+                                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                               />
                             </svg>
@@ -726,7 +731,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         <div
                           className={CSS_CLASSES.SCROLL_SHADOW_BOTTOM}
@@ -735,7 +740,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         <ScrollProgress scrollContainerRef={previewRef} />
                         <AnimatePresence mode="wait">
@@ -832,9 +837,9 @@ function EditorComponent(): JSX.Element {
           via useRef to prevent re-announcement on re-renders */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {mountAnnouncement}
       </div>
