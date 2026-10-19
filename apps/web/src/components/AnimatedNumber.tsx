@@ -3,7 +3,7 @@ import * as motion from "framer-motion/m";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
-import { TIME_UNITS } from "@blueprint/shared/config";
+import { TIME_UNITS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 import { COUNTER_DIRECTION_VALUES, COUNTER_STATE_VALUES } from "@blueprint/shared";
 import { COUNTER_ANIMATION } from "../config/theme";
 
@@ -109,7 +109,7 @@ function AnimatedNumberComponent({
       // garble the announcement entirely). The authoritative value is announced
       // once via the dedicated role="status" announcer in StepGenerating, so this
       // animated span is hidden from assistive technology.
-      aria-hidden="true"
+      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
     >
       {format(displayValue)}
     </motion.span>

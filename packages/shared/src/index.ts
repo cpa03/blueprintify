@@ -259,6 +259,9 @@ export {
   ARIA_LIVE_VALUES,
   ARIA_ATOMIC_VALUES,
   ARIA_MODAL_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_ORIENTATION_VALUES,
+  ARIA_REQUIRED_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

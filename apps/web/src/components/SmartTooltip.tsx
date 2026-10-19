@@ -11,7 +11,13 @@ import {
   isValidElement,
   type ReactElement,
 } from "react";
-import { ARIA_ROLES, DIRECTION, KEYBOARD_EVENT_KEYS, MODIFIER_KEYS } from "@blueprint/shared";
+import {
+  ARIA_ROLES,
+  DIRECTION,
+  KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
+  ARIA_HIDDEN_VALUES,
+} from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -320,7 +326,7 @@ function SmartTooltipComponent({
           </div>
           <div
             className={`absolute w-2 h-2 border-4 border-dark-700/50 ${positionStyle.arrow}`}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
         </div>
       )}

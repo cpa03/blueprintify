@@ -18,6 +18,7 @@ import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   FRAMER_TYPE,
   SAVE_STATE_VALUES,
@@ -141,7 +142,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={

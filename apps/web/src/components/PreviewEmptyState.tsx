@@ -14,6 +14,7 @@ import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
@@ -103,7 +104,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 repeat: Infinity,
                 ease: EASING.easeInOut,
               }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <Icon
                 name={tab === EDITOR_TABS.BLUEPRINT ? "document" : "clipboard"}
@@ -123,7 +124,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SMOOTH,
               }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <svg
                 className="w-3.5 h-3.5 text-accent-emerald"
@@ -157,7 +158,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               className="inline-flex"
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: EASING.easeInOut }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <Icon name="sparkles" className="w-4 h-4" />
             </motion.span>{" "}
@@ -180,7 +181,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
             >
               <motion.span
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 animate={shouldReduceMotion ? {} : { x: [0, -2, 0, 2, 0] }}
                 transition={{
                   duration: ANIMATION.FLOATING_DURATION,

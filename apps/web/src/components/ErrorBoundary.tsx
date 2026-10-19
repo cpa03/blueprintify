@@ -22,7 +22,12 @@ import { useCallback, useMemo, lazy, Suspense } from "react";
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
 import { ERROR_BOUNDARY_TEXT, DEBUG_MESSAGES } from "../config/constants/content";
 import { isDev } from "../config/env";
-import { ARIA_LIVE_VALUES, ARIA_ROLES, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import {
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
+} from "@blueprint/shared/config";
 
 /**
  * Lazy-loaded animated error fallback. framer-motion is only loaded
@@ -50,7 +55,7 @@ function LoadingFallback(): JSX.Element {
       <div className="glass-card p-8 max-w-md w-full text-center">
         <div
           className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent-pink/60 via-accent-pink/40 to-transparent"
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
         <div className="w-20 h-20 mx-auto rounded-2xl bg-accent-pink/15 flex items-center justify-center mb-6">
           <svg
@@ -58,7 +63,7 @@ function LoadingFallback(): JSX.Element {
             fill="none"
             stroke="currentColor"
             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           >
             <path
               strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
