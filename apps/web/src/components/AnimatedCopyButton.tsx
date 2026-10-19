@@ -263,7 +263,7 @@ function AnimatedCopyButtonComponent({
                 width="16"
                 height="16"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_SMALL}
-                fill="none"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{
@@ -274,7 +274,7 @@ function AnimatedCopyButtonComponent({
               >
                 <motion.path
                   d="M3 8L6.5 11.5L13 5"
-                  stroke="currentColor"
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
@@ -308,8 +308,8 @@ function AnimatedCopyButtonComponent({
                 width="16"
                 height="16"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}

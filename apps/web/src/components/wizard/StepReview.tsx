@@ -171,8 +171,8 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
@@ -253,8 +253,8 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
@@ -346,8 +346,8 @@ export const StepReview = memo(function StepReview({
                   >
                     <svg
                       className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
@@ -405,8 +405,8 @@ export const StepReview = memo(function StepReview({
                   >
                     <svg
                       className="w-4 h-4 text-accent-emerald"
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
@@ -477,8 +477,8 @@ export const StepReview = memo(function StepReview({
             >
               <svg
                 className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
@@ -552,8 +552,8 @@ export const StepReview = memo(function StepReview({
                     <>
                       <svg
                         className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
+                        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                       >
                         <path
@@ -595,8 +595,8 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path

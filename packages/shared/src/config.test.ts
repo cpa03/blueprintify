@@ -3466,7 +3466,9 @@ describe("SVG_ICON_DEFAULTS", () => {
 
   it("should use none fill and currentColor stroke", () => {
     expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
+    expect(SVG_ICON_DEFAULTS.FILL_CURRENT).toBe("currentColor");
     expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
+    expect(SVG_ICON_DEFAULTS.STROKE_NONE).toBe("none");
   });
 
   it("should use round line caps and joins", () => {
@@ -3494,8 +3496,8 @@ describe("SVG_ICON_DEFAULTS", () => {
     );
   });
 
-  it("should have 14 entries", () => {
-    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(14);
+  it("should have 16 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(16);
   });
 });
 

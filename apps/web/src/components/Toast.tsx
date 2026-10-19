@@ -97,7 +97,7 @@ const ProgressRing = memo(function ProgressRing({
   progress,
   size = TOAST_SPRING.PROGRESS_RING.SIZE_PX,
   strokeWidth = TOAST_SPRING.PROGRESS_RING.STROKE_WIDTH,
-  color = "currentColor",
+  color = SVG_ICON_DEFAULTS.STROKE_CURRENT,
   noTransition = false,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
@@ -116,7 +116,7 @@ const ProgressRing = memo(function ProgressRing({
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        fill="none"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
         stroke={color}
         strokeWidth={strokeWidth}
         strokeOpacity={0.15}
@@ -125,7 +125,7 @@ const ProgressRing = memo(function ProgressRing({
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        fill="none"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
         stroke={color}
         strokeWidth={strokeWidth}
         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -322,7 +322,7 @@ const ToastItem = memo(
             animate={{ opacity: 0 }}
             transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
             style={{
-              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, currentColor 18%, transparent)`,
+              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} 18%, transparent)`,
             }}
             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
@@ -336,7 +336,7 @@ const ToastItem = memo(
           className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ease-out"
           style={{
             opacity: isHovered ? 1 : 0,
-            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, currentColor 10%, transparent)`,
+            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} 10%, transparent)`,
           }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
@@ -349,7 +349,7 @@ const ToastItem = memo(
             >
               <svg
                 className="w-2.5 h-2.5"
-                fill="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
@@ -371,7 +371,7 @@ const ToastItem = memo(
               >
                 <svg
                   className="w-2.5 h-2.5"
-                  fill="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >

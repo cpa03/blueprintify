@@ -320,7 +320,7 @@ function EditorToolbarComponent({
                 <motion.svg
                   className="w-4 h-4 mr-2 flex-shrink-0"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  fill="none"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
                   animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
                   transition={
                     reducedMotion
@@ -343,10 +343,10 @@ function EditorToolbarComponent({
                     cx={CIRCLE_GEOMETRY.CENTER_X}
                     cy={CIRCLE_GEOMETRY.CENTER_Y}
                     r={CIRCLE_GEOMETRY.RADIUS}
-                    stroke="currentColor"
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                     strokeOpacity={0.15}
-                    fill="none"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
                   />
                   <motion.circle
                     cx={CIRCLE_GEOMETRY.CENTER_X}
@@ -355,7 +355,7 @@ function EditorToolbarComponent({
                     stroke="url(#toolbar-export-spinner-grad)"
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
-                    fill="none"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
                     strokeDasharray={CIRCLE_GEOMETRY.CIRCUMFERENCE}
                     strokeDashoffset={CIRCLE_GEOMETRY.STROKE_DASHOFFSET}
                   />
@@ -383,8 +383,8 @@ function EditorToolbarComponent({
               >
                 <motion.svg
                   className="w-4 h-4 mr-1.5"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   initial={{ scale: 0 }}
@@ -422,8 +422,8 @@ function EditorToolbarComponent({
               >
                 <svg
                   className="w-4 h-4 mr-1.5"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
@@ -465,8 +465,8 @@ function EditorToolbarComponent({
         >
           <motion.svg
             className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
+            fill={SVG_ICON_DEFAULTS.FILL_NONE}
+            stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             whileHover={ROTATION.HALF}

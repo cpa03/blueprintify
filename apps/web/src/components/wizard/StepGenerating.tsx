@@ -389,14 +389,14 @@ export const StepGenerating = memo(function StepGenerating({
               width="48"
               height="48"
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
-              fill="none"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
               className="text-accent-emerald"
             >
               <motion.circle
                 cx="24"
                 cy="24"
                 r="22"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
@@ -407,7 +407,7 @@ export const StepGenerating = memo(function StepGenerating({
               />
               <motion.path
                 d="M14 24L21 31L34 17"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
@@ -434,7 +434,7 @@ export const StepGenerating = memo(function StepGenerating({
               width="48"
               height="48"
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
-              fill="none"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
               className="text-accent-pink"
               role={ARIA_ROLES.IMG}
               aria-label={GENERATION_ERROR_LABELS.ERROR_ICON_ARIA}
@@ -443,7 +443,7 @@ export const StepGenerating = memo(function StepGenerating({
                 cx="24"
                 cy="24"
                 r="22"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
@@ -454,7 +454,7 @@ export const StepGenerating = memo(function StepGenerating({
               />
               <motion.path
                 d="M16 16L32 32M32 16L16 32"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 initial={{ pathLength: 0 }}
@@ -504,7 +504,7 @@ export const StepGenerating = memo(function StepGenerating({
                 <svg
                   className="w-9 h-9"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  fill="none"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <defs>
@@ -517,7 +517,7 @@ export const StepGenerating = memo(function StepGenerating({
                   <path
                     d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"
                     fill="url(#gen-lightning-grad)"
-                    stroke="none"
+                    stroke={SVG_ICON_DEFAULTS.STROKE_NONE}
                   />
                 </svg>
               </motion.div>
@@ -856,8 +856,8 @@ export const StepGenerating = memo(function StepGenerating({
                 >
                   <svg
                     className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
@@ -909,8 +909,8 @@ export const StepGenerating = memo(function StepGenerating({
                 >
                   <svg
                     className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
@@ -964,8 +964,8 @@ export const StepGenerating = memo(function StepGenerating({
             >
               <svg
                 className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
@@ -991,8 +991,8 @@ export const StepGenerating = memo(function StepGenerating({
               >
                 <svg
                   className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >

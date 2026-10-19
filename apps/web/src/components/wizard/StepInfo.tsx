@@ -323,8 +323,8 @@ export const StepInfo = memo(function StepInfo({
       </kbd>
       <svg
         className={CSS_CLASSES.ICON_HOVER_SHIFT}
-        fill="none"
-        stroke="currentColor"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
@@ -359,8 +359,8 @@ export const StepInfo = memo(function StepInfo({
                 >
                   <svg
                     className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >

@@ -324,8 +324,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
             >
               <motion.svg
                 className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 initial={false}
