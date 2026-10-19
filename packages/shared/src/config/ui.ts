@@ -950,6 +950,20 @@ export const COUNTER_DIRECTION_VALUES = {
 } as const;
 
 /**
+ * Counter Pulse State Values
+ * Centralized state tracking values for animated card counter active/idle states (AnimatedCounter).
+ * Flexy says: No hardcoded "active"/"idle" strings in AnimatedCounter!
+ * Usage: import { COUNTER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
+ */
+export const COUNTER_STATE_VALUES = {
+  /** Pulse active state identifier */
+  ACTIVE: "active" as const,
+  /** Counter idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Editor Button Display State Values
  * Centralized state tracking values for editor toggle button (ShowEditorButton).
  * Flexy says: No hardcoded "content-ready"/"idle" strings in ShowEditorButton!
