@@ -69,7 +69,7 @@
     "typescript-eslint": "8.71.0"
   },
   "overrides": {
-    "dompurify": "3.4.16",
+    "dompurify": "3.4.17",
     "brace-expansion": "5.0.12",
     "shell-quote": "1.12.0",
     "undici": "7.30.0",
