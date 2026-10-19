@@ -31,6 +31,8 @@ import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   CIRCLE_GEOMETRY,
   FRAMER_TYPE,
@@ -39,9 +41,9 @@ import {
   SHORTCUT_LABELS,
   TOOLTIP_DEFAULTS,
   TOOLTIP_LABELS,
-  VIEW_MODES as SHARED_VIEW_MODES,
   VIEW_MODE_INDICATOR_POSITION,
   VIEW_MODE_LABELS,
+  VIEW_MODES as SHARED_VIEW_MODES,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -164,7 +166,7 @@ function EditorToolbarComponent({
         // and navigated with ArrowLeft/ArrowRight (see handleViewModeKeyDown).
         // Without the explicit attribute the group may be announced as
         // vertical by screen readers, implying wrong arrow-key navigation.
-        aria-orientation="horizontal"
+        aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
         onKeyDown={handleViewModeKeyDown}
       >
         {VIEW_MODES.map((mode) => (
@@ -329,7 +331,7 @@ function EditorToolbarComponent({
                           ease: EASING.linear,
                         }
                   }
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <defs>
                     <linearGradient id="toolbar-export-spinner-grad" x1="0" y1="0" x2="1" y2="1">
@@ -384,7 +386,7 @@ function EditorToolbarComponent({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
@@ -423,7 +425,7 @@ function EditorToolbarComponent({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -466,7 +468,7 @@ function EditorToolbarComponent({
             fill="none"
             stroke="currentColor"
             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             whileHover={ROTATION.HALF}
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
@@ -480,7 +482,7 @@ function EditorToolbarComponent({
           {EDITOR_LABELS.BUTTONS.NEW_PROJECT}
           <kbd
             className="ml-1.5 px-1 py-0.5 bg-dark-700/80 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none"
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           >
             {getModifierLabel()}+N
           </kbd>

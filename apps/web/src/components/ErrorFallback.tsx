@@ -29,6 +29,7 @@ import {
 import {
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   COPY_STATE_VALUES,
@@ -125,7 +126,7 @@ export const ErrorFallback = memo(function ErrorFallback({
         {/* Subtle gradient accent line at the top */}
         <div
           className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent-pink/60 via-accent-pink/40 to-transparent"
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
 
         <motion.div
@@ -167,14 +168,14 @@ export const ErrorFallback = memo(function ErrorFallback({
                   repeat: Infinity,
                   ease: EASING.easeInOut,
                 }}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               />
               <svg
                 className="w-10 h-10 text-accent-pink relative z-10"
                 fill="none"
                 stroke="currentColor"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <motion.path
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -278,7 +279,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                           fill="none"
                           stroke="currentColor"
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
                           <path
                             strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -302,7 +303,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                           fill="none"
                           stroke="currentColor"
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
                           <path
                             strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -326,7 +327,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                           fill="none"
                           stroke="currentColor"
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
                           <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
@@ -380,7 +381,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -415,7 +416,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   fill="none"
                   stroke="currentColor"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}

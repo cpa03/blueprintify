@@ -20,7 +20,7 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
-import { ARIA_ROLES, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ARIA_ROLES, SVG_ICON_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -186,7 +186,7 @@ function CircularProgressComponent({
         height={size}
         className="-rotate-90"
         style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
         <circle
           cx={center}
@@ -224,7 +224,7 @@ function CircularProgressComponent({
         <span
           className="absolute text-xs font-semibold tabular-nums animate-fade-in"
           style={{ color }}
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         >
           {Math.round(clampedValue)}%
         </span>

@@ -33,7 +33,12 @@ import {
   SCROLL_BEHAVIOR,
   DIRECTION,
 } from "../config/constants";
-import { FRAMER_TYPE, MODIFIER_KEYS, BANNER_STATE_VALUES } from "@blueprint/shared/config";
+import {
+  FRAMER_TYPE,
+  MODIFIER_KEYS,
+  BANNER_STATE_VALUES,
+  ARIA_HIDDEN_VALUES,
+} from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { isEditableField } from "../lib/dom";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
@@ -234,7 +239,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               initial={false}
               animate={{ opacity: [0.6, 0], scale: [0.85, 1.8] }}
               transition={{ duration: ANIMATION.ENTRY_PULSE, ease: EASING.easeOut }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <div className="w-10 h-10 rounded-full bg-primary-500/25 blur-sm" />
             </motion.div>
@@ -262,7 +267,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 repeat: Infinity,
                 ease: EASING.easeInOut,
               }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <div className="w-10 h-10 rounded-full bg-accent-emerald/25 blur-sm" />
             </motion.div>
@@ -297,7 +302,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 fill="none"
                 stroke="currentColor"
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 initial={false}
                 // Decorative infinite float: disabled when the user prefers
                 // reduced motion (WCAG 2.3.3) — the arrow stays static while

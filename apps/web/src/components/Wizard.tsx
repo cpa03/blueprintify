@@ -38,6 +38,7 @@ import {
 import { SPINNER } from "../config/styles";
 import {
   ANIMATION_DIRECTIONS,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   KEYBOARD_EVENT_KEYS,
@@ -228,7 +229,7 @@ function WizardComponent(): JSX.Element {
           aria-live={ARIA_LIVE_VALUES.POLITE}
           aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
         >
-          <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
+          <div className={SPINNER.DEFAULT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}></div>
         </div>
       }
     >
@@ -250,7 +251,7 @@ function WizardComponent(): JSX.Element {
           height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
           background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
         }}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
 
       <div
@@ -272,7 +273,7 @@ function WizardComponent(): JSX.Element {
           height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
           background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
         }}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
     </div>
   );

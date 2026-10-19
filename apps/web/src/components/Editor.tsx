@@ -38,6 +38,7 @@ import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { isEditableField } from "../lib/dom";
 import {
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   EDITOR_FILENAMES,
@@ -588,7 +589,7 @@ function EditorComponent(): JSX.Element {
                         {viewMode === VIEW_MODES.SPLIT && (
                           <div
                             className="absolute top-2 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-dark-800/80 backdrop-blur-sm border border-dark-700/50 pointer-events-none select-none"
-                            aria-hidden="true"
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                           >
                             <svg
                               className="w-3.5 h-3.5 text-primary-400"
@@ -663,7 +664,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         {/* Bottom scroll shadow */}
                         <div
@@ -678,7 +679,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                       </div>
                     )}
@@ -697,7 +698,7 @@ function EditorComponent(): JSX.Element {
                         {viewMode === VIEW_MODES.SPLIT && (
                           <div
                             className="absolute top-2 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-dark-800/80 backdrop-blur-sm border border-dark-700/50 pointer-events-none select-none"
-                            aria-hidden="true"
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                           >
                             <svg
                               className="w-3.5 h-3.5 text-accent-cyan"
@@ -730,7 +731,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         <div
                           className={CSS_CLASSES.SCROLL_SHADOW_BOTTOM}
@@ -739,7 +740,7 @@ function EditorComponent(): JSX.Element {
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
                           }}
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         <ScrollProgress scrollContainerRef={previewRef} />
                         <AnimatePresence mode="wait">
