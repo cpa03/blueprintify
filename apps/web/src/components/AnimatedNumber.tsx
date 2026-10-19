@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, memo } from "react";
 import * as motion from "framer-motion/m";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
-import { TIME_UNITS } from "@blueprint/shared/config";
-import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
+import { TIME_UNITS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import { COUNTER_DIRECTION_VALUES, COUNTER_STATE_VALUES } from "@blueprint/shared";
 import { COUNTER_ANIMATION } from "../config/theme";
 
 interface AnimatedNumberProps {
@@ -22,6 +23,7 @@ function AnimatedNumberComponent({
   format = (v) => Math.round(v).toString(),
 }: AnimatedNumberProps) {
   const { shouldAnimate, getDuration } = useReducedMotionContext();
+  const shouldReduceMotion = useReducedMotion();
   const [displayValue, setDisplayValue] = useState(value);
   const displayValueRef = useRef(value);
   const previousValueRef = useRef(value);
@@ -84,6 +86,7 @@ function AnimatedNumberComponent({
       className={`tabular-nums ${className}`}
       data-direction={direction}
       data-value={value}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       initial={false}
       animate={
         shouldAnimate && direction !== COUNTER_DIRECTION_VALUES.IDLE
@@ -106,7 +109,7 @@ function AnimatedNumberComponent({
       // garble the announcement entirely). The authoritative value is announced
       // once via the dedicated role="status" announcer in StepGenerating, so this
       // animated span is hidden from assistive technology.
-      aria-hidden="true"
+      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
     >
       {format(displayValue)}
     </motion.span>
@@ -143,6 +146,7 @@ function AnimatedCounterComponent({
   icon,
 }: AnimatedCounterProps) {
   const { shouldAnimate } = useReducedMotionContext();
+  const shouldReduceMotion = useReducedMotion();
   const previousValueRef = useRef(value);
   const [pulseKey, setPulseKey] = useState(0);
 
@@ -159,8 +163,9 @@ function AnimatedCounterComponent({
     <motion.div
       key={pulseKey}
       className={`glass-card px-6 py-4 ${className}`}
-      data-state={pulseKey > 0 ? "active" : "idle"}
+      data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
       data-value={value}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       initial={false}
       animate={
         shouldAnimate && pulseKey > 0

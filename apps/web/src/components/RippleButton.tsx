@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG, CSS_CLASSES } from "../config/constants";
-import { BUTTON_TRANSITION_DEFAULTS } from "@blueprint/shared";
+import { BUTTON_TRANSITION_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared";
 
 interface Ripple {
   id: number;
@@ -104,10 +104,15 @@ function RippleButtonComponent({
 
   const handleClick = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
+      // The children span is pointer-events-none while loading, but the <button>
+      // itself still receives clicks — without this guard a double-click fires
+      // the action twice. Deliberately not using native `disabled`: it would drop
+      // focus to <body> and strand keyboard users (WCAG 2.4.3).
+      if (isLoading) return;
       createRipple(e);
       onClick?.(e);
     },
-    [createRipple, onClick]
+    [createRipple, onClick, isLoading]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -169,7 +174,7 @@ function RippleButtonComponent({
           design language. When reduced motion is preferred, the spinner
           is shown statically without the spin animation. */}
       {isLoading && (
-        <span className={CSS_CLASSES.SPINNER_OVERLAY} aria-hidden="true">
+        <span className={CSS_CLASSES.SPINNER_OVERLAY} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
           <span
             className={`${shouldReduceMotion ? "" : "animate-spin"} ${CSS_CLASSES.LOADING_SPINNER}`}
           />
