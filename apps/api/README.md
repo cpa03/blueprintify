@@ -63,8 +63,11 @@ npm run dev
 # Run tests
 npm run test
 
-# Run tests with UI
-npm run test -- --ui
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with UI (watch mode; requires @vitest/ui)
+npm run test:watch -- --ui
 
 # Run tests with coverage
 npm run test -- --coverage
@@ -246,15 +249,19 @@ All errors return consistent JSON responses:
 Tests are co-located with source files using `.test.ts` suffix:
 
 ```bash
-# Run all tests
+# Run all tests (one-shot, non-interactive)
 npm run test
 
 # Run specific test file
 npm run test -- src/routes/generate.test.ts
 
 # Run in watch mode
-npm run test -- --watch
+npm run test:watch
 ```
+
+> `npm run test` runs Vitest with `--run`, so it always exits when the suite
+> finishes. Watch mode lives in the `test:watch` script — `npm run test -- --watch`
+> does **not** work, because Vitest forces `watch = false` whenever `run` is set.
 
 ## Deployment
 
