@@ -40,7 +40,7 @@ Deliberately skipped: dynamic/template IDs (`tab-${activeTab}`, `${step.key}-loc
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-197-aria-rel-dom-ids` | refactor(flexy): centralize ARIA relationship DOM element IDs into config (Iteration 197) |
+| #3824 | `flexy/iteration-197-aria-rel-dom-ids` | refactor(flexy): centralize ARIA relationship DOM element IDs into config (Iteration 197) |
 
 ### ✅ Flexy Iteration 186: Centralize Agent Model Fallback Hierarchy into Single Source of Truth
 
