@@ -19,14 +19,19 @@
  */
 import { memo, useState, useEffect, useRef } from "react";
 import {
-  UI_TIMING,
-  UI_TIMEOUTS,
   ANIMATION_ENTRANCE_DELAYS,
-  ENTRANCE_STAGGER_DEFAULTS,
-  MODIFIER_KEYS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
   BUTTON_TRANSITION_DEFAULTS,
   EDITOR_BUTTON_STATE_VALUES,
+  ENTRANCE_STAGGER_DEFAULTS,
+  ICON_PATHS,
+  MODIFIER_KEYS,
+  SVG_ICON_DEFAULTS,
+  UI_TIMEOUTS,
+  UI_TIMING,
 } from "@blueprint/shared/config";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
@@ -53,6 +58,7 @@ function ShowEditorButtonComponent({
   isGenerating = false,
 }: ShowEditorButtonProps): JSX.Element {
   const modifierKey = getModifierLabel();
+  const prefersReducedMotion = useReducedMotion();
 
   const [showArrival, setShowArrival] = useState(false);
   const prevIsGenerating = useRef(isGenerating);
@@ -117,7 +123,7 @@ function ShowEditorButtonComponent({
       position="left"
     >
       <div
-        className={`group animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95${showArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
+        className={`group ${prefersReducedMotion ? "" : "animate-slide-up "}will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95${showArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
       >
         <RippleButton
           onClick={onClick}
@@ -135,21 +141,22 @@ function ShowEditorButtonComponent({
           }
           data-glow-active={showGlow}
           data-is-generating={isGenerating}
+          data-reduced-motion={String(prefersReducedMotion)}
           aria-expanded={false}
           aria-controls="editor-panel"
         >
           <span className="flex items-center">
             <svg
               className={`${ICON.LG} mr-2`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
               />
             </svg>
@@ -162,30 +169,36 @@ function ShowEditorButtonComponent({
             <svg
               className="w-4 h-4 ml-1.5 -mr-1 transition-transform motion-safe:group-hover:translate-x-0.5 opacity-60 group-hover:opacity-100"
               style={{ transitionDuration: `${BUTTON_TRANSITION_DEFAULTS.CHEVRON_DURATION_MS}ms` }}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                d={ICON_PATHS.CHEVRON_RIGHT}
+              />
             </svg>
             {isGenerating && (
               <>
                 <span
                   className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 />
-                <span className="sr-only" aria-live="polite">
+                <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                   {EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND}
                 </span>
               </>
             )}
             {hasContent && !isGenerating && (
-              <span className="sr-only" aria-live="polite">
+              <span className={CSS_CLASSES.SR_ONLY} aria-live={ARIA_LIVE_VALUES.POLITE}>
                 {EDITOR_ANNOUNCER.CONTENT_READY}
               </span>
             )}
             <kbd
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
               aria-hidden="true"
               style={{

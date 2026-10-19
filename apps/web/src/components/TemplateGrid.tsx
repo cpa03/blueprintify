@@ -28,8 +28,14 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS } from "@blueprint/shared";
+import {
+  STARTER_TEMPLATES,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  TEMPLATE_STATE_VALUES,
+} from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   ANIMATION,
   TOAST_MESSAGES,
@@ -41,9 +47,18 @@ import {
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ORIENTATION_VALUES,
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 
 function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
+  const shouldReduceMotion = useReducedMotion();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -141,9 +156,9 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
 
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        role="listbox"
+        role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
-        aria-orientation="horizontal"
+        aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       >
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
@@ -168,7 +183,11 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
               aria-selected={isSelected}
-              role="option"
+              data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
+              data-template-id={template.id}
+              data-loading={isSelected && isLoading ? "true" : "false"}
+              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              role={ARIA_ROLES.OPTION}
               tabIndex={focusIndex === index ? 0 : -1}
               style={
                 {
@@ -206,12 +225,12 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                       className={`${ICON.MD} text-white`}
                       fill="none"
                       stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
@@ -220,7 +239,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   {/* Pulsing border using CSS animation (composited, no forced reflow) */}
                   <div
                     className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50 pointer-events-none animate-glow"
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   />
                 </>
               )}
@@ -240,7 +259,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   className={`text-3xl motion-safe:transition-transform motion-safe:duration-200 ${
                     isSelected ? "scale-110" : ""
                   }`}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   {template.icon}
                 </div>
@@ -293,11 +312,11 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                         `}
                       >
                         +{template.techStack.length - 3}
-                        <span className="sr-only">
+                        <span className={CSS_CLASSES.SR_ONLY}>
                           {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
                         </span>
                         <span
-                          aria-hidden="true"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                           className="absolute bottom-full left-0 mb-2 z-10 hidden group-hover/overflow:block group-focus-within:block animate-tooltip-in glass-card px-3 py-2 text-xs text-dark-300 shadow-xl whitespace-nowrap pointer-events-none"
                         >
                           {hiddenTechNames}
@@ -315,9 +334,9 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       {/* Intentionally blank when idle — live region for loading announcements */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {isLoading && selectedId
           ? ACCESSIBILITY_LABELS.TEMPLATES.LOADING(
