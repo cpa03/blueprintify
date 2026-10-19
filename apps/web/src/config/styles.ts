@@ -142,6 +142,28 @@ export const TYPING = {
 } as const;
 
 // ============================================================================
+// Device safe-area insets — notches, rounded corners, home indicators
+// ============================================================================
+// index.html declares viewport-fit=cover, which renders the page edge-to-edge
+// on notched/rounded-corner devices. The platform reserves no space for us in
+// that mode, so fixed-position UI pinned to a viewport edge needs these
+// env(safe-area-inset-*) paddings or it clips under the iOS home indicator,
+// status bar/sensor housing, or Android display cutout. On devices without
+// insets (and all desktop browsers) env() resolves to 0 — zero visual change.
+// Only elements at bottom-6 or top-0 qualify; FABs at bottom-24/bottom-40
+// already clear the gesture zone.
+export const SAFE_AREA = {
+  /** Clears the top status bar / sensor housing (fixed headers) */
+  TOP: "pt-[env(safe-area-inset-top)]",
+  /** Clears the bottom home indicator / gesture bar */
+  BOTTOM: "pb-[env(safe-area-inset-bottom)]",
+  /** Clears a left-edge notch in landscape orientation */
+  LEFT: "pl-[env(safe-area-inset-left)]",
+  /** Clears a right-edge notch in landscape orientation */
+  RIGHT: "pr-[env(safe-area-inset-right)]",
+} as const;
+
+// ============================================================================
 // Button and interaction classes
 // ============================================================================
 export const BUTTON = {

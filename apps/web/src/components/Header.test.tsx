@@ -60,6 +60,11 @@ describe("Header", () => {
     const header = screen.getByRole("banner");
     expect(header).toBeInTheDocument();
     expect(header).toHaveClass("fixed", "top-0", "left-0", "right-0", "z-50");
+    expect(header).toHaveClass(
+      "pt-[env(safe-area-inset-top)]",
+      "pl-[env(safe-area-inset-left)]",
+      "pr-[env(safe-area-inset-right)]"
+    );
     expect(header).toHaveAttribute("data-scrolled", "false");
     expect(header).toHaveAttribute("data-reduced-motion", "false");
     expect(header).toHaveAttribute("data-shortcuts-discovered", "false");
