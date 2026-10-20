@@ -14,7 +14,7 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 | `packages/shared/src/config/ui.ts` | Added 16 new `ICON_PATHS` entries (CHEVRON_LEFT/DOWN/UP, CHECKMARK, EDIT, REFRESH, WARNING, TRASH, CLOSE, EYE, USER, ZAP, SEARCH, COPY, EXTERNAL_LINK, HELP) — total 19 entries; added `COLOR_MIX_OPACITY` (SUBTLE 10%, MEDIUM 12%, GLOW 18%, HIGHLIGHT 25%, PROMINENT 30%) |
 | `packages/shared/src/index.ts` | Exported `COLOR_MIX_OPACITY` on the root barrel |
 | `packages/shared/src/config.test.ts` | +14 tests: 10 ICON_PATHS value assertions + uniqueness check + entry count (19); 7 COLOR_MIX_OPACITY value assertions + entry count (5) + percentage format check |
-| 20+ files in `apps/web/src/components/` | Replaced 56+ hardcoded SVG path `d="..."` attributes with `ICON_PATHS.*` constants (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, chevron-down/up ×2, user/zap ×2) |
+| 22 files in `apps/web/src/components/` | Replaced 58 hardcoded SVG path `d="..."` attributes with `ICON_PATHS.*` constants (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, user ×4, chevron-down/up ×2, zap ×2) |
 | `apps/web/src/components/wizard/StepStack.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.HIGHLIGHT` + `COLOR_MIX_OPACITY.MEDIUM` |
 | `apps/web/src/components/Toast.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.GLOW` + `COLOR_MIX_OPACITY.SUBTLE` |
 | `apps/web/src/components/PageScrollProgressBar.tsx` | 1× color-mix percentage → `COLOR_MIX_OPACITY.HIGHLIGHT` |
