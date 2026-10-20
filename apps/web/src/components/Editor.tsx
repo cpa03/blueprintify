@@ -72,7 +72,7 @@ import { useAutoScroll } from "../hooks/useAutoScroll";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 import "../styles/markdown.css";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
@@ -601,7 +601,7 @@ function EditorComponent(): JSX.Element {
                                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                d={ICON_PATHS.EDIT}
                               />
                             </svg>
                             <span className="text-2xs font-medium text-dark-400 uppercase tracking-wider">
@@ -716,7 +716,7 @@ function EditorComponent(): JSX.Element {
                                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                d={ICON_PATHS.EYE}
                               />
                             </svg>
                             <span className="text-2xs font-medium text-dark-400 uppercase tracking-wider">

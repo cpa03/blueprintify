@@ -42,6 +42,7 @@ import {
   UI_TIMEOUTS,
   UI_TIMING,
   WIZARD_STEP_KEYS,
+  ICON_PATHS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -871,7 +872,7 @@ export const StepGenerating = memo(function StepGenerating({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      d={ICON_PATHS.EYE}
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
@@ -918,7 +919,7 @@ export const StepGenerating = memo(function StepGenerating({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M15 19l-7-7 7-7"
+                      d={ICON_PATHS.CHEVRON_LEFT}
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
@@ -973,7 +974,7 @@ export const StepGenerating = memo(function StepGenerating({
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  d={ICON_PATHS.REFRESH}
                 />
               </svg>
               {GENERATION_ERROR_LABELS.TRY_AGAIN}
@@ -1000,7 +1001,7 @@ export const StepGenerating = memo(function StepGenerating({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M15 19l-7-7 7-7"
+                    d={ICON_PATHS.CHEVRON_LEFT}
                   />
                 </svg>
                 {GENERATION_ERROR_LABELS.BACK_TO_REVIEW}

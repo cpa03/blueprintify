@@ -26,7 +26,7 @@ import {
   UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -168,7 +168,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M5 13l4 4L19 7"
+                      d={ICON_PATHS.CHECKMARK}
                       initial={
                         shouldReduceMotion
                           ? { pathLength: 1, opacity: 1 }
