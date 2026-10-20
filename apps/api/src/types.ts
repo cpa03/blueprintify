@@ -207,7 +207,7 @@ export type AppContext = Context<{
  * }
  * ```
  */
-export type ValidatedContext<T extends z.ZodSchema> = Context<{
+type ValidatedContext<T extends z.ZodSchema> = Context<{
   Bindings: Env;
   Variables: {
     validatedData: z.infer<T>;
