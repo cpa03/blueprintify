@@ -169,6 +169,19 @@ describe("ToastContainer", () => {
     expect(region).toHaveAttribute("data-reduced-motion", "false");
   });
 
+  it("keeps the container clear of the home-indicator gesture zone via safe-area padding", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Safe area toast",
+      type: TOAST_TYPES.INFO,
+    });
+
+    render(<ToastContainer />);
+
+    const region = screen.getByRole("region");
+    expect(region).toHaveClass("pb-[env(safe-area-inset-bottom)]");
+  });
+
   it("renders different toast types correctly", () => {
     mockToasts.push(
       { id: "toast-1", message: "Success toast", type: TOAST_TYPES.SUCCESS },
