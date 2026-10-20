@@ -420,6 +420,9 @@ export const TOAST_DEFAULTS = {
   AUTO_SAVE_DURATION_MS: 2000,
   /** Delay between stacked toast entrance animations (60ms) */
   STAGGER_MS: 60,
+  /** Coarse countdown tick (ms) under prefers-reduced-motion — restores the
+   *  "time remaining" cue the frozen rAF ring removed, without continuous motion */
+  REDUCED_MOTION_PROGRESS_STEP_MS: 500,
 } as const;
 
 /**

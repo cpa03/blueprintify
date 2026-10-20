@@ -160,6 +160,7 @@ const ToastItem = memo(
     const durationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const originalDurationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const rafRef = useRef<number | null>(null);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const shouldReduceMotion = useReducedMotion();
 
     const clearToastTimeout = useCallback(() => {
@@ -170,6 +171,10 @@ const ToastItem = memo(
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     }, []);
 
@@ -204,10 +209,32 @@ const ToastItem = memo(
             }
           };
           rafRef.current = requestAnimationFrame(animateProgress);
+        } else {
+          // Reduced motion: no rAF loop, but the countdown must not freeze at
+          // its starting value — a ring that sits at 100% and then vanishes
+          // gives users no "time remaining" cue before auto-dismiss. A coarse
+          // stepped countdown (one state update per REDUCED_MOTION_PROGRESS_STEP_MS)
+          // restores that informational signal without continuous frame-by-frame
+          // motion; the CSS transitions on the ring/bar are already disabled
+          // under reduced motion, so each tick lands as a discrete jump.
+          const tickProgress = () => {
+            const elapsed = Date.now() - startTime;
+            const newProgress = Math.max(
+              0,
+              Math.round(initialProgress * (1 - elapsed / remaining))
+            );
+            setProgress(newProgress);
+
+            if (newProgress <= 0 && intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
+          };
+          intervalRef.current = setInterval(
+            tickProgress,
+            TOAST_CONFIG.REDUCED_MOTION_PROGRESS_STEP_MS
+          );
         }
-        // When shouldReduceMotion is true: no rAF loop — the progress ring
-        // shows the initial progress value without frame-by-frame updates.
-        // The toast still dismisses at the correct time via the timeout below.
 
         timeoutRef.current = setTimeout(() => {
           onRemove(toast.id);
