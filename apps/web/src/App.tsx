@@ -46,7 +46,7 @@ import {
   TOAST_MESSAGES,
   CONFIRM_DIALOG,
 } from "./config/constants";
-import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
+import { LAYOUT, BUTTON, ICON, SPINNER, SAFE_AREA } from "./config/styles";
 import { KEYBOARD_SHORTCUTS } from "./config/constants/keyboard";
 import { getAriaShortcutKey } from "./lib/platform";
 import { isEditableField } from "./lib/dom";
@@ -697,12 +697,12 @@ function App(): JSX.Element {
           out of the critical path. Only mount after 2s timeout. */}
       {deferMount && (
         <>
-          <div className="fixed bottom-6 right-6 z-30">
+          <div className={`fixed bottom-6 right-6 z-30 ${SAFE_AREA.BOTTOM}`}>
             <Suspense fallback={null}>
               <ScrollToTop showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
             </Suspense>
           </div>
-          <div className="fixed bottom-6 left-6 z-30">
+          <div className={`fixed bottom-6 left-6 z-30 ${SAFE_AREA.BOTTOM}`}>
             <Suspense fallback={null}>
               <ScrollToBottomLazy showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
             </Suspense>
