@@ -160,6 +160,7 @@ function RippleButtonComponent({
       title={title}
       data-loading={isLoading ? "true" : "false"}
       data-disabled={disabled ? "true" : "false"}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       data-autofocus={dataAutofocus}
       {...rest}
     >
