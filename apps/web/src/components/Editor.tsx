@@ -710,7 +710,7 @@ function EditorComponent(): JSX.Element {
                                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                d={ICON_PATHS.USER}
                               />
                               <path
                                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
