@@ -329,9 +329,11 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 initial={false}
-                // Decorative infinite float: disabled when the user prefers
-                // reduced motion (WCAG 2.3.3) — the arrow stays static while
-                // the button itself remains fully functional.
+                // Respect prefers-reduced-motion (WCAG 2.3.3): the gentle
+                // floating arrow loop is purely decorative, so it stays
+                // static for vestibular-sensitive users while remaining
+                // fully functional. Other pulses in this file already guard
+                // on shouldReduceMotion — this was the one missed loop.
                 animate={
                   shouldReduceMotion ? { y: 0 } : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }
                 }
