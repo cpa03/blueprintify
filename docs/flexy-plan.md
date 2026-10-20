@@ -4,7 +4,6 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
-
 ### ✅ Flexy Iteration 198: Centralize SVG Icon Paths & Color-Mix Opacity Percentages
 
 **Problem**: 56+ hardcoded SVG path `d="..."` attributes across 20+ web component files duplicated common icons (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, etc.) bypassing the existing `ICON_PATHS` constant (which only had 3 entries: CHEVRON_RIGHT, BRAND_LOGO, GITHUB). Additionally, 5 hardcoded `color-mix(in srgb, ... N%, transparent)` opacity percentages (10%, 12%, 18%, 25%) appeared across StepStack, PageScrollProgressBar, and Toast components with no centralized constants. Flexy says: no hardcoded SVG path literals or color-mix percentages!
@@ -415,6 +414,41 @@ Affected files: ErrorFallback, Editor, KeyboardShortcutsModal, MarkdownRenderer,
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | #3659 | `flexy/iteration-186-deploy-proxy-modularize` | refactor(flexy): centralize deployment origins, proxy routing & API-key fallback into shared config (Iteration 186) |
+
+### ✅ Flexy Iteration 186: Centralize Time Helpers, Token Codec Literals, Hex Pad Char & Empty-State Aria-Label
+
+**Problem**: Remaining hardcoded values spanned three fronts. API: 2× `Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND)` duplicating epoch-seconds math (share token issue/verify), 3× `"0"` hex pad chars bypassing `CRYPTO_CONFIG`, base64url `"."`/`":"`/`"+"`/`"-"`/`"/"`/`"_"` delimiters plus `parseInt(..., 10)` radix and `|| ""`/`|| "0"` fallbacks inline in the verify-token codec, and `logger.ts` shadowing the imported `timestamp()` helper with a `const timestamp = Date.now()` local. Shared: no single source of truth for token codec or hex pad char. Web: `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded time math, token delimiters, pad chars, or aria-labels!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.HEX_PAD_CHAR` (`"0"`) |
+| `packages/shared/src/config/storage.ts` | Added `SHARE_TOKEN_CODEC` (`PAYLOAD_SEPARATOR`/`FIELD_SEPARATOR`/`EXPIRY_RADIX`/`MISSING_*_FALLBACK`/`BASE64_*` mapping) |
+| `packages/shared/src/index.ts` | Exported `SHARE_TOKEN_CODEC` on the root export |
+| `packages/shared/src/config.test.ts` | Added `SHARE_TOKEN_CODEC` (6 tests) + `HEX_PAD_CHAR` (1 test) value assertions |
+| `apps/api/src/errors.ts` | Added `nowMs()` + `nowSeconds()` helpers alongside `timestamp()` |
+| `apps/api/src/routes/share.ts` | Replaced 2× epoch-seconds math with `nowSeconds()`; 3× `"0"` with `HEX_PAD_CHAR`; codec delimiters/radix/fallbacks with `SHARE_TOKEN_CODEC` refs (byte-identical output) |
+| `apps/api/src/middleware/logger.ts` | Renamed shadowing `timestamp` local to `now`; `Date.now()` ×3 → `nowMs()` |
+| `apps/api/src/config/constants/config-iteration-186.test.ts` | NEW — 5 tests asserting codec values + `nowMs`/`nowSeconds` behavior |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` (`"Editor empty state"`) |
+| `apps/web/src/components/EditorEmptyState.tsx` | Replaced hardcoded `aria-label` with `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` |
+| `apps/web/src/components/EditorEmptyState.test.tsx` | Assertion now references `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` instead of hardcoded string |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npx eslint` on all 11 changed files — zero errors, zero warnings (`--max-warnings 0`)
+- ✅ `npm run build` (web) + `npm run build:api` (wrangler dry-run) — clean
+- ✅ `npx prettier --check` on all changed files — clean
+- ✅ `packages/shared` config tests — **792/792 passing** (incl. 7 new)
+- ✅ `apps/web` EditorEmptyState tests — **13/13 passing**
+- ✅ Token codec byte-equivalence proven via node script (encode/decode/expiry identical)
+- ⚠️ Pre-existing, unrelated failures left untouched: `apps/web` jest-dom matcher types (tracked by PR #3629), `apps/api` controllers Zod-context types (tracked by PR #3628), `apps/api` vitest workerd pool won't start in sandbox (fails identically on unmodified files)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3632 | `flexy/iteration-186-hardcoded-cleanup` | refactor(flexy): centralize time helpers, token codec literals, hex pad char & empty-state aria-label (Iteration 186) |
 
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 

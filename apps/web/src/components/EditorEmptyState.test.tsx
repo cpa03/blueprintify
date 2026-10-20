@@ -6,6 +6,7 @@ import { EditorEmptyState } from "./EditorEmptyState";
 import { useWizardStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import { WIZARD_STEPS } from "../config/constants";
+import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { WIZARD_STEP_KEYS, EMPTY_STATE_VALUES } from "@blueprint/shared/config";
 
 vi.mock("../store", () => ({
@@ -163,7 +164,7 @@ describe("EditorEmptyState", () => {
     const { container } = render(<EditorEmptyState />);
     const emptyStateElement = container.firstElementChild;
     expect(emptyStateElement).toHaveAttribute("role", "status");
-    expect(emptyStateElement).toHaveAttribute("aria-label", "Editor empty state");
+    expect(emptyStateElement).toHaveAttribute("aria-label", EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL);
     expect(emptyStateElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.WAITING);
     expect(emptyStateElement).toHaveAttribute("data-step", WIZARD_STEP_KEYS.INFO);
     expect(emptyStateElement).toHaveAttribute("data-progress", "20");
