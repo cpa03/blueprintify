@@ -39,7 +39,7 @@
     "validate:models": "node scripts/validate-models.mjs",
     "validate:all": "npm run validate:wrangler && npm run validate:models && npm run scan:secrets && npm run audit",
     "predeploy:api": "npm run validate:wrangler",
-    "audit": "npm audit --audit-level=high",
+    "audit": "npm audit --omit=dev --audit-level=high",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "doctor": "node -e \"console.log('Node:', process.version); const fs=require('fs'); try{console.log('.nvmrc:',fs.readFileSync('.nvmrc','utf8').trim())}catch(e){}\"",
@@ -77,6 +77,7 @@
     "ws": "8.21.0",
     "sharp": "0.35.5",
     "js-yaml": "4.3.1",
+    "postcss-selector-parser": "6.1.5",
     "miniflare": {
       "sharp": "0.35.5"
     }
