@@ -39,6 +39,7 @@ import {
 } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
+import { SAFE_AREA } from "../config/styles";
 import { Icon } from "./Icon";
 import { RippleButton } from "./RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -117,7 +118,7 @@ function HeaderComponent({
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 glass-card backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 glass-card backdrop-blur-xl transition-all duration-300 ${SAFE_AREA.TOP} ${SAFE_AREA.LEFT} ${SAFE_AREA.RIGHT} ${
         isScrolled
           ? "border-b border-dark-600/60 shadow-lg shadow-dark-950/30"
           : "border-b border-dark-700/50"
