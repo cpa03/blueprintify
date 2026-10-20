@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-20: Security Engineer Audit — Changed-files scan (8 files), merge-conflict resolution (12 conflicts), 0 introduced issues
+
+- **Finding**: Post-merge 8-file diff vs origin/main (BUG-058 gates + audit docs) introduces 0 vulnerabilities, secrets, or deprecated usage. Merge of origin/main (40+ commits: a11y #3806/#3811/#3823, deps #3815/#3816/#3818, repokeeper cycles 5–9, BroCula Runs 97–104) hit 12 conflicts — all branch-behind-main staleness or dual-history docs: web package/lock (framer-motion 14.1.0→14.3.0 + dompurify/react/dev group), HeadingAnchor (branch conditional tabIndex reverted main's always-Tab-reachable WCAG fix), LastSavedIndicator (branch reduced-motion superseded by main's persistent-live-region superset), Toast (branch attrs already in main), 4 docs stale to Oct 18–19 state, root package.json kept BOTH (`validate:secrets` + main's `validate:models`/`validate:all`), findings.md + security.md kept both histories (0 residual markers).
+- **Verification**: Added-lines real-secret 0x · fallback 0x in code · XSS/injection 0x (sole `execFileSync` = safe argv-array, no shell) · deprecated 0x · `scan:secrets` ✅ 344 files · `npm audit --omit=dev` ✅ 0 vulns (full 8 pre-existing tailwind dev-chain, lockfile byte-identical to main) · `validate:wrangler` ✅ · typecheck ✅ (shared/api/web) · env 22/22 · config 847/847.
+- **Lesson**: When both sides add the same doc entry (e.g. StepTransition in active-tasks.md), git three-way merge auto-unions identical additions without conflict — only the non-overlapping hunks conflict. For LastSavedIndicator-class files where main's fix is a strict superset of the branch's older fix of the same feature, `git checkout origin/main -- <file>` is lossless; verify with `grep` that main contains the branch's distinctive markers (e.g. `shouldReduceMotion ? { opacity: 0 }`) before checkout.
+
 ### 2026-10-19: Security Engineer Audit — AnimatedNumber counter-state + reduced-motion DOM tracking (commit 14698ce2 5-file diff vs origin/main), 0 introduced issues
 
 - **Finding**: 5-file diff vs origin/main (`AnimatedNumber.tsx` +7/-2 connects `useReducedMotion` + static-string `data-reduced-motion` + `COUNTER_STATE_VALUES` literal replacement; `AnimatedNumber.test.tsx` +4/-2 shared-constant assertions; `ui.ts` +14 shared constant; `index.ts` +1 export; `active-tasks.md` +6 prose) introduces 0 vulnerabilities, secrets, or deprecated usage — nothing to remove.
