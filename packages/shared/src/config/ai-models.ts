@@ -16,7 +16,7 @@ export const AGENT_MODEL_IDS = {
   FALLBACK_2: "opencode/nemotron-3-ultra-free",
 } as const;
 
-export type AgentModelId = (typeof AGENT_MODEL_IDS)[keyof typeof AGENT_MODEL_IDS];
+type AgentModelId = (typeof AGENT_MODEL_IDS)[keyof typeof AGENT_MODEL_IDS];
 
 /**
  * Ordered fallback hierarchy: primary first, then fallbacks.
