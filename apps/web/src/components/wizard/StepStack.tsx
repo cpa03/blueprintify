@@ -57,6 +57,7 @@ import {
   ACCESSIBILITY_LABELS,
   VALIDATION_MESSAGES,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
   FOCUS_ANNOUNCER,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
@@ -379,10 +380,13 @@ export const StepStack = memo(function StepStack({
         {/* Selected summary */}
         {techStack.length > 0 && (
           <div className="pt-4 border-t border-dark-700">
-            <p className="text-sm text-dark-400 mb-2" id="selected-tech-label">
+            <p className="text-sm text-dark-400 mb-2" id={DOM_ELEMENT_IDS.SELECTED_TECH_LABEL}>
               {UI_CONTENT.WIZARD.STEP_STACK.SELECTED_LABEL(techStack.length)}:
             </p>
-            <ul className="flex flex-wrap gap-2" aria-labelledby="selected-tech-label">
+            <ul
+              className="flex flex-wrap gap-2"
+              aria-labelledby={DOM_ELEMENT_IDS.SELECTED_TECH_LABEL}
+            >
               <AnimatePresence mode="popLayout">
                 {techStack.map((tech) => (
                   <motion.li
