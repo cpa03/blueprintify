@@ -131,6 +131,7 @@ import {
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
+  COLOR_MIX_OPACITY,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -3507,13 +3508,79 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.CHEVRON_RIGHT).toBe("M9 5l7 7-7 7");
   });
 
+  it("should define left-pointing chevron path", () => {
+    expect(ICON_PATHS.CHEVRON_LEFT).toBe("M15 19l-7-7 7-7");
+  });
+
+  it("should define checkmark path", () => {
+    expect(ICON_PATHS.CHECKMARK).toBe("M5 13l4 4L19 7");
+  });
+
+  it("should define edit path", () => {
+    expect(ICON_PATHS.EDIT).toBeTruthy();
+  });
+
+  it("should define refresh path", () => {
+    expect(ICON_PATHS.REFRESH).toBeTruthy();
+  });
+
+  it("should define warning path", () => {
+    expect(ICON_PATHS.WARNING).toBeTruthy();
+  });
+
+  it("should define trash path", () => {
+    expect(ICON_PATHS.TRASH).toBeTruthy();
+  });
+
+  it("should define close path", () => {
+    expect(ICON_PATHS.CLOSE).toBe("M6 18L18 6M6 6l12 12");
+  });
+
   it("should define brand logo and github paths", () => {
     expect(ICON_PATHS.BRAND_LOGO).toBeTruthy();
     expect(ICON_PATHS.GITHUB).toBeTruthy();
   });
 
-  it("should have 3 entries", () => {
-    expect(Object.keys(ICON_PATHS).length).toBe(3);
+  it("should have 19 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(19);
+  });
+
+  it("should have unique path values", () => {
+    const paths = Object.values(ICON_PATHS);
+    const uniquePaths = new Set(paths);
+    expect(uniquePaths.size).toBe(paths.length);
+  });
+});
+
+describe("COLOR_MIX_OPACITY", () => {
+  it("should define subtle glow opacity (10%)", () => {
+    expect(COLOR_MIX_OPACITY.SUBTLE).toBe("10%");
+  });
+
+  it("should define medium glow opacity (12%)", () => {
+    expect(COLOR_MIX_OPACITY.MEDIUM).toBe("12%");
+  });
+
+  it("should define standard glow opacity (18%)", () => {
+    expect(COLOR_MIX_OPACITY.GLOW).toBe("18%");
+  });
+
+  it("should define strong highlight opacity (25%)", () => {
+    expect(COLOR_MIX_OPACITY.HIGHLIGHT).toBe("25%");
+  });
+
+  it("should define prominent accent opacity (30%)", () => {
+    expect(COLOR_MIX_OPACITY.PROMINENT).toBe("30%");
+  });
+
+  it("should have 5 entries", () => {
+    expect(Object.keys(COLOR_MIX_OPACITY).length).toBe(5);
+  });
+
+  it("should have all values ending with %", () => {
+    Object.values(COLOR_MIX_OPACITY).forEach((value) => {
+      expect(value).toMatch(/^\d+%$/);
+    });
   });
 });
 

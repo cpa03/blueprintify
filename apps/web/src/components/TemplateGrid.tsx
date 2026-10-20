@@ -53,6 +53,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
+  ICON_PATHS,
   SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 
@@ -231,7 +232,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                         strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                         strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
-                        d="M5 13l4 4L19 7"
+                        d={ICON_PATHS.CHECKMARK}
                       />
                     </svg>
                   </div>

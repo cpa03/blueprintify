@@ -63,7 +63,7 @@ import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -395,7 +395,7 @@ function EditorToolbarComponent({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
-                    d="M5 13l4 4L19 7"
+                    d={ICON_PATHS.CHECKMARK}
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{
@@ -476,7 +476,7 @@ function EditorToolbarComponent({
               strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
               strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
               strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              d={ICON_PATHS.REFRESH}
             />
           </motion.svg>
           {EDITOR_LABELS.BUTTONS.NEW_PROJECT}

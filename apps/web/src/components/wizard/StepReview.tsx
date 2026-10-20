@@ -59,7 +59,7 @@ import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -179,7 +179,7 @@ export const StepReview = memo(function StepReview({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      d={ICON_PATHS.EDIT}
                     />
                   </svg>
                   Edit
@@ -261,7 +261,7 @@ export const StepReview = memo(function StepReview({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      d={ICON_PATHS.EDIT}
                     />
                   </svg>
                   Edit
@@ -354,7 +354,7 @@ export const StepReview = memo(function StepReview({
                         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                         strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                         strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        d={ICON_PATHS.EDIT}
                       />
                     </svg>
                     Edit
@@ -413,7 +413,7 @@ export const StepReview = memo(function StepReview({
                         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                         strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                         strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                        d="M5 13l4 4L19 7"
+                        d={ICON_PATHS.CHECKMARK}
                       />
                     </svg>
                     {feature}
@@ -485,7 +485,7 @@ export const StepReview = memo(function StepReview({
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                  d="M15 19l-7-7 7-7"
+                  d={ICON_PATHS.CHEVRON_LEFT}
                 />
               </svg>
               {UI_CONTENT.BUTTONS.BACK_TO_FEATURES}

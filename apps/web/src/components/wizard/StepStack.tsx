@@ -67,7 +67,7 @@ import { Icon } from "../Icon";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import clsx from "clsx";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
 
 const attentionKeyframes = `@keyframes stack-card-attention {
   0%, 100% {
@@ -75,8 +75,8 @@ const attentionKeyframes = `@keyframes stack-card-attention {
   }
   25% {
     box-shadow:
-      0 0 0 2px color-mix(in srgb, var(--color-accent-pink) 25%, transparent),
-      0 0 18px -4px color-mix(in srgb, var(--color-accent-pink) 12%, transparent);
+      0 0 0 2px color-mix(in srgb, var(--color-accent-pink) ${COLOR_MIX_OPACITY.HIGHLIGHT}, transparent),
+      0 0 18px -4px color-mix(in srgb, var(--color-accent-pink) ${COLOR_MIX_OPACITY.MEDIUM}, transparent);
   }
 }`;
 
@@ -183,7 +183,7 @@ const TechChip = memo(function TechChip({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M5 13l4 4L19 7"
+                d={ICON_PATHS.CHECKMARK}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 transition={{ duration: ANIMATION.NORMAL, delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
@@ -439,7 +439,7 @@ export const StepStack = memo(function StepStack({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                d={ICON_PATHS.WARNING}
               />
             </svg>
             {VALIDATION_MESSAGES.TECH_STACK_MIN(MIN_REQUIREMENTS.TECH_STACK)}
@@ -472,7 +472,7 @@ export const StepStack = memo(function StepStack({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M15 19l-7-7 7-7"
+                d={ICON_PATHS.CHEVRON_LEFT}
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_INFO}
