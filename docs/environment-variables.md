@@ -88,6 +88,15 @@ The frontend is built with Vite and uses `.env` files.
 | `VITE_DEFAULT_PROJECT_NAME` | No       | `my-project`                                  | Default project name            |
 | `VITE_ENABLE_ANALYTICS`     | No       | `false`                                       | Enable analytics tracking       |
 
+### Development Server
+
+Overrides read by `apps/web/vite.config.ts` when running `npm run dev` (dev tooling only — not exposed to the browser bundle):
+
+| Variable                | Required | Default                 | Description                                    |
+| ----------------------- | -------- | ----------------------- | ---------------------------------------------- |
+| `VITE_DEV_SERVER_PORT`  | No       | `3000`                  | Port for the Vite dev server (`DEV_DEFAULTS.WEB_PORT`) |
+| `VITE_API_PROXY_TARGET` | No       | `http://localhost:8787` | Proxy target for `/api` during local development |
+
 ---
 
 ## Cloudflare Bindings

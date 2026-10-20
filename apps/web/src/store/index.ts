@@ -2,8 +2,7 @@
  * @fileoverview Store Index - Central export point for all Zustand stores
  *
  * This module provides a unified interface for importing all application stores.
- * It also includes utility functions for cross-store operations and re-exports
- * `useShallow` from Zustand for optimized object selectors.
+ * It also includes utility functions for cross-store operations.
  *
  * @module store
  *
@@ -26,7 +25,7 @@
  * ```tsx
  * // Only use when you MUST destructure multiple values
  * // useShallow does shallow comparison to prevent unnecessary re-renders
- * import { useShallow } from '../store';
+ * import { useShallow } from 'zustand/react/shallow';
  *
  * const { projectName, description } = useWizardStore(
  *   useShallow((s) => ({
@@ -55,16 +54,12 @@
  * import { useToast } from '../store';
  *
  * // Import useShallow for object selectors (when needed)
- * import { useShallow } from '../store';
+ * import { useShallow } from 'zustand/react/shallow';
  *
  * // Reset all stores at once
  * import { resetAllStores } from '../store';
  * ```
  */
-
-// Re-export useShallow from Zustand for convenience
-// This allows consumers to import from a single location
-export { useShallow } from "zustand/react/shallow";
 
 export * from "./wizard";
 export * from "./editor";
