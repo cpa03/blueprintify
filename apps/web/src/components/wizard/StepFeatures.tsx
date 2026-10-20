@@ -24,12 +24,16 @@
 
 import {
   ANIMATION_DIRECTIONS,
-  SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
+  FRAMER_TYPE,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
+  SHORTCUT_DESCRIPTIONS,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -48,6 +52,7 @@ import {
   STAGGER_CONFIG,
   SCALE_PULSE,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
@@ -57,6 +62,7 @@ import { CharacterCounterCompact } from "../CharacterCounter";
 import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -191,13 +197,13 @@ export const StepFeatures = memo(function StepFeatures({
         {/* Add custom feature */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="feature-input" className="label mb-0">
+            <label htmlFor={DOM_ELEMENT_IDS.FEATURE_INPUT} className="label mb-0">
               {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
               <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
               <span
-                id="feature-input-hint"
+                id={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 className="text-xs text-dark-500 flex items-center gap-1"
               >
                 <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
@@ -211,7 +217,7 @@ export const StepFeatures = memo(function StepFeatures({
             <div className="relative flex-1">
               <input
                 ref={featureInputRef}
-                id="feature-input"
+                id={DOM_ELEMENT_IDS.FEATURE_INPUT}
                 type="text"
                 autoComplete="off"
                 enterKeyHint="done"
@@ -226,7 +232,7 @@ export const StepFeatures = memo(function StepFeatures({
                 }
                 className={`input-field w-full pr-10 ${isAtMaxCount ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 opacity-60 cursor-not-allowed" : newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
-                aria-describedby="feature-input-hint"
+                aria-describedby={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 maxLength={FORM_LIMITS.FEATURE.MAX}
                 readOnly={isAtMaxCount}
                 tabIndex={isAtMaxCount ? -1 : 0}
@@ -262,7 +268,7 @@ export const StepFeatures = memo(function StepFeatures({
           <AnimatePresence>
             {isAtMaxCount && (
               <motion.p
-                role="status"
+                role={ARIA_ROLES.STATUS}
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
@@ -271,25 +277,25 @@ export const StepFeatures = memo(function StepFeatures({
               >
                 <svg
                   className="w-3.5 h-3.5 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                   />
                 </svg>
                 {/* Visible terse message. The richer actionable message is
                     announced to screen readers via the sr-only span below,
                     without duplicating the terse prefix. */}
-                <span aria-hidden="true">
+                <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                   {UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED}
                 </span>
-                <span className="sr-only">
+                <span className={CSS_CLASSES.SR_ONLY}>
                   {ACCESSIBILITY_LABELS.WIZARD_FEATURES.MAX_FEATURES_REACHED_ARIA}
                 </span>
               </motion.p>
@@ -301,7 +307,7 @@ export const StepFeatures = memo(function StepFeatures({
         {features.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="label mb-0" id="added-features-label">
+              <label className="label mb-0" id={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}>
                 {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} ({features.length})
               </label>
               <button
@@ -309,11 +315,16 @@ export const StepFeatures = memo(function StepFeatures({
                 className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-1 transition-colors flex items-center gap-1"
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES}
               >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-3 h-3"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
@@ -322,8 +333,8 @@ export const StepFeatures = memo(function StepFeatures({
             </div>
             <div
               className="flex flex-wrap gap-2"
-              role="list"
-              aria-labelledby="added-features-label"
+              role={ARIA_ROLES.LIST}
+              aria-labelledby={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}
             >
               <AnimatePresence mode="popLayout">
                 {features.map((feature, index) => {
@@ -355,9 +366,9 @@ export const StepFeatures = memo(function StepFeatures({
                           ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald"
                           : "bg-primary-500/20 border border-primary-500/30 text-primary-300"
                       }`}
-                      role="listitem"
+                      role={ARIA_ROLES.LISTITEM}
                     >
-                      <span className="text-accent-emerald" aria-hidden="true">
+                      <span className="text-accent-emerald" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                         ✓
                       </span>
                       {feature}
@@ -387,7 +398,7 @@ export const StepFeatures = memo(function StepFeatures({
         {!isAtMaxCount && (suggestedNotAdded.length > 0 || showAllAddedMsg) && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="label mb-0" id="suggestions-label">
+              <label className="label mb-0" id={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}>
                 {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
               </label>
               <motion.button
@@ -420,15 +431,15 @@ export const StepFeatures = memo(function StepFeatures({
                     >
                       <svg
                         className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
+                        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                       >
                         <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                          strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                          strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
@@ -452,8 +463,8 @@ export const StepFeatures = memo(function StepFeatures({
             </div>
             <motion.div
               className="flex flex-wrap gap-2"
-              role="group"
-              aria-labelledby="suggestions-label"
+              role={ARIA_ROLES.GROUP}
+              aria-labelledby={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}
               initial="hidden"
               animate="visible"
               variants={{
@@ -535,19 +546,19 @@ export const StepFeatures = memo(function StepFeatures({
                           <motion.svg
                             key="checkmark"
                             className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
+                            fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                            stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                            viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: 180 }}
                             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                           >
                             <motion.path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
+                              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                               d="M5 13l4 4L19 7"
                               initial={{ pathLength: 0 }}
                               animate={{ pathLength: 1 }}
@@ -575,8 +586,8 @@ export const StepFeatures = memo(function StepFeatures({
       <AnimatePresence>
         {(justAdded || showAllAddedMsg) && (
           <motion.div
-            role="alert"
-            aria-live="assertive"
+            role={ARIA_ROLES.ALERT}
+            aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
@@ -590,14 +601,14 @@ export const StepFeatures = memo(function StepFeatures({
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                   d="M5 13l4 4L19 7"
                 />
               </svg>
@@ -630,19 +641,19 @@ export const StepFeatures = memo(function StepFeatures({
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                 d="M15 19l-7-7 7-7"
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_STACK}
-            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden="true">
+            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
               {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
@@ -658,16 +669,24 @@ export const StepFeatures = memo(function StepFeatures({
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
-            <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+            <kbd
+              className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+            >
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                d={ICON_PATHS.CHEVRON_RIGHT}
+              />
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>

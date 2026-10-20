@@ -39,11 +39,14 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
   ANIMATION_DEFAULTS,
-  SHORTCUT_DESCRIPTIONS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_MODAL_VALUES,
+  ARIA_ROLES,
+  DIALOG_STATE_VALUES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  DIALOG_STATE_VALUES,
+  SHORTCUT_DESCRIPTIONS,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -52,6 +55,7 @@ import {
   HOVER_SCALE,
   TAP_SCALE,
   CONFIRM_DIALOG_HINTS,
+  DOM_ELEMENT_IDS,
 } from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -169,7 +173,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             transition={{ duration: ANIMATION.MODAL_FADE }}
             className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50"
             onClick={handleOverlayClick}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
 
           {/* Dialog */}
@@ -183,10 +187,10 @@ export const ConfirmDialog = memo(function ConfirmDialog({
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="confirm-dialog-title"
-            aria-describedby="confirm-dialog-description"
+            role={ARIA_ROLES.DIALOG}
+            aria-modal={ARIA_MODAL_VALUES.TRUE}
+            aria-labelledby={DOM_ELEMENT_IDS.CONFIRM_DIALOG_TITLE}
+            aria-describedby={DOM_ELEMENT_IDS.CONFIRM_DIALOG_DESCRIPTION}
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-icon={icon}
             data-reduced-motion={shouldReduceMotion ? "true" : "false"}
@@ -199,7 +203,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 <div className="w-12 h-12 rounded-xl bg-accent-pink/20 flex items-center justify-center flex-shrink-0">
                   <motion.span
                     className="text-accent-pink"
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                     initial={shouldReduceMotion ? {} : { scale: 0, rotate: -15 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={
@@ -228,7 +232,10 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                           }
                     }
                   >
-                    <h2 id="confirm-dialog-title" className="text-lg font-bold text-white mb-1">
+                    <h2
+                      id={DOM_ELEMENT_IDS.CONFIRM_DIALOG_TITLE}
+                      className="text-lg font-bold text-white mb-1"
+                    >
                       {title}
                     </h2>
                   </motion.div>
@@ -246,7 +253,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     }
                   >
                     <p
-                      id="confirm-dialog-description"
+                      id={DOM_ELEMENT_IDS.CONFIRM_DIALOG_DESCRIPTION}
                       className="text-sm text-dark-400 leading-relaxed"
                     >
                       {description}
@@ -269,10 +276,13 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 }
                 className="flex justify-end gap-3 mt-6"
               >
+                {/* Action buttons skip hover/tap scale micro-animations when
+                    reduced motion is preferred (WCAG 2.3.3) — the buttons stay
+                    fully functional, just static. */}
                 <motion.button
                   ref={cancelButtonRef}
-                  whileHover={HOVER_SCALE.MICRO}
-                  whileTap={TAP_SCALE.MICRO}
+                  whileHover={shouldReduceMotion ? undefined : HOVER_SCALE.MICRO}
+                  whileTap={shouldReduceMotion ? undefined : TAP_SCALE.MICRO}
                   onClick={onClose}
                   className="btn-ghost px-4 py-2 rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                   aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ESCAPE}
@@ -287,8 +297,8 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 >
                   <motion.button
                     ref={confirmButtonRef}
-                    whileHover={HOVER_SCALE.MICRO}
-                    whileTap={TAP_SCALE.MICRO}
+                    whileHover={shouldReduceMotion ? undefined : HOVER_SCALE.MICRO}
+                    whileTap={shouldReduceMotion ? undefined : TAP_SCALE.MICRO}
                     onClick={handleConfirm}
                     className="bg-accent-pink hover:bg-accent-pink/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ENTER}

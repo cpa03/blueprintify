@@ -1,7 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ValidationCheckmark } from "./ValidationCheckmark";
 import { VALIDATION_LABELS } from "../config/constants/validation";
+
+const { mockUseReducedMotion } = vi.hoisted(() => ({
+  mockUseReducedMotion: vi.fn(() => false),
+}));
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: mockUseReducedMotion,
+}));
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -16,6 +24,11 @@ vi.mock("framer-motion", () => ({
 }));
 
 describe("ValidationCheckmark", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockUseReducedMotion.mockReturnValue(false);
+  });
+
   it("renders checkmark when isValid is true", () => {
     render(<ValidationCheckmark isValid={true} />);
 
@@ -25,6 +38,7 @@ describe("ValidationCheckmark", () => {
     expect(icon).toHaveAttribute("data-state", "valid");
     expect(icon).toHaveAttribute("data-size", "inline");
     expect(icon).toHaveAttribute("data-show-invalid", "false");
+    expect(icon).toHaveAttribute("data-reduced-motion", "false");
     expect(icon).toHaveAttribute("title", VALIDATION_LABELS.FIELD_VALID);
   });
 
@@ -115,5 +129,21 @@ describe("ValidationCheckmark", () => {
 
     const icon = container.querySelector("[role='img']");
     expect(icon?.className).toContain("ml-2");
+  });
+
+  it("exposes data-reduced-motion=false by default for DOM state inspection", () => {
+    const { container } = render(<ValidationCheckmark isValid={true} />);
+
+    const icon = container.querySelector("[role='img']");
+    expect(icon).toHaveAttribute("data-reduced-motion", "false");
+    expect(icon).toHaveAttribute("data-state", "valid");
+  });
+
+  it("exposes data-reduced-motion=true when reduced motion is preferred", () => {
+    mockUseReducedMotion.mockReturnValue(true);
+    const { container } = render(<ValidationCheckmark isValid={true} />);
+
+    const icon = container.querySelector("[role='img']");
+    expect(icon).toHaveAttribute("data-reduced-motion", "true");
   });
 });

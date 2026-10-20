@@ -19,6 +19,7 @@ const mockToasts: Array<{
   message: string;
   type: string;
   duration?: number;
+  ariaLabel?: string;
 }> = [];
 
 const mockRemoveToast = vi.fn();
@@ -147,6 +148,9 @@ describe("ToastContainer", () => {
     expect(toastStatus).toHaveAttribute("aria-live", "polite");
     expect(toastStatus).toHaveAttribute("data-toast-type", TOAST_TYPES.SUCCESS);
     expect(toastStatus).toHaveAttribute("data-is-alert", "false");
+    expect(toastStatus).toHaveAttribute("data-state", "visible");
+    expect(toastStatus).toHaveAttribute("data-progress", "100");
+    expect(toastStatus).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("sets container state inspection attributes based on toast count", () => {
@@ -161,6 +165,21 @@ describe("ToastContainer", () => {
     const region = screen.getByRole("region");
     expect(region).toHaveAttribute("data-count", "1");
     expect(region).toHaveAttribute("data-has-toasts", "true");
+    expect(region).toHaveAttribute("data-state", "visible");
+    expect(region).toHaveAttribute("data-reduced-motion", "false");
+  });
+
+  it("keeps the container clear of the home-indicator gesture zone via safe-area padding", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Safe area toast",
+      type: TOAST_TYPES.INFO,
+    });
+
+    render(<ToastContainer />);
+
+    const region = screen.getByRole("region");
+    expect(region).toHaveClass("pb-[env(safe-area-inset-bottom)]");
   });
 
   it("renders different toast types correctly", () => {
@@ -177,5 +196,109 @@ describe("ToastContainer", () => {
     expect(screen.getByText("Error toast")).toBeInTheDocument();
     expect(screen.getByText("Warning toast")).toBeInTheDocument();
     expect(screen.getByText("Info toast")).toBeInTheDocument();
+  });
+
+  it("announces error toasts assertively with atomic live region", () => {
+    mockToasts.push({
+      id: "toast-err",
+      message: "Something went wrong",
+      type: TOAST_TYPES.ERROR,
+    });
+
+    render(<ToastContainer />);
+
+    const alert = screen.getByRole("alert");
+    expect(alert).toHaveAttribute("aria-live", "assertive");
+    expect(alert).toHaveAttribute("aria-atomic", "true");
+  });
+
+  it("keeps a single accessible name when a custom ariaLabel is provided", () => {
+    mockToasts.push({
+      id: "toast-tip",
+      message: "Pro tip body",
+      type: TOAST_TYPES.INFO,
+      ariaLabel: "Pro tip: keyboard shortcut",
+    });
+
+    const { container } = render(<ToastContainer />);
+
+    const status = screen.getByRole("status", { name: "Pro tip: keyboard shortcut" });
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveAttribute("aria-atomic", "true");
+    expect(container.querySelector('p[aria-label="Pro tip: keyboard shortcut"]')).toBeNull();
+  });
+
+  it("uses type=button on dismiss controls to avoid accidental form submits", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Dismiss me",
+      type: TOAST_TYPES.SUCCESS,
+    });
+
+    render(<ToastContainer />);
+
+    const dismissButton = screen.getByRole("button", { name: /dismiss/i });
+    expect(dismissButton).toHaveAttribute("type", "button");
+  });
+
+  it("dismisses the most recent toast on Escape when no modal is open", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Older toast", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Newest toast", type: TOAST_TYPES.SUCCESS }
+    );
+
+    render(<ToastContainer />);
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(mockRemoveToast).toHaveBeenCalledTimes(1);
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-2");
+  });
+
+  it("does not dismiss any toast on Escape while a modal dialog is open", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Toast under modal",
+      type: TOAST_TYPES.INFO,
+    });
+
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    document.body.appendChild(dialog);
+
+    try {
+      render(<ToastContainer />);
+
+      fireEvent.keyDown(document, { key: "Escape" });
+
+      expect(mockRemoveToast).not.toHaveBeenCalled();
+      expect(mockClearAll).not.toHaveBeenCalled();
+    } finally {
+      dialog.remove();
+    }
+  });
+
+  it("does not dismiss all toasts on Shift+Escape while a modal dialog is open", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
+    );
+
+    const dialog = document.createElement("div");
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    document.body.appendChild(dialog);
+
+    try {
+      render(<ToastContainer />);
+
+      fireEvent.keyDown(document, { key: "Escape", shiftKey: true });
+
+      expect(mockClearAll).not.toHaveBeenCalled();
+      expect(mockRemoveToast).not.toHaveBeenCalled();
+    } finally {
+      dialog.remove();
+    }
   });
 });

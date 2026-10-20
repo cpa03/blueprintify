@@ -75,6 +75,7 @@ export const MARKDOWN = {
   COPY_BUTTON_BASE:
     "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50",
   COPY_BUTTON_COPIED: "bg-accent-emerald/20 text-accent-emerald",
+  COPY_BUTTON_FAILED: "bg-accent-pink/20 text-accent-pink",
   COPY_BUTTON_HOVER: "bg-primary-500/20 text-dark-300",
   COPY_BUTTON_IDLE: "bg-dark-700/50 text-dark-400",
   /** Inline code */
@@ -138,6 +139,28 @@ export const FORM = {
 export const TYPING = {
   DOT: "w-1.5 h-1.5 rounded-full bg-primary-400",
   SR_ONLY: "sr-only",
+} as const;
+
+// ============================================================================
+// Device safe-area insets — notches, rounded corners, home indicators
+// ============================================================================
+// index.html declares viewport-fit=cover, which renders the page edge-to-edge
+// on notched/rounded-corner devices. The platform reserves no space for us in
+// that mode, so fixed-position UI pinned to a viewport edge needs these
+// env(safe-area-inset-*) paddings or it clips under the iOS home indicator,
+// status bar/sensor housing, or Android display cutout. On devices without
+// insets (and all desktop browsers) env() resolves to 0 — zero visual change.
+// Only elements at bottom-6 or top-0 qualify; FABs at bottom-24/bottom-40
+// already clear the gesture zone.
+export const SAFE_AREA = {
+  /** Clears the top status bar / sensor housing (fixed headers) */
+  TOP: "pt-[env(safe-area-inset-top)]",
+  /** Clears the bottom home indicator / gesture bar */
+  BOTTOM: "pb-[env(safe-area-inset-bottom)]",
+  /** Clears a left-edge notch in landscape orientation */
+  LEFT: "pl-[env(safe-area-inset-left)]",
+  /** Clears a right-edge notch in landscape orientation */
+  RIGHT: "pr-[env(safe-area-inset-right)]",
 } as const;
 
 // ============================================================================

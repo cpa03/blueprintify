@@ -33,21 +33,27 @@ import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useToastStore } from "../store";
 import {
-  STYLE_ID_STRINGS,
-  UI_TIMEOUTS,
-  NETWORK_DEFAULTS,
-  TOAST_TYPES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   BANNER_STATE_VALUES,
+  NETWORK_DEFAULTS,
+  STYLE_ID_STRINGS,
+  TOAST_TYPES,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
   ACCESSIBILITY_LABELS,
+  DOM_ELEMENT_IDS,
   OFFLINE_ANIMATION,
   TOOLTIP_CONFIG,
   FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation
@@ -196,7 +202,7 @@ function OfflineBannerComponent(): JSX.Element | null {
             {/* Gradient accent line */}
             <div
               className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent-pink/60 via-accent-pink/40 to-transparent"
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             />
 
             <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
@@ -205,7 +211,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                 <span
                   className="relative flex h-5 w-5 flex-shrink-0"
                   style={shouldReduceMotion ? {} : { animation: OFFLINE_ANIMATION.PULSE_SCALE }}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   {/* Ping ring */}
                   <span
@@ -219,14 +225,14 @@ function OfflineBannerComponent(): JSX.Element | null {
                   <span className="relative inline-flex rounded-full h-5 w-5 bg-accent-pink/20 items-center justify-center">
                     <svg
                       className="w-3 h-3 text-accent-pink"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                         d="M18.364 5.636a9 9 0 010 12.728m-2.829-2.829a5 5 0 000-7.07m-4.243 4.243a1 1 0 010-1.414"
                       />
                     </svg>
@@ -238,7 +244,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                     {NETWORK_MESSAGES.OFFLINE}
                   </span>
                   <span
-                    id="offline-banner-desc"
+                    id={DOM_ELEMENT_IDS.OFFLINE_BANNER_DESC}
                     className="text-xs text-dark-400 hidden sm:inline truncate"
                   >
                     {ACCESSIBILITY_LABELS.OFFLINE_BANNER.DESCRIPTION}
@@ -258,7 +264,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                              rounded-md p-1.5 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
                              motion-safe:hover:scale-110 motion-safe:active:scale-95"
                   aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
-                  aria-describedby="offline-banner-desc"
+                  aria-describedby={DOM_ELEMENT_IDS.OFFLINE_BANNER_DESC}
                 >
                   <Icon name="close" className="w-4 h-4 text-accent-pink" />
                 </button>
@@ -274,9 +280,9 @@ function OfflineBannerComponent(): JSX.Element | null {
           banner auto-hides without a user-facing confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {dismissAnnouncement}
       </div>
