@@ -5,6 +5,7 @@
  */
 
 import { hexToRgba } from "@blueprint/shared/config";
+import { SAFE_AREA } from "./styles";
 
 // ============================================================================
 // Color Palette
@@ -422,9 +423,10 @@ export const TOAST_SPRING = {
     SIZE_PX: 28,
     STROKE_WIDTH: 2,
   } as const,
-  /** Toast container layout */
+  /** Toast container layout — bottom padding keeps the stack above the
+   *  home-indicator gesture zone on notched devices (see SAFE_AREA). */
   CONTAINER_CLASSES:
-    "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none" as const,
+    `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none ${SAFE_AREA.BOTTOM}` as const,
 } as const;
 
 // ============================================================================

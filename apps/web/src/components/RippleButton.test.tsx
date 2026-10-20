@@ -34,9 +34,11 @@ describe("RippleButton", () => {
     expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument();
   });
 
-  it("renders with default type 'button'", () => {
+  it("renders with default type 'button' and sets data-reduced-motion to false", () => {
     render(<RippleButton>Test</RippleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("type", "button");
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("type", "button");
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("supports custom className", () => {
@@ -98,11 +100,13 @@ describe("RippleButton", () => {
     expect(ripple).toBeInTheDocument();
   });
 
-  it("does not create ripple when reduced motion is enabled", () => {
+  it("does not create ripple and sets data-reduced-motion attribute when reduced motion is enabled", () => {
     vi.mocked(useReducedMotion).mockReturnValue(true);
 
     render(<RippleButton>Test</RippleButton>);
     const button = screen.getByRole("button");
+
+    expect(button).toHaveAttribute("data-reduced-motion", "true");
 
     fireEvent.click(button);
 
@@ -227,6 +231,35 @@ describe("RippleButton", () => {
     const childrenSpan = button.querySelector("span.relative");
     expect(childrenSpan).toHaveClass("opacity-40");
     expect(childrenSpan).toHaveClass("pointer-events-none");
+  });
+
+  it("does not call onClick when isLoading is true", () => {
+    const handleClick = vi.fn();
+    render(
+      <RippleButton onClick={handleClick} isLoading>
+        Test
+      </RippleButton>
+    );
+    fireEvent.click(screen.getByRole("button"));
+    expect(handleClick).not.toHaveBeenCalled();
+  });
+
+  it("does not create ripple when isLoading is true", () => {
+    render(<RippleButton isLoading>Test</RippleButton>);
+    const button = screen.getByRole("button");
+
+    fireEvent.click(button);
+
+    const ripple = button.querySelector(".animate-ripple");
+    expect(ripple).not.toBeInTheDocument();
+  });
+
+  it("keeps the button focusable while isLoading (no native disabled)", () => {
+    render(<RippleButton isLoading>Test</RippleButton>);
+    const button = screen.getByRole("button");
+    expect(button).not.toBeDisabled();
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveAttribute("data-disabled", "false");
   });
 });
 

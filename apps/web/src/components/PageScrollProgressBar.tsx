@@ -37,12 +37,15 @@ import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import {
-  SCROLL_PROGRESS_DEFAULTS,
-  SPRING_SCROLL_HOVER,
+  ARIA_ORIENTATION_VALUES,
+  ARIA_ROLES,
+  BANNER_STATE_VALUES,
+  COLOR_MIX_OPACITY,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
   RATIO_LIMITS,
-  BANNER_STATE_VALUES,
+  SCROLL_PROGRESS_DEFAULTS,
+  SPRING_SCROLL_HOVER,
 } from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
@@ -113,6 +116,11 @@ function PageScrollProgressBarComponent({
       const bar = barRef.current;
       if (!bar) return;
 
+      // Respect vestibular / reduced-motion preference (WCAG 2.3.3):
+      // keyboard scrub and click-to-jump must not smooth-animate when
+      // the user asked to reduce motion. Mirrors ScrollToTop pattern.
+      const behavior = prefersReducedMotion ? SCROLL_BEHAVIOR.AUTO : SCROLL_BEHAVIOR.SMOOTH;
+
       let clickRatio: number;
 
       if ("clientX" in e) {
@@ -153,7 +161,7 @@ function PageScrollProgressBarComponent({
             return;
         }
 
-        window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
+        window.scrollTo({ top: targetScroll, behavior });
         return;
       }
 
@@ -161,9 +169,9 @@ function PageScrollProgressBarComponent({
       if (scrollHeight <= 0) return;
 
       const targetScroll = clickRatio * scrollHeight;
-      window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
+      window.scrollTo({ top: targetScroll, behavior });
     },
-    []
+    [prefersReducedMotion]
   );
 
   const springConfig = prefersReducedMotion
@@ -198,8 +206,8 @@ function PageScrollProgressBarComponent({
 
   return (
     <motion.div
-      role="slider"
-      aria-orientation="horizontal"
+      role={ARIA_ROLES.SLIDER}
+      aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       aria-valuenow={Math.round(scrollProgress)}
       aria-valuemin={0}
       aria-valuemax={100}
@@ -221,6 +229,7 @@ function PageScrollProgressBarComponent({
       data-progress={Math.round(scrollProgress)}
       data-hovered={isHovered}
       data-focused={isFocused}
+      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
     >
       <div
         ref={barRef}
@@ -285,8 +294,7 @@ function PageScrollProgressBarComponent({
           className="absolute top-0 h-full w-10 pointer-events-none"
           style={{
             right: `calc(${100 - scrollProgress}% - 20px)`,
-            background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary-500) 25%, transparent) 50%, transparent 100%)",
+            background: `linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary-500) ${COLOR_MIX_OPACITY.HIGHLIGHT}, transparent) 50%, transparent 100%)`,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isVisible ? 0.6 : 0 }}

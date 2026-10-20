@@ -39,6 +39,7 @@ vi.mock("../config/constants", async (importOriginal) => {
       PROGRESS: {
         STEPS_COMPLETE: () => `Steps complete`,
         STEP_OF_ARIA: (_index: number, _total: number, label: string) => `${label}`,
+        ALL_STEPS_COMPLETE: "All steps complete",
       },
       STEP_ANNOUNCER: {
         STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
@@ -46,6 +47,12 @@ vi.mock("../config/constants", async (importOriginal) => {
       },
       STEP: {
         SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
+        BUTTON_LABEL: (
+          label: string,
+          index: number,
+          total: number,
+          state: "current" | "completed" | "locked" | "available"
+        ) => `${label}, step ${index + 1} of ${total}, ${state}`,
       },
     },
   };

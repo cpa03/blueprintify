@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
@@ -46,7 +46,7 @@ const fadeOutAndRemoveSkeletonLoader = () => {
 
 function Root(): JSX.Element {
   return (
-    <React.StrictMode>
+    <StrictMode>
       <ErrorBoundary>
         <ReducedMotionProvider>
           <ExportProvider>
@@ -56,9 +56,9 @@ function Root(): JSX.Element {
           </ExportProvider>
         </ReducedMotionProvider>
       </ErrorBoundary>
-    </React.StrictMode>
+    </StrictMode>
   );
 }
 
-const root = ReactDOM.createRoot(rootElement);
+const root = createRoot(rootElement);
 root.render(<Root />);

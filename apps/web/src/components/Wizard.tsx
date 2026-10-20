@@ -37,10 +37,13 @@ import {
 } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import {
-  WIZARD_STEP_KEYS,
   ANIMATION_DIRECTIONS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   KEYBOARD_EVENT_KEYS,
   UI_MESSAGES,
+  WIZARD_STEP_KEYS,
 } from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
@@ -222,11 +225,11 @@ function WizardComponent(): JSX.Element {
       fallback={
         <div
           className="flex items-center justify-center py-16"
-          role="status"
-          aria-live="polite"
+          role={ARIA_ROLES.STATUS}
+          aria-live={ARIA_LIVE_VALUES.POLITE}
           aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
         >
-          <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
+          <div className={SPINNER.DEFAULT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}></div>
         </div>
       }
     >
@@ -248,14 +251,14 @@ function WizardComponent(): JSX.Element {
           height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
           background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
         }}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
 
       <div
         ref={containerRef}
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto overscroll-contain p-6"
-        role="region"
+        role={ARIA_ROLES.REGION}
         aria-label={ACCESSIBILITY_LABELS.WIZARD.STEP_ARIA(currentStepLabel)}
       >
         <StepTransition mode="wait">{renderStep()}</StepTransition>
@@ -270,7 +273,7 @@ function WizardComponent(): JSX.Element {
           height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
           background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
         }}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
     </div>
   );
