@@ -94,6 +94,10 @@ vi.mock("../AnimatedCopyButton", () => ({
   ),
 }));
 
+vi.mock("../../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
+}));
+
 vi.mock("../../lib/platform", () => ({
   getAriaShortcutKey: vi.fn((key: string, modifier: string) => `${modifier}+${key}`),
   getModifierLabel: vi.fn(() => "⌘"),
@@ -357,6 +361,29 @@ describe("EditorToolbar", () => {
     it("has aria-keyshortcuts attribute", () => {
       renderToolbar();
       expect(screen.getByLabelText("Start new project")).toHaveAttribute("aria-keyshortcuts");
+    });
+  });
+
+  describe("DOM State Inspection & Reduced Motion", () => {
+    it("sets data-reduced-motion, data-has-content, data-is-exporting, and data-export-success attributes", () => {
+      const { container } = renderToolbar({
+        hasContent: true,
+        isExporting: false,
+        exportSuccess: true,
+      });
+      const toolbarWrapper = container.firstElementChild;
+      expect(toolbarWrapper).toHaveAttribute("data-reduced-motion", "false");
+      expect(toolbarWrapper).toHaveAttribute("data-has-content", "true");
+      expect(toolbarWrapper).toHaveAttribute("data-is-exporting", "false");
+      expect(toolbarWrapper).toHaveAttribute("data-export-success", "true");
+    });
+
+    it("reflects reduced motion preference in data-reduced-motion attribute", async () => {
+      const { useReducedMotion } = await import("../../hooks/useReducedMotion");
+      vi.mocked(useReducedMotion).mockReturnValueOnce(true);
+      const { container } = renderToolbar();
+      const toolbarWrapper = container.firstElementChild;
+      expect(toolbarWrapper).toHaveAttribute("data-reduced-motion", "true");
     });
   });
 

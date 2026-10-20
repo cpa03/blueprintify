@@ -8,13 +8,16 @@ describe("MotionConfigWrapper", () => {
     vi.restoreAllMocks();
   });
 
-  it("renders children", () => {
-    render(
+  it("renders children with motion wrapper DOM state tracking attributes", () => {
+    const { container } = render(
       <MotionConfigWrapper>
         <div data-testid="child">Test Child</div>
       </MotionConfigWrapper>
     );
 
+    const wrapper = container.querySelector('[data-motion-wrapper="true"]');
+    expect(wrapper).toBeInTheDocument();
+    expect(wrapper).toHaveAttribute("data-reduced-motion", "false");
     expect(screen.getByTestId("child")).toBeInTheDocument();
     expect(screen.getByText("Test Child")).toBeInTheDocument();
   });

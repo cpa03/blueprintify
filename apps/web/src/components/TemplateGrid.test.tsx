@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { TemplateGrid } from "./TemplateGrid";
+import { ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -141,7 +142,7 @@ describe("TemplateGrid", () => {
     expect(plusBadge).toHaveClass("relative");
 
     const tooltip = screen.getByText("Kubernetes, Terraform", {
-      selector: '[aria-hidden="true"]',
+      selector: `[aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"]`,
     });
     expect(tooltip).toHaveClass("hidden");
     expect(tooltip).toHaveClass("group-hover/overflow:block");
@@ -158,8 +159,10 @@ describe("TemplateGrid", () => {
     // setTimeout hasn't fired yet
     expect(mockLoadTemplate).not.toHaveBeenCalled();
 
-    // Advance timers to fire setTimeout
-    vi.advanceTimersByTime(300);
+    // Advance timers to fire setTimeout wrapped in act
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
 
     expect(mockLoadTemplate).toHaveBeenCalled();
   });
@@ -172,6 +175,10 @@ describe("TemplateGrid", () => {
 
     expect(webAppButton).toBeEnabled();
     expect(mobileAppButton).toBeEnabled();
+    expect(webAppButton).toHaveAttribute("data-state", "idle");
+    expect(webAppButton).toHaveAttribute("data-template-id", "web-app");
+    expect(webAppButton).toHaveAttribute("data-loading", "false");
+    expect(webAppButton).toHaveAttribute("data-reduced-motion", "false");
 
     fireEvent.click(webAppButton);
 
@@ -179,6 +186,8 @@ describe("TemplateGrid", () => {
     // drop keyboard focus to <body> the moment the focused card is disabled
     expect(webAppButton).toHaveAttribute("aria-disabled", "true");
     expect(mobileAppButton).toHaveAttribute("aria-disabled", "true");
+    expect(webAppButton).toHaveAttribute("data-state", "selected");
+    expect(webAppButton).toHaveAttribute("data-loading", "true");
   });
 
   it("keeps focus on the selected card during load (WCAG 2.4.3)", () => {
@@ -228,7 +237,9 @@ describe("TemplateGrid", () => {
     const webAppButton = screen.getByText("Web Application").closest("button")!;
     fireEvent.keyDown(webAppButton, { key: "Enter" });
 
-    vi.advanceTimersByTime(300);
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
     expect(mockLoadTemplate).toHaveBeenCalled();
   });
 

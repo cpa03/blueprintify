@@ -50,8 +50,8 @@ vi.mock("../config/constants", async () => {
       API_BASE: shared.DEV_DEFAULTS.API_PROXY_TARGET,
     },
     TIMEOUTS: {
-      API_CONNECTION: 30000,
-      API_HEALTH_CHECK: 5000,
+      API_CONNECTION: shared.UI_TIMEOUTS.API_CONNECTION,
+      API_HEALTH_CHECK: shared.UI_TIMEOUTS.API_HEALTH_CHECK,
     },
   };
 });

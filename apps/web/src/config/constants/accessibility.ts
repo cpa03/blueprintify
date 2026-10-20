@@ -5,11 +5,15 @@
  * Flexy says: No hardcoded accessibility values - everything configurable!
  */
 
+import { ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+
 // ============================================================================
 // CSS Class Combinations
 // ============================================================================
 
 export const CSS_CLASSES = {
+  /** Visually-hidden but screen-reader-accessible live region class. */
+  SR_ONLY: "sr-only" as const,
   GLASS_CARD: "glass-card",
   BTN_PRIMARY: "btn-primary",
   BTN_SECONDARY: "btn-secondary",
@@ -111,13 +115,13 @@ export const AUTOFOCUS_VALUES = {
 
 /** Focusable element selectors for accessibility */
 const FOCUSABLE_SELECTORS = [
-  'button:not([disabled]):not([aria-hidden="true"])',
-  'a[href]:not([aria-hidden="true"])',
-  'input:not([disabled]):not([type="hidden"]):not([aria-hidden="true"])',
-  'select:not([disabled]):not([aria-hidden="true"])',
-  'textarea:not([disabled]):not([aria-hidden="true"])',
-  '[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="true"])',
-  '[contenteditable]:not([aria-hidden="true"])',
+  `button:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `a[href]:not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `input:not([disabled]):not([type="hidden"]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `select:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `textarea:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `[contenteditable]:not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
 ] as const;
 
 /** Combined selector string for querySelector usage */
@@ -133,6 +137,41 @@ export const FOCUSABLE_SELECTOR_STRING = FOCUSABLE_SELECTORS.join(", ");
  */
 export const ACCESSIBILITY_LABELS_SKIP = {
   SKIP_TO_MAIN_CONTENT: "Skip to main content",
+} as const;
+
+// ============================================================================
+// DOM Element IDs
+// ============================================================================
+
+/**
+ * Canonical IDs for DOM elements that participate in ARIA relationships —
+ * an element's `id` and every reference to it (`aria-labelledby`,
+ * `aria-describedby`, `aria-controls`, `htmlFor`, skip-link `href`/`data-target`)
+ * must share this single source so the pair can never drift apart.
+ *
+ * Deliberately excludes dynamic/template IDs (`tab-${activeTab}`,
+ * `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`) and
+ * `index.html`-paired runtime IDs (`root`, `skeleton-loader`), which cannot
+ * import TypeScript constants.
+ *
+ * Flexy says: No hardcoded DOM element ID literals in components!
+ */
+export const DOM_ELEMENT_IDS = {
+  /** Target of the skip-to-main-content link; matches `<main>` landmark id. */
+  MAIN_CONTENT: "main-content",
+  /** Collapsible editor panel toggled by ShowEditorButton / App toolbar. */
+  EDITOR_PANEL: "editor-panel",
+  CONFIRM_DIALOG_TITLE: "confirm-dialog-title",
+  CONFIRM_DIALOG_DESCRIPTION: "confirm-dialog-description",
+  HEADER_BRAND_SCROLL_HINT: "header-brand-scroll-hint",
+  KEYBOARD_SHORTCUTS_TITLE: "keyboard-shortcuts-title",
+  KEYBOARD_SHORTCUTS_TIP: "keyboard-shortcuts-tip",
+  OFFLINE_BANNER_DESC: "offline-banner-desc",
+  FEATURE_INPUT: "feature-input",
+  FEATURE_INPUT_HINT: "feature-input-hint",
+  ADDED_FEATURES_LABEL: "added-features-label",
+  SUGGESTIONS_LABEL: "suggestions-label",
+  SELECTED_TECH_LABEL: "selected-tech-label",
 } as const;
 
 // ============================================================================
