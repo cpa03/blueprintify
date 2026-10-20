@@ -2,11 +2,29 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **AnimatedNumber Micro-UX & State Inspection (Oct 19 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `COUNTER_STATE_VALUES` shared config export from `@blueprint/shared` to `AnimatedNumber.tsx`.
+- [STRENGTHEN] Strengthened `AnimatedNumber` and `AnimatedCounter` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-state` ("active"/"idle") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated counter pulse state constants in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed hardcoded "active"/"idle" string literals in `AnimatedNumber.tsx` and `AnimatedNumber.test.tsx`.
+
+## ✅ StorX — **MotionConfigWrapper Micro-UX & DOM State Inspection (Oct 16 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-motion-wrapper`) to `MotionConfigWrapper.tsx`.
+- [STRENGTHEN] Strengthened `MotionConfigWrapper` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-motion-wrapper` ("true") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated motion configuration wrapper accessibility and reduced motion state tracking across web components.
+- [REMOVE] Removed un-inspected fragment rendering in `MotionConfigWrapper.tsx`.
+
 ## ✅ StorX — **StepTransition Micro-UX & DOM State Inspection (Oct 15 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-mode`) to `StepTransition.tsx`.
 - [STRENGTHEN] Strengthened `StepTransition` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-mode` ("wait"/"sync"/"popLayout") attributes for state inspection and accessibility testing.
 - [CONSOLIDATE] Consolidated step transition animation preference and mode state tracking across web components.
 - [REMOVE] Removed un-inspected step transition container assertions in `StepTransition.test.tsx`.
+
+## ✅ StorX — **MarkdownRenderer Micro-UX & Reduced Motion State Inspection (Oct 12 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `COPY_STATE_VALUES` shared config export from `@blueprint/shared` to `CodeBlockHeader` in `MarkdownRenderer.tsx`.
+- [STRENGTHEN] Strengthened `MarkdownRenderer` code block header with `data-state` ("copied"/"idle"), `data-reduced-motion` ("true"/"false"), and `data-language` DOM state inspection attributes for accessibility testing.
+- [CONSOLIDATE] Consolidated code block copy state tracking in `@blueprint/shared` config export.
+- [REMOVE] Removed raw hardcoded "copied"/"idle" string literals in `MarkdownRenderer.tsx` and `MarkdownRenderer.test.tsx`.
 
 ## ✅ StorX — **Header Micro-UX & DOM State Inspection (Oct 11 2026)**
 - [CONNECT] Connected `Header.tsx` to DOM state inspection tracking attributes (`data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, `data-has-shortcuts`).
@@ -395,7 +413,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **BUG-001**: Frontend Bundle Size Performance Issue (In Progress)
 - **BUG-008**: ajv Package Security Vulnerabilities — ✅ **RESOLVED** (see [security assessment](./security/assessment-ajv-vulnerabilities.md))
 - **BUG-013**: ✅ **RESOLVED** — 0 vulnerabilities
-- **BUG-014**: Stale Doc References in main.yml (Reopened — still present on main, push blocked)
+- **BUG-014**: ✅ **RESOLVED** — Stale Doc References in main.yml (verified 2026-10-18: zero stale refs in `.github/workflows/` and `scripts/`; all `docs/*.md` refs point to existing files — consistent with bugs.md)
 
 ---
 
@@ -410,4 +428,4 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 - Status: ✅ Complete
 
-> **Last Updated**: 2026-09-26 (documentation consolidation — historical cycle records moved to [`findings.md`](./findings.md))
+> **Last Updated**: 2026-10-18 (BugFixer ULW cycle — BUG-014 status corrected to Resolved after verification; prior: 2026-09-26 documentation consolidation moved historical cycle records to [`findings.md`](./findings.md))

@@ -20,6 +20,7 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
+import { ARIA_ROLES, SVG_ICON_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -164,7 +165,7 @@ function CircularProgressComponent({
     <div
       className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : isAnimating ? "generate-progress-glow" : ""} ${celebrating ? "circular-complete-celebration" : ""} ${className}`}
       style={{ width: size, height: size, "--glow-color": color } as React.CSSProperties}
-      role="progressbar"
+      role={ARIA_ROLES.PROGRESSBAR}
       aria-valuenow={Math.round(animatedValue)}
       aria-valuemin={0}
       aria-valuemax={100}
@@ -185,13 +186,13 @@ function CircularProgressComponent({
         height={size}
         className="-rotate-90"
         style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
         <circle
           cx={center}
           cy={center}
           r={radius}
-          fill="none"
+          fill={SVG_ICON_DEFAULTS.FILL_NONE}
           stroke={trackColor}
           strokeWidth={strokeWidth}
           opacity={OPACITY[30]}
@@ -201,10 +202,10 @@ function CircularProgressComponent({
           cx={center}
           cy={center}
           r={radius}
-          fill="none"
+          fill={SVG_ICON_DEFAULTS.FILL_NONE}
           stroke={color}
           strokeWidth={strokeWidth}
-          strokeLinecap="round"
+          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
           strokeDasharray={circumference}
           style={
             shouldReduceMotion
@@ -223,7 +224,7 @@ function CircularProgressComponent({
         <span
           className="absolute text-xs font-semibold tabular-nums animate-fade-in"
           style={{ color }}
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         >
           {Math.round(clampedValue)}%
         </span>

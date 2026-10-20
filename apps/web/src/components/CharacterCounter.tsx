@@ -2,10 +2,15 @@ import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
-  CHAR_COUNTER_THRESHOLDS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
+  CHAR_COUNTER_THRESHOLDS,
   RATIO_LIMITS,
+  SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -102,8 +107,11 @@ function CharacterCounterComponent({
       {/* Visual counter — hidden from screen readers */}
       <span
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         data-state={stateValue}
+        data-at-limit={isAtLimit ? "true" : "false"}
+        data-warning={isWarning ? "true" : "false"}
+        data-valid={isValid ? "true" : "false"}
         data-has-min={min !== undefined ? "true" : "false"}
         data-reduced-motion={shouldReduceMotion ? "true" : "false"}
       >
@@ -112,16 +120,16 @@ function CharacterCounterComponent({
         {isAtLimit && (
           <span
             className={`ml-1 inline-flex ${shouldReduceMotion ? "" : "animate-warning-icon"}`}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           >
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+              strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+              strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
             >
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
@@ -131,9 +139,9 @@ function CharacterCounterComponent({
       {/* Screen-reader-only announcement with descriptive label */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {announcement}
       </span>
@@ -185,9 +193,19 @@ function CharacterCounterCompactComponent({
     <div
       className={`flex items-center gap-1.5 ${className}`}
       data-state={compactStateValue}
+      data-at-limit={isAtLimit ? "true" : "false"}
+      data-warning={isWarning ? "true" : "false"}
       data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      role="progressbar"
+      aria-label={compactCountLabel}
+      aria-valuemin={0}
+      aria-valuemax={max}
+      aria-valuenow={Math.min(current, max)}
     >
-      <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
+      <div
+        className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+      >
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${
             isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
@@ -203,15 +221,15 @@ function CharacterCounterCompactComponent({
         className={`text-2xs tabular-nums inline-block ${
           shouldReduceMotion ? "" : "animate-compact-counter-pop"
         } ${isDanger ? "text-accent-pink font-bold" : "text-dark-500"}`}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
         {current}/{max}
       </span>
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {compactAnnouncement}
       </span>

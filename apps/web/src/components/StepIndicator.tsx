@@ -23,9 +23,13 @@
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
 import {
-  WIZARD_STEP_KEYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   STEP_INDICATOR_STATE_VALUES,
+  SVG_ICON_DEFAULTS,
+  WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
@@ -170,7 +174,7 @@ function StepIndicatorComponent(): JSX.Element {
           <CircularProgress
             value={progressPercentage}
             size={36}
-            strokeWidth={3}
+            strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
             color={
               isGenerationComplete || effectiveIndex >= STEPS.length - 1
                 ? PROGRESS_COLORS.COMPLETED
@@ -313,9 +317,9 @@ function StepIndicatorComponent(): JSX.Element {
           context as sighted users who see the flash/glow animations. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {stepAnnouncement}
       </div>

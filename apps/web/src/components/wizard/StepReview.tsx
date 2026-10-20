@@ -22,15 +22,19 @@
  */
 
 import {
-  WIZARD_STEP_KEYS,
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   REVIEW_STATE_VALUES,
+  WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
@@ -55,6 +59,7 @@ import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -143,7 +148,7 @@ export const StepReview = memo(function StepReview({
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <span
                   className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center text-primary-400"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   📝
                 </span>
@@ -166,19 +171,22 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
                   Edit
-                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                  <kbd
+                    className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                  >
                     {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
                   </kbd>
                 </button>
@@ -222,7 +230,7 @@ export const StepReview = memo(function StepReview({
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <span
                   className="w-8 h-8 rounded-lg bg-accent-cyan/20 flex items-center justify-center text-accent-cyan"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   ⚙️
                 </span>
@@ -245,19 +253,22 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
                   Edit
-                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                  <kbd
+                    className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                  >
                     {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
                   </kbd>
                 </button>
@@ -312,7 +323,7 @@ export const StepReview = memo(function StepReview({
                 <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                   <span
                     className="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center text-accent-emerald"
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     ✨
                   </span>
@@ -335,19 +346,22 @@ export const StepReview = memo(function StepReview({
                   >
                     <svg
                       className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                       />
                     </svg>
                     Edit
-                    <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                    <kbd
+                      className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                    >
                       {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
                     </kbd>
                   </button>
@@ -391,14 +405,14 @@ export const StepReview = memo(function StepReview({
                   >
                     <svg
                       className="w-4 h-4 text-accent-emerald"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
@@ -461,11 +475,16 @@ export const StepReview = memo(function StepReview({
                 MODIFIER_KEYS.ALT
               )}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-5 h-5"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
@@ -484,7 +503,7 @@ export const StepReview = memo(function StepReview({
                         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
                       }
                 }
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
               </kbd>
@@ -533,14 +552,14 @@ export const StepReview = memo(function StepReview({
                     <>
                       <svg
                         className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                       >
                         <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                          strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                          strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                           d="M13 10V3L4 14h7v7l9-11h-7z"
                         />
                       </svg>
@@ -574,11 +593,16 @@ export const StepReview = memo(function StepReview({
                     MODIFIER_KEYS.CMD
                   )}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-5 h-5"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
@@ -597,7 +621,7 @@ export const StepReview = memo(function StepReview({
                             animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
                           }
                     }
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
                   </kbd>
@@ -609,9 +633,9 @@ export const StepReview = memo(function StepReview({
                 initial={shouldReduceMotion ? undefined : { opacity: 0, y: -5 }}
                 animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
+                role={ARIA_ROLES.STATUS}
+                aria-live={ARIA_LIVE_VALUES.POLITE}
+                aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
               >
                 <span
                   className={

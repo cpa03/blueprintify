@@ -1,14 +1,17 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
 import {
-  WIZARD_STEP_KEYS,
-  SHORTCUT_DESCRIPTIONS,
-  SCROLL_THRESHOLD_DEFAULTS,
-  SCROLL_PROGRESS_DEFAULTS,
-  UI_TIMEOUTS,
-  UI_TIMING,
+  ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
-  ANIMATION_ENTRANCE_DELAYS,
+  SCROLL_PROGRESS_DEFAULTS,
+  SCROLL_THRESHOLD_DEFAULTS,
+  SHORTCUT_DESCRIPTIONS,
+  UI_TIMEOUTS,
+  UI_TIMING,
+  WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
@@ -337,7 +340,10 @@ function App(): JSX.Element {
   return (
     <div className={LAYOUT.PAGE_WRAPPER}>
       {/* Ambient background glow — slow drifting gradient behind all content */}
-      <div className="fixed inset-0 pointer-events-none z-0 ambient-glow" aria-hidden="true" />
+      <div
+        className="fixed inset-0 pointer-events-none z-0 ambient-glow"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+      />
 
       <SkipLink />
       <Header onShowShortcuts={handleShowShortcuts} shortcutsDiscovered={shortcutsDiscovered} />
@@ -429,11 +435,11 @@ function App(): JSX.Element {
                   fallback={
                     <div
                       className="flex items-center justify-center py-16"
-                      role="status"
-                      aria-live="polite"
+                      role={ARIA_ROLES.STATUS}
+                      aria-live={ARIA_LIVE_VALUES.POLITE}
                       aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
                     >
-                      <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
+                      <div className={SPINNER.DEFAULT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}></div>
                     </div>
                   }
                 >
@@ -442,11 +448,11 @@ function App(): JSX.Element {
               ) : (
                 <div
                   className="p-6 space-y-4"
-                  role="status"
-                  aria-live="polite"
+                  role={ARIA_ROLES.STATUS}
+                  aria-live={ARIA_LIVE_VALUES.POLITE}
                   aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
                 >
-                  <div aria-hidden="true" className="space-y-4">
+                  <div aria-hidden={ARIA_HIDDEN_VALUES.TRUE} className="space-y-4">
                     <div className="skeleton-block h-5 w-36" />
                     <div className="skeleton-block h-10 w-full" />
                     <div className="skeleton-block h-5 w-48" />
@@ -532,13 +538,18 @@ function App(): JSX.Element {
                     fallback={
                       <div
                         className="h-full min-h-100 flex items-center justify-center text-dark-500"
-                        role="status"
-                        aria-live="polite"
+                        role={ARIA_ROLES.STATUS}
+                        aria-live={ARIA_LIVE_VALUES.POLITE}
                         aria-label={UI_CONTENT.EDITOR.LOADING}
                       >
                         <div className="flex flex-col items-center gap-2">
-                          <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
-                          <span aria-hidden="true">{UI_CONTENT.EDITOR.LOADING}</span>
+                          <div
+                            className={SPINNER.DEFAULT}
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                          ></div>
+                          <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
+                            {UI_CONTENT.EDITOR.LOADING}
+                          </span>
                         </div>
                       </div>
                     }
@@ -607,7 +618,7 @@ function App(): JSX.Element {
             animationDelay: `${ANIMATION_ENTRANCE_DELAYS.FAST}s`,
             animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
           }}
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
         <div className={`${LAYOUT.FOOTER_CONTAINER} animate-slide-up`}>
           <p className="text-dark-500 hover:text-dark-300 transition-colors duration-200">

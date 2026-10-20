@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { TemplateGrid } from "./TemplateGrid";
+import { ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -141,7 +142,7 @@ describe("TemplateGrid", () => {
     expect(plusBadge).toHaveClass("relative");
 
     const tooltip = screen.getByText("Kubernetes, Terraform", {
-      selector: '[aria-hidden="true"]',
+      selector: `[aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"]`,
     });
     expect(tooltip).toHaveClass("hidden");
     expect(tooltip).toHaveClass("group-hover/overflow:block");
