@@ -89,6 +89,7 @@ export const TOAST_CONFIG = {
   AUTO_SAVE_DURATION: TOAST_DEFAULTS.AUTO_SAVE_DURATION_MS,
   /** Delay (ms) between each toast's entrance for staggered animation */
   STAGGER_MS: TOAST_DEFAULTS.STAGGER_MS,
+  REDUCED_MOTION_PROGRESS_STEP_MS: TOAST_DEFAULTS.REDUCED_MOTION_PROGRESS_STEP_MS,
   /** Flexy says: Single source of truth in @blueprint/shared! */
   ICONS: TOAST_ICONS,
   /** Flexy says: Single source of truth in @blueprint/shared! */

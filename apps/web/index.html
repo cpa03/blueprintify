@@ -214,10 +214,26 @@
          in 0.3s, then stays hidden. Uses opacity only (GPU-composited)
          so no paint or layout triggered. When opacity reaches 0 the
          pointer-events:none on the parent ensures it's uninteractive,
-         and the 0-size animated properties keep it from affecting layout. */
+         and the 0-size animated properties keep it from affecting layout.
+         This is a one-shot opacity fade (not spatial motion), so it is
+         intentionally NOT disabled under prefers-reduced-motion — the
+         skeleton must still clear itself to reveal the hydrated app. */
       @keyframes skeleton-exit {
         to {
           opacity: 0;
+        }
+      }
+      /* Critical-path reduced-motion guard — the async-loaded index.css
+         carries the app-wide prefers-reduced-motion overrides, but it
+         loads after this inline critical CSS. Without this block, users
+         with prefers-reduced-motion: reduce would still see the infinite
+         skeleton-pulse (scale transform) and any hero slide-up on first
+         paint before the stylesheet arrives — a WCAG 2.3.3 gap for
+         vestibular-sensitive users. Mirrors the overrides in index.css. */
+      @media (prefers-reduced-motion: reduce) {
+        .animate-slide-up,
+        .skeleton-pulse-logo {
+          animation: none !important;
         }
       }
     </style>
@@ -295,6 +311,7 @@
         >
           <div style="display: flex; align-items: center; gap: 0.75rem">
             <div
+              class="skeleton-pulse-logo"
               style="
                 width: 2.5rem;
                 height: 2.5rem;
