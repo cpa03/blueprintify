@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
@@ -46,7 +46,7 @@ const fadeOutAndRemoveSkeletonLoader = () => {
 
 function Root(): JSX.Element {
   return (
-    <React.StrictMode>
+    <StrictMode>
       <ErrorBoundary>
         <ReducedMotionProvider>
           <ExportProvider>
@@ -56,9 +56,39 @@ function Root(): JSX.Element {
           </ExportProvider>
         </ReducedMotionProvider>
       </ErrorBoundary>
-    </React.StrictMode>
+    </StrictMode>
   );
 }
 
-const root = ReactDOM.createRoot(rootElement);
+const root = createRoot(rootElement);
 root.render(<Root />);
+
+const MONO_FONT_HREF =
+  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=optional";
+
+function loadMonoFont(): void {
+  if (typeof document === "undefined") return;
+  if (document.getElementById("font-mono")) return;
+  const link = document.createElement("link");
+  link.id = "font-mono";
+  link.rel = "stylesheet";
+  link.href = MONO_FONT_HREF;
+  link.media = "print";
+  link.onload = (): void => {
+    link.media = "all";
+  };
+  document.head.appendChild(link);
+}
+
+function scheduleMonoFont(): void {
+  if (typeof window === "undefined") return;
+  const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number })
+    .requestIdleCallback;
+  if (typeof idle === "function") {
+    idle.call(window, loadMonoFont);
+  } else {
+    window.setTimeout(loadMonoFont, 2000);
+  }
+}
+
+scheduleMonoFont();

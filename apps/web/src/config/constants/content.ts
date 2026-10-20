@@ -270,6 +270,12 @@ export const ACCESSIBILITY_LABELS = {
     COPY_TO_CLIPBOARD: "Copy to clipboard",
     COPIED_TO_CLIPBOARD: "Copied to clipboard",
     OPENS_IN_NEW_TAB: "(opens in new tab)",
+    /** Accessible name while in the failed-copy state (replaces COPY_CODE) */
+    COPY_FAILED: "Copy failed — try again",
+    /** Tooltip while in the failed-copy state (replaces COPY_CODE_TITLE) */
+    COPY_FAILED_TITLE: "Copy failed",
+    /** Screen reader announcement when copying a code block fails */
+    COPY_FAILED_ANNOUNCEMENT: "Failed to copy code to clipboard",
   },
   TOAST: {
     REGION: "Notifications",
@@ -301,6 +307,14 @@ export const ACCESSIBILITY_LABELS = {
   HEADING_ANCHOR: {
     COPY_LINK_TITLE: "Copy anchor link",
     COPY_LINK_ARIA: (section: string) => `Copy link to "${section}" section`,
+    /** Screen reader accessible name while in the copied state (replaces COPY_LINK_ARIA) */
+    COPIED_ARIA: "Link copied to clipboard",
+    /** Tooltip while in the copied state (replaces COPY_LINK_TITLE) */
+    COPIED_TITLE: "Copied!",
+    /** Screen reader announcement for the persistent live region after a successful copy */
+    COPIED_ANNOUNCEMENT: "Anchor link copied to clipboard",
+    /** Screen reader announcement for the persistent live region when the copy fails */
+    COPY_FAILED_ANNOUNCEMENT: "Failed to copy anchor link to clipboard",
   },
   CELEBRATION: {
     COMPLETE: "Generation complete",
@@ -334,6 +348,29 @@ export const ACCESSIBILITY_LABELS = {
   /** Step indicator aria-label format for keyboard shortcut display */
   STEP: {
     SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
+    /** Explicit accessible name for step navigation buttons. The visible label
+     *  is hidden on mobile (`hidden sm:inline`), leaving icon-only buttons
+     *  without a name for screen readers (WCAG 4.1.2). Includes position
+     *  ("step X of N") and state so SR users get the same context sighted
+     *  users perceive through color/glow cues. */
+    BUTTON_LABEL: (
+      label: string,
+      index: number,
+      total: number,
+      state: "current" | "completed" | "locked" | "available"
+    ): string => {
+      const position = `step ${index + 1} of ${total}`;
+      switch (state) {
+        case "current":
+          return `${label}, ${position}, current step`;
+        case "completed":
+          return `${label}, ${position}, completed`;
+        case "locked":
+          return `${label}, ${position}, locked`;
+        default:
+          return `${label}, ${position}`;
+      }
+    },
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
@@ -389,6 +426,8 @@ export const ACCESSIBILITY_LABELS = {
       `${completed} of ${total} fields completed`,
     NEXT_DISABLED_TOOLTIP: "Fill in the project name and description to continue",
     NEXT_DISABLED_ARIA: "Next button is disabled. Fill in the project name and description first.",
+    FORM_READY_ANNOUNCEMENT:
+      "Form complete. The Next button is now enabled to continue to the next step.",
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",
@@ -477,6 +516,7 @@ export const COPY_BUTTON_LABELS = {
 export const MARKDOWN_COPY_LABELS = {
   COPY: "Copy",
   COPIED: "Copied!",
+  COPY_FAILED: "Failed",
 } as const;
 
 // ============================================================================
@@ -726,6 +766,8 @@ export const EDITOR_EMPTY_STATE_LABELS = {
   SUBMIT_WIZARD: "Submit wizard",
   /** Hint badge — describes the next step keyboard shortcut */
   NEXT_STEP: "Next step",
+  /** Accessible label for the empty-state status region */
+  ARIA_LABEL: "Editor empty state",
 } as const;
 
 export const SKELETON_LAYOUT = {

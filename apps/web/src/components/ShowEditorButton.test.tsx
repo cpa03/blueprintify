@@ -154,7 +154,7 @@ describe("ShowEditorButton", () => {
 
     const button = screen.getByRole("button");
     expect(button).toHaveAttribute("aria-keyshortcuts", "Ctrl+E");
-    expect(button).toHaveAttribute("aria-label", UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON);
+    expect(button).toHaveAttribute("aria-label", `${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} Ctrl+E`);
   });
 
   it("renders SVG icon for the edit action", () => {
@@ -163,5 +163,12 @@ describe("ShowEditorButton", () => {
     const svg = container.querySelector("svg");
     expect(svg).toBeInTheDocument();
     expect(svg).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("exposes data-reduced-motion attribute for state inspection", () => {
+    render(<ShowEditorButton {...defaultProps} />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
   });
 });

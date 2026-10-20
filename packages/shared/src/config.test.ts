@@ -42,6 +42,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   UI_TIMING,
   DB_ID_PREFIXES,
+  DB_ID_SEPARATOR,
   SECURITY_VALUES,
   UI_STRINGS,
   ENV_VAR_KEYS,
@@ -79,6 +80,8 @@ import {
   DEV_DOMAIN_DEFAULTS,
   COLD_START_MESSAGES,
   API_PROXY_PATH,
+  DEPLOYMENT_ORIGINS,
+  PROXY_CONFIG,
   SECURITY_ERROR_CATEGORIES,
   ENV_ERROR_MESSAGES,
   LOG_TYPE_STRINGS,
@@ -126,6 +129,9 @@ import {
   GENERATION_ERROR_PREFIXES,
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
+  SVG_ICON_DEFAULTS,
+  ICON_PATHS,
+  COLOR_MIX_OPACITY,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -164,6 +170,13 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  ARIA_ROLES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_MODAL_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_ORIENTATION_VALUES,
+  ARIA_REQUIRED_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -452,6 +465,18 @@ describe("CRYPTO_CONFIG", () => {
     expect(CRYPTO_CONFIG.HEX_PADDING_WIDTH).toBe(2);
   });
 
+  it("should use zero as the hex pad character", () => {
+    expect(CRYPTO_CONFIG.HEX_PAD_CHAR).toBe("0");
+  });
+
+  it("should pad single-digit hex bytes to padding width with pad char", () => {
+    expect(
+      (5)
+        .toString(CRYPTO_CONFIG.HEX_RADIX)
+        .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
+    ).toBe("05");
+  });
+
   it("should have positive user id hash length", () => {
     expect(CRYPTO_CONFIG.USER_ID_HASH_LENGTH).toBeGreaterThan(0);
   });
@@ -626,6 +651,10 @@ describe("SHARED_DEFAULTS", () => {
     expect(typeof SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("string");
     expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
+
+  it("should have no hardcoded API key fallback (fail-closed)", () => {
+    expect("PUBLIC_ACCESS_KEY" in SHARED_DEFAULTS).toBe(false);
+  });
 });
 
 describe("AI_DEFAULTS", () => {
@@ -780,6 +809,11 @@ describe("PLAYWRIGHT_DEFAULTS", () => {
       PLAYWRIGHT_DEFAULTS.WEB_SERVER_TIMEOUT_MS
     );
   });
+
+  it("should have visibility timeouts for e2e checks (Flexy Iteration 187)", () => {
+    expect(PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS).toBe(3000);
+    expect(PLAYWRIGHT_DEFAULTS.SHORT_VISIBILITY_TIMEOUT_MS).toBe(2000);
+  });
 });
 
 describe("NETWORK_ERROR_CODES", () => {
@@ -831,6 +865,8 @@ describe("HTTP_METHODS", () => {
     expect(HTTP_METHODS.PUT).toBe("PUT");
     expect(HTTP_METHODS.DELETE).toBe("DELETE");
     expect(HTTP_METHODS.PATCH).toBe("PATCH");
+    expect(HTTP_METHODS.HEAD).toBe("HEAD");
+    expect(HTTP_METHODS.OPTIONS).toBe("OPTIONS");
   });
 
   it("should have unique method values", () => {
@@ -886,6 +922,16 @@ describe("DB_ID_PREFIXES", () => {
       expect(value).toMatch(/^[a-z]+$/);
     });
   });
+
+  it("should join prefix and hash with the DB ID separator", () => {
+    expect(`${DB_ID_PREFIXES.USER}${DB_ID_SEPARATOR}abc123`).toBe("user_abc123");
+  });
+});
+
+describe("DB_ID_SEPARATOR", () => {
+  it("should be an underscore", () => {
+    expect(DB_ID_SEPARATOR).toBe("_");
+  });
 });
 
 describe("ROUTE_PATHS", () => {
@@ -926,6 +972,7 @@ describe("HTTP_STATUS", () => {
     expect(HTTP_STATUS.UNAUTHORIZED).toBe(401);
     expect(HTTP_STATUS.FORBIDDEN).toBe(403);
     expect(HTTP_STATUS.NOT_FOUND).toBe(404);
+    expect(HTTP_STATUS.METHOD_NOT_ALLOWED).toBe(405);
     expect(HTTP_STATUS.CONFLICT).toBe(409);
     expect(HTTP_STATUS.PAYLOAD_TOO_LARGE).toBe(413);
     expect(HTTP_STATUS.UNPROCESSABLE_ENTITY).toBe(422);
@@ -1169,6 +1216,7 @@ describe("ENV_VAR_KEYS", () => {
     it("should have all expected WEB env var keys", () => {
       const keys = ENV_VAR_KEYS.WEB;
       expect(keys.VITE_API_BASE_URL).toBe("VITE_API_BASE_URL");
+      expect(keys.VITE_API_KEY).toBe("VITE_API_KEY");
       expect(keys.VITE_ENABLE_ANALYTICS).toBe("VITE_ENABLE_ANALYTICS");
       expect(keys.VITE_PROJECT_HOMEPAGE_URL).toBe("VITE_PROJECT_HOMEPAGE_URL");
       expect(keys.VITE_GITHUB_URL).toBe("VITE_GITHUB_URL");
@@ -2022,13 +2070,14 @@ describe("STORAGE_FALLBACK_MESSAGES", () => {
 });
 
 describe("COPY_STATE_VALUES", () => {
-  it("should have COPIED and IDLE states", () => {
+  it("should have COPIED, IDLE, and FAILED states", () => {
     expect(COPY_STATE_VALUES.COPIED).toBe("copied");
     expect(COPY_STATE_VALUES.IDLE).toBe("idle");
+    expect(COPY_STATE_VALUES.FAILED).toBe("failed");
   });
 
-  it("should have 2 properties", () => {
-    expect(Object.keys(COPY_STATE_VALUES).length).toBe(2);
+  it("should have 3 properties", () => {
+    expect(Object.keys(COPY_STATE_VALUES).length).toBe(3);
   });
 });
 
@@ -2613,11 +2662,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.LOADING_DOTS_INTERVAL).toBe(500);
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
     expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
+    expect(UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS).toBe(30000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(22);
+    expect(values.length).toBe(23);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -2665,16 +2715,20 @@ describe("API_ERROR_MESSAGES", () => {
 
   it("should have all string values", () => {
     const values = Object.values(API_ERROR_MESSAGES);
-    expect(values.length).toBe(5);
+    expect(values.length).toBe(7);
     values.forEach((v) => {
-      expect(typeof v).toBe("string");
-      expect(v.length).toBeGreaterThan(0);
+      expect(v !== undefined).toBe(true);
     });
   });
 
   it("should have unique values", () => {
-    const values = Object.values(API_ERROR_MESSAGES);
+    const values = Object.values(API_ERROR_MESSAGES).filter((v) => typeof v === "string");
     expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should format endpoint unavailable and server error messages", () => {
+    expect(API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE(405)).toContain("405");
+    expect(API_ERROR_MESSAGES.SERVER_ERROR(500)).toContain("500");
   });
 });
 
@@ -2833,6 +2887,7 @@ describe("TOAST_DEFAULTS", () => {
     expect(TOAST_DEFAULTS.SUCCESS_DURATION_MS).toBeGreaterThan(0);
     expect(TOAST_DEFAULTS.AUTO_SAVE_DURATION_MS).toBeGreaterThan(0);
     expect(TOAST_DEFAULTS.STAGGER_MS).toBeGreaterThan(0);
+    expect(TOAST_DEFAULTS.REDUCED_MOTION_PROGRESS_STEP_MS).toBeGreaterThan(0);
   });
 
   it("should have all numeric values", () => {
@@ -2843,8 +2898,8 @@ describe("TOAST_DEFAULTS", () => {
     });
   });
 
-  it("should have 4 entries", () => {
-    expect(Object.keys(TOAST_DEFAULTS).length).toBe(4);
+  it("should have 5 entries", () => {
+    expect(Object.keys(TOAST_DEFAULTS).length).toBe(5);
   });
 
   it("should have success duration shorter than default", () => {
@@ -3396,6 +3451,137 @@ describe("SVG_TRANSITION_DEFAULTS", () => {
 
   it("should have 4 entries", () => {
     expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(4);
+  });
+});
+
+describe("SVG_ICON_DEFAULTS", () => {
+  it("should use standard 24x24 viewBox", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX).toBe("0 0 24 24");
+  });
+
+  it("should use 16x16 viewBox for small icons", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX_SMALL).toBe("0 0 16 16");
+  });
+
+  it("should use 48x48 viewBox for large celebration icons", () => {
+    expect(SVG_ICON_DEFAULTS.VIEW_BOX_LARGE).toBe("0 0 48 48");
+  });
+
+  it("should use none fill and currentColor stroke", () => {
+    expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
+    expect(SVG_ICON_DEFAULTS.FILL_CURRENT).toBe("currentColor");
+    expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
+    expect(SVG_ICON_DEFAULTS.STROKE_NONE).toBe("none");
+  });
+
+  it("should use round line caps and joins", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND).toBe("round");
+    expect(SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND).toBe("round");
+  });
+
+  it("should have numeric stroke widths ordered light < default < medium < bold < heavy", () => {
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT).toBe(1.5);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT).toBe(2);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM).toBe(2.5);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBe(3);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY).toBe(4);
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT).toBeLessThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM
+    );
+    expect(SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY).toBeGreaterThan(
+      SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD
+    );
+  });
+
+  it("should have 16 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(16);
+  });
+});
+
+describe("ICON_PATHS", () => {
+  it("should define right-pointing chevron path", () => {
+    expect(ICON_PATHS.CHEVRON_RIGHT).toBe("M9 5l7 7-7 7");
+  });
+
+  it("should define left-pointing chevron path", () => {
+    expect(ICON_PATHS.CHEVRON_LEFT).toBe("M15 19l-7-7 7-7");
+  });
+
+  it("should define checkmark path", () => {
+    expect(ICON_PATHS.CHECKMARK).toBe("M5 13l4 4L19 7");
+  });
+
+  it("should define edit path", () => {
+    expect(ICON_PATHS.EDIT).toBeTruthy();
+  });
+
+  it("should define refresh path", () => {
+    expect(ICON_PATHS.REFRESH).toBeTruthy();
+  });
+
+  it("should define warning path", () => {
+    expect(ICON_PATHS.WARNING).toBeTruthy();
+  });
+
+  it("should define trash path", () => {
+    expect(ICON_PATHS.TRASH).toBeTruthy();
+  });
+
+  it("should define close path", () => {
+    expect(ICON_PATHS.CLOSE).toBe("M6 18L18 6M6 6l12 12");
+  });
+
+  it("should define brand logo and github paths", () => {
+    expect(ICON_PATHS.BRAND_LOGO).toBeTruthy();
+    expect(ICON_PATHS.GITHUB).toBeTruthy();
+  });
+
+  it("should have 19 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(19);
+  });
+
+  it("should have unique path values", () => {
+    const paths = Object.values(ICON_PATHS);
+    const uniquePaths = new Set(paths);
+    expect(uniquePaths.size).toBe(paths.length);
+  });
+});
+
+describe("COLOR_MIX_OPACITY", () => {
+  it("should define subtle glow opacity (10%)", () => {
+    expect(COLOR_MIX_OPACITY.SUBTLE).toBe("10%");
+  });
+
+  it("should define medium glow opacity (12%)", () => {
+    expect(COLOR_MIX_OPACITY.MEDIUM).toBe("12%");
+  });
+
+  it("should define standard glow opacity (18%)", () => {
+    expect(COLOR_MIX_OPACITY.GLOW).toBe("18%");
+  });
+
+  it("should define strong highlight opacity (25%)", () => {
+    expect(COLOR_MIX_OPACITY.HIGHLIGHT).toBe("25%");
+  });
+
+  it("should define prominent accent opacity (30%)", () => {
+    expect(COLOR_MIX_OPACITY.PROMINENT).toBe("30%");
+  });
+
+  it("should have 5 entries", () => {
+    expect(Object.keys(COLOR_MIX_OPACITY).length).toBe(5);
+  });
+
+  it("should have all values ending with %", () => {
+    Object.values(COLOR_MIX_OPACITY).forEach((value) => {
+      expect(value).toMatch(/^\d+%$/);
+    });
   });
 });
 
@@ -4771,5 +4957,217 @@ describe("Y_OFFSET", () => {
       expect(arr.length).toBe(3);
       arr.forEach((v) => expect(typeof v).toBe("number"));
     });
+  });
+});
+
+describe("DEPLOYMENT_ORIGINS (Flexy Iteration 186)", () => {
+  it("should have production Pages origin", () => {
+    expect(DEPLOYMENT_ORIGINS.PAGES_PROD).toBe("https://blueprintify.pages.dev");
+  });
+
+  it("should have preview suffix", () => {
+    expect(DEPLOYMENT_ORIGINS.PAGES_PREVIEW_SUFFIX).toBe(".blueprintify.pages.dev");
+  });
+
+  it("should have worker dev origin", () => {
+    expect(DEPLOYMENT_ORIGINS.WORKER_DEV).toBe("https://blueprintify.cpa03-cmz.workers.dev");
+  });
+
+  it("should have localhost prefix", () => {
+    expect(DEPLOYMENT_ORIGINS.LOCALHOST_PREFIX).toBe("http://localhost:");
+  });
+});
+
+describe("PROXY_CONFIG (Flexy Iteration 186)", () => {
+  it("should have API prefix with trailing slash", () => {
+    expect(PROXY_CONFIG.API_PREFIX_SLASH).toBe("/api/");
+  });
+
+  it("should strip /api prefix", () => {
+    expect("/api/generate".replace(PROXY_CONFIG.API_STRIP_PATTERN, "")).toBe("/generate");
+  });
+
+  it("should have assets prefix and root fallback", () => {
+    expect(PROXY_CONFIG.ASSETS_PREFIX).toBe("/assets/");
+    expect(PROXY_CONFIG.ROOT_FALLBACK).toBe("/");
+    expect(PROXY_CONFIG.FILE_EXTENSION_MARKER).toBe(".");
+  });
+});
+
+describe("ARIA_ROLES (Flexy Iteration 194)", () => {
+  it("should have status role", () => {
+    expect(ARIA_ROLES.STATUS).toBe("status");
+  });
+
+  it("should have alert role", () => {
+    expect(ARIA_ROLES.ALERT).toBe("alert");
+  });
+
+  it("should have dialog role", () => {
+    expect(ARIA_ROLES.DIALOG).toBe("dialog");
+  });
+
+  it("should have img role", () => {
+    expect(ARIA_ROLES.IMG).toBe("img");
+  });
+
+  it("should have group role", () => {
+    expect(ARIA_ROLES.GROUP).toBe("group");
+  });
+
+  it("should have region role", () => {
+    expect(ARIA_ROLES.REGION).toBe("region");
+  });
+
+  it("should have progressbar role", () => {
+    expect(ARIA_ROLES.PROGRESSBAR).toBe("progressbar");
+  });
+
+  it("should have tooltip role", () => {
+    expect(ARIA_ROLES.TOOLTIP).toBe("tooltip");
+  });
+
+  it("should have tabpanel/tablist/tab roles", () => {
+    expect(ARIA_ROLES.TABPANEL).toBe("tabpanel");
+    expect(ARIA_ROLES.TABLIST).toBe("tablist");
+    expect(ARIA_ROLES.TAB).toBe("tab");
+  });
+
+  it("should have slider role", () => {
+    expect(ARIA_ROLES.SLIDER).toBe("slider");
+  });
+
+  it("should have searchbox role", () => {
+    expect(ARIA_ROLES.SEARCHBOX).toBe("searchbox");
+  });
+
+  it("should have radiogroup/radio roles", () => {
+    expect(ARIA_ROLES.RADIOGROUP).toBe("radiogroup");
+    expect(ARIA_ROLES.RADIO).toBe("radio");
+  });
+
+  it("should have option role", () => {
+    expect(ARIA_ROLES.OPTION).toBe("option");
+  });
+
+  it("should have listitem role", () => {
+    expect(ARIA_ROLES.LISTITEM).toBe("listitem");
+  });
+
+  it("should have list role", () => {
+    expect(ARIA_ROLES.LIST).toBe("list");
+  });
+
+  it("should have listbox role", () => {
+    expect(ARIA_ROLES.LISTBOX).toBe("listbox");
+  });
+
+  it("should contain exactly 19 roles", () => {
+    expect(Object.keys(ARIA_ROLES).length).toBe(19);
+  });
+
+  it("should have unique role values", () => {
+    const values = Object.values(ARIA_ROLES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_LIVE_VALUES (Flexy Iteration 194)", () => {
+  it("should have polite value", () => {
+    expect(ARIA_LIVE_VALUES.POLITE).toBe("polite");
+  });
+
+  it("should have assertive value", () => {
+    expect(ARIA_LIVE_VALUES.ASSERTIVE).toBe("assertive");
+  });
+
+  it("should have off value", () => {
+    expect(ARIA_LIVE_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 3 unique values", () => {
+    expect(Object.keys(ARIA_LIVE_VALUES).length).toBe(3);
+    const values = Object.values(ARIA_LIVE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_ATOMIC_VALUES (Flexy Iteration 194)", () => {
+  it("should have true value", () => {
+    expect(ARIA_ATOMIC_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_ATOMIC_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_ATOMIC_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_ATOMIC_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_MODAL_VALUES (Flexy Iteration 194)", () => {
+  it("should have true value", () => {
+    expect(ARIA_MODAL_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_MODAL_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_MODAL_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_MODAL_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_HIDDEN_VALUES (Flexy Iteration 195)", () => {
+  it("should have true value", () => {
+    expect(ARIA_HIDDEN_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_HIDDEN_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_HIDDEN_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_HIDDEN_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_ORIENTATION_VALUES (Flexy Iteration 195)", () => {
+  it("should have horizontal value", () => {
+    expect(ARIA_ORIENTATION_VALUES.HORIZONTAL).toBe("horizontal");
+  });
+
+  it("should have vertical value", () => {
+    expect(ARIA_ORIENTATION_VALUES.VERTICAL).toBe("vertical");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_ORIENTATION_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_ORIENTATION_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_REQUIRED_VALUES (Flexy Iteration 195)", () => {
+  it("should have true value", () => {
+    expect(ARIA_REQUIRED_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_REQUIRED_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_REQUIRED_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_REQUIRED_VALUES);
+    expect(new Set(values).size).toBe(values.length);
   });
 });

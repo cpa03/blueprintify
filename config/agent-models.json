@@ -1,0 +1,10 @@
+{
+  "$comment": "Single source of truth for agent model fallback hierarchy. Flexy says: no hardcoded model strings elsewhere — sync via scripts/validate-models.mjs. Keep in sync with packages/shared/src/config/ai-models.ts, opencode.json, .opencode/agent/*.md, .agent/agents/*.md, AGENTS.md.",
+  "primary": "opencode/muse-spark-1.3-contributor-free",
+  "fallbacks": ["opencode/mimo-v2.6-flash-free", "opencode/nemotron-3-ultra-free"],
+  "shortNames": {
+    "primary": "muse-spark-1.3-contributor-free",
+    "fallback1": "mimo-v2.6-flash-free",
+    "fallback2": "nemotron-3-ultra-free"
+  }
+}
