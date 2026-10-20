@@ -2885,6 +2885,7 @@ describe("TOAST_DEFAULTS", () => {
     expect(TOAST_DEFAULTS.SUCCESS_DURATION_MS).toBeGreaterThan(0);
     expect(TOAST_DEFAULTS.AUTO_SAVE_DURATION_MS).toBeGreaterThan(0);
     expect(TOAST_DEFAULTS.STAGGER_MS).toBeGreaterThan(0);
+    expect(TOAST_DEFAULTS.REDUCED_MOTION_PROGRESS_STEP_MS).toBeGreaterThan(0);
   });
 
   it("should have all numeric values", () => {
@@ -2895,8 +2896,8 @@ describe("TOAST_DEFAULTS", () => {
     });
   });
 
-  it("should have 4 entries", () => {
-    expect(Object.keys(TOAST_DEFAULTS).length).toBe(4);
+  it("should have 5 entries", () => {
+    expect(Object.keys(TOAST_DEFAULTS).length).toBe(5);
   });
 
   it("should have success duration shorter than default", () => {
