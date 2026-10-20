@@ -172,6 +172,9 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ATOMIC_VALUES,
   ARIA_MODAL_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_ORIENTATION_VALUES,
+  ARIA_REQUIRED_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3463,7 +3466,9 @@ describe("SVG_ICON_DEFAULTS", () => {
 
   it("should use none fill and currentColor stroke", () => {
     expect(SVG_ICON_DEFAULTS.FILL_NONE).toBe("none");
+    expect(SVG_ICON_DEFAULTS.FILL_CURRENT).toBe("currentColor");
     expect(SVG_ICON_DEFAULTS.STROKE_CURRENT).toBe("currentColor");
+    expect(SVG_ICON_DEFAULTS.STROKE_NONE).toBe("none");
   });
 
   it("should use round line caps and joins", () => {
@@ -3491,8 +3496,8 @@ describe("SVG_ICON_DEFAULTS", () => {
     );
   });
 
-  it("should have 14 entries", () => {
-    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(14);
+  it("should have 16 entries", () => {
+    expect(Object.keys(SVG_ICON_DEFAULTS).length).toBe(16);
   });
 });
 
@@ -5009,6 +5014,54 @@ describe("ARIA_MODAL_VALUES (Flexy Iteration 194)", () => {
   it("should have 2 unique values", () => {
     expect(Object.keys(ARIA_MODAL_VALUES).length).toBe(2);
     const values = Object.values(ARIA_MODAL_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_HIDDEN_VALUES (Flexy Iteration 195)", () => {
+  it("should have true value", () => {
+    expect(ARIA_HIDDEN_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_HIDDEN_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_HIDDEN_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_HIDDEN_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_ORIENTATION_VALUES (Flexy Iteration 195)", () => {
+  it("should have horizontal value", () => {
+    expect(ARIA_ORIENTATION_VALUES.HORIZONTAL).toBe("horizontal");
+  });
+
+  it("should have vertical value", () => {
+    expect(ARIA_ORIENTATION_VALUES.VERTICAL).toBe("vertical");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_ORIENTATION_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_ORIENTATION_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ARIA_REQUIRED_VALUES (Flexy Iteration 195)", () => {
+  it("should have true value", () => {
+    expect(ARIA_REQUIRED_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_REQUIRED_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_REQUIRED_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_REQUIRED_VALUES);
     expect(new Set(values).size).toBe(values.length);
   });
 });

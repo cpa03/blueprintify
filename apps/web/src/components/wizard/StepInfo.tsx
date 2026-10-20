@@ -27,7 +27,9 @@
 import {
   ANIMATION_DIRECTIONS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
+  ARIA_REQUIRED_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
@@ -173,6 +175,12 @@ export const StepInfo = memo(function StepInfo({
   // One-shot pulse on the Next button when form becomes valid; skip initial mount
   const prevCanProceed = useRef<boolean | null>(null);
   const [showReadyPulse, setShowReadyPulse] = useState(false);
+  // Polite live-region announcement when the form transitions from incomplete
+  // to complete. Sighted users get the ready pulse above; screen-reader users
+  // need an explicit spoken cue that the Next button is now enabled, otherwise
+  // the disabled→enabled transition is silent. Auto-clears so the live region
+  // does not accumulate stale text (mirrors clearAnnouncement below).
+  const [formReadyAnnouncement, setFormReadyAnnouncement] = useState("");
 
   useEffect(() => {
     if (prevCanProceed.current === null) {
@@ -181,12 +189,21 @@ export const StepInfo = memo(function StepInfo({
     }
     if (canProceed && !prevCanProceed.current) {
       setShowReadyPulse(true);
+      setFormReadyAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT);
       const timer = setTimeout(() => setShowReadyPulse(false), UI_TIMEOUTS.READY_PULSE_MS);
       prevCanProceed.current = canProceed;
       return () => clearTimeout(timer);
     }
     prevCanProceed.current = canProceed;
   }, [canProceed]);
+
+  // Clear the form-ready announcement after screen readers have had time to
+  // announce it, preventing stale text from lingering in the live region.
+  useEffect(() => {
+    if (!formReadyAnnouncement) return;
+    const timer = setTimeout(() => setFormReadyAnnouncement(""), TIMEOUTS.LIVE_REGION_CLEAR);
+    return () => clearTimeout(timer);
+  }, [formReadyAnnouncement]);
 
   const formProgress = useMemo(() => {
     const requiredFields = [
@@ -301,15 +318,15 @@ export const StepInfo = memo(function StepInfo({
       aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
     >
       {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
       </kbd>
       <svg
         className={CSS_CLASSES.ICON_HOVER_SHIFT}
-        fill="none"
-        stroke="currentColor"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-        aria-hidden="true"
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
         <path
           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -342,10 +359,10 @@ export const StepInfo = memo(function StepInfo({
                 >
                   <svg
                     className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -399,7 +416,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex justify-between items-center">
             <label htmlFor="projectName" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
-              <span className="text-accent-pink" aria-hidden="true">
+              <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
               </span>
               <ValidationCheckmark
@@ -455,7 +472,7 @@ export const StepInfo = memo(function StepInfo({
               }`}
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
-              aria-required="true"
+              aria-required={ARIA_REQUIRED_VALUES.TRUE}
               animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
@@ -540,7 +557,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex justify-between items-center">
             <label htmlFor="description" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
-              <span className="text-accent-pink" aria-hidden="true">
+              <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
               </span>
               <ValidationCheckmark
@@ -589,7 +606,7 @@ export const StepInfo = memo(function StepInfo({
               }`}
               maxLength={FORM_LIMITS.DESCRIPTION.MAX}
               required
-              aria-required="true"
+              aria-required={ARIA_REQUIRED_VALUES.TRUE}
               aria-invalid={isDescriptionInvalid || descriptionErrorVisible || undefined}
               animate={descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
@@ -843,6 +860,19 @@ export const StepInfo = memo(function StepInfo({
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {clearAnnouncement}
+      </div>
+      {/* Screen reader announcement for form-ready transition — parity with
+          the visual ready pulse on the Next button, so screen-reader users
+          hear that the form became submittable. Polite (not assertive): this
+          is a positive status update, not an urgent alert. */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="form-ready-announcer"
+      >
+        {formReadyAnnouncement}
       </div>
     </motion.div>
   );

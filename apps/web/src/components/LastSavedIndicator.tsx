@@ -18,7 +18,9 @@ import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   FRAMER_TYPE,
   SAVE_STATE_VALUES,
   UI_TIMEOUTS,
@@ -83,123 +85,133 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
-        <motion.div
-          key={hasChanges ? "unsaved" : "saved"}
-          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
-          transition={
-            shouldReduceMotion
-              ? ANIMATION_DEFAULTS.ZERO_DURATION
-              : { duration: ANIMATION.NORMAL, ease: EASING.easeOut }
-          }
-          className={`flex items-center gap-2 text-xs ${
-            hasChanges ? "text-amber-400" : "text-dark-400"
-          }`}
+        // Persistent live region: must exist in the DOM before its text
+        // changes, otherwise screen readers routinely skip the announcement.
+        // The inner animated div remounts on every state flip (key change),
+        // so it cannot serve as a reliable live region itself — the same
+        // pitfall documented in HeadingAnchor.
+        <div
+          role={ARIA_ROLES.STATUS}
           aria-live={ARIA_LIVE_VALUES.POLITE}
           aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
-          data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
-          data-has-changes={hasChanges}
           data-reduced-motion={shouldReduceMotion}
-          title={statusText}
         >
-          {hasChanges ? (
-            <>
-              <motion.span
-                className="relative flex h-2 w-2"
-                initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={
-                  shouldReduceMotion
-                    ? ANIMATION_DEFAULTS.ZERO_DURATION
-                    : { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }
-                }
-              >
-                {!shouldReduceMotion && (
-                  <motion.span
-                    className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1.5, opacity: 0 }}
-                    transition={{
-                      duration: ANIMATION.GENTLE_PULSE,
-                      repeat: Infinity,
-                      ease: EASING.easeOut,
-                    }}
-                  />
-                )}
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
-              </motion.span>
-              <span className="font-medium">Unsaved changes</span>
-            </>
-          ) : (
-            <>
-              <motion.span
-                className={`relative flex h-3.5 w-3.5 items-center justify-center flex-shrink-0 ${showSavedGlow ? "saved-celebration-glow" : ""}`}
-              >
-                <motion.svg
-                  className="w-3.5 h-3.5 text-accent-emerald"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+          <motion.div
+            key={hasChanges ? "unsaved" : "saved"}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+            transition={
+              shouldReduceMotion
+                ? ANIMATION_DEFAULTS.ZERO_DURATION
+                : { duration: ANIMATION.NORMAL, ease: EASING.easeOut }
+            }
+            className={`flex items-center gap-2 text-xs ${
+              hasChanges ? "text-amber-400" : "text-dark-400"
+            }`}
+            data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
+            data-has-changes={hasChanges}
+            data-reduced-motion={shouldReduceMotion}
+            title={statusText}
+          >
+            {hasChanges ? (
+              <>
+                <motion.span
+                  className="relative flex h-2 w-2"
                   initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={
                     shouldReduceMotion
                       ? ANIMATION_DEFAULTS.ZERO_DURATION
-                      : {
-                          type: FRAMER_TYPE.SPRING,
-                          ...SPRING_CONFIG.CHECKMARK_ICON,
-                        }
+                      : { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }
                   }
                 >
-                  <motion.path
-                    strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
-                    strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
-                    strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M5 13l4 4L19 7"
-                    initial={
-                      shouldReduceMotion
-                        ? { pathLength: 1, opacity: 1 }
-                        : { pathLength: 0, opacity: 0 }
-                    }
-                    animate={{ pathLength: 1, opacity: 1 }}
+                  {!shouldReduceMotion && (
+                    <motion.span
+                      className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1.5, opacity: 0 }}
+                      transition={{
+                        duration: ANIMATION.GENTLE_PULSE,
+                        repeat: Infinity,
+                        ease: EASING.easeOut,
+                      }}
+                    />
+                  )}
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+                </motion.span>
+                <span className="font-medium">Unsaved changes</span>
+              </>
+            ) : (
+              <>
+                <motion.span
+                  className={`relative flex h-3.5 w-3.5 items-center justify-center flex-shrink-0 ${showSavedGlow ? "saved-celebration-glow" : ""}`}
+                >
+                  <motion.svg
+                    className="w-3.5 h-3.5 text-accent-emerald"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                    initial={shouldReduceMotion ? { scale: 1 } : { scale: 0 }}
+                    animate={{ scale: 1 }}
                     transition={
                       shouldReduceMotion
                         ? ANIMATION_DEFAULTS.ZERO_DURATION
                         : {
-                            pathLength: {
-                              type: FRAMER_TYPE.SPRING,
-                              ...SPRING_CONFIG.DEFAULT,
-                              delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
-                            },
-                            opacity: {
-                              duration: ANIMATION.QUICK_FADE,
-                              delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
-                            },
+                            type: FRAMER_TYPE.SPRING,
+                            ...SPRING_CONFIG.CHECKMARK_ICON,
                           }
                     }
-                  />
-                </motion.svg>
-              </motion.span>
-              <motion.span
-                initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={
-                  shouldReduceMotion
-                    ? ANIMATION_DEFAULTS.ZERO_DURATION
-                    : {
-                        duration: ANIMATION.NORMAL,
-                        delay: ANIMATION_ENTRANCE_DELAYS.FAST,
-                        ease: EASING.easeOut,
+                  >
+                    <motion.path
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                      d="M5 13l4 4L19 7"
+                      initial={
+                        shouldReduceMotion
+                          ? { pathLength: 1, opacity: 1 }
+                          : { pathLength: 0, opacity: 0 }
                       }
-                }
-              >
-                {text}
-              </motion.span>
-            </>
-          )}
-        </motion.div>
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      transition={
+                        shouldReduceMotion
+                          ? ANIMATION_DEFAULTS.ZERO_DURATION
+                          : {
+                              pathLength: {
+                                type: FRAMER_TYPE.SPRING,
+                                ...SPRING_CONFIG.DEFAULT,
+                                delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                              },
+                              opacity: {
+                                duration: ANIMATION.QUICK_FADE,
+                                delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                              },
+                            }
+                      }
+                    />
+                  </motion.svg>
+                </motion.span>
+                <motion.span
+                  initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={
+                    shouldReduceMotion
+                      ? ANIMATION_DEFAULTS.ZERO_DURATION
+                      : {
+                          duration: ANIMATION.NORMAL,
+                          delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                          ease: EASING.easeOut,
+                        }
+                  }
+                >
+                  {text}
+                </motion.span>
+              </>
+            )}
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

@@ -4,6 +4,98 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+
+### ✅ Flexy Iteration 186: Centralize Agent Model Fallback Hierarchy into Single Source of Truth
+
+**Problem**: Agent model fallback hierarchy (`opencode/muse-spark-1.3-contributor-free` → `mimo-v2.6-flash-free` → `nemotron-3-ultra-free`) was hardcoded in 60+ places: `scripts/opencode-run.sh` MODELS array, 28× `.opencode/agent/*.md` frontmatter, 28× `.agent/agents/*.md` frontmatter, `AGENTS.md`, `opencode.json`. No single source, no sync validation. Flexy says: no hardcoded model strings in scripts!
+
+| File | Change |
+|------|--------|
+| `config/agent-models.json` | NEW — canonical single source: `primary` + `fallbacks[]` + `shortNames` |
+| `packages/shared/src/config/ai-models.ts` | NEW — TS mirror: `AGENT_MODEL_IDS`, `AGENT_MODEL_HIERARCHY`, `AGENT_MODEL_SHORT_NAMES`, `getAgentModelFallbackList(explicit?)` |
+| `packages/shared/src/config.ts` + `src/index.ts` | Re-exported new model constants |
+| `packages/shared/src/config/ai-models.test.ts` | NEW — 6 tests: order, single-source values, suffix match, fallback-list behavior |
+| `scripts/opencode-run.sh` | Removed hardcoded MODELS array; loads from `config/agent-models.json` via python3/node/jq, fail-closed if missing; `AGENT_MODELS_CONFIG` override |
+| `scripts/validate-models.mjs` | NEW — validates JSON ↔ TS mirror ↔ opencode.json ↔ 56 agent files |
+| `package.json` | Added `validate:models` script; wired into `validate:all` |
+
+## Verification
+
+- ✅ `npm run typecheck --workspace=@blueprint/shared` — clean
+- ✅ `npx eslint` on changed TS files — zero errors, zero warnings
+- ✅ `npx prettier --check` on changed files — clean
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `node scripts/validate-models.mjs` — 56 agent files in sync
+- ✅ `bash -n scripts/opencode-run.sh` — syntax OK
+- ✅ `npm run test --workspace=@blueprint/shared` — 791 tests passing (incl. 6 new)
+- ⚠️ Pre-existing failures on main (unrelated, not touched): `apps/web` jest-dom matcher types, `apps/api` Zod v4 controller types
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3651 | `flexy/iteration-186-agent-models-modular` | refactor(flexy): centralize agent model fallback hierarchy into single source (Iteration 186) |
+
+### ✅ Flexy Iteration 196: Centralize SVG Fill & Stroke Color Attribute Literals Across All Components
+
+**Problem**: After Iteration 191/192 (viewBox) and Iteration 193 (stroke width/caps/joins), the SVG **color** attributes remained hardcoded across 25 web component files: 65× `fill="none"`, 61× `stroke="currentColor"`, 3× `fill="currentColor"` (Toast ×2, Header ×1), and 1× `stroke="none"` (StepGenerating) — bypassing `SVG_ICON_DEFAULTS.FILL_NONE`/`STROKE_CURRENT`, which already existed but were only used by `Icon.tsx`, `ShowEditorButton.tsx` and one Header glyph. `FILL_CURRENT` and `STROKE_NONE` had no constant at all. Toast also hardcoded its `ProgressRing` prop default `color = "currentColor"` and two `color-mix(in srgb, currentColor N%, transparent)` boxShadow template literals. Flexy says: no hardcoded SVG fill/stroke color literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `FILL_CURRENT` (`"currentColor"`) + `STROKE_NONE` (`"none"`) to `SVG_ICON_DEFAULTS` (14 → 16 entries), completing the fill/stroke color-pair matrix alongside `FILL_NONE`/`STROKE_CURRENT` |
+| `packages/shared/src/config.test.ts` | Fill/stroke test now asserts all 4 color constants; entry-count test 14 → 16 |
+| `apps/web/src/components/*` (25 files) | Replaced 133 literals: 65× `fill="none"` → `SVG_ICON_DEFAULTS.FILL_NONE`, 61× `stroke="currentColor"` → `SVG_ICON_DEFAULTS.STROKE_CURRENT`, 3× `fill="currentColor"` → `SVG_ICON_DEFAULTS.FILL_CURRENT`, 1× `stroke="none"` → `SVG_ICON_DEFAULTS.STROKE_NONE`, plus Toast's prop default and 2× `color-mix` boxShadow interpolations (StepGenerating ×17, StepReview ×7, StepFeatures ×13, ErrorFallback ×7, Toast ×6, EditorToolbar ×5, …) |
+| `docs/flexy-plan.md` | Iteration 196 entry |
+
+Deliberately skipped: 4 gradient paint refs (`fill="url(#gen-lightning-grad)"` in StepGenerating, `stroke="url(#toolbar-export-spinner-grad)"` in EditorToolbar, 2× Iconify `fill="url(#IconifyId…)"` in `lib/templates/react.ts` — unique one-off gradient IDs, not reusable literals); 2 `toHaveAttribute("fill"/"stroke", "currentColor")` assertions in `Header.test.tsx`/`StepIndicator.test.tsx` (tests assert rendered output, Iteration 194 precedent); code comments mentioning `currentColor` in prose.
+
+## Verification (Iteration 196)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (344 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,315 web + 550 api + 920 shared = 2,785 tests passing**
+- ✅ Remaining raw `fill="none"` / `fill="currentColor"` / `stroke="currentColor"` / `stroke="none"` in components (excluding `url(#)` refs, comments & test assertions) — **0 occurrences**
+
+## PR (Iteration 196)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3822 | `flexy/iteration-196-svg-fill-stroke-colors` | refactor(flexy): centralize SVG fill & stroke color literals into shared config (Iteration 196) |
+
+### ✅ Flexy Iteration 195: Centralize ARIA Hidden, Orientation & Required Literals Across All Components
+
+**Problem**: 142 hardcoded ARIA attribute literals remained after Iteration 194 centralized roles/live/atomic/modal: `aria-hidden="true"` (136 JSX attributes across 33 web files + 3 querySelector selector strings in tests + 7 focus-trap CSS selector strings in `accessibility.ts`), `aria-orientation="horizontal"` (4× across TemplateGrid, PageScrollProgressBar, EditorHeader, EditorToolbar), and `aria-required="true"` (2× in StepInfo) — no `ARIA_HIDDEN_VALUES`/`ARIA_ORIENTATION_VALUES`/`ARIA_REQUIRED_VALUES` constants existed. Flexy says: no hardcoded ARIA attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_HIDDEN_VALUES` (TRUE/FALSE), `ARIA_ORIENTATION_VALUES` (HORIZONTAL/VERTICAL), `ARIA_REQUIRED_VALUES` (TRUE/FALSE) with JSDoc matching the Iteration 194 ARIA block style |
+| `packages/shared/src/index.ts` | Exported all three constants on the root barrel |
+| `packages/shared/src/config.test.ts` | Added 9 tests: value assertions + uniqueness checks for all three constants (Iteration 195 describe blocks) |
+| `apps/web/src/config/constants/accessibility.ts` | 7 focus-trap `FOCUSABLE_SELECTORS` strings → template literals interpolating `ARIA_HIDDEN_VALUES.TRUE` |
+| `apps/web/src/components/*` + `App.tsx` (33 files) | Replaced 133 JSX `aria-hidden="true"`, 4 `aria-orientation="horizontal"`, 2 `aria-required="true"` with shared constants (StepGenerating ×14, Toast ×12, EditorHeader ×10, StepReview ×8, ErrorFallback ×8, …) |
+| `apps/web/src/components/Wizard.test.tsx` + `TemplateGrid.test.tsx` | 3 querySelector `'[aria-hidden="true"]'` selector strings → template literals interpolating `ARIA_HIDDEN_VALUES.TRUE` |
+| `docs/flexy-plan.md` | Iteration 195 entry |
+
+Deliberately skipped: `apps/web/src/lib/templates/react.ts` (embedded generated-SVG content template, not application code).
+
+## Verification (Iteration 195)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,309 web + 550 api + 920 shared = 2,779 tests passing**
+
+## PR (Iteration 195)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-195-aria-hidden-orientation-required` | refactor(flexy): centralize ARIA hidden, orientation & required literals into shared config (Iteration 195) |
+
 ### ✅ Flexy Iteration 187: Centralize Hex Pad Char, DB ID Separator, sr-only Class & Empty-State Aria Label
 
 **Problem**: Hex-encoding call sites repeated the raw `"0"` pad character in 4× `padStart` invocations (auth `deriveUserId` + 3× share token/passphrase hashing) despite `CRYPTO_CONFIG.HEX_RADIX`/`HEX_PADDING_WIDTH` already existing; `deriveUserId` joined prefix and hash with a hardcoded `"_"` separator bypassing `DB_ID_PREFIXES`; 4× `<span className="sr-only">` live regions (TemplateGrid, StepFeatures, ShowEditorButton ×2) bypassed `CSS_CLASSES`; and `EditorEmptyState` hardcoded `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded pad chars, ID separators, screen-reader classes, or aria labels!

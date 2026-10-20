@@ -27,6 +27,7 @@ import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
@@ -154,7 +155,7 @@ function LoadingDots({ active }: { active: boolean }): JSX.Element {
   }, [active]);
 
   return (
-    <span aria-hidden="true">
+    <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
       {Array.from({ length: LOADING_DOTS_COUNT }, (_, i) => i).map((i) => (
         <motion.span
           key={i}
@@ -388,14 +389,14 @@ export const StepGenerating = memo(function StepGenerating({
               width="48"
               height="48"
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
-              fill="none"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
               className="text-accent-emerald"
             >
               <motion.circle
                 cx="24"
                 cy="24"
                 r="22"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
@@ -406,7 +407,7 @@ export const StepGenerating = memo(function StepGenerating({
               />
               <motion.path
                 d="M14 24L21 31L34 17"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
@@ -433,7 +434,7 @@ export const StepGenerating = memo(function StepGenerating({
               width="48"
               height="48"
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX_LARGE}
-              fill="none"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
               className="text-accent-pink"
               role={ARIA_ROLES.IMG}
               aria-label={GENERATION_ERROR_LABELS.ERROR_ICON_ARIA}
@@ -442,7 +443,7 @@ export const StepGenerating = memo(function StepGenerating({
                 cx="24"
                 cy="24"
                 r="22"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
@@ -453,7 +454,7 @@ export const StepGenerating = memo(function StepGenerating({
               />
               <motion.path
                 d="M16 16L32 32M32 16L16 32"
-                stroke="currentColor"
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 initial={{ pathLength: 0 }}
@@ -498,13 +499,13 @@ export const StepGenerating = memo(function StepGenerating({
                   ease: EASING.easeInOut,
                 }}
                 className="flex items-center justify-center"
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <svg
                   className="w-9 h-9"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  fill="none"
-                  aria-hidden="true"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <defs>
                     <linearGradient id="gen-lightning-grad" x1="0" y1="0" x2="1" y2="1">
@@ -516,7 +517,7 @@ export const StepGenerating = memo(function StepGenerating({
                   <path
                     d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"
                     fill="url(#gen-lightning-grad)"
-                    stroke="none"
+                    stroke={SVG_ICON_DEFAULTS.STROKE_NONE}
                   />
                 </svg>
               </motion.div>
@@ -607,10 +608,13 @@ export const StepGenerating = memo(function StepGenerating({
                   role=status region, so without hiding it the screen reader would re-announce
                   the whole region on every second boundary (chronometer spam). Assistive-tech
                   users get the throttled elapsed time from the dedicated live region below. */}
-              <span className="mx-2 text-dark-600" aria-hidden="true">
+              <span className="mx-2 text-dark-600" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 {DISPLAY_SYMBOLS.MIDDOT}
               </span>
-              <span className="tabular-nums text-dark-500 text-sm" aria-hidden="true">
+              <span
+                className="tabular-nums text-dark-500 text-sm"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+              >
                 {WIZARD_GENERATING_LABELS.ELAPSED_TIME} {elapsedDisplay}
               </span>
             </p>
@@ -852,10 +856,10 @@ export const StepGenerating = memo(function StepGenerating({
                 >
                   <svg
                     className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -871,7 +875,10 @@ export const StepGenerating = memo(function StepGenerating({
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
-                  <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                  <kbd
+                    className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                  >
                     {getModifierLabel()}+E
                   </kbd>
                 </RippleButton>
@@ -902,10 +909,10 @@ export const StepGenerating = memo(function StepGenerating({
                 >
                   <svg
                     className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -915,7 +922,10 @@ export const StepGenerating = memo(function StepGenerating({
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
-                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                  <kbd
+                    className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                  >
                     {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
                   </kbd>
                 </RippleButton>
@@ -954,10 +964,10 @@ export const StepGenerating = memo(function StepGenerating({
             >
               <svg
                 className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <path
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -981,10 +991,10 @@ export const StepGenerating = memo(function StepGenerating({
               >
                 <svg
                   className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -994,7 +1004,10 @@ export const StepGenerating = memo(function StepGenerating({
                   />
                 </svg>
                 {GENERATION_ERROR_LABELS.BACK_TO_REVIEW}
-                <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                <kbd
+                  className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                >
                   {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
                 </kbd>
               </RippleButton>
@@ -1059,7 +1072,7 @@ export const StepGenerating = memo(function StepGenerating({
                     <>
                       <div
                         className="w-4 h-4 border-2 border-dark-400/30 border-t-dark-400 rounded-full animate-spin"
-                        aria-hidden="true"
+                        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                       ></div>
                       {WIZARD_GENERATING_LABELS.CANCELLING_GENERATION}
                     </>
@@ -1067,7 +1080,10 @@ export const StepGenerating = memo(function StepGenerating({
                     <>
                       <Icon name="close" className="w-4 h-4" />
                       {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
-                      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                      <kbd
+                        className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                      >
                         {KEY_DISPLAY.ESC}
                       </kbd>
                     </>

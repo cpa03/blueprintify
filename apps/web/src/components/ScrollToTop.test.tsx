@@ -245,6 +245,63 @@ describe("ScrollToTop", () => {
 
     expect(scrollTo).not.toHaveBeenCalled();
   });
+
+  it("stays visible while focused after activating it scrolls past the hide threshold", () => {
+    const scrollTo = vi.fn();
+    window.scrollTo = scrollTo;
+
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const button = screen.getByLabelText(topLabel());
+    act(() => {
+      button.focus();
+    });
+    expect(button.parentElement).toHaveAttribute("data-focus-within", "true");
+
+    fireEvent.click(button);
+    expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: 0 }));
+
+    mockWindowScroll(0);
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    expect(screen.getByLabelText(topLabel())).toBeInTheDocument();
+  });
+
+  it("hides after blur once scrolled back to the top", () => {
+    const scrollTo = vi.fn();
+    window.scrollTo = scrollTo;
+
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const button = screen.getByLabelText(topLabel());
+    act(() => {
+      button.focus();
+    });
+
+    fireEvent.click(button);
+    mockWindowScroll(0);
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    act(() => {
+      button.blur();
+    });
+
+    expect(screen.queryByLabelText(topLabel())).not.toBeInTheDocument();
+  });
 });
 
 describe("ScrollToBottom", () => {

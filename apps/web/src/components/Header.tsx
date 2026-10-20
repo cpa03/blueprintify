@@ -19,6 +19,7 @@
 import { memo, useState, useEffect, useCallback } from "react";
 import {
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   ICON_PATHS,
@@ -149,7 +150,7 @@ function HeaderComponent({
               fill={SVG_ICON_DEFAULTS.FILL_NONE}
               stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path
                 d={ICON_PATHS.BRAND_LOGO}
@@ -209,10 +210,10 @@ function HeaderComponent({
               >
                 <svg
                   className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -231,9 +232,9 @@ function HeaderComponent({
           >
             <svg
               className="w-5 h-5"
-              fill="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path d={ICON_PATHS.GITHUB} />
             </svg>

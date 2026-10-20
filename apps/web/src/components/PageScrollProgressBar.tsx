@@ -37,6 +37,7 @@ import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import {
+  ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
   KEYBOARD_EVENT_KEYS,
@@ -205,7 +206,7 @@ function PageScrollProgressBarComponent({
   return (
     <motion.div
       role={ARIA_ROLES.SLIDER}
-      aria-orientation="horizontal"
+      aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       aria-valuenow={Math.round(scrollProgress)}
       aria-valuemin={0}
       aria-valuemax={100}

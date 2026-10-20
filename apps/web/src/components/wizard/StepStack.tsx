@@ -29,6 +29,7 @@ import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
@@ -168,10 +169,10 @@ const TechChip = memo(function TechChip({
             <motion.svg
               key="checkmark"
               className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: 180 }}
@@ -350,7 +351,7 @@ export const StepStack = memo(function StepStack({
               className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2"
               id={`category-${category}`}
             >
-              <span aria-hidden="true">{CATEGORY_ICONS[category] || "🔧"}</span>
+              <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>{CATEGORY_ICONS[category] || "🔧"}</span>
               {category}
             </h3>
             <div
@@ -425,10 +426,10 @@ export const StepStack = memo(function StepStack({
           >
             <svg
               className="w-4 h-4 flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -459,8 +460,8 @@ export const StepStack = memo(function StepStack({
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
@@ -471,7 +472,7 @@ export const StepStack = memo(function StepStack({
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_INFO}
-            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden="true">
+            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
               {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
@@ -487,13 +488,16 @@ export const StepStack = memo(function StepStack({
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
-            <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+            <kbd
+              className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+            >
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path

@@ -25,6 +25,7 @@ import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
@@ -147,7 +148,7 @@ export const StepReview = memo(function StepReview({
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <span
                   className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center text-primary-400"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   📝
                 </span>
@@ -170,8 +171,8 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
@@ -182,7 +183,10 @@ export const StepReview = memo(function StepReview({
                     />
                   </svg>
                   Edit
-                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                  <kbd
+                    className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                  >
                     {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
                   </kbd>
                 </button>
@@ -226,7 +230,7 @@ export const StepReview = memo(function StepReview({
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <span
                   className="w-8 h-8 rounded-lg bg-accent-cyan/20 flex items-center justify-center text-accent-cyan"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   ⚙️
                 </span>
@@ -249,8 +253,8 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
@@ -261,7 +265,10 @@ export const StepReview = memo(function StepReview({
                     />
                   </svg>
                   Edit
-                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                  <kbd
+                    className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                  >
                     {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
                   </kbd>
                 </button>
@@ -316,7 +323,7 @@ export const StepReview = memo(function StepReview({
                 <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                   <span
                     className="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center text-accent-emerald"
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     ✨
                   </span>
@@ -339,8 +346,8 @@ export const StepReview = memo(function StepReview({
                   >
                     <svg
                       className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
@@ -351,7 +358,10 @@ export const StepReview = memo(function StepReview({
                       />
                     </svg>
                     Edit
-                    <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                    <kbd
+                      className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`}
+                      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                    >
                       {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
                     </kbd>
                   </button>
@@ -395,8 +405,8 @@ export const StepReview = memo(function StepReview({
                   >
                     <svg
                       className="w-4 h-4 text-accent-emerald"
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path
@@ -467,8 +477,8 @@ export const StepReview = memo(function StepReview({
             >
               <svg
                 className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
@@ -493,7 +503,7 @@ export const StepReview = memo(function StepReview({
                         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
                       }
                 }
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
               </kbd>
@@ -542,8 +552,8 @@ export const StepReview = memo(function StepReview({
                     <>
                       <svg
                         className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
+                        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                       >
                         <path
@@ -585,8 +595,8 @@ export const StepReview = memo(function StepReview({
                 >
                   <svg
                     className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                     viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   >
                     <path
@@ -611,7 +621,7 @@ export const StepReview = memo(function StepReview({
                             animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
                           }
                     }
-                    aria-hidden="true"
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
                   </kbd>

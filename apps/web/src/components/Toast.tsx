@@ -48,6 +48,7 @@ import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
 import {
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
@@ -96,7 +97,7 @@ const ProgressRing = memo(function ProgressRing({
   progress,
   size = TOAST_SPRING.PROGRESS_RING.SIZE_PX,
   strokeWidth = TOAST_SPRING.PROGRESS_RING.STROKE_WIDTH,
-  color = "currentColor",
+  color = SVG_ICON_DEFAULTS.STROKE_CURRENT,
   noTransition = false,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
@@ -109,13 +110,13 @@ const ProgressRing = memo(function ProgressRing({
       height={size}
       className="absolute pointer-events-none"
       style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
-      aria-hidden="true"
+      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
     >
       <circle
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        fill="none"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
         stroke={color}
         strokeWidth={strokeWidth}
         strokeOpacity={0.15}
@@ -124,7 +125,7 @@ const ProgressRing = memo(function ProgressRing({
         cx={size / 2}
         cy={size / 2}
         r={radius}
-        fill="none"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
         stroke={color}
         strokeWidth={strokeWidth}
         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -306,7 +307,7 @@ const ToastItem = memo(
             // when the user prefers reduced motion.
             transition: shouldReduceMotion ? "none" : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
           }}
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
 
         {/* Entry glow ring — brief initial glow that fades out after the toast
@@ -321,9 +322,9 @@ const ToastItem = memo(
             animate={{ opacity: 0 }}
             transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
             style={{
-              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, currentColor 18%, transparent)`,
+              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} 18%, transparent)`,
             }}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
         )}
 
@@ -335,22 +336,22 @@ const ToastItem = memo(
           className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ease-out"
           style={{
             opacity: isHovered ? 1 : 0,
-            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, currentColor 10%, transparent)`,
+            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} 10%, transparent)`,
           }}
-          aria-hidden="true"
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
 
         {shouldReduceMotion ? (
           isHovered && (
             <div
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <svg
                 className="w-2.5 h-2.5"
-                fill="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <rect x="6" y="4" width="4" height="16" rx="1" />
                 <rect x="14" y="4" width="4" height="16" rx="1" />
@@ -366,13 +367,13 @@ const ToastItem = memo(
                 exit={{ opacity: 0, scale: 0.5, y: 5 }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...TOAST_SPRING.WARNING_ICON }}
                 className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <svg
                   className="w-2.5 h-2.5"
-                  fill="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <rect x="6" y="4" width="4" height="16" rx="1" />
                   <rect x="14" y="4" width="4" height="16" rx="1" />
@@ -606,13 +607,13 @@ function ToastContainerComponent(): JSX.Element {
             <span className="flex items-center gap-1.5">
               <Icon name="close" className="w-3.5 h-3.5" />
               {TOAST_DISPLAY.DISMISS_ALL_PREFIX}
-              <span className="tabular-nums" aria-hidden="true">
+              <span className="tabular-nums" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 {toasts.length}
               </span>
               {TOAST_DISPLAY.DISMISS_ALL_SUFFIX}
               <kbd
                 className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 {SHORTCUT_LABELS.TOAST_DISMISS_ALL}
               </kbd>
@@ -648,14 +649,14 @@ function ToastContainerComponent(): JSX.Element {
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   {toasts.length}
                 </motion.span>
                 {TOAST_DISPLAY.DISMISS_ALL_SUFFIX}
                 <kbd
                   className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   {SHORTCUT_LABELS.TOAST_DISMISS_ALL}
                 </kbd>

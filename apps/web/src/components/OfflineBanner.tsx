@@ -34,6 +34,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useToastStore } from "../store";
 import {
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
@@ -200,7 +201,7 @@ function OfflineBannerComponent(): JSX.Element | null {
             {/* Gradient accent line */}
             <div
               className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent-pink/60 via-accent-pink/40 to-transparent"
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             />
 
             <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
@@ -209,7 +210,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                 <span
                   className="relative flex h-5 w-5 flex-shrink-0"
                   style={shouldReduceMotion ? {} : { animation: OFFLINE_ANIMATION.PULSE_SCALE }}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   {/* Ping ring */}
                   <span
@@ -223,8 +224,8 @@ function OfflineBannerComponent(): JSX.Element | null {
                   <span className="relative inline-flex rounded-full h-5 w-5 bg-accent-pink/20 items-center justify-center">
                     <svg
                       className="w-3 h-3 text-accent-pink"
-                      fill="none"
-                      stroke="currentColor"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                       viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                     >
                       <path

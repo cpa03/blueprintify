@@ -12,6 +12,9 @@
  * - Glassmorphism design with spring animations
  * - Tooltip showing keyboard shortcut
  * - Works with both window scroll and custom scroll containers
+ * - Stays visible while focused (WCAG 2.4.7): activating the button scrolls
+ *   the page past its hide threshold, but the button remains mounted until
+ *   focus leaves it so keyboard users don't lose their place to <body>
  *
  * @see ScrollProgress - For displaying reading progress indicator
  * @see SmartTooltip - For keyboard shortcut tooltip display
@@ -33,7 +36,12 @@ import {
   SCROLL_BEHAVIOR,
   DIRECTION,
 } from "../config/constants";
-import { FRAMER_TYPE, MODIFIER_KEYS, BANNER_STATE_VALUES } from "@blueprint/shared/config";
+import {
+  FRAMER_TYPE,
+  MODIFIER_KEYS,
+  BANNER_STATE_VALUES,
+  ARIA_HIDDEN_VALUES,
+} from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { isEditableField } from "../lib/dom";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
@@ -94,6 +102,11 @@ const ScrollToPosition = memo(function ScrollToPosition({
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [showEntryPulse, setShowEntryPulse] = useState(false);
+  // Focus retention: activating the button scrolls past its hide threshold,
+  // which would unmount the button mid-interaction and drop keyboard focus
+  // to <body> (WCAG 2.4.7). While focus is inside the button, keep it mounted
+  // so the user can see where their focus is; it hides again on blur.
+  const [isFocusWithin, setIsFocusWithin] = useState(false);
   const prevVisibleRef = useRef(false);
   const prevScrollRef = useRef(0);
   const shouldReduceMotion = useReducedMotion();
@@ -112,6 +125,20 @@ const ScrollToPosition = memo(function ScrollToPosition({
     }
     prevVisibleRef.current = isVisible;
   }, [isVisible]);
+
+  // React's onFocus/onBlur bubble (focusin/focusout), so events from the
+  // inner button reach the wrapper. relatedTarget check ensures Tabbing out
+  // of the button clears the retention flag; moving focus between elements
+  // inside the wrapper (e.g. tooltip content, if ever focusable) keeps it.
+  const handleFocus = useCallback(() => {
+    setIsFocusWithin(true);
+  }, []);
+
+  const handleBlur = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+      setIsFocusWithin(false);
+    }
+  }, []);
 
   const isToTop = direction === "top";
 
@@ -210,7 +237,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {(isVisible || isFocusWithin) && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -220,8 +247,11 @@ const ScrollToPosition = memo(function ScrollToPosition({
             ...SPRING_CONFIG.DEFAULT,
           }}
           className={positionClass}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           data-state={BANNER_STATE_VALUES.VISIBLE}
           data-has-scrolled={hasScrolled}
+          data-focus-within={isFocusWithin}
           data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
@@ -234,7 +264,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               initial={false}
               animate={{ opacity: [0.6, 0], scale: [0.85, 1.8] }}
               transition={{ duration: ANIMATION.ENTRY_PULSE, ease: EASING.easeOut }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <div className="w-10 h-10 rounded-full bg-primary-500/25 blur-sm" />
             </motion.div>
@@ -262,7 +292,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 repeat: Infinity,
                 ease: EASING.easeInOut,
               }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <div className="w-10 h-10 rounded-full bg-accent-emerald/25 blur-sm" />
             </motion.div>
@@ -294,10 +324,10 @@ const ScrollToPosition = memo(function ScrollToPosition({
             >
               <motion.svg
                 className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 initial={false}
                 // Decorative infinite float: disabled when the user prefers
                 // reduced motion (WCAG 2.3.3) — the arrow stays static while

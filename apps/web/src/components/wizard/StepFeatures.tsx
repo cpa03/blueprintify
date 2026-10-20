@@ -25,6 +25,7 @@
 import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
@@ -275,10 +276,10 @@ export const StepFeatures = memo(function StepFeatures({
               >
                 <svg
                   className="w-3.5 h-3.5 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                  aria-hidden="true"
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -290,7 +291,7 @@ export const StepFeatures = memo(function StepFeatures({
                 {/* Visible terse message. The richer actionable message is
                     announced to screen readers via the sr-only span below,
                     without duplicating the terse prefix. */}
-                <span aria-hidden="true">
+                <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                   {UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED}
                 </span>
                 <span className={CSS_CLASSES.SR_ONLY}>
@@ -315,8 +316,8 @@ export const StepFeatures = memo(function StepFeatures({
               >
                 <svg
                   className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
+                  fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                  stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 >
                   <path
@@ -366,7 +367,7 @@ export const StepFeatures = memo(function StepFeatures({
                       }`}
                       role={ARIA_ROLES.LISTITEM}
                     >
-                      <span className="text-accent-emerald" aria-hidden="true">
+                      <span className="text-accent-emerald" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                         ✓
                       </span>
                       {feature}
@@ -429,10 +430,10 @@ export const StepFeatures = memo(function StepFeatures({
                     >
                       <svg
                         className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
+                        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                         viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                        aria-hidden="true"
+                        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                       >
                         <path
                           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -544,10 +545,10 @@ export const StepFeatures = memo(function StepFeatures({
                           <motion.svg
                             key="checkmark"
                             className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
+                            fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                            stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
-                            aria-hidden="true"
+                            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: 180 }}
@@ -599,8 +600,8 @@ export const StepFeatures = memo(function StepFeatures({
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
@@ -639,8 +640,8 @@ export const StepFeatures = memo(function StepFeatures({
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
@@ -651,7 +652,7 @@ export const StepFeatures = memo(function StepFeatures({
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_STACK}
-            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden="true">
+            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
               {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
@@ -667,13 +668,16 @@ export const StepFeatures = memo(function StepFeatures({
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
-            <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+            <kbd
+              className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+            >
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
-              fill="none"
-              stroke="currentColor"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
               viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path

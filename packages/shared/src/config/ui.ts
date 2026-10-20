@@ -950,6 +950,20 @@ export const COUNTER_DIRECTION_VALUES = {
 } as const;
 
 /**
+ * Counter Pulse State Values
+ * Centralized state tracking values for animated card counter active/idle states (AnimatedCounter).
+ * Flexy says: No hardcoded "active"/"idle" strings in AnimatedCounter!
+ * Usage: import { COUNTER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
+ */
+export const COUNTER_STATE_VALUES = {
+  /** Pulse active state identifier */
+  ACTIVE: "active" as const,
+  /** Counter idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Editor Button Display State Values
  * Centralized state tracking values for editor toggle button (ShowEditorButton).
  * Flexy says: No hardcoded "content-ready"/"idle" strings in ShowEditorButton!
@@ -979,8 +993,12 @@ export const SVG_ICON_DEFAULTS = {
   VIEW_BOX_LARGE: "0 0 48 48" as const,
   /** Default fill for stroke-only icons */
   FILL_NONE: "none" as const,
+  /** Fill color inheriting surrounding text color (filled glyph variants) */
+  FILL_CURRENT: "currentColor" as const,
   /** Default stroke color inheriting surrounding text color */
   STROKE_CURRENT: "currentColor" as const,
+  /** Stroke color for invisible/transparent strokes (contrast fills, masks) */
+  STROKE_NONE: "none" as const,
   /** Default rounded line caps */
   STROKE_LINECAP_ROUND: "round" as const,
   /** Default rounded line joins */
@@ -1154,5 +1172,49 @@ export const ARIA_MODAL_VALUES = {
   /** Modal dialog — background is inert to assistive tech */
   TRUE: "true" as const,
   /** Non-modal dialog — background remains accessible */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Hidden Values
+ * Centralized source of truth for `aria-hidden` attribute values.
+ * Flexy says: No hardcoded aria-hidden="true" strings in components!
+ * Usage: import { ARIA_HIDDEN_VALUES } from "@blueprint/shared";
+ *        <svg aria-hidden={ARIA_HIDDEN_VALUES.TRUE} focusable="false">
+ */
+export const ARIA_HIDDEN_VALUES = {
+  /** Element is hidden from the accessibility tree (decorative content) */
+  TRUE: "true" as const,
+  /** Element is exposed to assistive tech (visible semantic content) */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Orientation Values
+ * Centralized source of truth for `aria-orientation` attribute values
+ * used by scrollbars, toolbars, and listbox-style widgets.
+ * Flexy says: No hardcoded aria-orientation="horizontal" strings in components!
+ * Usage: import { ARIA_ORIENTATION_VALUES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.SLIDER} aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}>
+ */
+export const ARIA_ORIENTATION_VALUES = {
+  /** Widget is laid out horizontally (e.g., top toolbars, horizontal sliders) */
+  HORIZONTAL: "horizontal" as const,
+  /** Widget is laid out vertically (e.g., scrollbars, vertical sliders) */
+  VERTICAL: "vertical" as const,
+} as const;
+
+/**
+ * ARIA Required Values
+ * Centralized source of truth for `aria-required` attribute values
+ * marking form fields as required inputs.
+ * Flexy says: No hardcoded aria-required="true" strings in components!
+ * Usage: import { ARIA_REQUIRED_VALUES } from "@blueprint/shared";
+ *        <input aria-required={ARIA_REQUIRED_VALUES.TRUE} />
+ */
+export const ARIA_REQUIRED_VALUES = {
+  /** Input is required for successful form submission */
+  TRUE: "true" as const,
+  /** Input is optional */
   FALSE: "false" as const,
 } as const;
