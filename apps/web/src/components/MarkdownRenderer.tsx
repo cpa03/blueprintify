@@ -48,7 +48,7 @@ import { Icon } from "./Icon";
 import { generateSlug, childrenToText } from "../utils/slug";
 import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 /**
  * Props for the MarkdownRenderer component.
@@ -199,7 +199,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
-                d="M5 13l4 4L19 7"
+                d={ICON_PATHS.CHECKMARK}
               />
             </motion.svg>
           ) : copyFailed ? (
@@ -218,7 +218,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M6 18L18 6M6 6l12 12"
+                d={ICON_PATHS.CLOSE}
               />
             </motion.svg>
           ) : (

@@ -5,6 +5,39 @@
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 
+### ✅ Flexy Iteration 198: Centralize SVG Icon Paths & Color-Mix Opacity Percentages
+
+**Problem**: 56+ hardcoded SVG path `d="..."` attributes across 20+ web component files duplicated common icons (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, etc.) bypassing the existing `ICON_PATHS` constant (which only had 3 entries: CHEVRON_RIGHT, BRAND_LOGO, GITHUB). Additionally, 5 hardcoded `color-mix(in srgb, ... N%, transparent)` opacity percentages (10%, 12%, 18%, 25%) appeared across StepStack, PageScrollProgressBar, and Toast components with no centralized constants. Flexy says: no hardcoded SVG path literals or color-mix percentages!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added 16 new `ICON_PATHS` entries (CHEVRON_LEFT/DOWN/UP, CHECKMARK, EDIT, REFRESH, WARNING, TRASH, CLOSE, EYE, USER, ZAP, SEARCH, COPY, EXTERNAL_LINK, HELP) — total 19 entries; added `COLOR_MIX_OPACITY` (SUBTLE 10%, MEDIUM 12%, GLOW 18%, HIGHLIGHT 25%, PROMINENT 30%) |
+| `packages/shared/src/index.ts` | Exported `COLOR_MIX_OPACITY` on the root barrel |
+| `packages/shared/src/config.test.ts` | +14 tests: 10 ICON_PATHS value assertions + uniqueness check + entry count (19); 7 COLOR_MIX_OPACITY value assertions + entry count (5) + percentage format check |
+| 22 files in `apps/web/src/components/` | Replaced 58 hardcoded SVG path `d="..."` attributes with `ICON_PATHS.*` constants (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, user ×4, chevron-down/up ×2, zap ×2) |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.HIGHLIGHT` + `COLOR_MIX_OPACITY.MEDIUM` |
+| `apps/web/src/components/Toast.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.GLOW` + `COLOR_MIX_OPACITY.SUBTLE` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | 1× color-mix percentage → `COLOR_MIX_OPACITY.HIGHLIGHT` |
+| `docs/flexy-plan.md` | Iteration 198 entry |
+
+Deliberately skipped: WiFi-off icon path in OfflineBanner (unique one-off path, not reusable); gradient paint refs (`fill="url(#...)"`); test file assertions (tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 198)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (8.93s) — clean
+- ✅ `npm run test --workspace=@blueprint/shared` — **941 tests passing** (+14 new)
+- ✅ `npm run test --workspace=apps/web` — **1,321 tests passing**
+- ✅ Remaining raw SVG path `d="..."` literals for the 16 new icons (excluding tests, unique one-offs & comments) — **0 occurrences**
+- ✅ Remaining raw color-mix percentage literals — **0 occurrences**
+
+## PR (Iteration 198)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-198-svg-paths-color-mix` | refactor(flexy): centralize SVG icon paths & color-mix opacity percentages into shared config (Iteration 198) |
+
 ### ✅ Flexy Iteration 197: Centralize ARIA Relationship DOM Element IDs
 
 **Problem**: 29 hardcoded DOM element ID literals across 9 web files duplicated every `id=` ↔ `aria-labelledby`/`aria-describedby`/`aria-controls`/`htmlFor`/skip-link `href`+`data-target` pair — renaming either side alone silently breaks the ARIA relationship, and no `DOM_ELEMENT_IDS` constant existed. Examples: `editor-panel` (1 `id` + 3 `aria-controls`), `main-content` (1 `id` + skip-link `href`/`data-target`), plus 11 label/description pairs (ConfirmDialog, KeyboardShortcutsModal, OfflineBanner, Header, StepFeatures, StepStack, SkipLink). Flexy says: no hardcoded DOM element ID literals!

@@ -40,6 +40,7 @@ import {
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
+  COLOR_MIX_OPACITY,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
   RATIO_LIMITS,
@@ -293,8 +294,7 @@ function PageScrollProgressBarComponent({
           className="absolute top-0 h-full w-10 pointer-events-none"
           style={{
             right: `calc(${100 - scrollProgress}% - 20px)`,
-            background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary-500) 25%, transparent) 50%, transparent 100%)",
+            background: `linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary-500) ${COLOR_MIX_OPACITY.HIGHLIGHT}, transparent) 50%, transparent 100%)`,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isVisible ? 0.6 : 0 }}

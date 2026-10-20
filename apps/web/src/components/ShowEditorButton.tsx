@@ -158,7 +158,7 @@ function ShowEditorButtonComponent({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                d={ICON_PATHS.EDIT}
               />
             </svg>
             {hasContent

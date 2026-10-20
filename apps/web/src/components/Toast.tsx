@@ -64,7 +64,7 @@ import {
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -349,7 +349,7 @@ const ToastItem = memo(
             animate={{ opacity: 0 }}
             transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
             style={{
-              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} 18%, transparent)`,
+              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} ${COLOR_MIX_OPACITY.GLOW}, transparent)`,
             }}
             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
@@ -363,7 +363,7 @@ const ToastItem = memo(
           className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ease-out"
           style={{
             opacity: isHovered ? 1 : 0,
-            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} 10%, transparent)`,
+            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} ${COLOR_MIX_OPACITY.SUBTLE}, transparent)`,
           }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />

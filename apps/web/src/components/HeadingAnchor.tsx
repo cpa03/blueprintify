@@ -58,7 +58,7 @@ import {
 import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -285,7 +285,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
-                  d="M5 13l4 4L19 7"
+                  d={ICON_PATHS.CHECKMARK}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
