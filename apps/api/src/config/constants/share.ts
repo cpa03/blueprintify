@@ -40,6 +40,14 @@ export const SHARE_QUERY_PARAMS = {
 } as const;
 
 /**
+ * Share route path parameters.
+ * Flexy says: no hardcoded route param strings!
+ */
+export const SHARE_ROUTE_PARAMS = {
+  ID: "id",
+} as const;
+
+/**
  * Share route error messages.
  * Flexy says: References shared SHARE_MESSAGES — single source of truth!
  */

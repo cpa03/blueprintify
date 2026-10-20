@@ -55,15 +55,19 @@ blueprintify/
 │   ├── findings.md
 │   ├── flexy-plan.md
 │   ├── issue-manager-plan-cycle-368.md
+│   ├── issues/               # Active issue specs (ISSUE-01..07)
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
+│   ├── ocr-review-summary-2026-09-26.md
+│   ├── openapi.yaml          # OpenAPI 3.1 source of truth (14 paths / 15 operations)
 │   ├── refinement-workflow.md
 │   ├── release-process.md
 │   ├── repo-rules.md
 │   ├── roadmap-m3-proposal.md
 │   ├── roadmap.md
 │   ├── security/
+│   │   └── assessment-ajv-vulnerabilities.md
 │   ├── testing-procedures.md
 │   ├── troubleshooting.md
 │   └── user-guide.md
@@ -253,23 +257,23 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 
 ## 📡 API Endpoints
 
-| Method | Endpoint            | Description                                      |
-| ------ | ------------------- | ------------------------------------------------ |
-| GET    | `/`                 | API metadata                                     |
-| GET    | `/health`           | Health check (circuit-breaker aware)             |
-| GET    | `/warmup`           | Pre-warm circuit breaker on worker startup       |
-| POST   | `/generate`         | Generate blueprint (SSE stream)                  |
-| POST   | `/tasks`            | Generate tasks from blueprint (SSE stream)       |
-| POST   | `/refine`           | Refine content section (SSE stream)              |
-| POST   | `/export`           | Export project as ZIP/JSON/Markdown              |
-| POST   | `/import`           | Import project with validation                   |
-| GET    | `/storage/quota`    | Check storage usage                              |
-| POST   | `/storage/report`   | Report client storage usage for quota tracking   |
-| DELETE | `/storage/clear`    | Clear stored data                                |
-| POST   | `/share`            | Create shareable blueprint link                  |
-| GET    | `/share/:id`        | Retrieve shared blueprint                        |
-| POST   | `/share/:id/verify` | Verify passphrase for protected shared blueprint |
-| DELETE | `/share/:id`        | Delete shared blueprint                          |
+| Method | Endpoint                      | Description                                      |
+| ------ | ----------------------------- | ------------------------------------------------ |
+| GET    | `/`                           | API metadata                                     |
+| GET    | `/health`                     | Health check (circuit-breaker aware)             |
+| GET    | `/warmup`                     | Pre-warm circuit breaker on worker startup       |
+| POST   | `/generate`                   | Generate blueprint (SSE stream)                  |
+| POST   | `/tasks`                      | Generate tasks from blueprint (SSE stream)       |
+| POST   | `/refine`                     | Refine content section (SSE stream)              |
+| POST   | `/export`                     | Export project as ZIP/JSON/Markdown              |
+| POST   | `/import`                     | Import project with validation                   |
+| GET    | `/storage/quota`              | Check storage usage                              |
+| POST   | `/storage/report`             | Report client storage usage for quota tracking   |
+| DELETE | `/storage/clear?confirm=true` | Clear stored data (requires confirm=true)        |
+| POST   | `/share`                      | Create shareable blueprint link                  |
+| GET    | `/share/:id`                  | Retrieve shared blueprint                        |
+| POST   | `/share/:id/verify`           | Verify passphrase for protected shared blueprint |
+| DELETE | `/share/:id`                  | Delete shared blueprint                          |
 
 ## 🛠️ Tech Stack
 
@@ -305,6 +309,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 
 - **[User Guide](./docs/user-guide.md)** - Complete guide for using the blueprint generation workflow
 - **[API Documentation](./docs/api-documentation.md)** - Comprehensive API reference and examples
+- **[OpenAPI Spec](./docs/openapi.yaml)** - OpenAPI 3.1 source of truth (14 paths / 15 operations)
 
 ### 🛠️ Development Resources
 
@@ -335,8 +340,11 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
+- **[Issue Manager Plan (Cycle 368)](./docs/issue-manager-plan-cycle-368.md)** - Issue management plan and workflow
+- **[Active Issue Specs](./docs/issues/)** - Active issue specifications (ISSUE-01..07)
+- **[OCR Review Summary](./docs/ocr-review-summary-2026-09-26.md)** - OCR review summary and findings
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 21–Aug 20)
+- **[BroCula Audits](./docs/audits/README.md)** - Audit reports (30-day retention policy; older history in git)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 

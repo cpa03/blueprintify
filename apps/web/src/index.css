@@ -75,13 +75,26 @@
   --compact-counter-pop-duration: 0.3s;
   --compact-counter-pop-easing: ease-out;
   --compact-counter-pop-scale: 1.1;
+
+  /* Fixed-header offset for fragment navigation (scroll-padding-top on html).
+     The Header component is position:fixed with ~73px height
+     (py-4 = 32px padding + 40px logo row + 1px border — see Header.tsx).
+     Without this offset, skip-link targets (#main-content), heading deep
+     links (#section-slug from HeadingAnchor/MarkdownRenderer), and
+     scrollIntoView calls land underneath the header, obscuring the target
+     (WCAG 2.4.11 Focus Not Obscured). 5rem = 73px header + ~7px breathing
+     room. If the Header layout height changes, update this token. */
+  --fixed-header-offset: 5rem;
 }
 
 /* ===== Base Styles ===== */
 @layer base {
-  /* Smooth scrolling for anchor links and scrollIntoView calls */
+  /* Smooth scrolling for anchor links and scrollIntoView calls.
+     scroll-padding-top keeps fragment-navigation targets (skip link,
+     heading deep links, scrollIntoView) from landing under the fixed header. */
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--fixed-header-offset);
   }
 
   /* ===== Base Styles ===== */
@@ -1416,6 +1429,98 @@
   textarea:focus,
   select:focus {
     border-color: color-mix(in srgb, var(--color-primary-500) 60%, transparent) !important;
+  }
+}
+
+/* ===== Forced Colors (Windows High Contrast Mode) Support =====
+   In forced-colors mode the user agent strips background-image (gradients),
+   box-shadow, text-shadow, and backdrop-filter, then remaps the remaining
+   colors to the user's chosen system palette. This glassmorphism UI relies on
+   all four, so without these overrides:
+   - .btn-primary's gradient fill is removed entirely, leaving bare text with
+     no clickable boundary.
+   - Focus rings implemented as Tailwind `ring` utilities (box-shadow) vanish,
+     removing keyboard focus indication.
+   - .step-dot.active's ring-4 halo disappears, removing the only "current
+     step" signal.
+   System color keywords (Canvas, ButtonFace, ButtonText, Highlight, GrayText)
+   are resolved by the UA to the user's palette, so contrast is never
+   hard-coded and always matches the user's configured scheme. Unlayered
+   rules like these take precedence over the @layer components styles above,
+   so they win the cascade without !important. */
+@media (forced-colors: active) {
+  .glass-card {
+    background: Canvas;
+    border: 1px solid CanvasText;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .glass-card:hover,
+  .glass-card:focus-within {
+    border-color: Highlight;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    background: ButtonFace;
+    border: 1px solid ButtonBorder;
+    color: ButtonText;
+  }
+
+  .btn-primary:focus-visible,
+  .btn-secondary:focus-visible,
+  .btn-ghost:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .btn-primary:disabled,
+  .btn-secondary:disabled {
+    background: ButtonFace;
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .input-field,
+  .textarea-field {
+    background: Canvas;
+    border: 1px solid ButtonText;
+    color: CanvasText;
+  }
+
+  .input-field:focus-visible,
+  .textarea-field:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .tech-chip {
+    background: Canvas;
+    border: 1px solid ButtonText;
+    color: CanvasText;
+  }
+
+  .tech-chip.selected {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
+
+  .step-dot {
+    background: Canvas;
+    border: 1px solid CanvasText;
+  }
+
+  .step-dot.completed {
+    background: CanvasText;
+  }
+
+  .step-dot.active {
+    background: ButtonFace;
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }
 
