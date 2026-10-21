@@ -231,6 +231,7 @@ function HeaderComponent({
             onClick={() => window.open(EXTERNAL_URLS.GITHUB, "_blank", "noopener,noreferrer")}
             className="btn-ghost flex items-center gap-2 group"
             ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
+            title={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
             <svg
               className="w-5 h-5"
