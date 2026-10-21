@@ -96,11 +96,13 @@ vi.mock("../../lib/platform", () => ({
 
 // Mock child components
 vi.mock("../RippleButton", () => ({
-  RippleButton: vi.fn(({ children, onClick, disabled, type, whileHover: _wH, whileTap: _wT, ...props }) => (
-    <button onClick={onClick} disabled={disabled} type={type} {...props}>
-      {children}
-    </button>
-  )),
+  RippleButton: vi.fn(
+    ({ children, onClick, disabled, type, whileHover: _wH, whileTap: _wT, ...props }) => (
+      <button onClick={onClick} disabled={disabled} type={type} {...props}>
+        {children}
+      </button>
+    )
+  ),
 }));
 
 vi.mock("../SmartTooltip", () => ({
@@ -213,14 +215,18 @@ describe("StepInfo", () => {
     mockStore.projectName = "My Project";
     mockStore.description = "A sufficiently long description that meets minimum requirements.";
     render(<StepInfo />);
-    const rootContainer = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE).closest("div[data-reduced-motion]");
+    const rootContainer = screen
+      .getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE)
+      .closest("div[data-reduced-motion]");
     expect(rootContainer).toHaveAttribute("data-reduced-motion", "false");
     expect(rootContainer).toHaveAttribute("data-can-proceed", "true");
   });
 
   it("sets data-can-proceed to false when form is incomplete", () => {
     render(<StepInfo />);
-    const rootContainer = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE).closest("div[data-reduced-motion]");
+    const rootContainer = screen
+      .getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE)
+      .closest("div[data-reduced-motion]");
     expect(rootContainer).toHaveAttribute("data-reduced-motion", "false");
     expect(rootContainer).toHaveAttribute("data-can-proceed", "false");
   });
