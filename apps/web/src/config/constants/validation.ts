@@ -30,12 +30,16 @@ export const FORM_LIMITS = {
   },
 } as const;
 
+const characterWord = (count: number): string => (count === 1 ? "character" : "characters");
+
 // Validation messages
 export const VALIDATION_MESSAGES = {
-  DESCRIPTION_MIN_LENGTH: (min: number) => `Description must be at least ${min} characters`,
-  PROJECT_NAME_MIN_LENGTH: (min: number) => `Project name must be at least ${min} characters`,
+  DESCRIPTION_MIN_LENGTH: (min: number) =>
+    `Description must be at least ${min} ${characterWord(min)}`,
+  PROJECT_NAME_MIN_LENGTH: (min: number) =>
+    `Project name must be at least ${min} ${characterWord(min)}`,
   APPROACHING_CHARACTER_LIMIT: "Approaching character limit",
-  CHARACTERS_NEEDED: (count: number) => `${count} more characters needed`,
+  CHARACTERS_NEEDED: (count: number) => `${count} more ${characterWord(count)} needed`,
   TECH_STACK_MIN: (min: number) =>
     `Please select at least ${min} ${min === 1 ? "technology" : "technologies"} to proceed.`,
 } as const;
@@ -47,7 +51,7 @@ export const VALIDATION_MESSAGES = {
  */
 export const STEP_INFO_LABELS = {
   PROJECT_NAME_VALID: "Project name is valid",
-  PROJECT_NAME_INVALID: "Project name needs at least 3 characters",
+  PROJECT_NAME_INVALID: `Project name needs at least ${VALIDATION_LIMITS.PROJECT_NAME.MIN} ${characterWord(VALIDATION_LIMITS.PROJECT_NAME.MIN)}`,
   DESCRIPTION_VALID: "Description is valid",
-  DESCRIPTION_INVALID: "Description needs at least 10 characters",
+  DESCRIPTION_INVALID: `Description needs at least ${VALIDATION_LIMITS.DESCRIPTION.MIN} ${characterWord(VALIDATION_LIMITS.DESCRIPTION.MIN)}`,
 } as const;

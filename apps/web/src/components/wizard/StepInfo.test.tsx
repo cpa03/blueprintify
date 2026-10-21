@@ -605,6 +605,8 @@ describe("StepInfo", () => {
     expect(error).toHaveTextContent(
       VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
     );
+    expect(error).toHaveTextContent("Project name must be at least 1 character");
+    expect(error.textContent).not.toContain("1 characters");
     expect(screen.getByRole("textbox", { name: /Project Name/i })).toHaveAttribute(
       "aria-invalid",
       "true"
