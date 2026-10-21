@@ -124,5 +124,3 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
     </ErrorBoundaryLib>
   );
 }
-
-export default ErrorBoundary;

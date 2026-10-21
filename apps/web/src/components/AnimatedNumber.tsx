@@ -199,5 +199,3 @@ function AnimatedCounterComponent({
 }
 
 export const AnimatedCounter = memo(AnimatedCounterComponent);
-
-export default AnimatedNumber;

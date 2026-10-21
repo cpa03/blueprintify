@@ -420,5 +420,4 @@ function InfoTooltipComponent({
 const InfoTooltip = memo(InfoTooltipComponent);
 
 export type { SmartTooltipProps, Position };
-export { SmartTooltip, SmartTooltip as Tooltip, KeyboardShortcutTooltip, InfoTooltip };
-export default SmartTooltip;
+export { SmartTooltip, KeyboardShortcutTooltip, InfoTooltip };

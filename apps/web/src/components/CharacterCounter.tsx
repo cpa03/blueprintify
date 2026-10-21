@@ -239,5 +239,3 @@ function CharacterCounterCompactComponent({
 }
 
 export const CharacterCounterCompact = memo(CharacterCounterCompactComponent);
-
-export default CharacterCounter;
