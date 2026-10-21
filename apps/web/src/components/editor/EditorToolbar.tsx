@@ -471,7 +471,10 @@ function EditorToolbarComponent({
             stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
-            whileHover={ROTATION.HALF}
+            // WCAG 2.3.3: the 180° hover spin is decorative, so it is skipped
+            // when reduced motion is preferred — matching the export spinner
+            // and view-mode indicator guards above.
+            whileHover={reducedMotion ? undefined : ROTATION.HALF}
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
             <path
