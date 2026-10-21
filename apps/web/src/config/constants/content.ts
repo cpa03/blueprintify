@@ -326,6 +326,10 @@ export const ACCESSIBILITY_LABELS = {
     SEARCH_SHORTCUT_HINT: "Press Ctrl+F to search",
     NO_RESULTS: (query: string) => `No shortcuts matching "${query}"`,
     CLEAR_SEARCH: "Clear search",
+    /** Accessible name for the scrollable shortcut list region. The rows
+     *  contain no focusable elements, so the container itself is the tab
+     *  stop keyboard users land on to scroll an overflowing list. */
+    LIST_REGION: "Keyboard shortcuts list",
   },
   SCROLL_PROGRESS: {
     READING: "Reading progress",
