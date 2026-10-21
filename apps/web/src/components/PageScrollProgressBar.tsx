@@ -37,6 +37,7 @@ import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import {
+  ANIMATION_REPEAT,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
@@ -264,7 +265,7 @@ function PageScrollProgressBarComponent({
               : {
                   opacity: {
                     duration: ANIMATION.BREATH,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   },
                 }

@@ -7,7 +7,7 @@
 
 import type { Variants, Transition } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING, MOTION_OFFSETS } from "../config/constants";
-import { ANIMATION_DIRECTIONS, FRAMER_TYPE } from "@blueprint/shared/config";
+import { ANIMATION_DIRECTIONS, ANIMATION_REPEAT, FRAMER_TYPE } from "@blueprint/shared/config";
 
 /**
  * Common transition configurations
@@ -111,7 +111,7 @@ export const floatingAnimation = {
   y: MOTION_OFFSETS.FLOAT_Y_RANGE,
   transition: {
     duration: ANIMATION.FLOATING_DURATION,
-    repeat: Infinity,
+    repeat: ANIMATION_REPEAT.INFINITE,
     ease: EASING.easeInOut,
   },
 };
@@ -125,7 +125,7 @@ export const pulseAnimation = {
   opacity: MOTION_OFFSETS.PULSE_OPACITY_RANGE,
   transition: {
     duration: ANIMATION.SLOW_PULSE,
-    repeat: Infinity,
+    repeat: ANIMATION_REPEAT.INFINITE,
     ease: EASING.easeInOut,
   },
 };

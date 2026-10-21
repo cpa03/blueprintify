@@ -30,7 +30,9 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
+  ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
@@ -246,7 +248,7 @@ function EditorToolbarComponent({
           }}
           transition={
             reducedMotion
-              ? { duration: 0 }
+              ? ANIMATION_DEFAULTS.ZERO_DURATION
               : {
                   type: FRAMER_TYPE.SPRING,
                   ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
@@ -324,10 +326,10 @@ function EditorToolbarComponent({
                   animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
                   transition={
                     reducedMotion
-                      ? { duration: 0 }
+                      ? ANIMATION_DEFAULTS.ZERO_DURATION
                       : {
                           duration: ANIMATION.GENTLE_PULSE,
-                          repeat: Infinity,
+                          repeat: ANIMATION_REPEAT.INFINITE,
                           ease: EASING.linear,
                         }
                   }
@@ -365,7 +367,7 @@ function EditorToolbarComponent({
                   animate={{ opacity: OPACITY_PULSE.HALF_BLINK }}
                   transition={{
                     duration: ANIMATION.SPINNER_ROTATION + ANIMATION.NORMAL,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   }}
                 >

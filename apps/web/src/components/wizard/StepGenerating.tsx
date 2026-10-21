@@ -26,6 +26,7 @@
 import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
@@ -478,7 +479,7 @@ export const StepGenerating = memo(function StepGenerating({
               animate={{ rotate: 360 }}
               transition={{
                 duration: ANIMATION.SPINNER_ROTATION,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.linear,
               }}
             />
@@ -496,7 +497,7 @@ export const StepGenerating = memo(function StepGenerating({
                 }
                 transition={{
                   duration: ANIMATION.SLOW_PULSE,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }}
                 className="flex items-center justify-center"
@@ -575,7 +576,7 @@ export const StepGenerating = memo(function StepGenerating({
               animate={shouldReduceMotion ? {} : { opacity: OPACITY_PULSE.SUBTLE }}
               transition={{
                 duration: ANIMATION.DRIFT,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
             >
@@ -590,7 +591,11 @@ export const StepGenerating = memo(function StepGenerating({
             >
               <motion.span
                 animate={{ opacity: OPACITY_PULSE.STRONG }}
-                transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: EASING.easeInOut }}
+                transition={{
+                  duration: ANIMATION.DRIFT,
+                  repeat: ANIMATION_REPEAT.INFINITE,
+                  ease: EASING.easeInOut,
+                }}
               >
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -658,7 +663,7 @@ export const StepGenerating = memo(function StepGenerating({
                       width: { duration: ANIMATION.PULSE, ease: EASING.easeOut },
                       opacity: {
                         duration: ANIMATION.SLOW_PULSE,
-                        repeat: Infinity,
+                        repeat: ANIMATION_REPEAT.INFINITE,
                         ease: EASING.easeInOut,
                       },
                     }
@@ -702,14 +707,14 @@ export const StepGenerating = memo(function StepGenerating({
             borderColor: isGenerating
               ? {
                   duration: ANIMATION.SLOW_PULSE,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }
               : undefined,
             boxShadow: isGenerating
               ? {
                   duration: ANIMATION.BREATH,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }
               : undefined,
@@ -767,7 +772,7 @@ export const StepGenerating = memo(function StepGenerating({
             borderColor: isGenerating
               ? {
                   duration: ANIMATION.SLOW_PULSE,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                   delay: ANIMATION.STAGGER,
                 }
@@ -775,7 +780,7 @@ export const StepGenerating = memo(function StepGenerating({
             boxShadow: isGenerating
               ? {
                   duration: ANIMATION.BREATH,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                   delay: ANIMATION.STAGGER,
                 }

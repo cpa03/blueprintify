@@ -3273,16 +3273,26 @@ describe("ANIMATION_REPEAT", () => {
     expect(ANIMATION_REPEAT.ATTENTION_PULSE).toBe(5);
   });
 
-  it("should have positive integer values", () => {
-    const values = Object.values(ANIMATION_REPEAT);
-    values.forEach((v) => {
+  it("should have NONE = 0", () => {
+    expect(ANIMATION_REPEAT.NONE).toBe(0);
+  });
+
+  it("should have INFINITE = Infinity", () => {
+    expect(ANIMATION_REPEAT.INFINITE).toBe(Infinity);
+  });
+
+  it("should have finite entries as positive integers (excluding INFINITE)", () => {
+    const finiteValues = Object.entries(ANIMATION_REPEAT)
+      .filter(([key]) => key !== "INFINITE")
+      .map(([, v]) => v);
+    finiteValues.forEach((v) => {
       expect(Number.isInteger(v)).toBe(true);
-      expect(v).toBeGreaterThan(0);
+      expect(v).toBeGreaterThanOrEqual(0);
     });
   });
 
-  it("should have 1 entry", () => {
-    expect(Object.keys(ANIMATION_REPEAT).length).toBe(1);
+  it("should have 3 entries", () => {
+    expect(Object.keys(ANIMATION_REPEAT).length).toBe(3);
   });
 });
 

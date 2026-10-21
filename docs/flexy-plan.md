@@ -4,6 +4,44 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 199: Centralize Zero-Duration & Infinite-Repeat Transition Literals
+
+**Problem**: 41 hardcoded framer-motion transition literals remained across 16 web files, even though `ANIMATION_DEFAULTS.ZERO_DURATION` already existed: 32× raw `repeat: Infinity` (including 2× inside the centralized `utils/motion.ts` floating/pulse animations themselves), 2× `repeat: shouldReduceMotion ? 0 : Infinity`, 6× raw `{ duration: 0 }` reduced-motion bypass objects (ScrollToTop, ValidationCheckmark, StepReview, EditorToolbar ×2, TypeIndicator), and 1× scalar `shouldReduceMotion ? 0 : ANIMATION.FAST` (HeadingAnchor). `ANIMATION_REPEAT` only defined `ATTENTION_PULSE` and was **duplicated** — one copy in `packages/shared/src/config/animation.ts`, a second identical copy in `apps/web/src/config/constants/ui.ts` (drift risk). Flexy says: no hardcoded repeat counts or zero-duration transition objects!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | `ANIMATION_REPEAT` + `NONE` (0) + `INFINITE` (Infinity) — completes the repeat-count matrix alongside `ATTENTION_PULSE` |
+| `packages/shared/src/index.ts` | Exported `ANIMATION_REPEAT` on the root barrel (was missing; `ANIMATION_DEFAULTS` was already there) |
+| `packages/shared/src/config.test.ts` | +2 tests (NONE=0, INFINITE=Infinity); integer-assertion test now excludes `INFINITE`; entry count 1 → 3 |
+| `apps/web/src/config/constants/ui.ts` | Removed duplicate local `ANIMATION_REPEAT` definition; now re-exports the shared single source |
+| `apps/web/src/utils/motion.ts` | 2× `repeat: Infinity` → `ANIMATION_REPEAT.INFINITE` (floatingAnimation, pulseAnimation) |
+| 12 component files in `apps/web/src/components/` | 30× `repeat: Infinity` → `ANIMATION_REPEAT.INFINITE` (StepGenerating ×8, EditorEmptyState ×6, EditorHeader ×4, ScrollProgress ×2, ScrollToTop ×2, EditorToolbar ×2, ErrorFallback ×2, LastSavedIndicator, PreviewEmptyState, PageScrollProgressBar, TypeIndicator) |
+| `apps/web/src/components/PreviewEmptyState.tsx` | 2× `shouldReduceMotion ? 0 : Infinity` → `ANIMATION_REPEAT.NONE : ANIMATION_REPEAT.INFINITE` |
+| `apps/web/src/components/ScrollToTop.tsx` + `ValidationCheckmark.tsx` + `editor/EditorToolbar.tsx` (×2) + `TypeIndicator.tsx` | 5× `? { duration: 0 }` → `? ANIMATION_DEFAULTS.ZERO_DURATION` |
+| `apps/web/src/components/wizard/StepReview.tsx` | 1× `transition: { duration: 0 }` → `transition: ANIMATION_DEFAULTS.ZERO_DURATION` |
+| `apps/web/src/components/HeadingAnchor.tsx` | 1× scalar `shouldReduceMotion ? 0 : ANIMATION.FAST` → `? ANIMATION_DEFAULTS.ZERO_DURATION.duration : …` |
+| `apps/web/src/hooks/useReducedMotion.ts` | JSDoc usage example now teaches the `ANIMATION_DEFAULTS.ZERO_DURATION` pattern |
+| `docs/flexy-plan.md` | Iteration 199 entry |
+
+Deliberately skipped: `getAnimationDuration()` helper's internal scalar `0` return (it *is* the shared semantic implementation); `shouldReduceMotion ? {}` empty animate/initial targets (object identity semantics per-usage, no established constant); `Editor.tsx` opacity scalar ternaries (`? 0 : … ? 0 : 1` — value semantics, not transition config); test-file assertions (tests assert rendered output).
+
+## Verification (Iteration 199)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (19 touched files) — clean
+- ✅ `npm run test:all` — **1,331 web + 555 api + 950 shared = 2,836 tests passing**
+- ✅ Remaining raw `repeat: Infinity` literals in web/shared source (excluding tests & dist) — **0 occurrences**
+- ✅ Remaining raw `{ duration: 0 }` transition object literals in web components — **0 occurrences**
+
+## PR (Iteration 199)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-199-zero-duration-infinite-repeat` | refactor(flexy): centralize zero-duration & infinite-repeat transition literals into shared config (Iteration 199) |
+
 ### ✅ Flexy Iteration 198: Centralize SVG Icon Paths & Color-Mix Opacity Percentages
 
 **Problem**: 56+ hardcoded SVG path `d="..."` attributes across 20+ web component files duplicated common icons (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, etc.) bypassing the existing `ICON_PATHS` constant (which only had 3 entries: CHEVRON_RIGHT, BRAND_LOGO, GITHUB). Additionally, 5 hardcoded `color-mix(in srgb, ... N%, transparent)` opacity percentages (10%, 12%, 18%, 25%) appeared across StepStack, PageScrollProgressBar, and Toast components with no centralized constants. Flexy says: no hardcoded SVG path literals or color-mix percentages!

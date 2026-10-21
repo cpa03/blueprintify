@@ -23,6 +23,7 @@
 
 import {
   ANIMATION_DIRECTIONS,
+  ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
@@ -114,7 +115,7 @@ export const StepReview = memo(function StepReview({
             initial: { opacity: 0 },
             animate: { opacity: 1 },
             exit: { opacity: 0 },
-            transition: { duration: 0 },
+            transition: ANIMATION_DEFAULTS.ZERO_DURATION,
           }
         : pageTransition(direction))}
       className="space-y-6"

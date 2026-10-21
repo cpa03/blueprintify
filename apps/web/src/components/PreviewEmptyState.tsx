@@ -14,6 +14,7 @@ import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
@@ -101,7 +102,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               animate={shouldReduceMotion ? {} : { scale: [1, 1.1, 1] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: shouldReduceMotion ? 0 : Infinity,
+                repeat: shouldReduceMotion ? ANIMATION_REPEAT.NONE : ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -159,7 +160,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               animate={shouldReduceMotion ? {} : { opacity: [0.5, 1, 0.5] }}
               transition={{
                 duration: ANIMATION.FLOAT,
-                repeat: shouldReduceMotion ? 0 : Infinity,
+                repeat: shouldReduceMotion ? ANIMATION_REPEAT.NONE : ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -189,7 +190,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 animate={shouldReduceMotion ? {} : { x: [0, -2, 0, 2, 0] }}
                 transition={{
                   duration: ANIMATION.FLOATING_DURATION,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }}
               >

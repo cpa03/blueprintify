@@ -10,6 +10,7 @@ import {
   VALIDATION_LIMITS,
   ANIMATION_DURATION_MS as SHARED_ANIMATION_DURATION_MS,
   ANIMATION_DURATION_S,
+  ANIMATION_REPEAT as SHARED_ANIMATION_REPEAT,
   CELEBRATION_DEFAULTS as SHARED_CELEBRATION_DEFAULTS,
   SCROLL_THRESHOLD_DEFAULTS,
   TEXTAREA_DEFAULTS,
@@ -418,13 +419,10 @@ export const Y_OFFSET = {
 
 /**
  * Animation Repeat Counts
- * Centralized source of truth for framer-motion animation repeat counts.
- * Flexy says: No hardcoded repeat: 5 in component transition configs!
+ * Single source of truth lives in @blueprint/shared (ANIMATION_REPEAT).
+ * This re-export keeps the flat convenience API for components.
  */
-export const ANIMATION_REPEAT = {
-  /** Number of attention-pulse badge animation cycles (5 repeats ≈ 3s total) */
-  ATTENTION_PULSE: 5,
-} as const;
+export const ANIMATION_REPEAT = SHARED_ANIMATION_REPEAT;
 
 // ============================================================================
 // Textarea Configuration
