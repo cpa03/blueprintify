@@ -29,8 +29,13 @@ interface ReducedMotionProviderProps {
 
 function getInitialOverride(): boolean | null {
   if (typeof window === "undefined") return null;
-  const stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION);
-  return stored !== null ? stored === "true" : null;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION);
+    return stored !== null ? stored === "true" : null;
+  } catch {
+    // localStorage can throw in privacy mode — treat as no override.
+    return null;
+  }
 }
 
 function subscribeToMediaQuery(callback: () => void): () => void {
@@ -68,21 +73,30 @@ export function ReducedMotionProvider({
 
   const setUserOverride = useCallback((value: boolean | null): void => {
     setUserOverrideState(value);
-    if (value !== null && typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, String(value));
-      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
-    } else if (value === null && typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
-      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
+    if (typeof window === "undefined") return;
+    try {
+      if (value !== null) {
+        localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, String(value));
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
+      }
+    } catch {
+      // localStorage can throw in privacy mode — state update above still applies.
+      return;
     }
+    window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
   }, []);
 
   const resetToSystemPreference = useCallback((): void => {
     setUserOverrideState(null);
-    if (typeof window !== "undefined") {
+    if (typeof window === "undefined") return;
+    try {
       localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
-      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
+    } catch {
+      // localStorage can throw in privacy mode — state update above still applies.
+      return;
     }
+    window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
   }, []);
 
   const getDuration = useCallback(

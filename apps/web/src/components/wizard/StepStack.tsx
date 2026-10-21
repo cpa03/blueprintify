@@ -27,14 +27,19 @@ import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
   ANIMATION_DIRECTIONS,
-  STYLE_ID_STRINGS,
-  SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  DISPLAY_SYMBOLS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-  DISPLAY_SYMBOLS,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  SHORTCUT_DESCRIPTIONS,
+  STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -52,6 +57,7 @@ import {
   ACCESSIBILITY_LABELS,
   VALIDATION_MESSAGES,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
   FOCUS_ANNOUNCER,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
@@ -61,6 +67,7 @@ import { Icon } from "../Icon";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import clsx from "clsx";
+import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
 
 const attentionKeyframes = `@keyframes stack-card-attention {
   0%, 100% {
@@ -68,8 +75,8 @@ const attentionKeyframes = `@keyframes stack-card-attention {
   }
   25% {
     box-shadow:
-      0 0 0 2px color-mix(in srgb, var(--color-accent-pink) 25%, transparent),
-      0 0 18px -4px color-mix(in srgb, var(--color-accent-pink) 12%, transparent);
+      0 0 0 2px color-mix(in srgb, var(--color-accent-pink) ${COLOR_MIX_OPACITY.HIGHLIGHT}, transparent),
+      0 0 18px -4px color-mix(in srgb, var(--color-accent-pink) ${COLOR_MIX_OPACITY.MEDIUM}, transparent);
   }
 }`;
 
@@ -163,20 +170,20 @@ const TechChip = memo(function TechChip({
             <motion.svg
               key="checkmark"
               className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: 180 }}
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
             >
               <motion.path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                d={ICON_PATHS.CHECKMARK}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 transition={{ duration: ANIMATION.NORMAL, delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
@@ -324,8 +331,8 @@ export const StepStack = memo(function StepStack({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
-              aria-live="polite"
-              aria-atomic="true"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
             >
               {techStack.length}/{minRequired}
             </motion.span>
@@ -336,7 +343,7 @@ export const StepStack = memo(function StepStack({
 
       <div
         className={`glass-card p-6 space-y-6 ${invalidField ? "stack-card-attention" : ""}`}
-        role="group"
+        role={ARIA_ROLES.GROUP}
         aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.TECH_STACK_SELECTION}
       >
         {categories.map(([category, options]) => (
@@ -345,12 +352,12 @@ export const StepStack = memo(function StepStack({
               className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2"
               id={`category-${category}`}
             >
-              <span aria-hidden="true">{CATEGORY_ICONS[category] || "🔧"}</span>
+              <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>{CATEGORY_ICONS[category] || "🔧"}</span>
               {category}
             </h3>
             <div
               className="flex flex-wrap gap-2"
-              role="group"
+              role={ARIA_ROLES.GROUP}
               aria-labelledby={`category-${category}`}
             >
               {options.map((tech, chipIdx) => {
@@ -373,10 +380,13 @@ export const StepStack = memo(function StepStack({
         {/* Selected summary */}
         {techStack.length > 0 && (
           <div className="pt-4 border-t border-dark-700">
-            <p className="text-sm text-dark-400 mb-2" id="selected-tech-label">
+            <p className="text-sm text-dark-400 mb-2" id={DOM_ELEMENT_IDS.SELECTED_TECH_LABEL}>
               {UI_CONTENT.WIZARD.STEP_STACK.SELECTED_LABEL(techStack.length)}:
             </p>
-            <ul className="flex flex-wrap gap-2" aria-labelledby="selected-tech-label">
+            <ul
+              className="flex flex-wrap gap-2"
+              aria-labelledby={DOM_ELEMENT_IDS.SELECTED_TECH_LABEL}
+            >
               <AnimatePresence mode="popLayout">
                 {techStack.map((tech) => (
                   <motion.li
@@ -411,7 +421,7 @@ export const StepStack = memo(function StepStack({
       <AnimatePresence>
         {invalidField && (
           <motion.p
-            role="alert"
+            role={ARIA_ROLES.ALERT}
             initial={{ opacity: 0, y: -6, x: -3 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -420,16 +430,16 @@ export const StepStack = memo(function StepStack({
           >
             <svg
               className="w-4 h-4 flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                d={ICON_PATHS.WARNING}
               />
             </svg>
             {VALIDATION_MESSAGES.TECH_STACK_MIN(MIN_REQUIREMENTS.TECH_STACK)}
@@ -454,19 +464,19 @@ export const StepStack = memo(function StepStack({
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                d={ICON_PATHS.CHEVRON_LEFT}
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_INFO}
-            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden="true">
+            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
               {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
@@ -482,16 +492,24 @@ export const StepStack = memo(function StepStack({
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
-            <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+            <kbd
+              className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+            >
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
               className={CSS_CLASSES.ICON_HOVER_SHIFT}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              fill={SVG_ICON_DEFAULTS.FILL_NONE}
+              stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+              viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <path
+                strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                d={ICON_PATHS.CHEVRON_RIGHT}
+              />
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>
@@ -501,9 +519,9 @@ export const StepStack = memo(function StepStack({
           — provides explicit feedback since the milestone pulse is purely visual. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {milestoneAnnouncement}
       </div>

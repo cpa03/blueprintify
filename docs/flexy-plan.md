@@ -4,6 +4,452 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 198: Centralize SVG Icon Paths & Color-Mix Opacity Percentages
+
+**Problem**: 56+ hardcoded SVG path `d="..."` attributes across 20+ web component files duplicated common icons (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, etc.) bypassing the existing `ICON_PATHS` constant (which only had 3 entries: CHEVRON_RIGHT, BRAND_LOGO, GITHUB). Additionally, 5 hardcoded `color-mix(in srgb, ... N%, transparent)` opacity percentages (10%, 12%, 18%, 25%) appeared across StepStack, PageScrollProgressBar, and Toast components with no centralized constants. Flexy says: no hardcoded SVG path literals or color-mix percentages!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added 16 new `ICON_PATHS` entries (CHEVRON_LEFT/DOWN/UP, CHECKMARK, EDIT, REFRESH, WARNING, TRASH, CLOSE, EYE, USER, ZAP, SEARCH, COPY, EXTERNAL_LINK, HELP) — total 19 entries; added `COLOR_MIX_OPACITY` (SUBTLE 10%, MEDIUM 12%, GLOW 18%, HIGHLIGHT 25%, PROMINENT 30%) |
+| `packages/shared/src/index.ts` | Exported `COLOR_MIX_OPACITY` on the root barrel |
+| `packages/shared/src/config.test.ts` | +14 tests: 10 ICON_PATHS value assertions + uniqueness check + entry count (19); 7 COLOR_MIX_OPACITY value assertions + entry count (5) + percentage format check |
+| 22 files in `apps/web/src/components/` | Replaced 58 hardcoded SVG path `d="..."` attributes with `ICON_PATHS.*` constants (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, user ×4, chevron-down/up ×2, zap ×2) |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.HIGHLIGHT` + `COLOR_MIX_OPACITY.MEDIUM` |
+| `apps/web/src/components/Toast.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.GLOW` + `COLOR_MIX_OPACITY.SUBTLE` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | 1× color-mix percentage → `COLOR_MIX_OPACITY.HIGHLIGHT` |
+| `docs/flexy-plan.md` | Iteration 198 entry |
+
+Deliberately skipped: WiFi-off icon path in OfflineBanner (unique one-off path, not reusable); gradient paint refs (`fill="url(#...)"`); test file assertions (tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 198)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (8.93s) — clean
+- ✅ `npm run test --workspace=@blueprint/shared` — **941 tests passing** (+14 new)
+- ✅ `npm run test --workspace=apps/web` — **1,321 tests passing**
+- ✅ Remaining raw SVG path `d="..."` literals for the 16 new icons (excluding tests, unique one-offs & comments) — **0 occurrences**
+- ✅ Remaining raw color-mix percentage literals — **0 occurrences**
+
+## PR (Iteration 198)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-198-svg-paths-color-mix` | refactor(flexy): centralize SVG icon paths & color-mix opacity percentages into shared config (Iteration 198) |
+
+### ✅ Flexy Iteration 197: Centralize ARIA Relationship DOM Element IDs
+
+**Problem**: 29 hardcoded DOM element ID literals across 9 web files duplicated every `id=` ↔ `aria-labelledby`/`aria-describedby`/`aria-controls`/`htmlFor`/skip-link `href`+`data-target` pair — renaming either side alone silently breaks the ARIA relationship, and no `DOM_ELEMENT_IDS` constant existed. Examples: `editor-panel` (1 `id` + 3 `aria-controls`), `main-content` (1 `id` + skip-link `href`/`data-target`), plus 11 label/description pairs (ConfirmDialog, KeyboardShortcutsModal, OfflineBanner, Header, StepFeatures, StepStack, SkipLink). Flexy says: no hardcoded DOM element ID literals!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added `DOM_ELEMENT_IDS` — 13 IDs (`MAIN_CONTENT`, `EDITOR_PANEL`, `CONFIRM_DIALOG_TITLE/DESCRIPTION`, `HEADER_BRAND_SCROLL_HINT`, `KEYBOARD_SHORTCUTS_TITLE/TIP`, `OFFLINE_BANNER_DESC`, `FEATURE_INPUT`, `FEATURE_INPUT_HINT`, `ADDED_FEATURES_LABEL`, `SUGGESTIONS_LABEL`, `SELECTED_TECH_LABEL`) with drift-prevention contract docblock |
+| `apps/web/src/config/constants/accessibility.test.ts` | +2 tests: 13 value assertions + uniqueness check (Set size 13) |
+| `apps/web/src/App.tsx` | 4 literals: `main-content` id, `editor-panel` id + 2× `aria-controls` |
+| `apps/web/src/components/ShowEditorButton.tsx` | 1 literal: `aria-controls` |
+| `apps/web/src/components/ConfirmDialog.tsx` | 4 literals: 2× `id` + `aria-labelledby` + `aria-describedby` |
+| `apps/web/src/components/Header.tsx` | 2 literals: hint `id` + `aria-describedby` |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 4 literals: 2× `id` + `aria-labelledby` + `aria-describedby` |
+| `apps/web/src/components/OfflineBanner.tsx` | 2 literals: desc `id` + `aria-describedby` |
+| `apps/web/src/components/SkipLink.tsx` | 2 literals: `href="#main-content"` → template literal + `data-target` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 8 literals: `htmlFor`, 4× `id`, `aria-describedby`, 2× `aria-labelledby` |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2 literals: label `id` + `aria-labelledby` |
+| `docs/flexy-plan.md` | Iteration 197 entry |
+
+Deliberately skipped: dynamic/template IDs (`tab-${activeTab}`, `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`); variable-based `aria-describedby` (AnimatedCopyButton, StepInfo); `main.tsx` `getElementById("root"/"skeleton-loader")` (paired with `index.html`, which cannot import TS constants); component-test `toHaveAttribute` assertions (Iteration 194/196 precedent — tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 197)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.74s) + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check` (11 touched files) — clean
+- ✅ `npm run test:all` — **1,319 web + 550 api + 926 shared = 2,795 tests passing**
+- ✅ Remaining raw `id=`/`htmlFor`/`data-target`/`aria-labelledby`/`aria-describedby`/`aria-controls`/`href="#main-content"` literals for the 13 IDs (excluding tests, dynamic templates & comments) — **0 occurrences**
+
+## PR (Iteration 197)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3824 | `flexy/iteration-197-aria-rel-dom-ids` | refactor(flexy): centralize ARIA relationship DOM element IDs into config (Iteration 197) |
+
+### ✅ Flexy Iteration 186: Centralize Agent Model Fallback Hierarchy into Single Source of Truth
+
+**Problem**: Agent model fallback hierarchy (`opencode/muse-spark-1.3-contributor-free` → `mimo-v2.6-flash-free` → `nemotron-3-ultra-free`) was hardcoded in 60+ places: `scripts/opencode-run.sh` MODELS array, 28× `.opencode/agent/*.md` frontmatter, 28× `.agent/agents/*.md` frontmatter, `AGENTS.md`, `opencode.json`. No single source, no sync validation. Flexy says: no hardcoded model strings in scripts!
+
+| File | Change |
+|------|--------|
+| `config/agent-models.json` | NEW — canonical single source: `primary` + `fallbacks[]` + `shortNames` |
+| `packages/shared/src/config/ai-models.ts` | NEW — TS mirror: `AGENT_MODEL_IDS`, `AGENT_MODEL_HIERARCHY`, `AGENT_MODEL_SHORT_NAMES`, `getAgentModelFallbackList(explicit?)` |
+| `packages/shared/src/config.ts` + `src/index.ts` | Re-exported new model constants |
+| `packages/shared/src/config/ai-models.test.ts` | NEW — 6 tests: order, single-source values, suffix match, fallback-list behavior |
+| `scripts/opencode-run.sh` | Removed hardcoded MODELS array; loads from `config/agent-models.json` via python3/node/jq, fail-closed if missing; `AGENT_MODELS_CONFIG` override |
+| `scripts/validate-models.mjs` | NEW — validates JSON ↔ TS mirror ↔ opencode.json ↔ 56 agent files |
+| `package.json` | Added `validate:models` script; wired into `validate:all` |
+
+## Verification
+
+- ✅ `npm run typecheck --workspace=@blueprint/shared` — clean
+- ✅ `npx eslint` on changed TS files — zero errors, zero warnings
+- ✅ `npx prettier --check` on changed files — clean
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `node scripts/validate-models.mjs` — 56 agent files in sync
+- ✅ `bash -n scripts/opencode-run.sh` — syntax OK
+- ✅ `npm run test --workspace=@blueprint/shared` — 791 tests passing (incl. 6 new)
+- ⚠️ Pre-existing failures on main (unrelated, not touched): `apps/web` jest-dom matcher types, `apps/api` Zod v4 controller types
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3651 | `flexy/iteration-186-agent-models-modular` | refactor(flexy): centralize agent model fallback hierarchy into single source (Iteration 186) |
+
+### ✅ Flexy Iteration 196: Centralize SVG Fill & Stroke Color Attribute Literals Across All Components
+
+**Problem**: After Iteration 191/192 (viewBox) and Iteration 193 (stroke width/caps/joins), the SVG **color** attributes remained hardcoded across 25 web component files: 65× `fill="none"`, 61× `stroke="currentColor"`, 3× `fill="currentColor"` (Toast ×2, Header ×1), and 1× `stroke="none"` (StepGenerating) — bypassing `SVG_ICON_DEFAULTS.FILL_NONE`/`STROKE_CURRENT`, which already existed but were only used by `Icon.tsx`, `ShowEditorButton.tsx` and one Header glyph. `FILL_CURRENT` and `STROKE_NONE` had no constant at all. Toast also hardcoded its `ProgressRing` prop default `color = "currentColor"` and two `color-mix(in srgb, currentColor N%, transparent)` boxShadow template literals. Flexy says: no hardcoded SVG fill/stroke color literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `FILL_CURRENT` (`"currentColor"`) + `STROKE_NONE` (`"none"`) to `SVG_ICON_DEFAULTS` (14 → 16 entries), completing the fill/stroke color-pair matrix alongside `FILL_NONE`/`STROKE_CURRENT` |
+| `packages/shared/src/config.test.ts` | Fill/stroke test now asserts all 4 color constants; entry-count test 14 → 16 |
+| `apps/web/src/components/*` (25 files) | Replaced 133 literals: 65× `fill="none"` → `SVG_ICON_DEFAULTS.FILL_NONE`, 61× `stroke="currentColor"` → `SVG_ICON_DEFAULTS.STROKE_CURRENT`, 3× `fill="currentColor"` → `SVG_ICON_DEFAULTS.FILL_CURRENT`, 1× `stroke="none"` → `SVG_ICON_DEFAULTS.STROKE_NONE`, plus Toast's prop default and 2× `color-mix` boxShadow interpolations (StepGenerating ×17, StepReview ×7, StepFeatures ×13, ErrorFallback ×7, Toast ×6, EditorToolbar ×5, …) |
+| `docs/flexy-plan.md` | Iteration 196 entry |
+
+Deliberately skipped: 4 gradient paint refs (`fill="url(#gen-lightning-grad)"` in StepGenerating, `stroke="url(#toolbar-export-spinner-grad)"` in EditorToolbar, 2× Iconify `fill="url(#IconifyId…)"` in `lib/templates/react.ts` — unique one-off gradient IDs, not reusable literals); 2 `toHaveAttribute("fill"/"stroke", "currentColor")` assertions in `Header.test.tsx`/`StepIndicator.test.tsx` (tests assert rendered output, Iteration 194 precedent); code comments mentioning `currentColor` in prose.
+
+## Verification (Iteration 196)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (344 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,315 web + 550 api + 920 shared = 2,785 tests passing**
+- ✅ Remaining raw `fill="none"` / `fill="currentColor"` / `stroke="currentColor"` / `stroke="none"` in components (excluding `url(#)` refs, comments & test assertions) — **0 occurrences**
+
+## PR (Iteration 196)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3822 | `flexy/iteration-196-svg-fill-stroke-colors` | refactor(flexy): centralize SVG fill & stroke color literals into shared config (Iteration 196) |
+
+### ✅ Flexy Iteration 195: Centralize ARIA Hidden, Orientation & Required Literals Across All Components
+
+**Problem**: 142 hardcoded ARIA attribute literals remained after Iteration 194 centralized roles/live/atomic/modal: `aria-hidden="true"` (136 JSX attributes across 33 web files + 3 querySelector selector strings in tests + 7 focus-trap CSS selector strings in `accessibility.ts`), `aria-orientation="horizontal"` (4× across TemplateGrid, PageScrollProgressBar, EditorHeader, EditorToolbar), and `aria-required="true"` (2× in StepInfo) — no `ARIA_HIDDEN_VALUES`/`ARIA_ORIENTATION_VALUES`/`ARIA_REQUIRED_VALUES` constants existed. Flexy says: no hardcoded ARIA attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_HIDDEN_VALUES` (TRUE/FALSE), `ARIA_ORIENTATION_VALUES` (HORIZONTAL/VERTICAL), `ARIA_REQUIRED_VALUES` (TRUE/FALSE) with JSDoc matching the Iteration 194 ARIA block style |
+| `packages/shared/src/index.ts` | Exported all three constants on the root barrel |
+| `packages/shared/src/config.test.ts` | Added 9 tests: value assertions + uniqueness checks for all three constants (Iteration 195 describe blocks) |
+| `apps/web/src/config/constants/accessibility.ts` | 7 focus-trap `FOCUSABLE_SELECTORS` strings → template literals interpolating `ARIA_HIDDEN_VALUES.TRUE` |
+| `apps/web/src/components/*` + `App.tsx` (33 files) | Replaced 133 JSX `aria-hidden="true"`, 4 `aria-orientation="horizontal"`, 2 `aria-required="true"` with shared constants (StepGenerating ×14, Toast ×12, EditorHeader ×10, StepReview ×8, ErrorFallback ×8, …) |
+| `apps/web/src/components/Wizard.test.tsx` + `TemplateGrid.test.tsx` | 3 querySelector `'[aria-hidden="true"]'` selector strings → template literals interpolating `ARIA_HIDDEN_VALUES.TRUE` |
+| `docs/flexy-plan.md` | Iteration 195 entry |
+
+Deliberately skipped: `apps/web/src/lib/templates/react.ts` (embedded generated-SVG content template, not application code).
+
+## Verification (Iteration 195)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,309 web + 550 api + 920 shared = 2,779 tests passing**
+
+## PR (Iteration 195)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-195-aria-hidden-orientation-required` | refactor(flexy): centralize ARIA hidden, orientation & required literals into shared config (Iteration 195) |
+
+### ✅ Flexy Iteration 187: Centralize Hex Pad Char, DB ID Separator, sr-only Class & Empty-State Aria Label
+
+**Problem**: Hex-encoding call sites repeated the raw `"0"` pad character in 4× `padStart` invocations (auth `deriveUserId` + 3× share token/passphrase hashing) despite `CRYPTO_CONFIG.HEX_RADIX`/`HEX_PADDING_WIDTH` already existing; `deriveUserId` joined prefix and hash with a hardcoded `"_"` separator bypassing `DB_ID_PREFIXES`; 4× `<span className="sr-only">` live regions (TemplateGrid, StepFeatures, ShowEditorButton ×2) bypassed `CSS_CLASSES`; and `EditorEmptyState` hardcoded `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded pad chars, ID separators, screen-reader classes, or aria labels!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.HEX_PAD_CHAR` (`"0"`) + `DB_ID_SEPARATOR` (`"_"`); updated `CRYPTO_CONFIG` usage docblock to reference `HEX_PAD_CHAR` |
+| `packages/shared/src/index.ts` | Exported `DB_ID_SEPARATOR` on the root barrel |
+| `packages/shared/src/config.test.ts` | Added `HEX_PAD_CHAR` value + pad-behavior tests; added `DB_ID_SEPARATOR` value + join-format tests (import updated) |
+| `apps/api/src/middleware/auth.ts` | `padStart(..., "0")` → `CRYPTO_CONFIG.HEX_PAD_CHAR`; `` `${DB_ID_PREFIXES.USER}_${...}` `` → `` `${DB_ID_PREFIXES.USER}${DB_ID_SEPARATOR}${...}` `` |
+| `apps/api/src/routes/share.ts` | 3× `padStart(..., "0")` (verify-token sign, verify-token check, passphrase hash) → `CRYPTO_CONFIG.HEX_PAD_CHAR` |
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.SR_ONLY` (`"sr-only"`) |
+| `apps/web/src/config/constants/accessibility.test.ts` | Added `SR_ONLY` value test |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` (`"Editor empty state"`) |
+| `apps/web/src/components/TemplateGrid.tsx` + `wizard/StepFeatures.tsx` + `ShowEditorButton.tsx` (×2) | `className="sr-only"` → `className={CSS_CLASSES.SR_ONLY}` |
+| `apps/web/src/components/EditorEmptyState.tsx` | `aria-label="Editor empty state"` → `aria-label={EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL}` |
+
+## Verification (Iteration 187)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,249 web + 535 api + 872 shared = 2,656 tests passing**
+
+## PR (Iteration 187)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-187-hex-pad-id-separator-sr-only` | refactor(flexy): centralize hex pad char, DB ID separator, sr-only class & empty-state aria label (Iteration 187) |
+
+### ✅ Flexy Iteration 194: Centralize ARIA Role, Live-Region, Atomic & Modal Literals Across All Components
+
+**Problem**: 131 hardcoded ARIA attribute literals remained across 35 web component files: `role="..."` (status/alert/dialog/img/group/region/progressbar/tooltip/tabpanel/tablist/tab/slider/searchbox/radiogroup/radio/option/listitem/list/listbox), `aria-live="polite"/"assertive"`, `aria-atomic="true"`, and `aria-modal="true"` — no `ARIA_ROLES`/`ARIA_LIVE_VALUES`/`ARIA_ATOMIC_VALUES`/`ARIA_MODAL_VALUES` constants existed. Supersedes stale PRs #3645 (Iteration 188) and #3668 (Iteration 189), which were 106+ commits behind main. Flexy says: no hardcoded ARIA attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_ROLES` (19 roles), `ARIA_LIVE_VALUES` (POLITE/ASSERTIVE/OFF), `ARIA_ATOMIC_VALUES` (TRUE/FALSE), `ARIA_MODAL_VALUES` (TRUE/FALSE) |
+| `packages/shared/src/index.ts` | Exported the 4 new constants |
+| `packages/shared/src/config.test.ts` | 28 new value/count/uniqueness tests (entry coverage for all 19 roles + 3 live + 2 atomic + 2 modal) |
+| 35 files in `apps/web/src/` | 131× hardcoded role / aria-live / aria-atomic / aria-modal literals → `ARIA_*` constants; Toast.tsx querySelector string → template literal with constants |
+| `docs/flexy-plan.md` | Iteration 194 entry |
+
+Intentionally untouched: test files (querySelector assertions test rendered output), code comments/JSDoc, hooks JSDoc examples (`useScrollLock`/`useFocusTrap`), `lib/templates/react.ts` (generated-project template string).
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.33s)
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,304 web + 550 api + 907 shared = 2,761 tests passing**
+- ✅ Remaining hardcoded role / aria-live / aria-atomic / aria-modal literals in components (excluding comments & test queries) — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-194-aria-roles-live-modal` | refactor(flexy): centralize ARIA role, live-region, atomic & modal literals into shared config (Iteration 194) |
+
+### ✅ Flexy Iteration 193: Centralize Remaining SVG Stroke Attribute Literals Across All Components
+
+**Problem**: 185 hardcoded SVG stroke attribute literals remained across 26 web component files, bypassing the existing `SVG_ICON_DEFAULTS` constants (`STROKE_WIDTH_DEFAULT`, `STROKE_WIDTH_BOLD`, `STROKE_LINECAP_ROUND`, `STROKE_LINEJOIN_ROUND`) introduced in Iteration 187b. Breakdown: 43× `strokeWidth={2}`, 11× string-form `strokeWidth="N"` (`"2"`/`"2.5"`/`"3"`/`"4"`), 7× `strokeWidth={2.5}`, 1× `strokeWidth={1.5}`, 3× `strokeWidth={3}`, 62× `strokeLinecap="round"`, 58× `strokeLinejoin="round"`. Values 1.5, 2.5 and 4 had no constant at all. Flexy says: no hardcoded stroke attribute literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `STROKE_WIDTH_LIGHT: 1.5`, `STROKE_WIDTH_MEDIUM: 2.5`, `STROKE_WIDTH_HEAVY: 4` to `SVG_ICON_DEFAULTS` — completes the light→default→medium→bold→heavy stroke-width scale |
+| `packages/shared/src/config.test.ts` | Updated stroke-width ordering test (light < default < medium < bold < heavy); entry count 11→14 |
+| 26 files in `apps/web/src/components/` | 185× hardcoded strokeWidth / strokeLinecap / strokeLinejoin literals → `SVG_ICON_DEFAULTS.*` (both JSX `{2}` and string `"3"` forms) |
+| `StepIndicator.tsx`, `CircularProgress.tsx` | Added `SVG_ICON_DEFAULTS` import where missing |
+
+Affected files: AnimatedCopyButton, CharacterCounter, CircularProgress, Editor, ErrorBoundary, ErrorFallback, GenerationCelebration, Header, HeadingAnchor, KeyboardShortcutsModal, LastSavedIndicator, MarkdownRenderer, OfflineBanner, PreviewEmptyState, ScrollToTop, SkipLink, StepIndicator, TemplateGrid, Toast, ValidationCheckmark, StepFeatures, StepGenerating, StepInfo, StepReview, StepStack, EditorToolbar.
+
+Intentionally untouched: `Icon.test.tsx` (`strokeWidth={1.5}` custom-prop test) and `CircularProgress.test.tsx` (`strokeWidth={6}` custom-prop test) — these exercise component prop plumbing, not default values.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.81s)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,303 web + 550 api + 879 shared = 2,732 tests passing**
+- ✅ Remaining hardcoded strokeWidth / strokeLinecap / strokeLinejoin literals (excluding intentional test props) — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-193-svg-stroke-attrs` | refactor(flexy): centralize 185 hardcoded SVG stroke attribute literals into shared config (Iteration 193) |
+
+### ✅ Flexy Iteration 191: Replace Remaining Hardcoded SVG viewBox Literals Across All Components
+
+**Problem**: 59× hardcoded `viewBox="0 0 24 24"` remained across 24 web component files, bypassing the `SVG_ICON_DEFAULTS.VIEW_BOX` constant introduced in Iteration 187b. `apps/web/src/config/icons.ts` was already migrated but inline `<svg>` JSX across components still hard-coded the literal. Flexy says: no hardcoded viewBox literals!
+
+| File | Change |
+|------|--------|
+| 24 files in `apps/web/src/components/` | 59× `viewBox="0 0 24 24"` → `viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}` |
+| +25 files | Added `import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config"` where missing |
+
+Affected files: ErrorFallback, Editor, KeyboardShortcutsModal, MarkdownRenderer, CharacterCounter, HeadingAnchor, EditorToolbar, OfflineBanner, StepStack, Header, ScrollToTop, StepReview, ErrorBoundary, SkipLink, StepGenerating, TemplateGrid, StepFeatures, ValidationCheckmark, Toast, LastSavedIndicator, StepInfo, PreviewEmptyState, AnimatedCopyButton, GenerationCelebration (+ ShowEditorButton import dedup).
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean (9.99s)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,286 web + 550 api + 876 shared = 2,712 tests passing**
+- ✅ Remaining hardcoded `viewBox="0 0 24 24"` — **0 occurrences**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3784 | `flexy/iteration-191-svg-viewbox` | refactor(flexy): replace 59 hardcoded SVG viewBox literals with shared constant (Iteration 191) |
+
+### ✅ Flexy Iteration 190: Centralize Chevron Icon Path & Share Route Param Key
+
+**Problem**: 4× hardcoded chevron `d="M9 5l7 7-7 7"` in web components bypassing shared config, plus 5× hardcoded `c.req.param("id")` in API share routes bypassing route-param constants. Flexy says: no hardcoded SVG paths or route param keys!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ICON_PATHS.CHEVRON_RIGHT` (`"M9 5l7 7-7 7"`) — single source of truth for chevron direction-arrow path |
+| `packages/shared/src/index.ts` | Exported `ICON_PATHS` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/web/src/components/ShowEditorButton.tsx` | Import `ICON_PATHS`; `d="M9 5l7 7-7 7"` → `d={ICON_PATHS.CHEVRON_RIGHT}` |
+| `apps/api/src/config/constants/share.ts` | Added `SHARE_ROUTE_PARAMS.ID` (`"id"`) — single source of truth for share route param key |
+| `apps/api/src/config/constants.ts` | Re-exported `SHARE_ROUTE_PARAMS` |
+| `apps/api/src/routes/share.ts` | 5× `c.req.param("id")` → `c.req.param(SHARE_ROUTE_PARAMS.ID)` |
+| `packages/shared/src/config.test.ts` | Added `ICON_PATHS` import + 2 tests (chevron value, entry count) |
+| `apps/api/src/config/constants/config-iteration-190.test.ts` | NEW — 3 tests asserting `SHARE_ROUTE_PARAMS.ID` + `SHARE_QUERY_PARAMS.TOKEN` regression |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run typecheck` — clean (shared/api/web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build --workspace=apps/web` — clean (9.14s)
+- ✅ `npm run build --workspace=apps/api` — clean (dry-run)
+- ✅ `npm run scan:secrets` — clean (341 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test --workspace=packages/shared` — **876 tests passing** (+2 new)
+- ✅ `npm run test --workspace=apps/api -- --run src/config/constants/config-iteration-190.test.ts` — **3 tests passing**
+- ✅ `npm run test --workspace=apps/web -- --run ShowEditorButton/StepInfo/StepStack/StepFeatures` — **126 tests passing**
+- ✅ `npm run test --workspace=apps/api -- --run src/routes/share.test.ts` — **15 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3775 | `flexy/iteration-190-chevron-share-param` | refactor(flexy): centralize chevron icon path & share route param key into config (Iteration 190) |
+
+### ✅ Flexy Iteration 187b: Centralize SVG Icon Rendering Defaults
+
+**Problem**: `apps/web/src/components/Icon.tsx` rendered `<svg>` with hardcoded `fill="none"`, `stroke="currentColor"`, `strokeLinecap/Linejoin="round"`, default `className="w-5 h-5"` and `strokeWidth=2`; `apps/web/src/config/icons.ts` repeated `viewBox: "0 0 24 24"` 25× across every icon. Flexy says: no hardcoded SVG icon literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `SVG_ICON_DEFAULTS` (VIEW_BOX/FILL_NONE/STROKE_CURRENT/STROKE_LINECAP_ROUND/STROKE_LINEJOIN_ROUND/STROKE_WIDTH_DEFAULT/STROKE_WIDTH_BOLD/SIZE_DEFAULT/SIZE_SMALL) |
+| `packages/shared/src/index.ts` | Exported `SVG_ICON_DEFAULTS` |
+| `apps/web/src/config/icons.ts` | 25× `viewBox: "0 0 24 24"` → `viewBox: SVG_ICON_DEFAULTS.VIEW_BOX` |
+| `apps/web/src/components/Icon.tsx` | `fill`/`stroke`/`strokeLinecap`/`strokeLinejoin`/`className`/`strokeWidth` defaults → `SVG_ICON_DEFAULTS.*` |
+| `packages/shared/src/config.test.ts` | Added 5 tests asserting `SVG_ICON_DEFAULTS` values |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run typecheck` (shared/web) — clean
+- ✅ `npm run build --workspace=apps/web` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npm run test --workspace=packages/shared` — **873 tests passing** (was 868; +5 new)
+- ✅ `npm run test --workspace=apps/web -- --run src/components/Icon.test.tsx src/components/Header.test.tsx` — **27 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-187-svg-icon-defaults` | refactor(flexy): centralize SVG icon rendering defaults into shared config (Iteration 187) |
+
+### ✅ Flexy Iteration 187: Centralize E2E Visibility Timeouts, SR Announce Interval & Test Mock Timeouts
+
+**Problem**: Sisa magic numbers: `3000`/`2000` di `isVisible({ timeout })` e2e (5 lokasi), `30000` di `ELAPSED_ANNOUNCEMENT_INTERVAL_MS` web constants, dan `30000`/`5000` di mock `TIMEOUTS` `api.test.ts` — semua bypass shared config. Flexy says: no hardcoded timeouts!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS` (`30000`) — SR live-region throttle |
+| `packages/shared/src/config/core.ts` | Added `PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS` (`3000`) + `SHORT_VISIBILITY_TIMEOUT_MS` (`2000`) |
+| `apps/web/src/config/constants/ui.ts` | `ELAPSED_ANNOUNCEMENT_INTERVAL_MS = 30000` → `SHARED_UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS` |
+| `apps/web/e2e/brocula-console-check.spec.ts` | `isVisible({ timeout: 3000/2000 })` → `PLAYWRIGHT_DEFAULTS.VISIBILITY/SHORT_VISIBILITY_TIMEOUT_MS` |
+| `apps/web/e2e/brocula-console-audit.spec.ts` | 3× `isVisible({ timeout: 3000 })` → `PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS` |
+| `apps/web/src/lib/api.test.ts` | Mock `TIMEOUTS` `30000`/`5000` → `shared.UI_TIMEOUTS.API_CONNECTION`/`API_HEALTH_CHECK` |
+| `packages/shared/src/config.test.ts` | Added `ELAPSED_ANNOUNCEMENT_INTERVAL_MS` expectation + visibility timeouts test; count `22` → `23` |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run typecheck` — clean (shared/api/web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test --workspace=packages/shared` — **869 tests passing** (was 868; +1)
+- ✅ `npm run test --workspace=apps/web -- --run src/lib/api.test.ts` — **5 tests passing**
+- ✅ `npm run test --workspace=apps/web -- --run src/components/wizard/StepGenerating.test.tsx` — **7 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `flexy/iteration-187-e2e-ui-timeouts` | refactor(flexy): centralize e2e visibility timeouts, SR announce interval & test mock timeouts (Iteration 187) |
+
+### ✅ Flexy Iteration 186: Centralize Deployment Origins, Proxy Routing & API-Key Fallback
+
+**Problem**: The #3610 live-generate/proxy fix introduced fresh hardcoded literals bypassing shared config. API: 4× deployment origins in the CORS allowlist (`https://blueprintify.pages.dev`, `.blueprintify.pages.dev`, `https://blueprintify.cpa03-cmz.workers.dev`, `http://localhost:`), static-asset detection (`/assets/`, `.`, `/api/`, `Accept`/`text/html`, `404`), and the `/api/*` rewrite (`/api/`, `/^\/api/`, `404`). Web: `VITE_API_KEY` env key + `blueprintify-public-access-2026` fallback in `env.ts`, and `405`/`500` + inline endpoint-unavailable/server-error templates in `lib/api.ts`. Functions proxies duplicated the worker target, `/^\/api` pattern, `/` fallback, and `GET`/`HEAD` checks inline. Flexy says: no hardcoded deployment/proxy literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/http.ts` | Added `HTTP_STATUS.METHOD_NOT_ALLOWED` (`405`), `HTTP_METHODS.HEAD`/`OPTIONS`, `DEPLOYMENT_ORIGINS` (PAGES_PROD/PAGES_PREVIEW_SUFFIX/WORKER_DEV/LOCALHOST_PREFIX), `PROXY_CONFIG` (API_PREFIX_SLASH/API_STRIP_PATTERN/ASSETS_PREFIX/ROOT_FALLBACK/FILE_EXTENSION_MARKER) |
+| `packages/shared/src/config/api.ts` | Added `ENV_VAR_KEYS.WEB.VITE_API_KEY`, `API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE(status)` + `SERVER_ERROR(status)` factories |
+| `packages/shared/src/config/core.ts` | Added `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` (`blueprintify-public-access-2026`, scan-safe name) |
+| `packages/shared/src/index.ts` | Exported `DEPLOYMENT_ORIGINS`, `PROXY_CONFIG` |
+| `apps/api/src/index.ts` | CORS allowlist → `DEPLOYMENT_ORIGINS.*`; static-asset detection → `PROXY_CONFIG` + `HTTP_HEADER_NAMES.ACCEPT` + `HTTP_HEADERS.CONTENT_TYPE_HTML` + `ROUTE_PATHS.ROOT` + `HTTP_STATUS.NOT_FOUND`; `/api/*` rewrite → `PROXY_CONFIG.*` |
+| `apps/web/src/config/env.ts` | `getEnvVar("VITE_API_KEY", "blueprintify-public-access-2026")` → `getEnvVar(WEB_ENV.VITE_API_KEY, SHARED_DEFAULTS.PUBLIC_ACCESS_KEY)` |
+| `apps/web/src/lib/api.ts` | `405` → `HTTP_STATUS.METHOD_NOT_ALLOWED`, `>= 500` → `>= HTTP_STATUS.INTERNAL_ERROR`, inline templates → `API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE/SERVER_ERROR` |
+| `functions/api/[[path]].ts` + `apps/web/functions/api/[[path]].ts` | Extracted `PROXY_TARGET_ORIGIN`/`API_STRIP_PATTERN`/`ROOT_FALLBACK`/`SAFE_METHOD_GET`/`SAFE_METHOD_HEAD` local constants mirroring shared config (Pages Functions run outside workspace bundle) |
+| `packages/shared/src/config.test.ts` | Updated `HTTP_METHODS`/`HTTP_STATUS`/`ENV_VAR_KEYS.WEB`/`API_ERROR_MESSAGES` expectations; added `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` + `DEPLOYMENT_ORIGINS` (4 tests) + `PROXY_CONFIG` (3 tests) |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files; `PUBLIC_ACCESS_KEY` name avoids Generic-API-Key false positive)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test --workspace=packages/shared` — **868 tests passing** (was 851; +17 new/updated)
+- ✅ `npx vitest run src/lib/api.test.ts src/config/env.test.ts` (web) — **25 tests passing**
+- ⚠️ `npm run typecheck` (api/web) — pre-existing failures on `main` (jest-dom matchers, `validatedData: unknown` in controllers); zero errors in Iteration 186 touched files (`apps/api/src/index.ts`, `apps/web/src/lib/api.ts`, `apps/web/src/config/env.ts`, shared config)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3659 | `flexy/iteration-186-deploy-proxy-modularize` | refactor(flexy): centralize deployment origins, proxy routing & API-key fallback into shared config (Iteration 186) |
+
+### ✅ Flexy Iteration 186: Centralize Time Helpers, Token Codec Literals, Hex Pad Char & Empty-State Aria-Label
+
+**Problem**: Remaining hardcoded values spanned three fronts. API: 2× `Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND)` duplicating epoch-seconds math (share token issue/verify), 3× `"0"` hex pad chars bypassing `CRYPTO_CONFIG`, base64url `"."`/`":"`/`"+"`/`"-"`/`"/"`/`"_"` delimiters plus `parseInt(..., 10)` radix and `|| ""`/`|| "0"` fallbacks inline in the verify-token codec, and `logger.ts` shadowing the imported `timestamp()` helper with a `const timestamp = Date.now()` local. Shared: no single source of truth for token codec or hex pad char. Web: `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded time math, token delimiters, pad chars, or aria-labels!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.HEX_PAD_CHAR` (`"0"`) |
+| `packages/shared/src/config/storage.ts` | Added `SHARE_TOKEN_CODEC` (`PAYLOAD_SEPARATOR`/`FIELD_SEPARATOR`/`EXPIRY_RADIX`/`MISSING_*_FALLBACK`/`BASE64_*` mapping) |
+| `packages/shared/src/index.ts` | Exported `SHARE_TOKEN_CODEC` on the root export |
+| `packages/shared/src/config.test.ts` | Added `SHARE_TOKEN_CODEC` (6 tests) + `HEX_PAD_CHAR` (1 test) value assertions |
+| `apps/api/src/errors.ts` | Added `nowMs()` + `nowSeconds()` helpers alongside `timestamp()` |
+| `apps/api/src/routes/share.ts` | Replaced 2× epoch-seconds math with `nowSeconds()`; 3× `"0"` with `HEX_PAD_CHAR`; codec delimiters/radix/fallbacks with `SHARE_TOKEN_CODEC` refs (byte-identical output) |
+| `apps/api/src/middleware/logger.ts` | Renamed shadowing `timestamp` local to `now`; `Date.now()` ×3 → `nowMs()` |
+| `apps/api/src/config/constants/config-iteration-186.test.ts` | NEW — 5 tests asserting codec values + `nowMs`/`nowSeconds` behavior |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` (`"Editor empty state"`) |
+| `apps/web/src/components/EditorEmptyState.tsx` | Replaced hardcoded `aria-label` with `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` |
+| `apps/web/src/components/EditorEmptyState.test.tsx` | Assertion now references `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` instead of hardcoded string |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npx eslint` on all 11 changed files — zero errors, zero warnings (`--max-warnings 0`)
+- ✅ `npm run build` (web) + `npm run build:api` (wrangler dry-run) — clean
+- ✅ `npx prettier --check` on all changed files — clean
+- ✅ `packages/shared` config tests — **792/792 passing** (incl. 7 new)
+- ✅ `apps/web` EditorEmptyState tests — **13/13 passing**
+- ✅ Token codec byte-equivalence proven via node script (encode/decode/expiry identical)
+- ⚠️ Pre-existing, unrelated failures left untouched: `apps/web` jest-dom matcher types (tracked by PR #3629), `apps/api` controllers Zod-context types (tracked by PR #3628), `apps/api` vitest workerd pool won't start in sandbox (fails identically on unmodified files)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3632 | `flexy/iteration-186-hardcoded-cleanup` | refactor(flexy): centralize time helpers, token codec literals, hex pad char & empty-state aria-label (Iteration 186) |
+
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
 **Problem**: Remaining hardcoded values were scattered across two fronts. Web: 6× scroll-shadow overlay class strings (Editor/Wizard), 11× icon hover-rotation class strings (4 wizard steps), 7× empty-state keycap class strings, and the "Skip to main content" label — all bypassing `CSS_CLASSES`. API: 6× secure-log context/message strings bypassing `LOG_CONTEXT`, the share verify `"token"` query param bypassing the `STORAGE_QUERY_PARAMS` pattern, an inline Content-Type mismatch message, the Server-Timing `"app"`/`0` literals, a `Date.now()` bypassing the `timestamp()` helper, and a raw `"ms"` suffix. Flexy says: no hardcoded class strings, log contexts, or micro-literals!

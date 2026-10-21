@@ -21,6 +21,7 @@ import {
   SHORTCUT_CATEGORY_ICONS,
   WIZARD_STEPS,
   EDITOR_LABELS,
+  DOM_ELEMENT_IDS,
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
@@ -35,6 +36,14 @@ import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
+import {
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_MODAL_VALUES,
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -286,7 +295,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             transition={{ duration: ANIMATION.MODAL_FADE }}
             className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50"
             onClick={onClose}
-            aria-hidden="true"
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
           />
 
           <motion.div
@@ -298,10 +307,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="keyboard-shortcuts-title"
-            aria-describedby="keyboard-shortcuts-tip"
+            role={ARIA_ROLES.DIALOG}
+            aria-modal={ARIA_MODAL_VALUES.TRUE}
+            aria-labelledby={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TITLE}
+            aria-describedby={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TIP}
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-has-query={Boolean(searchQuery)}
             data-results-count={filteredShortcuts.length}
@@ -318,7 +327,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     <Icon name="keyboard" className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
-                    <h2 id="keyboard-shortcuts-title" className="text-xl font-bold text-white">
+                    <h2
+                      id={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TITLE}
+                      className="text-xl font-bold text-white"
+                    >
                       Keyboard Shortcuts
                     </h2>
                     <p className="text-sm text-dark-400">
@@ -342,15 +354,15 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 <div className="relative">
                   <svg
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 pointer-events-none"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
@@ -366,7 +378,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                                focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50
                                transition-all duration-200"
                     aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
-                    role="searchbox"
+                    role={ARIA_ROLES.SEARCHBOX}
                     autoComplete="off"
                     enterKeyHint="search"
                     spellCheck={false}
@@ -381,7 +393,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         transition={{ duration: ANIMATION.FAST }}
                         onClick={handleClearSearch}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white
-                                   hover:bg-dark-700/50 rounded-md p-1 transition-colors duration-150"
+                                   hover:bg-dark-700/50 rounded-md p-1 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
                         aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLEAR_SEARCH}
                       >
                         <Icon name="close" className="w-4 h-4" />
@@ -391,7 +403,20 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 </div>
               </div>
 
-              <div className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6">
+              <div
+                className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500/50"
+                role={ARIA_ROLES.REGION}
+                aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.LIST_REGION}
+                // The shortcut rows contain no focusable elements, so Tab never
+                // enters this scroll container on its own: when the list
+                // overflows (long list / 200% zoom, WCAG 1.4.4) keyboard users
+                // had no way to scroll it (WCAG 2.1.1). tabIndex=0 makes the
+                // region itself a tab stop so arrow keys scroll it; removed when
+                // no search matches, where the empty state's own "clear search"
+                // button keeps the container reachable instead of adding an
+                // inert stop with nothing to scroll.
+                tabIndex={hasResults ? 0 : -1}
+              >
                 {hasResults ? (
                   entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
@@ -404,7 +429,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       }}
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-lg flex items-center" aria-hidden="true">
+                        <span
+                          className="text-lg flex items-center"
+                          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+                        >
                           <Icon name={categoryIcons[category]!} className="w-4 h-4 text-dark-300" />
                         </span>
                         <h3 className="text-sm font-semibold text-dark-300 uppercase tracking-wider">
@@ -463,15 +491,15 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   >
                     <svg
                       className="w-12 h-12 mb-4 text-dark-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
+                      fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                      stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                      viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                      aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
+                        strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                        strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                        strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT}
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>
@@ -493,11 +521,11 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
                 <p
-                  id="keyboard-shortcuts-tip"
+                  id={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TIP}
                   className="text-xs text-dark-500 text-center"
-                  role="status"
-                  aria-live="polite"
-                  aria-atomic="true"
+                  role={ARIA_ROLES.STATUS}
+                  aria-live={ARIA_LIVE_VALUES.POLITE}
+                  aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
                 >
                   {searchQuery ? (
                     <>

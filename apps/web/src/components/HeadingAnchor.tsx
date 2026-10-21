@@ -35,12 +35,16 @@ import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
-  TOOLTIP_LABELS,
-  TIME_UNITS,
-  UI_TIMEOUTS,
-  FRAMER_TYPE,
-  COPY_STATE_VALUES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   BANNER_STATE_VALUES,
+  COPY_STATE_VALUES,
+  FRAMER_TYPE,
+  TIME_UNITS,
+  TOOLTIP_LABELS,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -49,10 +53,12 @@ import {
   ACCESSIBILITY_LABELS,
   PARTICLE_CONFIG,
   CELEBRATION_COLORS,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -80,8 +86,10 @@ export const HeadingAnchor = memo(function HeadingAnchor({
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [announcement, setAnnouncement] = useState("");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const particleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const announcementTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const particleIdRef = useRef(0);
   const shouldReduceMotion = useReducedMotion();
@@ -94,7 +102,21 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       if (particleTimeoutRef.current) {
         clearTimeout(particleTimeoutRef.current);
       }
+      if (announcementTimeoutRef.current) {
+        clearTimeout(announcementTimeoutRef.current);
+      }
     };
+  }, []);
+
+  const announce = useCallback((message: string) => {
+    if (announcementTimeoutRef.current) {
+      clearTimeout(announcementTimeoutRef.current);
+    }
+    setAnnouncement(message);
+    announcementTimeoutRef.current = setTimeout(() => {
+      setAnnouncement("");
+      announcementTimeoutRef.current = null;
+    }, UI_TIMEOUTS.COPY_FEEDBACK);
   }, []);
 
   const slug = generateSlug(headingText);
@@ -148,14 +170,17 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       }
       createParticles();
       setShowCopied(true);
+      announce(ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPIED_ANNOUNCEMENT);
       timeoutRef.current = setTimeout(() => {
         setShowCopied(false);
       }, UI_TIMEOUTS.COPY_FEEDBACK);
 
       // Update URL hash without scrolling
       history.replaceState(null, "", url.toString());
+    } else {
+      announce(ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_FAILED_ANNOUNCEMENT);
     }
-  }, [slug, createParticles]);
+  }, [slug, createParticles, announce]);
 
   const isVisible = isHovered || isFocused || showCopied;
 
@@ -168,6 +193,19 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       onBlur={() => setIsFocused(false)}
     >
       {children}
+
+      {/* Persistent live region: must exist in the DOM before its text
+          changes, otherwise screen readers routinely skip the announcement.
+          The visible "Copied!" chip mounts at the same moment as its own
+          text, so it cannot serve as a reliable live region itself. */}
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+      >
+        {announcement}
+      </span>
 
       {/* Anchor link button — visible on hover/focus/active */}
       <motion.button
@@ -202,8 +240,20 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-copied-state={showCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
         data-slug={slug}
-        aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
-        title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
+        aria-label={
+          showCopied
+            ? ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPIED_ARIA
+            : ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)
+        }
+        title={
+          showCopied
+            ? ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPIED_TITLE
+            : ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE
+        }
+        // Always Tab-reachable (WCAG 2.1.1). A conditional tabIndex gated on
+        // isVisible was a chicken-and-egg trap: focus set isVisible, but
+        // tabIndex=0 required isVisible — so keyboard users could never focus
+        // the button. onFocus below flips isVisible, fading the button in.
         tabIndex={0}
       >
         <AnimatePresence mode="wait">
@@ -226,16 +276,16 @@ export const HeadingAnchor = memo(function HeadingAnchor({
             >
               <svg
                 className="w-3.5 h-3.5 flex-shrink-0 text-accent-emerald"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <motion.path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M5 13l4 4L19 7"
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
+                  d={ICON_PATHS.CHECKMARK}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
@@ -260,7 +310,6 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                   ease: EASING.easeOut,
                   delay: ANIMATION_ENTRANCE_DELAYS.FAST,
                 }}
-                aria-live="polite"
               >
                 {TOOLTIP_LABELS.EDITOR.COPIED}
               </motion.span>
@@ -283,15 +332,15 @@ export const HeadingAnchor = memo(function HeadingAnchor({
             >
               <svg
                 className="w-3.5 h-3.5 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
                   d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
                 />
               </svg>
