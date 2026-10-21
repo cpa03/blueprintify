@@ -75,6 +75,7 @@ import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
@@ -97,6 +98,7 @@ const DESCRIPTION_WARNING_THRESHOLD = Math.floor(
 export const StepInfo = memo(function StepInfo({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepInfoProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const targetAudienceInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
@@ -339,7 +341,12 @@ export const StepInfo = memo(function StepInfo({
   );
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-can-proceed={canProceed ? "true" : "false"}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>
