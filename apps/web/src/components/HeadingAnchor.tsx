@@ -306,7 +306,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{
-                  duration: shouldReduceMotion ? 0 : ANIMATION.FAST,
+                  duration: shouldReduceMotion
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION.duration
+                    : ANIMATION.FAST,
                   ease: EASING.easeOut,
                   delay: ANIMATION_ENTRANCE_DELAYS.FAST,
                 }}

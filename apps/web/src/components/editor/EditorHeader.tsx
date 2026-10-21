@@ -140,7 +140,7 @@ const TabButton = React.memo(function TabButton({
                   ...EDITOR_ANIMATION.TAB_INDICATOR,
                   boxShadow: {
                     duration: ANIMATION.SLOW_PULSE,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   },
                 }
@@ -199,7 +199,7 @@ const TabButton = React.memo(function TabButton({
             }}
             transition={{
               duration: ANIMATION.LIVE_INDICATOR,
-              repeat: Infinity,
+              repeat: ANIMATION_REPEAT.INFINITE,
               ease: EASING.easeInOut,
             }}
             role={ARIA_ROLES.STATUS}
@@ -252,12 +252,12 @@ const ContentStats = React.memo(function ContentStats({
               ? {
                   borderColor: {
                     duration: ANIMATION.SLOW_PULSE,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   },
                   boxShadow: {
                     duration: ANIMATION.BREATH,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   },
                   opacity: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },

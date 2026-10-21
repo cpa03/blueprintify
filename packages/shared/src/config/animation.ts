@@ -127,6 +127,10 @@ export const ANIMATION_DEFAULTS = {
 export const ANIMATION_REPEAT = {
   /** Number of attention-pulse badge animation cycles (5 repeats ≈ 3s total) */
   ATTENTION_PULSE: 5,
+  /** No repeat — stop after a single animation cycle */
+  NONE: 0,
+  /** Infinite repeat for looping decorative animations (framer-motion loops forever) */
+  INFINITE: Infinity,
 } as const;
 
 /**

@@ -28,6 +28,7 @@ import {
 } from "../config/constants";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
@@ -148,7 +149,7 @@ export const ErrorFallback = memo(function ErrorFallback({
               }
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
             >
@@ -165,7 +166,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                 }
                 transition={{
                   duration: ANIMATION.BREATH,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}

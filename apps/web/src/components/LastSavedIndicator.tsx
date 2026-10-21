@@ -17,6 +17,7 @@ import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
@@ -133,7 +134,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                       animate={{ scale: 1.5, opacity: 0 }}
                       transition={{
                         duration: ANIMATION.GENTLE_PULSE,
-                        repeat: Infinity,
+                        repeat: ANIMATION_REPEAT.INFINITE,
                         ease: EASING.easeOut,
                       }}
                     />

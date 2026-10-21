@@ -37,6 +37,8 @@ import {
   DIRECTION,
 } from "../config/constants";
 import {
+  ANIMATION_DEFAULTS,
+  ANIMATION_REPEAT,
   FRAMER_TYPE,
   MODIFIER_KEYS,
   BANNER_STATE_VALUES,
@@ -289,7 +291,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               }}
               transition={{
                 duration: ANIMATION.BREATH,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -339,10 +341,10 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 }
                 transition={
                   shouldReduceMotion
-                    ? { duration: 0 }
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
                     : {
                         duration: ANIMATION.FLOAT,
-                        repeat: Infinity,
+                        repeat: ANIMATION_REPEAT.INFINITE,
                         ease: EASING.easeInOut,
                       }
                 }
