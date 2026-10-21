@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import * as motion from "framer-motion/m";
 import { EditorToolbar } from "./EditorToolbar";
 import { EDITOR_TABS } from "@blueprint/shared";
 
@@ -51,7 +52,22 @@ vi.mock("framer-motion/m", async () => {
     div: mkMotion("div"),
     span: mkMotion("span"),
     button: mkMotion("button"),
-    svg: mkMotion("svg"),
+    // vi.fn wrapper records prop calls for reduced-motion assertions (mirrors
+    // AnimatedCopyButton.test.tsx). No forwardRef needed: motion.svg is never
+    // given a ref in EditorToolbar.
+    svg: vi.fn(
+      ({
+        whileHover: _w1,
+        whileTap: _w2,
+        animate: _a,
+        initial: _i,
+        exit: _e,
+        layoutId: _l,
+        transition: _t,
+        style: _s,
+        ...props
+      }: Record<string, unknown>) => createElement("svg", props)
+    ),
     path: mkMotion("path"),
     circle: mkMotion("circle"),
   };
@@ -384,6 +400,23 @@ describe("EditorToolbar", () => {
       const { container } = renderToolbar();
       const toolbarWrapper = container.firstElementChild;
       expect(toolbarWrapper).toHaveAttribute("data-reduced-motion", "true");
+    });
+
+    it("omits New Project refresh icon rotation when reduced motion is preferred", async () => {
+      const { useReducedMotion } = await import("../../hooks/useReducedMotion");
+      vi.mocked(useReducedMotion).mockReturnValueOnce(true);
+      renderToolbar();
+
+      // The refresh icon is the only motion.svg rendered in the default state.
+      const refreshIconCall = vi.mocked(motion.svg).mock.calls.at(-1)?.[0];
+      expect(refreshIconCall?.whileHover).toBeUndefined();
+    });
+
+    it("applies New Project refresh icon rotation by default", () => {
+      renderToolbar();
+
+      const refreshIconCall = vi.mocked(motion.svg).mock.calls.at(-1)?.[0];
+      expect(refreshIconCall?.whileHover).toEqual({ rotate: 180 });
     });
   });
 
