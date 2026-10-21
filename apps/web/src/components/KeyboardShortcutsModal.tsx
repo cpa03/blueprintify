@@ -403,7 +403,20 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 </div>
               </div>
 
-              <div className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6">
+              <div
+                className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500/50"
+                role={ARIA_ROLES.REGION}
+                aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.LIST_REGION}
+                // The shortcut rows contain no focusable elements, so Tab never
+                // enters this scroll container on its own: when the list
+                // overflows (long list / 200% zoom, WCAG 1.4.4) keyboard users
+                // had no way to scroll it (WCAG 2.1.1). tabIndex=0 makes the
+                // region itself a tab stop so arrow keys scroll it; removed when
+                // no search matches, where the empty state's own "clear search"
+                // button keeps the container reachable instead of adding an
+                // inert stop with nothing to scroll.
+                tabIndex={hasResults ? 0 : -1}
+              >
                 {hasResults ? (
                   entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
