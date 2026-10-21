@@ -17,35 +17,75 @@ import type { Mock } from "vitest";
 import { StepInfo } from "./StepInfo";
 import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
-import { UI_CONTENT, FORM_LIMITS, VALIDATION_MESSAGES } from "../../config/constants";
+import { UI_CONTENT, FORM_LIMITS, VALIDATION_MESSAGES, TIMEOUTS } from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // Mock framer-motion to render plain HTML elements
-vi.mock("framer-motion", () => ({
-  motion: {
-    div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-    button: vi.fn(({ children, ...props }) => <button {...props}>{children}</button>),
-    input: vi.fn(({ children, ...props }) => <input {...props}>{children ?? null}</input>),
-    textarea: vi.fn(({ children, ...props }) => <textarea {...props}>{children ?? null}</textarea>),
-    p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
-    svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-    path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
-  },
-  AnimatePresence: vi.fn(({ children }) => <>{children}</>),
-}));
+vi.mock("framer-motion", () => {
+  const createMotion = (Component: string) =>
+    vi.fn(
+      ({
+        children,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
+        initial: _initial,
+        animate: _animate,
+        exit: _exit,
+        transition: _transition,
+        layout: _layout,
+        layoutId: _layoutId,
+        ...props
+      }: Record<string, unknown> & { children?: React.ReactNode }) => {
+        const Tag = Component as keyof JSX.IntrinsicElements;
+        return <Tag {...(props as Record<string, unknown>)}>{children ?? null}</Tag>;
+      }
+    );
+  return {
+    motion: {
+      div: createMotion("div"),
+      span: createMotion("span"),
+      button: createMotion("button"),
+      input: createMotion("input"),
+      textarea: createMotion("textarea"),
+      p: createMotion("p"),
+      svg: createMotion("svg"),
+      path: createMotion("path"),
+    },
+    AnimatePresence: vi.fn(({ children }) => <>{children}</>),
+  };
+});
 
-vi.mock("framer-motion/m", () => ({
-  div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-  span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-  button: vi.fn(({ children, ...props }) => <button {...props}>{children}</button>),
-  input: vi.fn(({ children, ...props }) => <input {...props}>{children ?? null}</input>),
-  textarea: vi.fn(({ children, ...props }) => <textarea {...props}>{children ?? null}</textarea>),
-  p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
-  svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-  path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
-}));
+vi.mock("framer-motion/m", () => {
+  const createMotion = (Component: string) =>
+    vi.fn(
+      ({
+        children,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
+        initial: _initial,
+        animate: _animate,
+        exit: _exit,
+        transition: _transition,
+        layout: _layout,
+        layoutId: _layoutId,
+        ...props
+      }: Record<string, unknown> & { children?: React.ReactNode }) => {
+        const Tag = Component as keyof JSX.IntrinsicElements;
+        return <Tag {...(props as Record<string, unknown>)}>{children ?? null}</Tag>;
+      }
+    );
+  return {
+    div: createMotion("div"),
+    span: createMotion("span"),
+    button: createMotion("button"),
+    input: createMotion("input"),
+    textarea: createMotion("textarea"),
+    p: createMotion("p"),
+    svg: createMotion("svg"),
+    path: createMotion("path"),
+  };
+});
 
 // Mock platform utilities
 vi.mock("../../lib/platform", () => ({
@@ -56,7 +96,7 @@ vi.mock("../../lib/platform", () => ({
 
 // Mock child components
 vi.mock("../RippleButton", () => ({
-  RippleButton: vi.fn(({ children, onClick, disabled, type, ...props }) => (
+  RippleButton: vi.fn(({ children, onClick, disabled, type, whileHover: _wH, whileTap: _wT, ...props }) => (
     <button onClick={onClick} disabled={disabled} type={type} {...props}>
       {children}
     </button>
@@ -167,7 +207,23 @@ describe("StepInfo", () => {
     vi.useRealTimers();
   });
 
-  // ======== Basic Rendering ========
+  // ======== Basic Rendering & DOM State Tracking ========
+
+  it("sets data-reduced-motion and data-can-proceed attributes on root container", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets minimum requirements.";
+    render(<StepInfo />);
+    const rootContainer = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE).closest("div[data-reduced-motion]");
+    expect(rootContainer).toHaveAttribute("data-reduced-motion", "false");
+    expect(rootContainer).toHaveAttribute("data-can-proceed", "true");
+  });
+
+  it("sets data-can-proceed to false when form is incomplete", () => {
+    render(<StepInfo />);
+    const rootContainer = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE).closest("div[data-reduced-motion]");
+    expect(rootContainer).toHaveAttribute("data-reduced-motion", "false");
+    expect(rootContainer).toHaveAttribute("data-can-proceed", "false");
+  });
 
   it("renders the title and subtitle", () => {
     render(<StepInfo />);
@@ -244,6 +300,14 @@ describe("StepInfo", () => {
     const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
     fireEvent.change(input, { target: { value: "My Project" } });
     expect(mockStore.setProjectName).toHaveBeenCalledWith("My Project");
+  });
+
+  it("disables mobile autocapitalize/autocorrect/spellcheck on project name", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("autocapitalize", "off");
+    expect(input).toHaveAttribute("autocorrect", "off");
+    expect(input).toHaveAttribute("spellcheck", "false");
   });
 
   it("shows project name character counter", () => {
@@ -608,9 +672,10 @@ describe("StepInfo", () => {
   it("has live region for clear announcements", () => {
     mockStore.projectName = "My Project";
     render(<StepInfo />);
-    const liveRegion = screen.getByRole("status");
-    expect(liveRegion).toBeInTheDocument();
-    expect(liveRegion).toHaveAttribute("aria-live", "assertive");
+    const assertiveRegion = screen
+      .getAllByRole("status")
+      .find((region) => region.getAttribute("aria-live") === "assertive");
+    expect(assertiveRegion).toBeInTheDocument();
   });
 
   it("announces when form is cleared", () => {
@@ -621,6 +686,51 @@ describe("StepInfo", () => {
     expect(
       screen.getByText(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_ANNOUNCEMENT)
     ).toBeInTheDocument();
+  });
+
+  // ======== Form-Ready Announcement (SR parity with ready pulse) ========
+
+  it("has a polite live region for the form-ready announcement", () => {
+    render(<StepInfo />);
+    const announcer = screen.getByTestId("form-ready-announcer");
+    expect(announcer).toHaveAttribute("role", "status");
+    expect(announcer).toHaveAttribute("aria-live", "polite");
+    expect(announcer).toHaveAttribute("aria-atomic", "true");
+    expect(announcer).toBeEmptyDOMElement();
+  });
+
+  it("announces form-ready when the form transitions from incomplete to complete", () => {
+    const { rerender } = render(<StepInfo />);
+    expect(screen.getByTestId("form-ready-announcer")).toBeEmptyDOMElement();
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets the minimum length.";
+    // StepInfo is memoized; change direction prop to force a re-render so the
+    // canProceed transition effect runs (identical props would be skipped).
+    rerender(<StepInfo direction="backward" />);
+    expect(screen.getByTestId("form-ready-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT
+    );
+  });
+
+  it("does not re-announce form-ready when already complete on mount", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets the minimum length.";
+    render(<StepInfo />);
+    expect(screen.getByTestId("form-ready-announcer")).toBeEmptyDOMElement();
+  });
+
+  it("clears the form-ready announcement after the live-region timeout", () => {
+    const { rerender } = render(<StepInfo />);
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets the minimum length.";
+    rerender(<StepInfo direction="backward" />);
+    expect(screen.getByTestId("form-ready-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT
+    );
+    act(() => {
+      vi.advanceTimersByTime(TIMEOUTS.LIVE_REGION_CLEAR + 100);
+    });
+    expect(screen.getByTestId("form-ready-announcer")).toBeEmptyDOMElement();
   });
 
   // ======== Enter-to-Advance ========

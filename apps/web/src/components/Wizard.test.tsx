@@ -7,7 +7,7 @@ import { useWizardStore, useEditorStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
 import { EDITOR_TABS, ACCESSIBILITY_LABELS } from "../config/constants";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+import { WIZARD_STEP_KEYS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 
 // jsdom cannot compute real colors, so the color-contrast rule is always
 // "incomplete" there; disable it to focus on structural accessibility.
@@ -156,7 +156,9 @@ describe("Wizard", () => {
       name: ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP,
     });
     expect(loadingRegion).toHaveAttribute("aria-live", "polite");
-    expect(loadingRegion.querySelector('[aria-hidden="true"]')).not.toBeNull();
+    expect(
+      loadingRegion.querySelector(`[aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"]`)
+    ).not.toBeNull();
     expect(screen.queryByTestId("step-info")).not.toBeInTheDocument();
   });
 
@@ -193,7 +195,9 @@ describe("Wizard", () => {
     expect(rendersAfterMount).toBeGreaterThan(0);
 
     // Given: not scrolled to the bottom, so the bottom shadow is visible
-    const bottomShadow = container.querySelectorAll('[aria-hidden="true"]')[1] as HTMLElement;
+    const bottomShadow = container.querySelectorAll(
+      `[aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"]`
+    )[1] as HTMLElement;
     expect(bottomShadow).toHaveStyle({ opacity: "1" });
 
     // When: scrolling updates scroll shadow state, re-rendering the Wizard

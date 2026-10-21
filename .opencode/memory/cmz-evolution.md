@@ -2,6 +2,19 @@
 
 ## Evolution History
 
+### 2026-10-11 - Header Micro-UX & DOM State Inspection
+
+**Type**: Micro-UX, Accessibility, and State Inspection Consolidation
+**Changes**:
+- Enhanced `Header` component in `apps/web/src/components/Header.tsx` with explicit DOM state tracking attributes: `data-scrolled`, `data-reduced-motion`, `data-shortcuts-discovered`, and `data-has-shortcuts`.
+- Added state tracking assertions in `Header.test.tsx` verifying DOM attribute propagation.
+- Updated `docs/active-tasks.md` with StorX entry.
+- All 21 tests pass in `Header.test.tsx`.
+- Verified 0 typecheck errors, 0 ESLint errors/warnings across workspaces.
+
+**Rationale**: Provide clear DOM state inspection markers on the application header for automated accessibility and UI state testing.
+
+
 ### 2026-08-25 - TypeIndicator State & Shared Config Consolidation
 
 **Type**: Micro-UX, Modularity, and State Tracking Consolidation

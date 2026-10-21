@@ -11,7 +11,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State (Sep 2026)
 
-**Last Review**: 2026-09-26 (consolidation pass)  
+**Last Review**: 2026-09-29 (RepoKeeper retention purge: 98 current + 13 archive BroCula reports >30d removed; `docs/audits/README.md`, `archive/CONSOLIDATED-README.md`, `README.md` BroCula range synced; prior status carried forward, re-verified this cycle before PR)  
 **Status**: ✅ All quality gates clean (typecheck ✅ lint ✅ 0/0 build ✅ tests ✅ audit 0 vulns ✅ scan:secrets ✅ validate:wrangler ✅)
 
 ### Known Documentation Drift (Resolved)
@@ -34,7 +34,7 @@ All previously tracked drift items resolved in the Sep 2026 consolidation pass:
 |----|------|-----------------|----------|
 | **DOC-001** | CI Workflows | `on-pull.yml` still lacks `issues: write`; blocks Issue Manager automation | Medium |
 | **DOC-002** | CI Workflows | All 5 workflows lack `workflows: write`; blocks self-healing gatekeeper workflows | Medium |
-| **DOC-003** | API Docs | `docs/api-documentation.md` endpoint list incomplete vs. actual 32 endpoints | Low |
+| **DOC-003** | API Docs | `docs/api-documentation.md` endpoint list verified sync: 14 paths / 15 operations (was tracked as incomplete vs. stale "32 endpoints" claim) | Low |
 | **DOC-004** | CHANGELOG | 1,036 lines of cycle logs; consider moving to archive | Low |
 
 ---

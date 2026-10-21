@@ -26,13 +26,19 @@
 
 import {
   ANIMATION_DIRECTIONS,
-  SHORTCUT_DESCRIPTIONS,
-  UI_MESSAGES,
-  FRAMER_TYPE,
+  ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_REQUIRED_VALUES,
+  ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  FRAMER_TYPE,
+  ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   RATIO_LIMITS,
+  SHORTCUT_DESCRIPTIONS,
+  UI_MESSAGES,
   UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
@@ -69,6 +75,7 @@ import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
@@ -77,6 +84,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 import { getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 interface StepInfoProps {
   direction?: AnimationDirection;
@@ -90,6 +98,7 @@ const DESCRIPTION_WARNING_THRESHOLD = Math.floor(
 export const StepInfo = memo(function StepInfo({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepInfoProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const targetAudienceInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
@@ -168,6 +177,12 @@ export const StepInfo = memo(function StepInfo({
   // One-shot pulse on the Next button when form becomes valid; skip initial mount
   const prevCanProceed = useRef<boolean | null>(null);
   const [showReadyPulse, setShowReadyPulse] = useState(false);
+  // Polite live-region announcement when the form transitions from incomplete
+  // to complete. Sighted users get the ready pulse above; screen-reader users
+  // need an explicit spoken cue that the Next button is now enabled, otherwise
+  // the disabled→enabled transition is silent. Auto-clears so the live region
+  // does not accumulate stale text (mirrors clearAnnouncement below).
+  const [formReadyAnnouncement, setFormReadyAnnouncement] = useState("");
 
   useEffect(() => {
     if (prevCanProceed.current === null) {
@@ -176,12 +191,21 @@ export const StepInfo = memo(function StepInfo({
     }
     if (canProceed && !prevCanProceed.current) {
       setShowReadyPulse(true);
+      setFormReadyAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.FORM_READY_ANNOUNCEMENT);
       const timer = setTimeout(() => setShowReadyPulse(false), UI_TIMEOUTS.READY_PULSE_MS);
       prevCanProceed.current = canProceed;
       return () => clearTimeout(timer);
     }
     prevCanProceed.current = canProceed;
   }, [canProceed]);
+
+  // Clear the form-ready announcement after screen readers have had time to
+  // announce it, preventing stale text from lingering in the live region.
+  useEffect(() => {
+    if (!formReadyAnnouncement) return;
+    const timer = setTimeout(() => setFormReadyAnnouncement(""), TIMEOUTS.LIVE_REGION_CLEAR);
+    return () => clearTimeout(timer);
+  }, [formReadyAnnouncement]);
 
   const formProgress = useMemo(() => {
     const requiredFields = [
@@ -296,23 +320,33 @@ export const StepInfo = memo(function StepInfo({
       aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
     >
       {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
       </kbd>
       <svg
         className={CSS_CLASSES.ICON_HOVER_SHIFT}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
+        fill={SVG_ICON_DEFAULTS.FILL_NONE}
+        stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+        viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+        aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <path
+          strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+          strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+          strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+          d={ICON_PATHS.CHEVRON_RIGHT}
+        />
       </svg>
     </RippleButton>
   );
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-can-proceed={canProceed ? "true" : "false"}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>
@@ -332,16 +366,16 @@ export const StepInfo = memo(function StepInfo({
                 >
                   <svg
                     className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
+                    fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                    stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                    viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                    aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                      strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                      strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
+                      d={ICON_PATHS.TRASH}
                     />
                   </svg>
                   {UI_CONTENT.BUTTONS.CLEAR_ALL}
@@ -358,7 +392,7 @@ export const StepInfo = memo(function StepInfo({
             </div>
             <span
               className="text-dark-400 tabular-nums flex items-center gap-0.5"
-              aria-live="polite"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
                 formProgress.completed,
                 formProgress.total
@@ -389,7 +423,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex justify-between items-center">
             <label htmlFor="projectName" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
-              <span className="text-accent-pink" aria-hidden="true">
+              <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
               </span>
               <ValidationCheckmark
@@ -416,6 +450,14 @@ export const StepInfo = memo(function StepInfo({
               name="projectName"
               type="text"
               autoComplete="off"
+              // Mobile keyboard hygiene: project names are often technical
+              // identifiers. Without these, iOS/Android autocapitalize the
+              // first letter and Safari autocorrect rewrites tokens
+              // ("auth" -> "author"), mangling the typed name. Matches the
+              // spellCheck={false} precedent in KeyboardShortcutsModal.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               enterKeyHint="next"
               dir="auto"
               value={projectName}
@@ -437,7 +479,7 @@ export const StepInfo = memo(function StepInfo({
               }`}
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
-              aria-required="true"
+              aria-required={ARIA_REQUIRED_VALUES.TRUE}
               animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
@@ -489,7 +531,7 @@ export const StepInfo = memo(function StepInfo({
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
                 <motion.p
                   id="projectName-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -504,7 +546,7 @@ export const StepInfo = memo(function StepInfo({
             {projectNameErrorVisible && (
               <motion.p
                 id="projectName-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -522,7 +564,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex justify-between items-center">
             <label htmlFor="description" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
-              <span className="text-accent-pink" aria-hidden="true">
+              <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
               </span>
               <ValidationCheckmark
@@ -571,7 +613,7 @@ export const StepInfo = memo(function StepInfo({
               }`}
               maxLength={FORM_LIMITS.DESCRIPTION.MAX}
               required
-              aria-required="true"
+              aria-required={ARIA_REQUIRED_VALUES.TRUE}
               aria-invalid={isDescriptionInvalid || descriptionErrorVisible || undefined}
               animate={descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
@@ -641,7 +683,7 @@ export const StepInfo = memo(function StepInfo({
               description.length < FORM_LIMITS.DESCRIPTION.MAX && (
                 <motion.p
                   id="description-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -656,7 +698,7 @@ export const StepInfo = memo(function StepInfo({
             {descriptionErrorVisible && (
               <motion.p
                 id="description-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -820,11 +862,24 @@ export const StepInfo = memo(function StepInfo({
           clear-all button unmounts from the DOM without a visible confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {clearAnnouncement}
+      </div>
+      {/* Screen reader announcement for form-ready transition — parity with
+          the visual ready pulse on the Next button, so screen-reader users
+          hear that the form became submittable. Polite (not assertive): this
+          is a positive status update, not an urgent alert. */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="form-ready-announcer"
+      >
+        {formReadyAnnouncement}
       </div>
     </motion.div>
   );

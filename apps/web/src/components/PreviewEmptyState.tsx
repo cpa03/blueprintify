@@ -13,14 +13,18 @@ import * as motion from "framer-motion/m";
 import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
-  EDITOR_FILENAMES,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
   DISPLAY_SYMBOLS,
-  FRAMER_TYPE,
+  EDITOR_FILENAMES,
   EMPTY_STATE_VALUES,
+  FRAMER_TYPE,
 } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 import {
   EMPTY_STATE_CONFIG,
   SPRING_CONFIG,
@@ -69,11 +73,12 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      role="status"
-      aria-live="polite"
+      role={ARIA_ROLES.STATUS}
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
       data-tab={tab}
       data-has-sibling-content={siblingTabHasContent}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
     >
       <motion.div className="relative mb-6" variants={fadeInUp}>
         <motion.div
@@ -89,17 +94,17 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
         <div className="relative">
           <motion.div
             className="w-20 h-24 glass-card rounded-lg border border-dashed border-dark-500 flex flex-col items-center justify-center"
-            animate={floatingAnimation}
+            animate={shouldReduceMotion ? {} : floatingAnimation}
           >
             <motion.span
               className="mb-1"
-              animate={{ scale: [1, 1.1, 1] }}
+              animate={shouldReduceMotion ? {} : { scale: [1, 1.1, 1] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: Infinity,
+                repeat: shouldReduceMotion ? 0 : Infinity,
                 ease: EASING.easeInOut,
               }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <Icon
                 name={tab === EDITOR_TABS.BLUEPRINT ? "document" : "clipboard"}
@@ -119,19 +124,19 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SMOOTH,
               }}
-              aria-hidden="true"
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <svg
                 className="w-3.5 h-3.5 text-accent-emerald"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                fill={SVG_ICON_DEFAULTS.FILL_NONE}
+                stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
+                viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
               >
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M5 13l4 4L19 7"
+                  strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
+                  strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
+                  strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
+                  d={ICON_PATHS.CHECKMARK}
                 />
               </svg>
             </motion.div>
@@ -151,9 +156,13 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           <>
             <motion.span
               className="inline-flex"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: EASING.easeInOut }}
-              aria-hidden="true"
+              animate={shouldReduceMotion ? {} : { opacity: [0.5, 1, 0.5] }}
+              transition={{
+                duration: ANIMATION.FLOAT,
+                repeat: shouldReduceMotion ? 0 : Infinity,
+                ease: EASING.easeInOut,
+              }}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <Icon name="sparkles" className="w-4 h-4" />
             </motion.span>{" "}
@@ -176,7 +185,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
             >
               <motion.span
-                aria-hidden="true"
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 animate={shouldReduceMotion ? {} : { x: [0, -2, 0, 2, 0] }}
                 transition={{
                   duration: ANIMATION.FLOATING_DURATION,

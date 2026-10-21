@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DIALOG_STATE_VALUES } from "@blueprint/shared";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -29,6 +30,7 @@ describe("ConfirmDialog", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useReducedMotion).mockReturnValue(false);
   });
 
   it("renders when isOpen is true", () => {
@@ -152,6 +154,19 @@ describe("ConfirmDialog", () => {
     fireEvent.keyDown(document, { key: "Enter", shiftKey: true });
 
     expect(onConfirm).not.toHaveBeenCalled();
+  });
+
+  it("marks data-reduced-motion and keeps actions usable when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<ConfirmDialog {...defaultProps} />);
+
+    // whileHover/whileTap are stripped by the framer-motion mock, so assert via data attribute + click.
+    expect(screen.getByRole("dialog")).toHaveAttribute("data-reduced-motion", "true");
+
+    fireEvent.click(screen.getByText("Confirm"));
+
+    expect(defaultProps.onConfirm).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
   });
 
   it("does not confirm when Enter is pressed while the Cancel button has focus", () => {

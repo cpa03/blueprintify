@@ -1,4 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
+import { PLAYWRIGHT_DEFAULTS } from "@blueprint/shared";
 import fs from "fs";
 
 /**
@@ -82,14 +83,22 @@ test("check wizard flow for console errors/warnings", async ({ page }) => {
     .locator("button, a")
     .filter({ hasText: /start|begin|new blueprint|get started/i })
     .first();
-  if (await startBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+  if (
+    await startBtn
+      .isVisible({ timeout: PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS })
+      .catch(() => false)
+  ) {
     await startBtn.click();
     await page.waitForTimeout(2000);
   }
 
   // Try to interact with form elements
   const inputs = page.locator("input, textarea, select").first();
-  if (await inputs.isVisible({ timeout: 2000 }).catch(() => false)) {
+  if (
+    await inputs
+      .isVisible({ timeout: PLAYWRIGHT_DEFAULTS.SHORT_VISIBILITY_TIMEOUT_MS })
+      .catch(() => false)
+  ) {
     await inputs.fill("Test Project");
     await page.waitForTimeout(500);
   }
