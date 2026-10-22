@@ -38,6 +38,7 @@ import {
   WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
@@ -300,7 +301,7 @@ export const StepReview = memo(function StepReview({
                     shouldReduceMotion
                       ? undefined
                       : {
-                          hidden: { opacity: 0, scale: 0.9 },
+                          hidden: { opacity: 0, scale: ANIMATION_SCALE.MODAL },
                           visible: {
                             opacity: 1,
                             scale: 1,

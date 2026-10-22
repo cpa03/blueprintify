@@ -14,7 +14,13 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES, SVG_ICON_DEFAULTS } from "@blueprint/shared";
+import {
+  ANIMATION_SCALE,
+  FRAMER_TYPE,
+  TIME_UNITS,
+  COPY_STATE_VALUES,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -217,8 +223,8 @@ function AnimatedCopyButtonComponent({
         {isCopied && (
           <motion.div
             className="absolute inset-0 rounded-lg border-2 border-accent-emerald pointer-events-none"
-            initial={{ scale: 0.8, opacity: 0.8 }}
-            animate={{ scale: 1.3, opacity: 0 }}
+            initial={{ scale: ANIMATION_SCALE.STANDARD, opacity: 0.8 }}
+            animate={{ scale: ANIMATION_SCALE.PARTICLE_EXPAND, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
           />
@@ -251,9 +257,9 @@ function AnimatedCopyButtonComponent({
             <motion.span
               key="copied"
               className="flex items-center gap-2"
-              initial={{ opacity: 0, y: 8, scale: 0.9 }}
+              initial={{ opacity: 0, y: 8, scale: ANIMATION_SCALE.MODAL }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.9 }}
+              exit={{ opacity: 0, y: -8, scale: ANIMATION_SCALE.MODAL }}
               transition={{
                 type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SNAPPY,

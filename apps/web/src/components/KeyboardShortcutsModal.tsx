@@ -26,6 +26,7 @@ import {
   ANIMATION,
 } from "../config/constants";
 import {
+  ANIMATION_SCALE,
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
@@ -299,9 +300,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: 20 }}
             transition={{
               type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.GENTLE,
@@ -387,9 +388,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   <AnimatePresence>
                     {searchQuery && (
                       <motion.button
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                         transition={{ duration: ANIMATION.FAST }}
                         onClick={handleClearSearch}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white
@@ -453,7 +454,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                               layout
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: 10, scale: 0.95 }}
+                              exit={{ opacity: 0, x: 10, scale: ANIMATION_SCALE.SUBTLE }}
                               transition={{
                                 delay:
                                   categoryIndex * ANIMATION.STAGGER +
@@ -532,7 +533,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       <motion.span
                         key={filteredShortcuts.length}
                         className="tabular-nums inline-block"
-                        initial={{ scale: 0.5, opacity: 0 }}
+                        initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{
                           type: FRAMER_TYPE.SPRING,
