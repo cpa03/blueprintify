@@ -86,23 +86,26 @@ describe("Header", () => {
     expect(logoIcon).toHaveAttribute("viewBox", "0 0 24 24");
   });
 
-  it("renders the GitHub button", () => {
+  it("renders the GitHub control as a real link (not a button + window.open)", () => {
     render(<Header />);
 
-    const githubButton = screen.getByRole("button", {
+    const githubLink = screen.getByRole("link", {
       name: /view on github/i,
     });
-    expect(githubButton).toBeInTheDocument();
-    expect(githubButton).toHaveAttribute("aria-label", "View on GitHub (opens in new tab)");
+    expect(githubLink).toBeInTheDocument();
+    expect(githubLink).toHaveAttribute("aria-label", "View on GitHub (opens in new tab)");
+    expect(githubLink).toHaveAttribute("href", expect.stringContaining("github.com"));
+    expect(githubLink).toHaveAttribute("target", "_blank");
+    expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
   });
 
-  it("renders GitHub icon", () => {
+  it("renders GitHub icon inside the link", () => {
     render(<Header />);
 
-    const githubButton = screen.getByRole("button", {
+    const githubLink = screen.getByRole("link", {
       name: /view on github/i,
     });
-    const githubIcon = githubButton.querySelector("svg");
+    const githubIcon = githubLink.querySelector("svg");
     expect(githubIcon).toBeInTheDocument();
     expect(githubIcon).toHaveAttribute("fill", "currentColor");
   });

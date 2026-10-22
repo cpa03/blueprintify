@@ -227,10 +227,19 @@ function HeaderComponent({
               </RippleButton>
             </KeyboardShortcutTooltip>
           )}
-          <RippleButton
-            onClick={() => window.open(EXTERNAL_URLS.GITHUB, "_blank", "noopener,noreferrer")}
-            className="btn-ghost flex items-center gap-2 group"
-            ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
+          {/* Native anchor (not a button + window.open): preserves middle-click /
+              Cmd+Ctrl+click new-tab behavior, right-click "Open Link in New Tab"
+              and "Copy Link Address", the browser status-bar URL preview on hover,
+              and is announced as a "link" (not a button) by screen readers —
+              matching the navigation affordance of the external destination. */}
+          <a
+            href={EXTERNAL_URLS.GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-ghost flex items-center gap-2 group relative overflow-hidden
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
+                       focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
+            aria-label={ACCESSIBILITY_LABELS.HEADER.GITHUB}
             title={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
             <svg
@@ -249,7 +258,7 @@ function HeaderComponent({
               name="externalLink"
               className="w-3 h-3 opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5"
             />
-          </RippleButton>
+          </a>
         </nav>
       </div>
 
