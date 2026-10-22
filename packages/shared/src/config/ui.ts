@@ -1125,6 +1125,20 @@ export const CELEBRATION_STATE_VALUES = {
 } as const;
 
 /**
+ * Glow Display State Values
+ * Centralized state tracking values for saved indicator green glow pulse state (LastSavedIndicator).
+ * Flexy says: No hardcoded "active"/"idle" glow state strings!
+ * Usage: import { GLOW_STATE_VALUES } from "@blueprint/shared";
+ *        data-saved-glow={showSavedGlow ? GLOW_STATE_VALUES.ACTIVE : GLOW_STATE_VALUES.IDLE}
+ */
+export const GLOW_STATE_VALUES = {
+  /** Glow active state identifier */
+  ACTIVE: "active" as const,
+  /** Glow idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Step Indicator Display State Values
  * Centralized state tracking values for wizard navigation indicators (StepIndicator).
  * Flexy says: No hardcoded "active"/"completed"/"locked"/"available" strings in StepIndicator!
