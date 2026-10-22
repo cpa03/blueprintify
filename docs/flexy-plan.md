@@ -32,7 +32,7 @@ Deliberately skipped: `scale: 0` / `scale: 1` (value semantics / identity states
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-200-animation-scale` | refactor(flexy): centralize scalar animation scale values into shared config (Iteration 200) |
+| #3849 | `flexy/iteration-200-animation-scale` | refactor(flexy): centralize scalar animation scale values into shared config (Iteration 200) |
 
 ### ✅ Flexy Iteration 199: Centralize Zero-Duration & Infinite-Repeat Transition Literals
 
