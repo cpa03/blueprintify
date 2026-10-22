@@ -1,7 +1,9 @@
 import { TOAST_TYPES } from "@blueprint/shared/config";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ToastContainer } from "./Toast";
+import { useReducedMotion } from "../hooks/useReducedMotion";
+import { TOAST_CONFIG } from "../config/constants";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -12,6 +14,10 @@ vi.mock("framer-motion", () => ({
     span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
+}));
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
 }));
 
 const mockToasts: Array<{
@@ -44,7 +50,12 @@ vi.mock("../store/toast", () => ({
 describe("ToastContainer", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useReducedMotion).mockReturnValue(false);
     mockToasts.length = 0;
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("renders nothing when toasts array is empty", () => {
@@ -169,6 +180,19 @@ describe("ToastContainer", () => {
     expect(region).toHaveAttribute("data-reduced-motion", "false");
   });
 
+  it("keeps the container clear of the home-indicator gesture zone via safe-area padding", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Safe area toast",
+      type: TOAST_TYPES.INFO,
+    });
+
+    render(<ToastContainer />);
+
+    const region = screen.getByRole("region");
+    expect(region).toHaveClass("pb-[env(safe-area-inset-bottom)]");
+  });
+
   it("renders different toast types correctly", () => {
     mockToasts.push(
       { id: "toast-1", message: "Success toast", type: TOAST_TYPES.SUCCESS },
@@ -287,5 +311,47 @@ describe("ToastContainer", () => {
     } finally {
       dialog.remove();
     }
+  });
+
+  it("ticks the countdown down in coarse steps under reduced motion", () => {
+    vi.useFakeTimers();
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+
+    const duration = 2000;
+    mockToasts.push({
+      id: "toast-1",
+      message: "Reduced motion toast",
+      type: TOAST_TYPES.INFO,
+      duration,
+    });
+
+    render(<ToastContainer />);
+
+    const toastStatus = screen
+      .getAllByRole("status")
+      .find((el) => el.getAttribute("aria-live") === "polite");
+    expect(toastStatus).toHaveAttribute("data-progress", "100");
+    expect(toastStatus).toHaveAttribute("data-reduced-motion", "true");
+
+    act(() => {
+      vi.advanceTimersByTime(TOAST_CONFIG.REDUCED_MOTION_PROGRESS_STEP_MS);
+    });
+    expect(toastStatus).toHaveAttribute(
+      "data-progress",
+      String(Math.round(100 * (1 - TOAST_CONFIG.REDUCED_MOTION_PROGRESS_STEP_MS / duration)))
+    );
+
+    act(() => {
+      vi.advanceTimersByTime(TOAST_CONFIG.REDUCED_MOTION_PROGRESS_STEP_MS);
+    });
+    expect(toastStatus).toHaveAttribute(
+      "data-progress",
+      String(Math.round(100 * (1 - (2 * TOAST_CONFIG.REDUCED_MOTION_PROGRESS_STEP_MS) / duration)))
+    );
+
+    act(() => {
+      vi.advanceTimersByTime(duration);
+    });
+    expect(toastStatus).toHaveAttribute("data-progress", "0");
   });
 });

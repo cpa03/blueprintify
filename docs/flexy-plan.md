@@ -4,6 +4,113 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 199: Centralize Zero-Duration & Infinite-Repeat Transition Literals
+
+**Problem**: 41 hardcoded framer-motion transition literals remained across 16 web files, even though `ANIMATION_DEFAULTS.ZERO_DURATION` already existed: 32× raw `repeat: Infinity` (including 2× inside the centralized `utils/motion.ts` floating/pulse animations themselves), 2× `repeat: shouldReduceMotion ? 0 : Infinity`, 6× raw `{ duration: 0 }` reduced-motion bypass objects (ScrollToTop, ValidationCheckmark, StepReview, EditorToolbar ×2, TypeIndicator), and 1× scalar `shouldReduceMotion ? 0 : ANIMATION.FAST` (HeadingAnchor). `ANIMATION_REPEAT` only defined `ATTENTION_PULSE` and was **duplicated** — one copy in `packages/shared/src/config/animation.ts`, a second identical copy in `apps/web/src/config/constants/ui.ts` (drift risk). Flexy says: no hardcoded repeat counts or zero-duration transition objects!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | `ANIMATION_REPEAT` + `NONE` (0) + `INFINITE` (Infinity) — completes the repeat-count matrix alongside `ATTENTION_PULSE` |
+| `packages/shared/src/index.ts` | Exported `ANIMATION_REPEAT` on the root barrel (was missing; `ANIMATION_DEFAULTS` was already there) |
+| `packages/shared/src/config.test.ts` | +2 tests (NONE=0, INFINITE=Infinity); integer-assertion test now excludes `INFINITE`; entry count 1 → 3 |
+| `apps/web/src/config/constants/ui.ts` | Removed duplicate local `ANIMATION_REPEAT` definition; now re-exports the shared single source |
+| `apps/web/src/utils/motion.ts` | 2× `repeat: Infinity` → `ANIMATION_REPEAT.INFINITE` (floatingAnimation, pulseAnimation) |
+| 12 component files in `apps/web/src/components/` | 30× `repeat: Infinity` → `ANIMATION_REPEAT.INFINITE` (StepGenerating ×8, EditorEmptyState ×6, EditorHeader ×4, ScrollProgress ×2, ScrollToTop ×2, EditorToolbar ×2, ErrorFallback ×2, LastSavedIndicator, PreviewEmptyState, PageScrollProgressBar, TypeIndicator) |
+| `apps/web/src/components/PreviewEmptyState.tsx` | 2× `shouldReduceMotion ? 0 : Infinity` → `ANIMATION_REPEAT.NONE : ANIMATION_REPEAT.INFINITE` |
+| `apps/web/src/components/ScrollToTop.tsx` + `ValidationCheckmark.tsx` + `editor/EditorToolbar.tsx` (×2) + `TypeIndicator.tsx` | 5× `? { duration: 0 }` → `? ANIMATION_DEFAULTS.ZERO_DURATION` |
+| `apps/web/src/components/wizard/StepReview.tsx` | 1× `transition: { duration: 0 }` → `transition: ANIMATION_DEFAULTS.ZERO_DURATION` |
+| `apps/web/src/components/HeadingAnchor.tsx` | 1× scalar `shouldReduceMotion ? 0 : ANIMATION.FAST` → `? ANIMATION_DEFAULTS.ZERO_DURATION.duration : …` |
+| `apps/web/src/hooks/useReducedMotion.ts` | JSDoc usage example now teaches the `ANIMATION_DEFAULTS.ZERO_DURATION` pattern |
+| `docs/flexy-plan.md` | Iteration 199 entry |
+
+Deliberately skipped: `getAnimationDuration()` helper's internal scalar `0` return (it *is* the shared semantic implementation); `shouldReduceMotion ? {}` empty animate/initial targets (object identity semantics per-usage, no established constant); `Editor.tsx` opacity scalar ternaries (`? 0 : … ? 0 : 1` — value semantics, not transition config); test-file assertions (tests assert rendered output).
+
+## Verification (Iteration 199)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (19 touched files) — clean
+- ✅ `npm run test:all` — **1,331 web + 555 api + 950 shared = 2,836 tests passing**
+- ✅ Remaining raw `repeat: Infinity` literals in web/shared source (excluding tests & dist) — **0 occurrences**
+- ✅ Remaining raw `{ duration: 0 }` transition object literals in web components — **0 occurrences**
+
+## PR (Iteration 199)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-199-zero-duration-infinite-repeat` | refactor(flexy): centralize zero-duration & infinite-repeat transition literals into shared config (Iteration 199) |
+
+### ✅ Flexy Iteration 198: Centralize SVG Icon Paths & Color-Mix Opacity Percentages
+
+**Problem**: 56+ hardcoded SVG path `d="..."` attributes across 20+ web component files duplicated common icons (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, etc.) bypassing the existing `ICON_PATHS` constant (which only had 3 entries: CHEVRON_RIGHT, BRAND_LOGO, GITHUB). Additionally, 5 hardcoded `color-mix(in srgb, ... N%, transparent)` opacity percentages (10%, 12%, 18%, 25%) appeared across StepStack, PageScrollProgressBar, and Toast components with no centralized constants. Flexy says: no hardcoded SVG path literals or color-mix percentages!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added 16 new `ICON_PATHS` entries (CHEVRON_LEFT/DOWN/UP, CHECKMARK, EDIT, REFRESH, WARNING, TRASH, CLOSE, EYE, USER, ZAP, SEARCH, COPY, EXTERNAL_LINK, HELP) — total 19 entries; added `COLOR_MIX_OPACITY` (SUBTLE 10%, MEDIUM 12%, GLOW 18%, HIGHLIGHT 25%, PROMINENT 30%) |
+| `packages/shared/src/index.ts` | Exported `COLOR_MIX_OPACITY` on the root barrel |
+| `packages/shared/src/config.test.ts` | +14 tests: 10 ICON_PATHS value assertions + uniqueness check + entry count (19); 7 COLOR_MIX_OPACITY value assertions + entry count (5) + percentage format check |
+| 22 files in `apps/web/src/components/` | Replaced 58 hardcoded SVG path `d="..."` attributes with `ICON_PATHS.*` constants (checkmark ×13, chevron-left ×5, edit ×5, refresh ×4, warning ×5, trash ×2, close ×2, eye ×2, user ×4, chevron-down/up ×2, zap ×2) |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.HIGHLIGHT` + `COLOR_MIX_OPACITY.MEDIUM` |
+| `apps/web/src/components/Toast.tsx` | 2× color-mix percentages → `COLOR_MIX_OPACITY.GLOW` + `COLOR_MIX_OPACITY.SUBTLE` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | 1× color-mix percentage → `COLOR_MIX_OPACITY.HIGHLIGHT` |
+| `docs/flexy-plan.md` | Iteration 198 entry |
+
+Deliberately skipped: WiFi-off icon path in OfflineBanner (unique one-off path, not reusable); gradient paint refs (`fill="url(#...)"`); test file assertions (tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 198)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (8.93s) — clean
+- ✅ `npm run test --workspace=@blueprint/shared` — **941 tests passing** (+14 new)
+- ✅ `npm run test --workspace=apps/web` — **1,321 tests passing**
+- ✅ Remaining raw SVG path `d="..."` literals for the 16 new icons (excluding tests, unique one-offs & comments) — **0 occurrences**
+- ✅ Remaining raw color-mix percentage literals — **0 occurrences**
+
+## PR (Iteration 198)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-198-svg-paths-color-mix` | refactor(flexy): centralize SVG icon paths & color-mix opacity percentages into shared config (Iteration 198) |
+
+### ✅ Flexy Iteration 197: Centralize ARIA Relationship DOM Element IDs
+
+**Problem**: 29 hardcoded DOM element ID literals across 9 web files duplicated every `id=` ↔ `aria-labelledby`/`aria-describedby`/`aria-controls`/`htmlFor`/skip-link `href`+`data-target` pair — renaming either side alone silently breaks the ARIA relationship, and no `DOM_ELEMENT_IDS` constant existed. Examples: `editor-panel` (1 `id` + 3 `aria-controls`), `main-content` (1 `id` + skip-link `href`/`data-target`), plus 11 label/description pairs (ConfirmDialog, KeyboardShortcutsModal, OfflineBanner, Header, StepFeatures, StepStack, SkipLink). Flexy says: no hardcoded DOM element ID literals!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added `DOM_ELEMENT_IDS` — 13 IDs (`MAIN_CONTENT`, `EDITOR_PANEL`, `CONFIRM_DIALOG_TITLE/DESCRIPTION`, `HEADER_BRAND_SCROLL_HINT`, `KEYBOARD_SHORTCUTS_TITLE/TIP`, `OFFLINE_BANNER_DESC`, `FEATURE_INPUT`, `FEATURE_INPUT_HINT`, `ADDED_FEATURES_LABEL`, `SUGGESTIONS_LABEL`, `SELECTED_TECH_LABEL`) with drift-prevention contract docblock |
+| `apps/web/src/config/constants/accessibility.test.ts` | +2 tests: 13 value assertions + uniqueness check (Set size 13) |
+| `apps/web/src/App.tsx` | 4 literals: `main-content` id, `editor-panel` id + 2× `aria-controls` |
+| `apps/web/src/components/ShowEditorButton.tsx` | 1 literal: `aria-controls` |
+| `apps/web/src/components/ConfirmDialog.tsx` | 4 literals: 2× `id` + `aria-labelledby` + `aria-describedby` |
+| `apps/web/src/components/Header.tsx` | 2 literals: hint `id` + `aria-describedby` |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 4 literals: 2× `id` + `aria-labelledby` + `aria-describedby` |
+| `apps/web/src/components/OfflineBanner.tsx` | 2 literals: desc `id` + `aria-describedby` |
+| `apps/web/src/components/SkipLink.tsx` | 2 literals: `href="#main-content"` → template literal + `data-target` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 8 literals: `htmlFor`, 4× `id`, `aria-describedby`, 2× `aria-labelledby` |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2 literals: label `id` + `aria-labelledby` |
+| `docs/flexy-plan.md` | Iteration 197 entry |
+
+Deliberately skipped: dynamic/template IDs (`tab-${activeTab}`, `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`); variable-based `aria-describedby` (AnimatedCopyButton, StepInfo); `main.tsx` `getElementById("root"/"skeleton-loader")` (paired with `index.html`, which cannot import TS constants); component-test `toHaveAttribute` assertions (Iteration 194/196 precedent — tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 197)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.74s) + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check` (11 touched files) — clean
+- ✅ `npm run test:all` — **1,319 web + 550 api + 926 shared = 2,795 tests passing**
+- ✅ Remaining raw `id=`/`htmlFor`/`data-target`/`aria-labelledby`/`aria-describedby`/`aria-controls`/`href="#main-content"` literals for the 13 IDs (excluding tests, dynamic templates & comments) — **0 occurrences**
+
+## PR (Iteration 197)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3824 | `flexy/iteration-197-aria-rel-dom-ids` | refactor(flexy): centralize ARIA relationship DOM element IDs into config (Iteration 197) |
 
 ### ✅ Flexy Iteration 186: Centralize Agent Model Fallback Hierarchy into Single Source of Truth
 
@@ -345,6 +452,41 @@ Affected files: ErrorFallback, Editor, KeyboardShortcutsModal, MarkdownRenderer,
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | #3659 | `flexy/iteration-186-deploy-proxy-modularize` | refactor(flexy): centralize deployment origins, proxy routing & API-key fallback into shared config (Iteration 186) |
+
+### ✅ Flexy Iteration 186: Centralize Time Helpers, Token Codec Literals, Hex Pad Char & Empty-State Aria-Label
+
+**Problem**: Remaining hardcoded values spanned three fronts. API: 2× `Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND)` duplicating epoch-seconds math (share token issue/verify), 3× `"0"` hex pad chars bypassing `CRYPTO_CONFIG`, base64url `"."`/`":"`/`"+"`/`"-"`/`"/"`/`"_"` delimiters plus `parseInt(..., 10)` radix and `|| ""`/`|| "0"` fallbacks inline in the verify-token codec, and `logger.ts` shadowing the imported `timestamp()` helper with a `const timestamp = Date.now()` local. Shared: no single source of truth for token codec or hex pad char. Web: `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded time math, token delimiters, pad chars, or aria-labels!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.HEX_PAD_CHAR` (`"0"`) |
+| `packages/shared/src/config/storage.ts` | Added `SHARE_TOKEN_CODEC` (`PAYLOAD_SEPARATOR`/`FIELD_SEPARATOR`/`EXPIRY_RADIX`/`MISSING_*_FALLBACK`/`BASE64_*` mapping) |
+| `packages/shared/src/index.ts` | Exported `SHARE_TOKEN_CODEC` on the root export |
+| `packages/shared/src/config.test.ts` | Added `SHARE_TOKEN_CODEC` (6 tests) + `HEX_PAD_CHAR` (1 test) value assertions |
+| `apps/api/src/errors.ts` | Added `nowMs()` + `nowSeconds()` helpers alongside `timestamp()` |
+| `apps/api/src/routes/share.ts` | Replaced 2× epoch-seconds math with `nowSeconds()`; 3× `"0"` with `HEX_PAD_CHAR`; codec delimiters/radix/fallbacks with `SHARE_TOKEN_CODEC` refs (byte-identical output) |
+| `apps/api/src/middleware/logger.ts` | Renamed shadowing `timestamp` local to `now`; `Date.now()` ×3 → `nowMs()` |
+| `apps/api/src/config/constants/config-iteration-186.test.ts` | NEW — 5 tests asserting codec values + `nowMs`/`nowSeconds` behavior |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` (`"Editor empty state"`) |
+| `apps/web/src/components/EditorEmptyState.tsx` | Replaced hardcoded `aria-label` with `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` |
+| `apps/web/src/components/EditorEmptyState.test.tsx` | Assertion now references `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` instead of hardcoded string |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npx eslint` on all 11 changed files — zero errors, zero warnings (`--max-warnings 0`)
+- ✅ `npm run build` (web) + `npm run build:api` (wrangler dry-run) — clean
+- ✅ `npx prettier --check` on all changed files — clean
+- ✅ `packages/shared` config tests — **792/792 passing** (incl. 7 new)
+- ✅ `apps/web` EditorEmptyState tests — **13/13 passing**
+- ✅ Token codec byte-equivalence proven via node script (encode/decode/expiry identical)
+- ⚠️ Pre-existing, unrelated failures left untouched: `apps/web` jest-dom matcher types (tracked by PR #3629), `apps/api` controllers Zod-context types (tracked by PR #3628), `apps/api` vitest workerd pool won't start in sandbox (fails identically on unmodified files)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3632 | `flexy/iteration-186-hardcoded-cleanup` | refactor(flexy): centralize time helpers, token codec literals, hex pad char & empty-state aria-label (Iteration 186) |
 
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 

@@ -5,7 +5,11 @@ import { ANIMATION, EASING } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { BANNER_STATE_VALUES } from "@blueprint/shared";
-import { SCROLL_PROGRESS_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import {
+  ANIMATION_REPEAT,
+  SCROLL_PROGRESS_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
+} from "@blueprint/shared/config";
 
 interface ScrollProgressProps {
   scrollContainerRef: React.RefObject<HTMLElement | null>;
@@ -135,12 +139,12 @@ export const ScrollProgress = memo(function ScrollProgress({
               : {
                   opacity: {
                     duration: ANIMATION.SLOW_PULSE,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   },
                   boxShadow: {
                     duration: ANIMATION.SLOW_PULSE,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   },
                 }

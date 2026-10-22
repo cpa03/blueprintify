@@ -37,6 +37,8 @@ import {
   DIRECTION,
 } from "../config/constants";
 import {
+  ANIMATION_DEFAULTS,
+  ANIMATION_REPEAT,
   FRAMER_TYPE,
   MODIFIER_KEYS,
   BANNER_STATE_VALUES,
@@ -289,7 +291,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
               }}
               transition={{
                 duration: ANIMATION.BREATH,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -329,18 +331,20 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 initial={false}
-                // Decorative infinite float: disabled when the user prefers
-                // reduced motion (WCAG 2.3.3) — the arrow stays static while
-                // the button itself remains fully functional.
+                // Respect prefers-reduced-motion (WCAG 2.3.3): the gentle
+                // floating arrow loop is purely decorative, so it stays
+                // static for vestibular-sensitive users while remaining
+                // fully functional. Other pulses in this file already guard
+                // on shouldReduceMotion — this was the one missed loop.
                 animate={
                   shouldReduceMotion ? { y: 0 } : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }
                 }
                 transition={
                   shouldReduceMotion
-                    ? { duration: 0 }
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
                     : {
                         duration: ANIMATION.FLOAT,
-                        repeat: Infinity,
+                        repeat: ANIMATION_REPEAT.INFINITE,
                         ease: EASING.easeInOut,
                       }
                 }

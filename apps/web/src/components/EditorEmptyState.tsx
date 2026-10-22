@@ -23,6 +23,7 @@ import {
 } from "../config/constants";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_ATOMIC_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
@@ -141,7 +142,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               animate={shouldReduceMotion ? {} : { width: ["30%", "80%", "30%"] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
             />
@@ -151,7 +152,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               animate={shouldReduceMotion ? {} : { width: ["60%", "40%", "60%"] }}
               transition={{
                 duration: ANIMATION.BREATH,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
                 delay: ANIMATION_ENTRANCE_DELAYS.SLOW,
               }}
@@ -162,7 +163,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               animate={shouldReduceMotion ? {} : { width: ["80%", "50%", "80%"] }}
               transition={{
                 duration: ANIMATION.DRIFT,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
                 delay: ANIMATION_ENTRANCE_DELAYS.SLOWEST,
               }}
@@ -173,7 +174,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               animate={shouldReduceMotion ? {} : { width: ["40%", "70%", "40%"] }}
               transition={{
                 duration: ANIMATION.DRIFT_SLOW,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
                 delay: ANIMATION_ENTRANCE_DELAYS.THREE_QUARTER,
               }}
@@ -208,7 +209,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                   isCompleted ? "bg-accent-emerald" : isCurrent ? "bg-primary-500" : "bg-dark-600"
                 }`}
                 animate={!shouldReduceMotion && isCurrent ? { scale: [1, 1.3, 1] } : {}}
-                transition={{ duration: ANIMATION.GENTLE_PULSE, repeat: Infinity }}
+                transition={{ duration: ANIMATION.GENTLE_PULSE, repeat: ANIMATION_REPEAT.INFINITE }}
               />
             );
           })}
@@ -236,7 +237,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       >
         <motion.span
           animate={shouldReduceMotion ? {} : { x: [0, 4, 0] }}
-          transition={{ duration: ANIMATION.FLOAT, repeat: Infinity }}
+          transition={{ duration: ANIMATION.FLOAT, repeat: ANIMATION_REPEAT.INFINITE }}
         >
           {DISPLAY_SYMBOLS.ARROW_RIGHT}
         </motion.span>

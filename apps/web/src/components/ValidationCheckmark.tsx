@@ -1,13 +1,13 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { FRAMER_TYPE, VALIDATION_STATE_VALUES } from "@blueprint/shared";
+import { ANIMATION_DEFAULTS, FRAMER_TYPE, VALIDATION_STATE_VALUES } from "@blueprint/shared";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
-import { ARIA_ROLES, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ARIA_ROLES, SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -94,12 +94,12 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={strokeWidth}
-                d="M5 13l4 4L19 7"
+                d={ICON_PATHS.CHECKMARK}
                 initial={shouldReduceMotion ? { opacity: 1 } : { pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={
                   shouldReduceMotion
-                    ? { duration: 0 }
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
                     : {
                         pathLength: {
                           duration: ANIMATION.CHECKMARK_REVEAL,

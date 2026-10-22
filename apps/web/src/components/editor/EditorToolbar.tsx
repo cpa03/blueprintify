@@ -30,7 +30,9 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
+  ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
@@ -63,7 +65,7 @@ import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -246,7 +248,7 @@ function EditorToolbarComponent({
           }}
           transition={
             reducedMotion
-              ? { duration: 0 }
+              ? ANIMATION_DEFAULTS.ZERO_DURATION
               : {
                   type: FRAMER_TYPE.SPRING,
                   ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
@@ -324,10 +326,10 @@ function EditorToolbarComponent({
                   animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
                   transition={
                     reducedMotion
-                      ? { duration: 0 }
+                      ? ANIMATION_DEFAULTS.ZERO_DURATION
                       : {
                           duration: ANIMATION.GENTLE_PULSE,
-                          repeat: Infinity,
+                          repeat: ANIMATION_REPEAT.INFINITE,
                           ease: EASING.linear,
                         }
                   }
@@ -365,7 +367,7 @@ function EditorToolbarComponent({
                   animate={{ opacity: OPACITY_PULSE.HALF_BLINK }}
                   transition={{
                     duration: ANIMATION.SPINNER_ROTATION + ANIMATION.NORMAL,
-                    repeat: Infinity,
+                    repeat: ANIMATION_REPEAT.INFINITE,
                     ease: EASING.easeInOut,
                   }}
                 >
@@ -395,7 +397,7 @@ function EditorToolbarComponent({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
-                    d="M5 13l4 4L19 7"
+                    d={ICON_PATHS.CHECKMARK}
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{
@@ -469,14 +471,17 @@ function EditorToolbarComponent({
             stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
             viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
-            whileHover={ROTATION.HALF}
+            // WCAG 2.3.3: the 180° hover spin is decorative, so it is skipped
+            // when reduced motion is preferred — matching the export spinner
+            // and view-mode indicator guards above.
+            whileHover={reducedMotion ? undefined : ROTATION.HALF}
             transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
             <path
               strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
               strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
               strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              d={ICON_PATHS.REFRESH}
             />
           </motion.svg>
           {EDITOR_LABELS.BUTTONS.NEW_PROJECT}

@@ -75,6 +75,7 @@ import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
@@ -97,6 +98,7 @@ const DESCRIPTION_WARNING_THRESHOLD = Math.floor(
 export const StepInfo = memo(function StepInfo({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepInfoProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const targetAudienceInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
@@ -339,7 +341,12 @@ export const StepInfo = memo(function StepInfo({
   );
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-can-proceed={canProceed ? "true" : "false"}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>
@@ -368,7 +375,7 @@ export const StepInfo = memo(function StepInfo({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      d={ICON_PATHS.TRASH}
                     />
                   </svg>
                   {UI_CONTENT.BUTTONS.CLEAR_ALL}

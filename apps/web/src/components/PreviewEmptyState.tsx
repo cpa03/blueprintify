@@ -14,6 +14,7 @@ import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
@@ -24,7 +25,7 @@ import {
 } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 import {
   EMPTY_STATE_CONFIG,
   SPRING_CONFIG,
@@ -94,14 +95,14 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
         <div className="relative">
           <motion.div
             className="w-20 h-24 glass-card rounded-lg border border-dashed border-dark-500 flex flex-col items-center justify-center"
-            animate={floatingAnimation}
+            animate={shouldReduceMotion ? {} : floatingAnimation}
           >
             <motion.span
               className="mb-1"
-              animate={{ scale: [1, 1.1, 1] }}
+              animate={shouldReduceMotion ? {} : { scale: [1, 1.1, 1] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: Infinity,
+                repeat: shouldReduceMotion ? ANIMATION_REPEAT.NONE : ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -136,7 +137,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
-                  d="M5 13l4 4L19 7"
+                  d={ICON_PATHS.CHECKMARK}
                 />
               </svg>
             </motion.div>
@@ -156,8 +157,12 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           <>
             <motion.span
               className="inline-flex"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: EASING.easeInOut }}
+              animate={shouldReduceMotion ? {} : { opacity: [0.5, 1, 0.5] }}
+              transition={{
+                duration: ANIMATION.FLOAT,
+                repeat: shouldReduceMotion ? ANIMATION_REPEAT.NONE : ANIMATION_REPEAT.INFINITE,
+                ease: EASING.easeInOut,
+              }}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <Icon name="sparkles" className="w-4 h-4" />
@@ -185,7 +190,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 animate={shouldReduceMotion ? {} : { x: [0, -2, 0, 2, 0] }}
                 transition={{
                   duration: ANIMATION.FLOATING_DURATION,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }}
               >

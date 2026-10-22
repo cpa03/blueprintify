@@ -52,6 +52,7 @@ import {
   STAGGER_CONFIG,
   SCALE_PULSE,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
@@ -196,13 +197,13 @@ export const StepFeatures = memo(function StepFeatures({
         {/* Add custom feature */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="feature-input" className="label mb-0">
+            <label htmlFor={DOM_ELEMENT_IDS.FEATURE_INPUT} className="label mb-0">
               {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
               <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
               <span
-                id="feature-input-hint"
+                id={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 className="text-xs text-dark-500 flex items-center gap-1"
               >
                 <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
@@ -216,7 +217,7 @@ export const StepFeatures = memo(function StepFeatures({
             <div className="relative flex-1">
               <input
                 ref={featureInputRef}
-                id="feature-input"
+                id={DOM_ELEMENT_IDS.FEATURE_INPUT}
                 type="text"
                 autoComplete="off"
                 enterKeyHint="done"
@@ -231,7 +232,7 @@ export const StepFeatures = memo(function StepFeatures({
                 }
                 className={`input-field w-full pr-10 ${isAtMaxCount ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 opacity-60 cursor-not-allowed" : newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
-                aria-describedby="feature-input-hint"
+                aria-describedby={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 maxLength={FORM_LIMITS.FEATURE.MAX}
                 readOnly={isAtMaxCount}
                 tabIndex={isAtMaxCount ? -1 : 0}
@@ -285,7 +286,7 @@ export const StepFeatures = memo(function StepFeatures({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    d={ICON_PATHS.WARNING}
                   />
                 </svg>
                 {/* Visible terse message. The richer actionable message is
@@ -306,7 +307,7 @@ export const StepFeatures = memo(function StepFeatures({
         {features.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="label mb-0" id="added-features-label">
+              <label className="label mb-0" id={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}>
                 {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} ({features.length})
               </label>
               <button
@@ -324,7 +325,7 @@ export const StepFeatures = memo(function StepFeatures({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    d={ICON_PATHS.TRASH}
                   />
                 </svg>
                 {UI_CONTENT.BUTTONS.CLEAR_ALL}
@@ -333,7 +334,7 @@ export const StepFeatures = memo(function StepFeatures({
             <div
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.LIST}
-              aria-labelledby="added-features-label"
+              aria-labelledby={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}
             >
               <AnimatePresence mode="popLayout">
                 {features.map((feature, index) => {
@@ -397,7 +398,7 @@ export const StepFeatures = memo(function StepFeatures({
         {!isAtMaxCount && (suggestedNotAdded.length > 0 || showAllAddedMsg) && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="label mb-0" id="suggestions-label">
+              <label className="label mb-0" id={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}>
                 {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
               </label>
               <motion.button
@@ -439,7 +440,7 @@ export const StepFeatures = memo(function StepFeatures({
                           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                           strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                           strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                          d="M5 13l4 4L19 7"
+                          d={ICON_PATHS.CHECKMARK}
                         />
                       </svg>
                       {UI_CONTENT.WIZARD.STEP_FEATURES.ALL_SUGGESTIONS_ADDED}
@@ -463,7 +464,7 @@ export const StepFeatures = memo(function StepFeatures({
             <motion.div
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.GROUP}
-              aria-labelledby="suggestions-label"
+              aria-labelledby={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}
               initial="hidden"
               animate="visible"
               variants={{
@@ -558,7 +559,7 @@ export const StepFeatures = memo(function StepFeatures({
                               strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                               strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                               strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                              d="M5 13l4 4L19 7"
+                              d={ICON_PATHS.CHECKMARK}
                               initial={{ pathLength: 0 }}
                               animate={{ pathLength: 1 }}
                               transition={{
@@ -608,7 +609,7 @@ export const StepFeatures = memo(function StepFeatures({
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                  d="M5 13l4 4L19 7"
+                  d={ICON_PATHS.CHECKMARK}
                 />
               </svg>
               <span className="text-sm">
@@ -648,7 +649,7 @@ export const StepFeatures = memo(function StepFeatures({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M15 19l-7-7 7-7"
+                d={ICON_PATHS.CHEVRON_LEFT}
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_STACK}

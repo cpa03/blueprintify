@@ -34,11 +34,13 @@ import {
   EXTERNAL_URLS,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
+  DOM_ELEMENT_IDS,
   FOCUS_ANNOUNCER,
   TIMEOUTS,
 } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
+import { SAFE_AREA } from "../config/styles";
 import { Icon } from "./Icon";
 import { RippleButton } from "./RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -117,7 +119,7 @@ function HeaderComponent({
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 glass-card backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 glass-card backdrop-blur-xl transition-all duration-300 ${SAFE_AREA.TOP} ${SAFE_AREA.LEFT} ${SAFE_AREA.RIGHT} ${
         isScrolled
           ? "border-b border-dark-600/60 shadow-lg shadow-dark-950/30"
           : "border-b border-dark-700/50"
@@ -141,7 +143,7 @@ function HeaderComponent({
           // button receives focus. The hint lives in a sibling sr-only span
           // rather than inside the button so it doesn't pollute the accessible
           // name computed from the button's visible text content.
-          aria-describedby="header-brand-scroll-hint"
+          aria-describedby={DOM_ELEMENT_IDS.HEADER_BRAND_SCROLL_HINT}
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center animate-logo-breathe pointer-events-none">
             <svg
@@ -164,7 +166,7 @@ function HeaderComponent({
             <p className="text-xs text-dark-400">{UI_CONTENT.APP.TAGLINE}</p>
           </div>
         </button>
-        <span id="header-brand-scroll-hint" className="sr-only">
+        <span id={DOM_ELEMENT_IDS.HEADER_BRAND_SCROLL_HINT} className="sr-only">
           {ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
         </span>
 
@@ -229,6 +231,7 @@ function HeaderComponent({
             onClick={() => window.open(EXTERNAL_URLS.GITHUB, "_blank", "noopener,noreferrer")}
             className="btn-ghost flex items-center gap-2 group"
             ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
+            title={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
             <svg
               className="w-5 h-5"

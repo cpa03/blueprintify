@@ -34,9 +34,11 @@ describe("RippleButton", () => {
     expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument();
   });
 
-  it("renders with default type 'button'", () => {
+  it("renders with default type 'button' and sets data-reduced-motion to false", () => {
     render(<RippleButton>Test</RippleButton>);
-    expect(screen.getByRole("button")).toHaveAttribute("type", "button");
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("type", "button");
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("supports custom className", () => {
@@ -98,11 +100,13 @@ describe("RippleButton", () => {
     expect(ripple).toBeInTheDocument();
   });
 
-  it("does not create ripple when reduced motion is enabled", () => {
+  it("does not create ripple and sets data-reduced-motion attribute when reduced motion is enabled", () => {
     vi.mocked(useReducedMotion).mockReturnValue(true);
 
     render(<RippleButton>Test</RippleButton>);
     const button = screen.getByRole("button");
+
+    expect(button).toHaveAttribute("data-reduced-motion", "true");
 
     fireEvent.click(button);
 

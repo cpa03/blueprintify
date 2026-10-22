@@ -58,7 +58,7 @@ export {
   MB,
   STORAGE_QUERY_PARAMS,
 } from "./constants/storage";
-export { RATE_LIMIT_CONFIG, RATE_LIMIT_CONSTANTS } from "./constants/ratelimit";
+export { RATE_LIMIT_CONSTANTS } from "./constants/ratelimit";
 export {
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
