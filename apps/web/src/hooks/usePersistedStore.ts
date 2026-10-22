@@ -31,7 +31,7 @@ export interface PersistedStoreConfig<T> {
 /**
  * Return type for createPersistedStore
  */
-export interface PersistedStoreMethods {
+interface PersistedStoreMethods {
   /** Load state from storage - call with set from zustand */
   loadState: <TSet>(set: TSet) => Promise<void>;
   /** Cancel any pending saves */

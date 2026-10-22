@@ -171,5 +171,4 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
   };
 }
 
-export type { UseFocusTrapOptions, UseFocusTrapReturn };
 export default useFocusTrap;

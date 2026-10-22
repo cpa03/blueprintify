@@ -66,7 +66,7 @@ function restoreBodyStyles(originalOverflow: string, originalPaddingRight: strin
   document.body.style.paddingRight = originalPaddingRight;
 }
 
-export interface UseScrollLockOptions {
+interface UseScrollLockOptions {
   /**
    * Whether scroll locking is currently active.
    */

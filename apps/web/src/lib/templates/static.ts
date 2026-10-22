@@ -18,11 +18,7 @@ export async function generateStaticProject(
   zip.file("README.md", generateProjectReadme(projectName, description, features, "Static Site"));
 }
 
-export function generateStaticHTML(
-  projectName: string,
-  description: string,
-  features: string[]
-): string {
+function generateStaticHTML(projectName: string, description: string, features: string[]): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +72,7 @@ export function generateStaticHTML(
 </html>`;
 }
 
-export function generateStaticCSS(): string {
+function generateStaticCSS(): string {
   const C = TEMPLATE_CSS_COLORS;
   const V = TEMPLATE_CSS_VALUES;
 
@@ -187,7 +183,7 @@ footer {
 }`;
 }
 
-export function generateStaticJS(features: string[]): string {
+function generateStaticJS(features: string[]): string {
   const V = TEMPLATE_CSS_VALUES;
   return `document.addEventListener('DOMContentLoaded', function() {
     console.log('${features.length > 0 ? features[0] : "Project"} loaded successfully!');

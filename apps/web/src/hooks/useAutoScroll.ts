@@ -174,5 +174,3 @@ export function useAutoScroll({
     scrollToBottom,
   };
 }
-
-export type { UseAutoScrollOptions, UseAutoScrollReturn };

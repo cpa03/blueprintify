@@ -43,7 +43,6 @@ export type {
   WizardStep,
   WizardState,
   Session,
-  StreamCallbacks,
   EditorTab,
   EditorState,
   ExportFormat,
@@ -54,7 +53,6 @@ export type {
   StorageClearRequest,
   StorageReportRequest,
   CreateShareRequest,
-  VerifySharePassphraseRequest,
 } from "./types.js";
 
 // ===== Templates =====
