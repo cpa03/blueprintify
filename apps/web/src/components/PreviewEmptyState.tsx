@@ -10,7 +10,7 @@
 
 import { memo } from "react";
 import * as motion from "framer-motion/m";
-import { ANIMATION_SCALE } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
@@ -228,7 +228,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <motion.div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
               whileHover={HOVER_SCALE.MICRO}
-              initial={{ opacity: 0, y: 5 }}
+              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_SMALL }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND,

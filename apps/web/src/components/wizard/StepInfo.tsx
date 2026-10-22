@@ -43,7 +43,7 @@ import {
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
   FormEvent,
@@ -315,7 +315,7 @@ export const StepInfo = memo(function StepInfo({
       type="submit"
       disabled={!canProceed}
       aria-label={canProceed ? undefined : ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_ARIA}
-      whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
+      whileHover={{ ...HOVER_SCALE.MICRO, y: ANIMATION_Y_OFFSET.HOVER_LIFT }}
       whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
       className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
       aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
@@ -535,9 +535,9 @@ export const StepInfo = memo(function StepInfo({
                 <motion.p
                   id="projectName-warning"
                   role={ARIA_ROLES.STATUS}
-                  initial={{ opacity: 0, y: -4 }}
+                  initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                   className="text-xs text-accent-pink mt-1"
                 >
@@ -550,9 +550,17 @@ export const StepInfo = memo(function StepInfo({
               <motion.p
                 id="projectName-error"
                 role={ARIA_ROLES.ALERT}
-                initial={{ opacity: 0, y: -4, x: -3 }}
+                initial={{
+                  opacity: 0,
+                  y: ANIMATION_Y_OFFSET.RISE_TINY,
+                  x: ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO,
+                }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
-                exit={{ opacity: 0, y: -4, x: -3 }}
+                exit={{
+                  opacity: 0,
+                  y: ANIMATION_Y_OFFSET.RISE_TINY,
+                  x: ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO,
+                }}
                 transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                 className="text-xs text-accent-pink mt-1"
               >
@@ -671,9 +679,9 @@ export const StepInfo = memo(function StepInfo({
               !descriptionErrorVisible && (
                 <motion.p
                   id="description-hint"
-                  initial={{ opacity: 0, y: -4 }}
+                  initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                   className="text-xs text-dark-400 mt-1"
                 >
@@ -689,9 +697,9 @@ export const StepInfo = memo(function StepInfo({
                 <motion.p
                   id="description-warning"
                   role={ARIA_ROLES.STATUS}
-                  initial={{ opacity: 0, y: -4 }}
+                  initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                   className="text-xs text-accent-pink mt-1"
                 >
@@ -704,9 +712,17 @@ export const StepInfo = memo(function StepInfo({
               <motion.p
                 id="description-error"
                 role={ARIA_ROLES.ALERT}
-                initial={{ opacity: 0, y: -4, x: -3 }}
+                initial={{
+                  opacity: 0,
+                  y: ANIMATION_Y_OFFSET.RISE_TINY,
+                  x: ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO,
+                }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
-                exit={{ opacity: 0, y: -4, x: -3 }}
+                exit={{
+                  opacity: 0,
+                  y: ANIMATION_Y_OFFSET.RISE_TINY,
+                  x: ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO,
+                }}
                 transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                 className="text-xs text-accent-pink mt-1"
               >

@@ -73,6 +73,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 import "../styles/markdown.css";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
@@ -747,9 +748,9 @@ function EditorComponent(): JSX.Element {
                           {currentContent ? (
                             <motion.div
                               key={`${activeTab}-content`}
-                              initial={{ opacity: 0, y: 6 }}
+                              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP }}
                               animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -6 }}
+                              exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SMALL }}
                               transition={{
                                 duration: ANIMATION.NORMAL,
                                 ease: ANIMATION_TIMING.easing.easeOut,

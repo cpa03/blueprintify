@@ -4,7 +4,7 @@ import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION, EASING } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { BANNER_STATE_VALUES } from "@blueprint/shared";
+import { BANNER_STATE_VALUES, ANIMATION_OPACITY } from "@blueprint/shared";
 import {
   ANIMATION_REPEAT,
   SCROLL_PROGRESS_DEFAULTS,
@@ -115,7 +115,7 @@ export const ScrollProgress = memo(function ScrollProgress({
         <motion.div
           className="h-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
           style={{ width }}
-          initial={{ opacity: 0.8 }}
+          initial={{ opacity: ANIMATION_OPACITY.SUBTLE }}
           animate={
             prefersReducedMotion
               ? {
