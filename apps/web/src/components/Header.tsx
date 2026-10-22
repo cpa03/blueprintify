@@ -34,6 +34,7 @@ import {
   EXTERNAL_URLS,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
+  DOM_ELEMENT_IDS,
   FOCUS_ANNOUNCER,
   TIMEOUTS,
 } from "../config/constants";
@@ -142,7 +143,7 @@ function HeaderComponent({
           // button receives focus. The hint lives in a sibling sr-only span
           // rather than inside the button so it doesn't pollute the accessible
           // name computed from the button's visible text content.
-          aria-describedby="header-brand-scroll-hint"
+          aria-describedby={DOM_ELEMENT_IDS.HEADER_BRAND_SCROLL_HINT}
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center animate-logo-breathe pointer-events-none">
             <svg
@@ -165,7 +166,7 @@ function HeaderComponent({
             <p className="text-xs text-dark-400">{UI_CONTENT.APP.TAGLINE}</p>
           </div>
         </button>
-        <span id="header-brand-scroll-hint" className="sr-only">
+        <span id={DOM_ELEMENT_IDS.HEADER_BRAND_SCROLL_HINT} className="sr-only">
           {ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
         </span>
 
@@ -230,6 +231,7 @@ function HeaderComponent({
             onClick={() => window.open(EXTERNAL_URLS.GITHUB, "_blank", "noopener,noreferrer")}
             className="btn-ghost flex items-center gap-2 group"
             ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
+            title={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
             <svg
               className="w-5 h-5"

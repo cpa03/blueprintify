@@ -22,30 +22,70 @@ import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // Mock framer-motion to render plain HTML elements
-vi.mock("framer-motion", () => ({
-  motion: {
-    div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-    button: vi.fn(({ children, ...props }) => <button {...props}>{children}</button>),
-    input: vi.fn(({ children, ...props }) => <input {...props}>{children ?? null}</input>),
-    textarea: vi.fn(({ children, ...props }) => <textarea {...props}>{children ?? null}</textarea>),
-    p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
-    svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-    path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
-  },
-  AnimatePresence: vi.fn(({ children }) => <>{children}</>),
-}));
+vi.mock("framer-motion", () => {
+  const createMotion = (Component: string) =>
+    vi.fn(
+      ({
+        children,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
+        initial: _initial,
+        animate: _animate,
+        exit: _exit,
+        transition: _transition,
+        layout: _layout,
+        layoutId: _layoutId,
+        ...props
+      }: Record<string, unknown> & { children?: React.ReactNode }) => {
+        const Tag = Component as keyof JSX.IntrinsicElements;
+        return <Tag {...(props as Record<string, unknown>)}>{children ?? null}</Tag>;
+      }
+    );
+  return {
+    motion: {
+      div: createMotion("div"),
+      span: createMotion("span"),
+      button: createMotion("button"),
+      input: createMotion("input"),
+      textarea: createMotion("textarea"),
+      p: createMotion("p"),
+      svg: createMotion("svg"),
+      path: createMotion("path"),
+    },
+    AnimatePresence: vi.fn(({ children }) => <>{children}</>),
+  };
+});
 
-vi.mock("framer-motion/m", () => ({
-  div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-  span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-  button: vi.fn(({ children, ...props }) => <button {...props}>{children}</button>),
-  input: vi.fn(({ children, ...props }) => <input {...props}>{children ?? null}</input>),
-  textarea: vi.fn(({ children, ...props }) => <textarea {...props}>{children ?? null}</textarea>),
-  p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
-  svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-  path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
-}));
+vi.mock("framer-motion/m", () => {
+  const createMotion = (Component: string) =>
+    vi.fn(
+      ({
+        children,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
+        initial: _initial,
+        animate: _animate,
+        exit: _exit,
+        transition: _transition,
+        layout: _layout,
+        layoutId: _layoutId,
+        ...props
+      }: Record<string, unknown> & { children?: React.ReactNode }) => {
+        const Tag = Component as keyof JSX.IntrinsicElements;
+        return <Tag {...(props as Record<string, unknown>)}>{children ?? null}</Tag>;
+      }
+    );
+  return {
+    div: createMotion("div"),
+    span: createMotion("span"),
+    button: createMotion("button"),
+    input: createMotion("input"),
+    textarea: createMotion("textarea"),
+    p: createMotion("p"),
+    svg: createMotion("svg"),
+    path: createMotion("path"),
+  };
+});
 
 // Mock platform utilities
 vi.mock("../../lib/platform", () => ({
@@ -56,11 +96,13 @@ vi.mock("../../lib/platform", () => ({
 
 // Mock child components
 vi.mock("../RippleButton", () => ({
-  RippleButton: vi.fn(({ children, onClick, disabled, type, ...props }) => (
-    <button onClick={onClick} disabled={disabled} type={type} {...props}>
-      {children}
-    </button>
-  )),
+  RippleButton: vi.fn(
+    ({ children, onClick, disabled, type, whileHover: _wH, whileTap: _wT, ...props }) => (
+      <button onClick={onClick} disabled={disabled} type={type} {...props}>
+        {children}
+      </button>
+    )
+  ),
 }));
 
 vi.mock("../SmartTooltip", () => ({
@@ -167,7 +209,27 @@ describe("StepInfo", () => {
     vi.useRealTimers();
   });
 
-  // ======== Basic Rendering ========
+  // ======== Basic Rendering & DOM State Tracking ========
+
+  it("sets data-reduced-motion and data-can-proceed attributes on root container", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description that meets minimum requirements.";
+    render(<StepInfo />);
+    const rootContainer = screen
+      .getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE)
+      .closest("div[data-reduced-motion]");
+    expect(rootContainer).toHaveAttribute("data-reduced-motion", "false");
+    expect(rootContainer).toHaveAttribute("data-can-proceed", "true");
+  });
+
+  it("sets data-can-proceed to false when form is incomplete", () => {
+    render(<StepInfo />);
+    const rootContainer = screen
+      .getByText(UI_CONTENT.WIZARD.STEP_INFO.TITLE)
+      .closest("div[data-reduced-motion]");
+    expect(rootContainer).toHaveAttribute("data-reduced-motion", "false");
+    expect(rootContainer).toHaveAttribute("data-can-proceed", "false");
+  });
 
   it("renders the title and subtitle", () => {
     render(<StepInfo />);
@@ -543,6 +605,8 @@ describe("StepInfo", () => {
     expect(error).toHaveTextContent(
       VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
     );
+    expect(error).toHaveTextContent("Project name must be at least 1 character");
+    expect(error.textContent).not.toContain("1 characters");
     expect(screen.getByRole("textbox", { name: /Project Name/i })).toHaveAttribute(
       "aria-invalid",
       "true"

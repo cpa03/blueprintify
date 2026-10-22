@@ -1,4 +1,4 @@
-import { HTTP_STATUS, ERROR_TYPES, ERROR_CLASS_NAMES } from "@blueprint/shared";
+import { HTTP_STATUS, ERROR_TYPES, ERROR_CLASS_NAMES, TIME_UNITS } from "@blueprint/shared";
 import { DEFAULT_ERROR_MESSAGES, ERROR_CODES, ERROR_MESSAGES } from "./config/constants";
 
 /**
@@ -18,6 +18,26 @@ import { DEFAULT_ERROR_MESSAGES, ERROR_CODES, ERROR_MESSAGES } from "./config/co
  */
 export function timestamp(): string {
   return new Date().toISOString();
+}
+
+/**
+ * Returns the current Unix time in milliseconds.
+ * Flexy says: centralizes `Date.now()` number timestamps behind one helper!
+ *
+ * @returns Milliseconds since the Unix epoch
+ */
+export function nowMs(): number {
+  return Date.now();
+}
+
+/**
+ * Returns the current Unix time in whole seconds.
+ * Flexy says: eliminates `Math.floor(Date.now() / 1000)` duplication!
+ *
+ * @returns Seconds since the Unix epoch
+ */
+export function nowSeconds(): number {
+  return Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND);
 }
 
 /**

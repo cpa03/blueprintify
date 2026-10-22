@@ -152,4 +152,27 @@ describe("KeyboardShortcutsModal", () => {
 
     expect(screen.getByText("Save content now")).toBeInTheDocument();
   });
+
+  it("makes the scrollable shortcut list a named, keyboard-focusable region", () => {
+    render(<KeyboardShortcutsModal {...defaultProps} />);
+
+    const region = screen.getByRole("region", {
+      name: ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.LIST_REGION,
+    });
+    expect(region).toHaveAttribute("tabindex", "0");
+    expect(region).toHaveClass("overflow-y-auto");
+    expect(region.className).toContain("focus-visible:ring-2");
+  });
+
+  it("drops the list region from the tab order when no shortcuts match", () => {
+    render(<KeyboardShortcutsModal {...defaultProps} />);
+
+    const search = screen.getByRole("searchbox");
+    fireEvent.change(search, { target: { value: "zzz-no-match" } });
+
+    const region = screen.getByRole("region", {
+      name: ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.LIST_REGION,
+    });
+    expect(region).toHaveAttribute("tabindex", "-1");
+  });
 });

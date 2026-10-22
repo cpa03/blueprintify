@@ -21,6 +21,7 @@ import {
   SHORTCUT_CATEGORY_ICONS,
   WIZARD_STEPS,
   EDITOR_LABELS,
+  DOM_ELEMENT_IDS,
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
@@ -308,8 +309,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             role={ARIA_ROLES.DIALOG}
             aria-modal={ARIA_MODAL_VALUES.TRUE}
-            aria-labelledby="keyboard-shortcuts-title"
-            aria-describedby="keyboard-shortcuts-tip"
+            aria-labelledby={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TITLE}
+            aria-describedby={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TIP}
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-has-query={Boolean(searchQuery)}
             data-results-count={filteredShortcuts.length}
@@ -326,7 +327,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     <Icon name="keyboard" className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
-                    <h2 id="keyboard-shortcuts-title" className="text-xl font-bold text-white">
+                    <h2
+                      id={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TITLE}
+                      className="text-xl font-bold text-white"
+                    >
                       Keyboard Shortcuts
                     </h2>
                     <p className="text-sm text-dark-400">
@@ -399,7 +403,20 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 </div>
               </div>
 
-              <div className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6">
+              <div
+                className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500/50"
+                role={ARIA_ROLES.REGION}
+                aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.LIST_REGION}
+                // The shortcut rows contain no focusable elements, so Tab never
+                // enters this scroll container on its own: when the list
+                // overflows (long list / 200% zoom, WCAG 1.4.4) keyboard users
+                // had no way to scroll it (WCAG 2.1.1). tabIndex=0 makes the
+                // region itself a tab stop so arrow keys scroll it; removed when
+                // no search matches, where the empty state's own "clear search"
+                // button keeps the container reachable instead of adding an
+                // inert stop with nothing to scroll.
+                tabIndex={hasResults ? 0 : -1}
+              >
                 {hasResults ? (
                   entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
@@ -504,7 +521,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
                 <p
-                  id="keyboard-shortcuts-tip"
+                  id={DOM_ELEMENT_IDS.KEYBOARD_SHORTCUTS_TIP}
                   className="text-xs text-dark-500 text-center"
                   role={ARIA_ROLES.STATUS}
                   aria-live={ARIA_LIVE_VALUES.POLITE}

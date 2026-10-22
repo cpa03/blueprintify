@@ -140,6 +140,41 @@ export const ACCESSIBILITY_LABELS_SKIP = {
 } as const;
 
 // ============================================================================
+// DOM Element IDs
+// ============================================================================
+
+/**
+ * Canonical IDs for DOM elements that participate in ARIA relationships —
+ * an element's `id` and every reference to it (`aria-labelledby`,
+ * `aria-describedby`, `aria-controls`, `htmlFor`, skip-link `href`/`data-target`)
+ * must share this single source so the pair can never drift apart.
+ *
+ * Deliberately excludes dynamic/template IDs (`tab-${activeTab}`,
+ * `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`) and
+ * `index.html`-paired runtime IDs (`root`, `skeleton-loader`), which cannot
+ * import TypeScript constants.
+ *
+ * Flexy says: No hardcoded DOM element ID literals in components!
+ */
+export const DOM_ELEMENT_IDS = {
+  /** Target of the skip-to-main-content link; matches `<main>` landmark id. */
+  MAIN_CONTENT: "main-content",
+  /** Collapsible editor panel toggled by ShowEditorButton / App toolbar. */
+  EDITOR_PANEL: "editor-panel",
+  CONFIRM_DIALOG_TITLE: "confirm-dialog-title",
+  CONFIRM_DIALOG_DESCRIPTION: "confirm-dialog-description",
+  HEADER_BRAND_SCROLL_HINT: "header-brand-scroll-hint",
+  KEYBOARD_SHORTCUTS_TITLE: "keyboard-shortcuts-title",
+  KEYBOARD_SHORTCUTS_TIP: "keyboard-shortcuts-tip",
+  OFFLINE_BANNER_DESC: "offline-banner-desc",
+  FEATURE_INPUT: "feature-input",
+  FEATURE_INPUT_HINT: "feature-input-hint",
+  ADDED_FEATURES_LABEL: "added-features-label",
+  SUGGESTIONS_LABEL: "suggestions-label",
+  SELECTED_TECH_LABEL: "selected-tech-label",
+} as const;
+
+// ============================================================================
 // Last Saved Display Messages
 // ============================================================================
 

@@ -28,6 +28,7 @@ import {
 } from "../config/constants";
 import {
   ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_REPEAT,
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
@@ -37,7 +38,7 @@ import {
 } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 /**
  * Staggered entrance variants for the fallback UI elements.
@@ -148,7 +149,7 @@ export const ErrorFallback = memo(function ErrorFallback({
               }
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
-                repeat: Infinity,
+                repeat: ANIMATION_REPEAT.INFINITE,
                 ease: EASING.easeInOut,
               }}
             >
@@ -165,7 +166,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                 }
                 transition={{
                   duration: ANIMATION.BREATH,
-                  repeat: Infinity,
+                  repeat: ANIMATION_REPEAT.INFINITE,
                   ease: EASING.easeInOut,
                 }}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -181,7 +182,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  d={ICON_PATHS.WARNING}
                   initial={shouldReduceMotion ? undefined : { pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
@@ -285,7 +286,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                             strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                             strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                             strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
-                            d="M5 13l4 4L19 7"
+                            d={ICON_PATHS.CHECKMARK}
                           />
                         </svg>
                         <span>{ERROR_BOUNDARY_TEXT.COPIED}</span>
@@ -309,7 +310,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                             strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                             strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                             strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_MEDIUM}
-                            d="M6 18L18 6M6 6l12 12"
+                            d={ICON_PATHS.CLOSE}
                           />
                         </svg>
                         <span>{ERROR_BOUNDARY_TEXT.COPY_FAILED}</span>
@@ -387,7 +388,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    d={ICON_PATHS.REFRESH}
                   />
                 </svg>
                 {ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN}
@@ -422,7 +423,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    d={ICON_PATHS.REFRESH}
                   />
                 </svg>
                 {ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE}

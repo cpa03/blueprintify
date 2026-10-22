@@ -12,13 +12,14 @@ import { useState, useCallback, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
+  ANIMATION_DEFAULTS,
   ARIA_ATOMIC_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   LOADING_DOTS_COUNT,
   TYPING_STATE_VALUES,
 } from "@blueprint/shared";
-import { ANIMATION, ANIMATION_MS } from "../config/constants";
+import { ANIMATION, ANIMATION_MS, ANIMATION_REPEAT } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -96,10 +97,10 @@ export const TypeIndicator = memo(function TypeIndicator({
               }
               transition={
                 shouldReduceMotion
-                  ? { duration: 0 }
+                  ? ANIMATION_DEFAULTS.ZERO_DURATION
                   : {
                       duration: ANIMATION.SLOW,
-                      repeat: Infinity,
+                      repeat: ANIMATION_REPEAT.INFINITE,
                       delay: index * ANIMATION.STAGGER,
                       ease: ANIMATION_TIMING.easing.easeInOut,
                     }

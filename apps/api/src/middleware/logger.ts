@@ -16,7 +16,7 @@ import {
   ID_GENERATION_CONFIG,
 } from "@blueprint/shared";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
-import { timestamp } from "../errors";
+import { timestamp, nowMs } from "../errors";
 
 /**
  * Configuration options for the request logger middleware.
@@ -104,12 +104,12 @@ interface ResponseLog {
 const generateRequestId = (): string => {
   const randomValues = new Uint32Array(ID_GENERATION_CONFIG.RANDOM_VALUES_COUNT);
   crypto.getRandomValues(randomValues);
-  const timestamp = Date.now();
+  const now = nowMs();
   const random = (randomValues[0] ?? 0).toString(ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX);
   const random2 = (randomValues[1] ?? 0)
     .toString(ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX)
     .slice(0, LOGGER_CONFIG.REQUEST_ID_SUFFIX_LENGTH);
-  return `${timestamp}-${random}${random2}`;
+  return `${now}-${random}${random2}`;
 };
 
 /**
@@ -172,7 +172,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     }
 
     const requestId = generateRequestId();
-    const startTime = Date.now();
+    const startTime = nowMs();
     const cfMetadata = extractCloudflareMetadata(c);
 
     c.set(CONTEXT_KEYS.REQUEST_ID, requestId);
@@ -223,7 +223,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
 
     await next();
 
-    const duration = Date.now() - startTime;
+    const duration = nowMs() - startTime;
     const status = c.res.status;
 
     c.header(API_HEADERS.RESPONSE.REQUEST_ID, requestId);

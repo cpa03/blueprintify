@@ -43,6 +43,7 @@ import {
   ENTRANCE_STAGGER,
   ACCESSIBILITY_LABELS,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
   TOAST_MESSAGES,
   CONFIRM_DIALOG,
 } from "./config/constants";
@@ -363,7 +364,7 @@ function App(): JSX.Element {
       )}
 
       {/* Main Content */}
-      <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
+      <main id={DOM_ELEMENT_IDS.MAIN_CONTENT} className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
         <div className={LAYOUT.CONTENT_CONTAINER}>
           {/* Hero section (only on first view) - Critical LCP element, no opacity animation on title.
               Subtitle gets a subtle delayed entrance for a polished cascade feel.
@@ -467,7 +468,7 @@ function App(): JSX.Element {
             {/* Editor Panel */}
             {(showEditor || editorExiting) && (
               <div
-                id="editor-panel"
+                id={DOM_ELEMENT_IDS.EDITOR_PANEL}
                 className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} ${
                   editorExiting ? "animate-slide-out-right" : "animate-slide-in-right"
                 }`}
@@ -487,7 +488,7 @@ function App(): JSX.Element {
                       KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
                       MODIFIER_KEYS.CMD
                     )}
-                    aria-controls="editor-panel"
+                    aria-controls={DOM_ELEMENT_IDS.EDITOR_PANEL}
                   >
                     <Icon
                       name="close"
@@ -510,7 +511,7 @@ function App(): JSX.Element {
                       KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
                       MODIFIER_KEYS.CMD
                     )}
-                    aria-controls="editor-panel"
+                    aria-controls={DOM_ELEMENT_IDS.EDITOR_PANEL}
                   >
                     <Icon
                       name="close"

@@ -55,6 +55,7 @@ import {
   HOVER_SCALE,
   TAP_SCALE,
   CONFIRM_DIALOG_HINTS,
+  DOM_ELEMENT_IDS,
 } from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -188,8 +189,8 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             role={ARIA_ROLES.DIALOG}
             aria-modal={ARIA_MODAL_VALUES.TRUE}
-            aria-labelledby="confirm-dialog-title"
-            aria-describedby="confirm-dialog-description"
+            aria-labelledby={DOM_ELEMENT_IDS.CONFIRM_DIALOG_TITLE}
+            aria-describedby={DOM_ELEMENT_IDS.CONFIRM_DIALOG_DESCRIPTION}
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-icon={icon}
             data-reduced-motion={shouldReduceMotion ? "true" : "false"}
@@ -231,7 +232,10 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                           }
                     }
                   >
-                    <h2 id="confirm-dialog-title" className="text-lg font-bold text-white mb-1">
+                    <h2
+                      id={DOM_ELEMENT_IDS.CONFIRM_DIALOG_TITLE}
+                      className="text-lg font-bold text-white mb-1"
+                    >
                       {title}
                     </h2>
                   </motion.div>
@@ -249,7 +253,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     }
                   >
                     <p
-                      id="confirm-dialog-description"
+                      id={DOM_ELEMENT_IDS.CONFIRM_DIALOG_DESCRIPTION}
                       className="text-sm text-dark-400 leading-relaxed"
                     >
                       {description}

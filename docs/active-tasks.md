@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **StepInfo Micro-UX & Reduced Motion State Inspection (Oct 21 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`) to `StepInfo.tsx`.
+- [STRENGTHEN] Strengthened `StepInfo` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-can-proceed` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated wizard step reduced motion state tracking and form proceeding state attributes across wizard components.
+- [REMOVE] Removed un-inspected framer-motion props in `StepInfo.test.tsx` mocks to prevent React DOM attribute warnings.
+
 ## ✅ StorX — **RippleButton Micro-UX & Reduced Motion Inspection (Oct 20 2026)**
 - [CONNECT] Connected `useReducedMotion` hook to set `data-reduced-motion` ("true"/"false") DOM state tracking attribute in `RippleButton.tsx`.
 - [STRENGTHEN] Strengthened `RippleButton` accessibility and DOM state tracking for state inspection and accessibility testing.

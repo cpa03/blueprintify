@@ -39,6 +39,7 @@ import {
   UI_CONTENT,
   SHORTCUT_DESCRIPTIONS,
   CSS_CLASSES,
+  DOM_ELEMENT_IDS,
   EDITOR_ANNOUNCER,
 } from "../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../config/constants/keyboard";
@@ -143,7 +144,7 @@ function ShowEditorButtonComponent({
           data-is-generating={isGenerating}
           data-reduced-motion={String(prefersReducedMotion)}
           aria-expanded={false}
-          aria-controls="editor-panel"
+          aria-controls={DOM_ELEMENT_IDS.EDITOR_PANEL}
         >
           <span className="flex items-center">
             <svg
@@ -157,7 +158,7 @@ function ShowEditorButtonComponent({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                d={ICON_PATHS.EDIT}
               />
             </svg>
             {hasContent

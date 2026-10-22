@@ -62,7 +62,9 @@ function getReducedMotionServerSnapshot(): boolean {
  *
  * <motion.div
  *   animate={shouldReduceMotion ? {} : { opacity: 1 }}
- *   transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.3 }}
+ *   transition={
+ *     shouldReduceMotion ? ANIMATION_DEFAULTS.ZERO_DURATION : { duration: 0.3 }
+ *   }
  * />
  * ```
  */

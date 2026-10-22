@@ -131,6 +131,7 @@ import {
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
+  COLOR_MIX_OPACITY,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
@@ -147,6 +148,7 @@ import {
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
   SHARE_TOKEN_CONFIG,
+  SHARE_TOKEN_CODEC,
   RATE_LIMIT_KEY_PREFIXES,
   TEMPLATE_CSS_COLORS,
   TEMPLATE_CSS_VALUES,
@@ -2885,6 +2887,7 @@ describe("TOAST_DEFAULTS", () => {
     expect(TOAST_DEFAULTS.SUCCESS_DURATION_MS).toBeGreaterThan(0);
     expect(TOAST_DEFAULTS.AUTO_SAVE_DURATION_MS).toBeGreaterThan(0);
     expect(TOAST_DEFAULTS.STAGGER_MS).toBeGreaterThan(0);
+    expect(TOAST_DEFAULTS.REDUCED_MOTION_PROGRESS_STEP_MS).toBeGreaterThan(0);
   });
 
   it("should have all numeric values", () => {
@@ -2895,8 +2898,8 @@ describe("TOAST_DEFAULTS", () => {
     });
   });
 
-  it("should have 4 entries", () => {
-    expect(Object.keys(TOAST_DEFAULTS).length).toBe(4);
+  it("should have 5 entries", () => {
+    expect(Object.keys(TOAST_DEFAULTS).length).toBe(5);
   });
 
   it("should have success duration shorter than default", () => {
@@ -3270,16 +3273,26 @@ describe("ANIMATION_REPEAT", () => {
     expect(ANIMATION_REPEAT.ATTENTION_PULSE).toBe(5);
   });
 
-  it("should have positive integer values", () => {
-    const values = Object.values(ANIMATION_REPEAT);
-    values.forEach((v) => {
+  it("should have NONE = 0", () => {
+    expect(ANIMATION_REPEAT.NONE).toBe(0);
+  });
+
+  it("should have INFINITE = Infinity", () => {
+    expect(ANIMATION_REPEAT.INFINITE).toBe(Infinity);
+  });
+
+  it("should have finite entries as positive integers (excluding INFINITE)", () => {
+    const finiteValues = Object.entries(ANIMATION_REPEAT)
+      .filter(([key]) => key !== "INFINITE")
+      .map(([, v]) => v);
+    finiteValues.forEach((v) => {
       expect(Number.isInteger(v)).toBe(true);
-      expect(v).toBeGreaterThan(0);
+      expect(v).toBeGreaterThanOrEqual(0);
     });
   });
 
-  it("should have 1 entry", () => {
-    expect(Object.keys(ANIMATION_REPEAT).length).toBe(1);
+  it("should have 3 entries", () => {
+    expect(Object.keys(ANIMATION_REPEAT).length).toBe(3);
   });
 });
 
@@ -3506,13 +3519,79 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.CHEVRON_RIGHT).toBe("M9 5l7 7-7 7");
   });
 
+  it("should define left-pointing chevron path", () => {
+    expect(ICON_PATHS.CHEVRON_LEFT).toBe("M15 19l-7-7 7-7");
+  });
+
+  it("should define checkmark path", () => {
+    expect(ICON_PATHS.CHECKMARK).toBe("M5 13l4 4L19 7");
+  });
+
+  it("should define edit path", () => {
+    expect(ICON_PATHS.EDIT).toBeTruthy();
+  });
+
+  it("should define refresh path", () => {
+    expect(ICON_PATHS.REFRESH).toBeTruthy();
+  });
+
+  it("should define warning path", () => {
+    expect(ICON_PATHS.WARNING).toBeTruthy();
+  });
+
+  it("should define trash path", () => {
+    expect(ICON_PATHS.TRASH).toBeTruthy();
+  });
+
+  it("should define close path", () => {
+    expect(ICON_PATHS.CLOSE).toBe("M6 18L18 6M6 6l12 12");
+  });
+
   it("should define brand logo and github paths", () => {
     expect(ICON_PATHS.BRAND_LOGO).toBeTruthy();
     expect(ICON_PATHS.GITHUB).toBeTruthy();
   });
 
-  it("should have 3 entries", () => {
-    expect(Object.keys(ICON_PATHS).length).toBe(3);
+  it("should have 19 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(19);
+  });
+
+  it("should have unique path values", () => {
+    const paths = Object.values(ICON_PATHS);
+    const uniquePaths = new Set(paths);
+    expect(uniquePaths.size).toBe(paths.length);
+  });
+});
+
+describe("COLOR_MIX_OPACITY", () => {
+  it("should define subtle glow opacity (10%)", () => {
+    expect(COLOR_MIX_OPACITY.SUBTLE).toBe("10%");
+  });
+
+  it("should define medium glow opacity (12%)", () => {
+    expect(COLOR_MIX_OPACITY.MEDIUM).toBe("12%");
+  });
+
+  it("should define standard glow opacity (18%)", () => {
+    expect(COLOR_MIX_OPACITY.GLOW).toBe("18%");
+  });
+
+  it("should define strong highlight opacity (25%)", () => {
+    expect(COLOR_MIX_OPACITY.HIGHLIGHT).toBe("25%");
+  });
+
+  it("should define prominent accent opacity (30%)", () => {
+    expect(COLOR_MIX_OPACITY.PROMINENT).toBe("30%");
+  });
+
+  it("should have 5 entries", () => {
+    expect(Object.keys(COLOR_MIX_OPACITY).length).toBe(5);
+  });
+
+  it("should have all values ending with %", () => {
+    Object.values(COLOR_MIX_OPACITY).forEach((value) => {
+      expect(value).toMatch(/^\d+%$/);
+    });
   });
 });
 
@@ -4459,6 +4538,43 @@ describe("SHARE_TOKEN_CONFIG", () => {
   it("should have TOKEN_EXPIRY_SECONDS as a positive number", () => {
     expect(typeof SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBe("number");
     expect(SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBeGreaterThan(0);
+  });
+});
+
+// SHARE_TOKEN_CODEC
+describe("SHARE_TOKEN_CODEC", () => {
+  it("should have PAYLOAD_SEPARATOR = '.'", () => {
+    expect(SHARE_TOKEN_CODEC.PAYLOAD_SEPARATOR).toBe(".");
+  });
+
+  it("should have FIELD_SEPARATOR = ':'", () => {
+    expect(SHARE_TOKEN_CODEC.FIELD_SEPARATOR).toBe(":");
+  });
+
+  it("should have EXPIRY_RADIX = 10", () => {
+    expect(SHARE_TOKEN_CODEC.EXPIRY_RADIX).toBe(10);
+  });
+
+  it("should have MISSING_PART_FALLBACK = ''", () => {
+    expect(SHARE_TOKEN_CODEC.MISSING_PART_FALLBACK).toBe("");
+  });
+
+  it("should have MISSING_EXPIRY_FALLBACK = '0'", () => {
+    expect(SHARE_TOKEN_CODEC.MISSING_EXPIRY_FALLBACK).toBe("0");
+  });
+
+  it("should have base64url char mapping", () => {
+    expect(SHARE_TOKEN_CODEC.BASE64_PLUS).toBe("+");
+    expect(SHARE_TOKEN_CODEC.BASE64URL_DASH).toBe("-");
+    expect(SHARE_TOKEN_CODEC.BASE64_SLASH).toBe("/");
+    expect(SHARE_TOKEN_CODEC.BASE64URL_UNDERSCORE).toBe("_");
+  });
+});
+
+// CRYPTO_CONFIG HEX_PAD_CHAR
+describe("CRYPTO_CONFIG HEX_PAD_CHAR", () => {
+  it("should have HEX_PAD_CHAR = '0'", () => {
+    expect(CRYPTO_CONFIG.HEX_PAD_CHAR).toBe("0");
   });
 });
 
