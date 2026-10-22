@@ -1,6 +1,6 @@
 # Test configuration for Cloudflare Workers
 # This file is optimized for local testing without requiring authentication
-# Used by vitest-pool-workers for CI/CD pipelines
+# Used by @cloudflare/vitest-plugin for CI/CD pipelines
 
 name = "blueprint-generator-api-test"
 main = "src/index.ts"

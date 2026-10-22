@@ -13,6 +13,7 @@
 import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import {
   ANIMATION_DEFAULTS,
@@ -113,9 +114,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             }`}
             data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
             data-has-changes={hasChanges}
-            data-saved-glow={
-              showSavedGlow ? GLOW_STATE_VALUES.ACTIVE : GLOW_STATE_VALUES.IDLE
-            }
+            data-saved-glow={showSavedGlow ? GLOW_STATE_VALUES.ACTIVE : GLOW_STATE_VALUES.IDLE}
             data-reduced-motion={shouldReduceMotion}
             title={statusText}
           >
@@ -134,8 +133,8 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   {!shouldReduceMotion && (
                     <motion.span
                       className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1.5, opacity: 0 }}
+                      initial={{ scale: ANIMATION_SCALE.STANDARD }}
+                      animate={{ scale: ANIMATION_SCALE.BADGE_EXPAND, opacity: 0 }}
                       transition={{
                         duration: ANIMATION.GENTLE_PULSE,
                         repeat: ANIMATION_REPEAT.INFINITE,

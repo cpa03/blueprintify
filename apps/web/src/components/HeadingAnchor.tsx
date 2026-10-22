@@ -31,6 +31,7 @@
 import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
@@ -261,9 +262,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
             /* Checkmark icon + "Copied!" — springs in replacing the link icon */
             <motion.span
               key="copied"
-              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+              initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN, rotate: -10 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.5, rotate: 10 }}
+              exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN, rotate: 10 }}
               transition={
                 shouldReduceMotion
                   ? ANIMATION_DEFAULTS.ZERO_DURATION
@@ -320,9 +321,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
             /* Link icon — springs back when copy feedback clears */
             <motion.span
               key="link"
-              initial={{ opacity: 0, scale: 0.5 }}
+              initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
+              exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
               transition={
                 shouldReduceMotion
                   ? ANIMATION_DEFAULTS.ZERO_DURATION
