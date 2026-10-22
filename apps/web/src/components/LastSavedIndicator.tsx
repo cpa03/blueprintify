@@ -24,6 +24,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   FRAMER_TYPE,
+  GLOW_STATE_VALUES,
   SAVE_STATE_VALUES,
   UI_TIMEOUTS,
 } from "@blueprint/shared/config";
@@ -113,6 +114,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             }`}
             data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
             data-has-changes={hasChanges}
+            data-saved-glow={showSavedGlow ? GLOW_STATE_VALUES.ACTIVE : GLOW_STATE_VALUES.IDLE}
             data-reduced-motion={shouldReduceMotion}
             title={statusText}
           >
