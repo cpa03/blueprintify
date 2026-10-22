@@ -29,6 +29,7 @@
 import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ARIA_HIDDEN_VALUES,
@@ -234,7 +235,7 @@ const ContentStats = React.memo(function ContentStats({
       {content && (
         <motion.div
           key="content-stats"
-          initial={{ opacity: 0, y: -8, scale: 0.95 }}
+          initial={{ opacity: 0, y: -8, scale: ANIMATION_SCALE.SUBTLE }}
           animate={{
             opacity: 1,
             y: 0,
@@ -246,7 +247,7 @@ const ContentStats = React.memo(function ContentStats({
               ? [...HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS]
               : HEADER_ANIMATION.CONTENT_STATS.SHADOW_STATIC,
           }}
-          exit={{ opacity: 0, y: -8, scale: 0.95 }}
+          exit={{ opacity: 0, y: -8, scale: ANIMATION_SCALE.SUBTLE }}
           transition={
             isGenerating
               ? {

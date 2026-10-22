@@ -468,6 +468,40 @@ export const SCALE_PULSE = {
 } as const;
 
 /**
+ * Scalar Animation Scale Values (for framer-motion initial/animate/exit variants)
+ * Centralized source of truth for non-trivial scalar `scale:` values used in
+ * framer-motion variant state objects (initial/animate/exit/hidden).
+ * Complements HOVER_SCALE/TAP_SCALE (whileHover/whileTap) and SCALE_PULSE
+ * (keyframe arrays) — this covers single-value scale states.
+ * Flexy says: No hardcoded scale: 0.5 / 0.8 / 0.9 in variant objects!
+ * Usage: import { ANIMATION_SCALE } from "@blueprint/shared";
+ *        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
+ *        exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
+ */
+export const ANIMATION_SCALE = {
+  /** Tiny entrance: 0.3 — for large overlay/glow elements scaling up from very small */
+  TINY: 0.3,
+  /** Pop-in entrance: 0.5 — for icons, tooltips, error-fallback rows popping in from half size */
+  POP_IN: 0.5,
+  /** Standard entrance: 0.8 — for chips, badges, banners and most enter/exit transitions */
+  STANDARD: 0.8,
+  /** Card entrance: 0.85 — for larger card/stack container entrance animations */
+  CARD: 0.85,
+  /** Modal/toast entrance: 0.9 — for toast notifications, modals and secondary panels */
+  MODAL: 0.9,
+  /** Subtle entrance: 0.95 — for subtle header/toolbar/banner entrance animations */
+  SUBTLE: 0.95,
+  /** Typing micro-pulse: 1.002 — for barely-perceptible scale pulse while user types */
+  TYPING_PULSE: 1.002,
+  /** Particle expand: 1.3 — for copy-celebration particle burst expansion */
+  PARTICLE_EXPAND: 1.3,
+  /** Badge expand-out: 1.5 — for saved-indicator/badge expand-and-fade exit animations */
+  BADGE_EXPAND: 1.5,
+  /** Attention ring expand-out: 2.5 — for attention-ring pulse expand-and-fade exit animations */
+  ATTENTION_RING: 2.5,
+} as const;
+
+/**
  * Y-offset Keyframe Pulse Presets (for framer-motion animate keyframes)
  * Centralized source of truth for y-offset keyframe arrays used
  * in floating/bobbing animations across components.

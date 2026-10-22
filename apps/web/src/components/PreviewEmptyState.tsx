@@ -10,6 +10,7 @@
 
 import { memo } from "react";
 import * as motion from "framer-motion/m";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
@@ -175,7 +176,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           <>
             <motion.button
               onClick={onSwitchTab}
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: ANIMATION_SCALE.MODAL, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{
                 type: FRAMER_TYPE.SPRING,

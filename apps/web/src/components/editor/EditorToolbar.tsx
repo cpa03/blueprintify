@@ -28,6 +28,7 @@ import React from "react";
 import clsx from "clsx";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ANIMATION_DEFAULTS,
@@ -378,9 +379,9 @@ function EditorToolbarComponent({
               <motion.span
                 key="exported"
                 className="flex items-center text-accent-emerald"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               >
                 <motion.svg

@@ -43,6 +43,7 @@ import {
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
   FormEvent,
@@ -356,9 +357,9 @@ export const StepInfo = memo(function StepInfo({
                 <motion.button
                   type="button"
                   onClick={handleClearForm}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                   transition={{ duration: ANIMATION.FAST, ease: EASING.easeOut }}
                   className="text-xs text-dark-500 hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-2 py-1 transition-colors flex items-center gap-1"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_FIELDS}
@@ -400,7 +401,7 @@ export const StepInfo = memo(function StepInfo({
             >
               <motion.span
                 key={formProgress.completed}
-                initial={{ scale: 0.5, opacity: 0 }}
+                initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
                 className="tabular-nums"
@@ -480,7 +481,9 @@ export const StepInfo = memo(function StepInfo({
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
               aria-required={ARIA_REQUIRED_VALUES.TRUE}
-              animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
+              animate={
+                projectNameTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
+              }
               transition={{ duration: ANIMATION.FAST }}
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
               aria-describedby={
@@ -497,9 +500,9 @@ export const StepInfo = memo(function StepInfo({
               {projectName.length > 0 && (
                 <motion.button
                   type="button"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => {
                     setProjectName("");
@@ -615,7 +618,9 @@ export const StepInfo = memo(function StepInfo({
               required
               aria-required={ARIA_REQUIRED_VALUES.TRUE}
               aria-invalid={isDescriptionInvalid || descriptionErrorVisible || undefined}
-              animate={descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
+              animate={
+                descriptionTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
+              }
               transition={{ duration: ANIMATION.FAST }}
               {...(descriptionErrorVisible
                 ? { "aria-describedby": "description-error" }
@@ -631,9 +636,9 @@ export const StepInfo = memo(function StepInfo({
               {description.length > 0 && (
                 <motion.button
                   type="button"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => {
                     setDescription("");
@@ -746,16 +751,20 @@ export const StepInfo = memo(function StepInfo({
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER}
               className="input-field pr-10"
               maxLength={FORM_LIMITS.TARGET_AUDIENCE.MAX}
-              animate={targetAudienceTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
+              animate={
+                targetAudienceTyping.isTyping
+                  ? { scale: ANIMATION_SCALE.TYPING_PULSE }
+                  : { scale: 1 }
+              }
               transition={{ duration: ANIMATION.FAST }}
             />
             <AnimatePresence>
               {targetAudience && (
                 <motion.button
                   type="button"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => {
                     setTargetAudience("");
@@ -803,16 +812,18 @@ export const StepInfo = memo(function StepInfo({
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
               className="textarea-field pr-10"
               maxLength={FORM_LIMITS.CONSTRAINTS.MAX}
-              animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
+              animate={
+                constraintsTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
+              }
               transition={transitions.fast}
             />
             <AnimatePresence>
               {constraints && (
                 <motion.button
                   type="button"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => {
                     setConstraints("");
