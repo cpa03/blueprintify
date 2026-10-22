@@ -31,6 +31,7 @@
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
+import { ANIMATION_SCALE } from "@blueprint/shared";
 import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
@@ -309,7 +310,7 @@ function PageScrollProgressBarComponent({
           <motion.div
             className="absolute -top-8 transform -translate-x-1/2 pointer-events-none z-50"
             style={{ left: `${hoverProgress}%` }}
-            initial={{ opacity: 0, y: 4, scale: 0.9 }}
+            initial={{ opacity: 0, y: 4, scale: ANIMATION_SCALE.MODAL }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: ANIMATION.HOVER_POPUP, ease: EASING.easeOut }}
           >

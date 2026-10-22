@@ -22,7 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
-import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
+import { ANIMATION_SCALE, CELEBRATION_STATE_VALUES } from "@blueprint/shared";
 import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
@@ -249,9 +249,9 @@ function GenerationCelebrationComponent({
         {showCheckmark && (
           <motion.div
             className="relative flex flex-col items-center justify-center"
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
             transition={{
               type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.DEFAULT,
@@ -259,7 +259,7 @@ function GenerationCelebrationComponent({
           >
             <motion.div
               className="absolute w-32 h-32 rounded-full border-4 border-accent-emerald/30"
-              initial={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
               animate={{
                 scale: [0.5, 1.2, 1.5],
                 opacity: [0, 0.5, 0],
