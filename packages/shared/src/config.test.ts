@@ -161,6 +161,7 @@ import {
   STAGGER_CONFIG,
   OPACITY_PULSE,
   SCALE_PULSE,
+  ANIMATION_SCALE,
   Y_OFFSET,
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
@@ -4943,6 +4944,62 @@ describe("SCALE_PULSE", () => {
     values.forEach((arr) => {
       expect(Array.isArray(arr)).toBe(true);
       expect(arr.length).toBe(3);
+    });
+  });
+});
+
+describe("ANIMATION_SCALE", () => {
+  it("should have TINY = 0.3", () => {
+    expect(ANIMATION_SCALE.TINY).toBe(0.3);
+  });
+
+  it("should have POP_IN = 0.5", () => {
+    expect(ANIMATION_SCALE.POP_IN).toBe(0.5);
+  });
+
+  it("should have STANDARD = 0.8", () => {
+    expect(ANIMATION_SCALE.STANDARD).toBe(0.8);
+  });
+
+  it("should have CARD = 0.85", () => {
+    expect(ANIMATION_SCALE.CARD).toBe(0.85);
+  });
+
+  it("should have MODAL = 0.9", () => {
+    expect(ANIMATION_SCALE.MODAL).toBe(0.9);
+  });
+
+  it("should have SUBTLE = 0.95", () => {
+    expect(ANIMATION_SCALE.SUBTLE).toBe(0.95);
+  });
+
+  it("should have TYPING_PULSE = 1.002", () => {
+    expect(ANIMATION_SCALE.TYPING_PULSE).toBe(1.002);
+  });
+
+  it("should have PARTICLE_EXPAND = 1.3", () => {
+    expect(ANIMATION_SCALE.PARTICLE_EXPAND).toBe(1.3);
+  });
+
+  it("should have BADGE_EXPAND = 1.5", () => {
+    expect(ANIMATION_SCALE.BADGE_EXPAND).toBe(1.5);
+  });
+
+  it("should have ATTENTION_RING = 2.5", () => {
+    expect(ANIMATION_SCALE.ATTENTION_RING).toBe(2.5);
+  });
+
+  it("should have 10 entries", () => {
+    expect(Object.keys(ANIMATION_SCALE).length).toBe(10);
+  });
+
+  it("should have all unique numeric scale values", () => {
+    const values = Object.values(ANIMATION_SCALE);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
     });
   });
 });

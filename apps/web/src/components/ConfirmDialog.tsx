@@ -39,6 +39,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
   ANIMATION_DEFAULTS,
+  ANIMATION_SCALE,
   ARIA_HIDDEN_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
@@ -179,9 +180,9 @@ export const ConfirmDialog = memo(function ConfirmDialog({
           {/* Dialog */}
           <motion.div
             ref={containerRef as React.RefObject<HTMLDivElement>}
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: 20 }}
             transition={{
               type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.GENTLE,
