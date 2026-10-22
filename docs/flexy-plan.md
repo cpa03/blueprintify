@@ -32,7 +32,7 @@ Deliberately skipped: `x: 0` / `y: 0` / `opacity: 0` / `opacity: 1` (value seman
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-201-xy-opacity-offsets` | refactor(flexy): centralize scalar x/y offset & opacity variant values into shared config (Iteration 201) |
+| #3855 | `flexy/iteration-201-xy-opacity-offsets` | refactor(flexy): centralize scalar x/y offset & opacity variant values into shared config (Iteration 201) |
 
 ### ✅ Flexy Iteration 200: Centralize Scalar Animation Scale Values
 
