@@ -48,6 +48,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
+  ANIMATION_Y_OFFSET,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -180,9 +181,13 @@ export const ConfirmDialog = memo(function ConfirmDialog({
           {/* Dialog */}
           <motion.div
             ref={containerRef as React.RefObject<HTMLDivElement>}
-            initial={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: 20 }}
+            initial={{
+              opacity: 0,
+              scale: ANIMATION_SCALE.SUBTLE,
+              y: ANIMATION_Y_OFFSET.DROP_LARGE,
+            }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: 20 }}
+            exit={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: ANIMATION_Y_OFFSET.DROP_LARGE }}
             transition={{
               type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.GENTLE,
@@ -221,7 +226,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 </div>
                 <div className="flex-1 min-w-0">
                   <motion.div
-                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 6 }}
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: ANIMATION_Y_OFFSET.DROP }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={
                       shouldReduceMotion
@@ -241,7 +246,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     </h2>
                   </motion.div>
                   <motion.div
-                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 6 }}
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: ANIMATION_Y_OFFSET.DROP }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={
                       shouldReduceMotion
@@ -264,7 +269,9 @@ export const ConfirmDialog = memo(function ConfirmDialog({
               </div>
 
               <motion.div
-                initial={shouldReduceMotion ? {} : { opacity: 0, y: 8 }}
+                initial={
+                  shouldReduceMotion ? {} : { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_SUBTLE }
+                }
                 animate={{ opacity: 1, y: 0 }}
                 transition={
                   shouldReduceMotion
