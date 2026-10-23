@@ -198,18 +198,32 @@ describe("TypeIndicator", () => {
     expect(screen.getByText("Typing")).toBeInTheDocument();
   });
 
-  it("does not render when isTyping is false", () => {
+  it("keeps an empty persistent live region mounted when isTyping is false", () => {
     const { container } = render(<TypeIndicator isTyping={false} />);
 
-    expect(container.innerHTML).toBe("");
+    const announcer = container.querySelector("[data-typing-announcer]");
+    expect(announcer).toBeInTheDocument();
+    expect(announcer).toHaveAttribute("aria-live", "polite");
+    expect(announcer).toHaveAttribute("data-typing-announcer", "idle");
+    expect(announcer?.textContent).toBe("");
+    expect(container.querySelector("span.rounded-full")).toBeNull();
   });
 
-  it("has aria-live polite for accessibility", () => {
-    const { container } = render(<TypeIndicator isTyping={true} />);
+  it("announces Typing via a live region that exists before content changes", () => {
+    const { container, rerender } = render(<TypeIndicator isTyping={false} />);
 
-    const liveRegion = container.querySelector("[aria-live='polite']");
-    expect(liveRegion).toBeInTheDocument();
-    expect(liveRegion).toHaveAttribute("aria-atomic", "true");
+    const announcerBefore = container.querySelector("[data-typing-announcer]");
+    expect(announcerBefore).toBeInTheDocument();
+    expect(announcerBefore).toHaveAttribute("role", "status");
+    expect(announcerBefore).toHaveAttribute("aria-live", "polite");
+    expect(announcerBefore).toHaveAttribute("aria-atomic", "true");
+
+    rerender(<TypeIndicator isTyping={true} />);
+
+    const announcerAfter = container.querySelector("[data-typing-announcer]");
+    expect(announcerAfter).toBe(announcerBefore);
+    expect(announcerAfter).toHaveAttribute("data-typing-announcer", "typing");
+    expect(announcerAfter?.textContent).toBe("Typing");
   });
 
   it("has screen reader text with 'Typing' label", () => {
@@ -226,36 +240,44 @@ describe("TypeIndicator", () => {
     expect(dots.length).toBe(3);
   });
 
+  it("marks the visual dots container as decorative (aria-hidden)", () => {
+    const { container } = render(<TypeIndicator isTyping={true} />);
+
+    const visual = container.querySelector("[data-dots-count]");
+    expect(visual).toBeInTheDocument();
+    expect(visual).toHaveAttribute("aria-hidden", "true");
+    expect(visual).not.toHaveAttribute("aria-live");
+  });
+
   it("applies right margin when position is left", () => {
     const { container } = render(<TypeIndicator isTyping={true} position="left" />);
 
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper?.className).toContain("mr-2");
+    const visual = container.querySelector("[data-position='left']");
+    expect(visual?.className).toContain("mr-2");
   });
 
   it("applies left margin when position is right (default)", () => {
     const { container } = render(<TypeIndicator isTyping={true} position="right" />);
 
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper?.className).toContain("ml-2");
+    const visual = container.querySelector("[data-position='right']");
+    expect(visual?.className).toContain("ml-2");
   });
 
   it("applies custom className", () => {
     const { container } = render(<TypeIndicator isTyping={true} className="mt-4" />);
 
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper?.className).toContain("mt-4");
+    const visual = container.querySelector("[data-dots-count]");
+    expect(visual?.className).toContain("mt-4");
   });
 
-  it("applies role='status', data-state, data-position, data-dots-count, and data-reduced-motion attributes for state tracking and accessibility", () => {
+  it("applies data-state, data-position, data-dots-count, and data-reduced-motion attributes for state tracking", () => {
     const { container } = render(<TypeIndicator isTyping={true} position="left" />);
 
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper).toHaveAttribute("role", "status");
-    expect(wrapper).toHaveAttribute("data-state", "typing");
-    expect(wrapper).toHaveAttribute("data-position", "left");
-    expect(wrapper).toHaveAttribute("data-dots-count", "3");
-    expect(wrapper).toHaveAttribute("data-reduced-motion", "false");
+    const visual = container.querySelector("[data-dots-count]");
+    expect(visual).toHaveAttribute("data-state", "typing");
+    expect(visual).toHaveAttribute("data-position", "left");
+    expect(visual).toHaveAttribute("data-dots-count", "3");
+    expect(visual).toHaveAttribute("data-reduced-motion", "false");
   });
 
   describe("reduced motion", () => {
