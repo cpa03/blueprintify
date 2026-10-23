@@ -15,12 +15,18 @@ import {
   ANIMATION_DEFAULTS,
   ANIMATION_SCALE,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   LOADING_DOTS_COUNT,
   TYPING_STATE_VALUES,
 } from "@blueprint/shared";
-import { ANIMATION, ANIMATION_MS, ANIMATION_REPEAT } from "../config/constants";
+import {
+  ANIMATION,
+  ANIMATION_MS,
+  ANIMATION_REPEAT,
+  ACCESSIBILITY_LABELS,
+} from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -61,56 +67,70 @@ export const TypeIndicator = memo(function TypeIndicator({
 }: TypeIndicatorProps) {
   const shouldReduceMotion = useReducedMotion();
 
+  // Persistent live region: must exist in the DOM BEFORE its text changes,
+  // otherwise screen readers routinely skip the announcement (same pitfall
+  // documented in LastSavedIndicator / HeadingAnchor). Mounting role="status"
+  // together with "Typing" inside AnimatePresence meant the region appeared
+  // already filled and many screen readers never announced it.
   return (
-    <AnimatePresence>
-      {isTyping && (
-        <motion.div
-          initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
-          transition={{
-            duration: ANIMATION.NORMAL,
-            ease: ANIMATION_TIMING.easing.easeOut,
-          }}
-          className={`inline-flex items-center gap-1 ${
-            position === "left" ? "mr-2" : "ml-2"
-          } ${className}`}
-          role={ARIA_ROLES.STATUS}
-          aria-live={ARIA_LIVE_VALUES.POLITE}
-          aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
-          data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
-          data-position={position}
-          data-dots-count={LOADING_DOTS_COUNT}
-          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-        >
-          <span className={TYPING.SR_ONLY}>Typing</span>
-          {Array.from({ length: LOADING_DOTS_COUNT }, (_, index) => (
-            <motion.span
-              key={`typing-dot-${index}`}
-              className={TYPING.DOT}
-              animate={
-                shouldReduceMotion
-                  ? {}
-                  : {
-                      y: [0, -4, 0],
-                      opacity: [0.4, 1, 0.4],
-                    }
-              }
-              transition={
-                shouldReduceMotion
-                  ? ANIMATION_DEFAULTS.ZERO_DURATION
-                  : {
-                      duration: ANIMATION.SLOW,
-                      repeat: ANIMATION_REPEAT.INFINITE,
-                      delay: index * ANIMATION.STAGGER,
-                      ease: ANIMATION_TIMING.easing.easeInOut,
-                    }
-              }
-            />
-          ))}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <>
+      <span
+        className={TYPING.SR_ONLY}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-typing-announcer={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
+      >
+        {isTyping ? ACCESSIBILITY_LABELS.TYPE_INDICATOR.TYPING : ""}
+      </span>
+      <AnimatePresence>
+        {isTyping && (
+          <motion.div
+            initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
+            transition={{
+              duration: ANIMATION.NORMAL,
+              ease: ANIMATION_TIMING.easing.easeOut,
+            }}
+            className={`inline-flex items-center gap-1 ${
+              position === "left" ? "mr-2" : "ml-2"
+            } ${className}`}
+            // Decorative dots — announcement lives in the persistent region above.
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
+            data-state={TYPING_STATE_VALUES.TYPING}
+            data-position={position}
+            data-dots-count={LOADING_DOTS_COUNT}
+            data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+          >
+            {Array.from({ length: LOADING_DOTS_COUNT }, (_, index) => (
+              <motion.span
+                key={`typing-dot-${index}`}
+                className={TYPING.DOT}
+                animate={
+                  shouldReduceMotion
+                    ? {}
+                    : {
+                        y: [0, -4, 0],
+                        opacity: [0.4, 1, 0.4],
+                      }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
+                    : {
+                        duration: ANIMATION.SLOW,
+                        repeat: ANIMATION_REPEAT.INFINITE,
+                        delay: index * ANIMATION.STAGGER,
+                        ease: ANIMATION_TIMING.easing.easeInOut,
+                      }
+                }
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 });
 
