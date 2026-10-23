@@ -299,6 +299,41 @@ describe("StepInfo", () => {
     expect(screen.getByText("/2")).toBeInTheDocument();
   });
 
+  it("exposes form completion bar as a progressbar with value semantics", () => {
+    render(<StepInfo />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuemin", "0");
+    expect(progressbar).toHaveAttribute("aria-valuemax", "2");
+    expect(progressbar).toHaveAttribute("aria-valuenow", "0");
+    expect(progressbar).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(0, 2)
+    );
+  });
+
+  it("updates progressbar aria-valuenow when required fields are filled", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A valid description for the project that is long enough.";
+    render(<StepInfo />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuenow", "2");
+    expect(progressbar).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(2, 2)
+    );
+  });
+
+  it("announces field completion via a polite live region separate from the bar", () => {
+    mockStore.projectName = "My Project";
+    render(<StepInfo />);
+    const liveRegion = screen.getByText(ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(1, 2));
+    expect(liveRegion).toHaveAttribute("role", "status");
+    expect(liveRegion).toHaveAttribute("aria-live", "polite");
+    expect(liveRegion).toHaveAttribute("aria-atomic", "true");
+    // Live region must not be the progressbar itself (progressbars are not live).
+    expect(liveRegion).not.toHaveAttribute("role", "progressbar");
+  });
+
   // ======== Project Name Input ========
 
   it("updates project name on typing", () => {

@@ -383,21 +383,36 @@ export const StepInfo = memo(function StepInfo({
                 </motion.button>
               )}
             </AnimatePresence>
-            <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden relative">
+            {/* Real progressbar semantics (WCAG 4.1.2): the fill bar alone was
+                purely visual, so screen-reader users had no role/value to
+                discover. aria-label carries the human-readable count; the
+                adjacent live region below handles polite change announcements
+                (progressbars are not live regions by default). */}
+            <div
+              role={ARIA_ROLES.PROGRESSBAR}
+              aria-valuemin={0}
+              aria-valuemax={formProgress.total}
+              aria-valuenow={formProgress.completed}
+              aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
+                formProgress.completed,
+                formProgress.total
+              )}
+              data-progress={Math.round(formProgress.percentage)}
+              className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden relative"
+            >
               <motion.div
                 className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? "progress-shimmer relative" : ""}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${formProgress.percentage}%` }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SMOOTH }}
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               />
             </div>
+            {/* Visible count for sighted users — decorative to AT so it doesn't
+                double-speak with the progressbar's accessible name. */}
             <span
               className="text-dark-400 tabular-nums flex items-center gap-0.5"
-              aria-live={ARIA_LIVE_VALUES.POLITE}
-              aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
-                formProgress.completed,
-                formProgress.total
-              )}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               <motion.span
                 key={formProgress.completed}
@@ -409,6 +424,20 @@ export const StepInfo = memo(function StepInfo({
                 {formProgress.completed}
               </motion.span>
               <span className="text-dark-600">/{formProgress.total}</span>
+            </span>
+            {/* Polite live region: announces field-count changes without the
+                aria-label-on-live-region anti-pattern (the previous span mixed
+                both, which made announcement behavior SR-dependent). */}
+            <span
+              className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+              role={ARIA_ROLES.STATUS}
+              aria-live={ARIA_LIVE_VALUES.POLITE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+            >
+              {ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
+                formProgress.completed,
+                formProgress.total
+              )}
             </span>
           </div>
         </div>
