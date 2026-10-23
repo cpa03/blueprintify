@@ -48,6 +48,7 @@ import {
   STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   CATEGORY_ICONS,
   MIN_REQUIREMENTS,
@@ -102,6 +103,7 @@ interface TechChipProps {
   onToggle: (tech: { name: string; category: string }) => void;
   justSelected: string | null;
   entranceIndex?: number;
+  shouldReduceMotion?: boolean;
 }
 
 const TechChip = memo(function TechChip({
@@ -110,6 +112,7 @@ const TechChip = memo(function TechChip({
   onToggle,
   justSelected,
   entranceIndex = 0,
+  shouldReduceMotion = false,
 }: TechChipProps) {
   const isJustSelected = justSelected === tech.name;
 
@@ -130,13 +133,15 @@ const TechChip = memo(function TechChip({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
       style={{
-        animationDelay: `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
+        animationDelay: shouldReduceMotion
+          ? "0s"
+          : `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
       }}
-      whileHover={HOVER_SCALE.STANDARD}
-      whileTap={TAP_SCALE.STANDARD}
+      whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
+      whileTap={shouldReduceMotion ? {} : TAP_SCALE.STANDARD}
       animate={
-        isJustSelected
+        isJustSelected && !shouldReduceMotion
           ? {
               scale: SCALE_PULSE.GLOW,
               transition: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut },
@@ -221,6 +226,7 @@ interface StepStackProps {
 export const StepStack = memo(function StepStack({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepStackProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [isShaking, setIsShaking] = useState(false);
   const [invalidField, setInvalidField] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
@@ -315,7 +321,14 @@ export const StepStack = memo(function StepStack({
   const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-can-proceed={canProceed ? "true" : "false"}
+      data-selected-count={techStack.length}
+      data-min-required={minRequired}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_STACK.TITLE}</h2>
@@ -376,6 +389,7 @@ export const StepStack = memo(function StepStack({
                     onToggle={toggleTech}
                     justSelected={justSelected}
                     entranceIndex={globalIndex}
+                    shouldReduceMotion={shouldReduceMotion}
                   />
                 );
               })}
