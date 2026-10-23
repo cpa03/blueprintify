@@ -26,10 +26,13 @@ import {
   ANIMATION,
 } from "../config/constants";
 import {
+  ANIMATION_SCALE,
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   DIALOG_STATE_VALUES,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
 } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
@@ -299,9 +302,13 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{
+              opacity: 0,
+              scale: ANIMATION_SCALE.SUBTLE,
+              y: ANIMATION_Y_OFFSET.DROP_LARGE,
+            }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: ANIMATION_Y_OFFSET.DROP_LARGE }}
             transition={{
               type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.GENTLE,
@@ -387,9 +394,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   <AnimatePresence>
                     {searchQuery && (
                       <motion.button
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                         transition={{ duration: ANIMATION.FAST }}
                         onClick={handleClearSearch}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white
@@ -421,7 +428,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
                       key={category}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
                         delay: categoryIndex * ANIMATION.STAGGER,
@@ -451,9 +458,13 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                             <motion.div
                               key={shortcut.description}
                               layout
-                              initial={{ opacity: 0, x: -10 }}
+                              initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_FAR }}
                               animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: 10, scale: 0.95 }}
+                              exit={{
+                                opacity: 0,
+                                x: ANIMATION_X_OFFSET.SLIDE_RIGHT_SMALL,
+                                scale: ANIMATION_SCALE.SUBTLE,
+                              }}
                               transition={{
                                 delay:
                                   categoryIndex * ANIMATION.STAGGER +
@@ -485,7 +496,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   ))
                 ) : (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col items-center justify-center py-16 text-dark-400"
                   >
@@ -532,7 +543,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       <motion.span
                         key={filteredShortcuts.length}
                         className="tabular-nums inline-block"
-                        initial={{ scale: 0.5, opacity: 0 }}
+                        initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{
                           type: FRAMER_TYPE.SPRING,

@@ -47,6 +47,7 @@ import {
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
 import { STORAGE_KEYS } from "../../config/keys";
 interface ElapsedTime {
@@ -162,7 +163,7 @@ function LoadingDots({ active }: { active: boolean }): JSX.Element {
         <motion.span
           key={i}
           className="inline-block"
-          initial={{ opacity: 0, scale: 0.3 }}
+          initial={{ opacity: 0, scale: ANIMATION_SCALE.TINY }}
           animate={{
             opacity: i < activeDots ? 1 : 0,
             scale: i < activeDots ? 1 : 0.3,
@@ -485,7 +486,7 @@ export const StepGenerating = memo(function StepGenerating({
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
+                initial={{ scale: ANIMATION_SCALE.STANDARD, opacity: 0 }}
                 animate={
                   shouldReduceMotion
                     ? { scale: 1, opacity: 1 }
@@ -532,9 +533,9 @@ export const StepGenerating = memo(function StepGenerating({
         {isComplete ? (
           <motion.div
             key="complete"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE }}
             transition={{ delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND }}
             className="text-center"
           >
@@ -544,9 +545,9 @@ export const StepGenerating = memo(function StepGenerating({
         ) : isError ? (
           <motion.div
             key="error"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE }}
             className="text-center"
           >
             <h2 className="text-xl font-bold text-accent-pink mb-2">
@@ -566,9 +567,9 @@ export const StepGenerating = memo(function StepGenerating({
         ) : (
           <motion.div
             key={WIZARD_STEP_KEYS.GENERATING}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE }}
             className="text-center"
           >
             <motion.h2
@@ -600,9 +601,9 @@ export const StepGenerating = memo(function StepGenerating({
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={progress || "starting"}
-                    initial={{ opacity: 0, y: 4 }}
+                    initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
+                    exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                     transition={{ duration: ANIMATION.TEXT_FADE }}
                   >
                     {progress || WIZARD_GENERATING_LABELS.STARTING_FALLBACK}
@@ -692,7 +693,7 @@ export const StepGenerating = memo(function StepGenerating({
           than abruptly swapping out the dash. */}
       <div className="flex gap-8 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
           animate={{
             opacity: 1,
             y: 0,
@@ -726,9 +727,13 @@ export const StepGenerating = memo(function StepGenerating({
               {awaitingContent ? (
                 <motion.span
                   key="awaiting-blueprint"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                  exit={{
+                    opacity: 0,
+                    scale: ANIMATION_SCALE.STANDARD,
+                    y: ANIMATION_Y_OFFSET.RISE_TINY,
+                  }}
                   transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
                   className="tabular-nums text-dark-500 inline-block"
                   aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_BLUEPRINT}
@@ -738,9 +743,13 @@ export const StepGenerating = memo(function StepGenerating({
               ) : (
                 <motion.span
                   key="count-blueprint"
-                  initial={{ opacity: 0, scale: 0.8, y: 4 }}
+                  initial={{
+                    opacity: 0,
+                    scale: ANIMATION_SCALE.STANDARD,
+                    y: ANIMATION_Y_OFFSET.DROP_TINY,
+                  }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
                   className="inline-block"
                 >
@@ -756,7 +765,7 @@ export const StepGenerating = memo(function StepGenerating({
           <div className="text-sm text-dark-400">{GENERATION_STAT_LABELS.BLUEPRINT_LINES}</div>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
           animate={{
             opacity: 1,
             y: 0,
@@ -793,9 +802,13 @@ export const StepGenerating = memo(function StepGenerating({
               {awaitingContent ? (
                 <motion.span
                   key="awaiting-tasks"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                  exit={{
+                    opacity: 0,
+                    scale: ANIMATION_SCALE.STANDARD,
+                    y: ANIMATION_Y_OFFSET.RISE_TINY,
+                  }}
                   transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
                   className="tabular-nums text-dark-500 inline-block"
                   aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_TASKS}
@@ -805,9 +818,13 @@ export const StepGenerating = memo(function StepGenerating({
               ) : (
                 <motion.span
                   key="count-tasks"
-                  initial={{ opacity: 0, scale: 0.8, y: 4 }}
+                  initial={{
+                    opacity: 0,
+                    scale: ANIMATION_SCALE.STANDARD,
+                    y: ANIMATION_Y_OFFSET.DROP_TINY,
+                  }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
+                  exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
                   className="inline-block"
                 >
@@ -830,14 +847,18 @@ export const StepGenerating = memo(function StepGenerating({
             key="complete-actions"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE }}
             transition={{ duration: ANIMATION.NORMAL }}
             className="mt-8 flex flex-col items-center gap-3"
           >
             {/* View in Editor — primary action enters with a gentle spring
                 bounce, giving the user a clear "first thing to do" cue. */}
             <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              initial={{
+                opacity: 0,
+                y: ANIMATION_Y_OFFSET.DROP_STANDARD,
+                scale: ANIMATION_SCALE.SUBTLE,
+              }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND,
@@ -894,7 +915,7 @@ export const StepGenerating = memo(function StepGenerating({
                 button, creating a staggered hierarchy that guides the user's eye
                 to the more important action first. */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND + ANIMATION.STAGGER,
@@ -941,7 +962,7 @@ export const StepGenerating = memo(function StepGenerating({
                 have settled, keeping its emphasis as supplementary guidance
                 rather than competing with the primary call-to-action. */}
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND + ANIMATION.STAGGER * 2,
@@ -957,9 +978,9 @@ export const StepGenerating = memo(function StepGenerating({
         ) : isError ? (
           <motion.div
             key="error-actions"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE }}
             className="mt-8 flex flex-col items-center gap-3"
           >
             <RippleButton
@@ -1037,9 +1058,9 @@ export const StepGenerating = memo(function StepGenerating({
               <AnimatePresence mode="wait">
                 <motion.span
                   key={blueprintLines > 0 ? "streaming" : "empty"}
-                  initial={{ opacity: 0, y: 4 }}
+                  initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   transition={{ duration: ANIMATION.TEXT_FADE }}
                 >
                   {blueprintLines > 0

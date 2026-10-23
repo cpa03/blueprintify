@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LastSavedIndicator } from "./LastSavedIndicator";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { SAVE_STATE_VALUES } from "@blueprint/shared/config";
+import { GLOW_STATE_VALUES, SAVE_STATE_VALUES } from "@blueprint/shared/config";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -90,8 +90,20 @@ describe("LastSavedIndicator", () => {
     expect(container?.className).toContain("text-dark-400");
     expect(container).toHaveAttribute("data-state", SAVE_STATE_VALUES.SAVED);
     expect(container).toHaveAttribute("data-has-changes", "false");
+    expect(container).toHaveAttribute("data-saved-glow", GLOW_STATE_VALUES.IDLE);
     expect(container).toHaveAttribute("data-reduced-motion", "false");
     expect(container).toHaveAttribute("title", "Saved");
+  });
+
+  it("sets data-saved-glow to active when transitioning from unsaved to saved", () => {
+    const { rerender } = render(
+      <LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />
+    );
+
+    rerender(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={false} />);
+
+    const container = screen.getByText("Saved").closest("div");
+    expect(container).toHaveAttribute("data-saved-glow", GLOW_STATE_VALUES.ACTIVE);
   });
 
   it("renders checkmark SVG in saved state", () => {

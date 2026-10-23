@@ -23,6 +23,12 @@
 
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_OPACITY,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
+} from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
@@ -142,8 +148,8 @@ const TechChip = memo(function TechChip({
       <AnimatePresence>
         {isJustSelected && (
           <motion.div
-            initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 2.5, opacity: 0 }}
+            initial={{ scale: 0, opacity: ANIMATION_OPACITY.SUBTLE }}
+            animate={{ scale: ANIMATION_SCALE.ATTENTION_RING, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
             className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
@@ -155,8 +161,8 @@ const TechChip = memo(function TechChip({
       <AnimatePresence>
         {isJustSelected && (
           <motion.div
-            initial={{ scale: 0.8, opacity: 1 }}
-            animate={{ scale: 1.5, opacity: 0 }}
+            initial={{ scale: ANIMATION_SCALE.STANDARD, opacity: 1 }}
+            animate={{ scale: ANIMATION_SCALE.BADGE_EXPAND, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: ANIMATION.FADE_IN, ease: EASING.easeOut }}
             className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
@@ -392,9 +398,9 @@ export const StepStack = memo(function StepStack({
                   <motion.li
                     key={tech.name}
                     layout
-                    initial={{ opacity: 0, scale: 0.85 }}
+                    initial={{ opacity: 0, scale: ANIMATION_SCALE.CARD }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.85 }}
+                    exit={{ opacity: 0, scale: ANIMATION_SCALE.CARD }}
                     transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.DEFAULT }}
                     className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-500/20 border border-primary-500/30 rounded-full text-sm text-primary-300"
                   >
@@ -422,9 +428,13 @@ export const StepStack = memo(function StepStack({
         {invalidField && (
           <motion.p
             role={ARIA_ROLES.ALERT}
-            initial={{ opacity: 0, y: -6, x: -3 }}
+            initial={{
+              opacity: 0,
+              y: ANIMATION_Y_OFFSET.RISE_SMALL,
+              x: ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO,
+            }}
             animate={{ opacity: 1, y: 0, x: 0 }}
-            exit={{ opacity: 0, y: -6 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SMALL }}
             transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
             className="text-sm text-accent-pink flex items-center gap-1.5"
           >

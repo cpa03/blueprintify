@@ -87,7 +87,10 @@ const ALLOWED_PATHS = [
 const SECRET_PATTERNS = [
   // === AI / API Provider Keys ===
   { pattern: /sk-[a-zA-Z0-9_-]{20,}/g, label: "OpenAI API Key" },
-  { pattern: /pk-[a-zA-Z0-9_-]{20,}/g, label: "Stripe Publishable Key" },
+  // Stripe publishable keys use an underscore separator (pk_test_… / pk_live_…),
+  // not a hyphen. The old /pk-/ pattern never matched a real Stripe key.
+  { pattern: /pk_live_[a-zA-Z0-9_-]{20,}/g, label: "Stripe Publishable Key (Live)" },
+  { pattern: /pk_test_[a-zA-Z0-9_-]{20,}/g, label: "Stripe Publishable Key (Test)" },
   { pattern: /sk_live_[a-zA-Z0-9_-]{20,}/g, label: "Stripe Secret Key (Live)" },
   { pattern: /sk_test_[a-zA-Z0-9_-]{20,}/g, label: "Stripe Secret Key (Test)" },
 
@@ -175,7 +178,15 @@ const SECRET_PATTERNS = [
 
 /** Check if a file path is in the allowed (known-safe) list. */
 function isAllowedPath(filePath) {
-  return ALLOWED_PATHS.some((allowed) => filePath.includes(allowed));
+  const basename = path.basename(filePath);
+  const relative = path.relative(PROJECT_ROOT, filePath);
+  return ALLOWED_PATHS.some((allowed) => {
+    // Exact basename match or exact relative path match.
+    // Substring matching (e.g. filePath.includes) is forbidden: it lets an
+    // attacker smuggle secrets past the scanner by naming a file
+    // "src/secrets/wrangler.toml.backup" or "auth.test.ts.secrets".
+    return basename === allowed || relative === allowed;
+  });
 }
 
 /** Check the file extension against our scan list. */
@@ -193,7 +204,10 @@ function walkDir(dir) {
   let entries;
   try {
     entries = fs.readdirSync(dir, { withFileTypes: true });
-  } catch {
+  } catch (err) {
+    // Fail-open is dangerous for a security scanner: an unreadable directory
+    // means unknown coverage. Log loudly so CI operators can investigate.
+    console.error(`⚠️  Warning: Could not read directory ${dir}: ${err.message}`);
     return results;
   }
   for (const entry of entries) {
@@ -214,7 +228,9 @@ function scanFile(filePath) {
   let content;
   try {
     content = fs.readFileSync(filePath, "utf-8");
-  } catch {
+  } catch (err) {
+    // Unreadable file = unknown coverage; surface it instead of failing open.
+    console.error(`⚠️  Warning: Could not read file ${filePath}: ${err.message}`);
     return [];
   }
 
@@ -226,12 +242,15 @@ function scanFile(filePath) {
     const lineNum = i + 1;
 
     for (const { pattern, label } of SECRET_PATTERNS) {
-      pattern.lastIndex = 0; // reset for global regex
-      const match = pattern.exec(line);
-      if (match) {
+      pattern.lastIndex = 0; // reset for global regex, once per pattern per line
+      let match;
+      // Loop over ALL matches on the line — the old single-exec call only
+      // reported the first secret per pattern per line, so multiple secrets
+      // on one line (e.g. `key1=sk-… key2=sk-…`) were silently missed.
+      while ((match = pattern.exec(line)) !== null) {
         const column = match.index + 1;
-        // Truncate matched value for safe display
-        const preview = match[0].length > 40 ? match[0].slice(0, 20) + "..." + match[0].slice(-10) : match[0];
+        // Never echo raw secret material into logs — only the label is safe.
+        const preview = `[REDACTED ${label}]`;
         findings.push({ file: filePath, line: lineNum, column, label, preview });
       }
     }

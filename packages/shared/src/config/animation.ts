@@ -468,6 +468,127 @@ export const SCALE_PULSE = {
 } as const;
 
 /**
+ * Scalar Animation Scale Values (for framer-motion initial/animate/exit variants)
+ * Centralized source of truth for non-trivial scalar `scale:` values used in
+ * framer-motion variant state objects (initial/animate/exit/hidden).
+ * Complements HOVER_SCALE/TAP_SCALE (whileHover/whileTap) and SCALE_PULSE
+ * (keyframe arrays) — this covers single-value scale states.
+ * Flexy says: No hardcoded scale: 0.5 / 0.8 / 0.9 in variant objects!
+ * Usage: import { ANIMATION_SCALE } from "@blueprint/shared";
+ *        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
+ *        exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
+ */
+export const ANIMATION_SCALE = {
+  /** Tiny entrance: 0.3 — for large overlay/glow elements scaling up from very small */
+  TINY: 0.3,
+  /** Pop-in entrance: 0.5 — for icons, tooltips, error-fallback rows popping in from half size */
+  POP_IN: 0.5,
+  /** Standard entrance: 0.8 — for chips, badges, banners and most enter/exit transitions */
+  STANDARD: 0.8,
+  /** Card entrance: 0.85 — for larger card/stack container entrance animations */
+  CARD: 0.85,
+  /** Modal/toast entrance: 0.9 — for toast notifications, modals and secondary panels */
+  MODAL: 0.9,
+  /** Subtle entrance: 0.95 — for subtle header/toolbar/banner entrance animations */
+  SUBTLE: 0.95,
+  /** Typing micro-pulse: 1.002 — for barely-perceptible scale pulse while user types */
+  TYPING_PULSE: 1.002,
+  /** Particle expand: 1.3 — for copy-celebration particle burst expansion */
+  PARTICLE_EXPAND: 1.3,
+  /** Badge expand-out: 1.5 — for saved-indicator/badge expand-and-fade exit animations */
+  BADGE_EXPAND: 1.5,
+  /** Attention ring expand-out: 2.5 — for attention-ring pulse expand-and-fade exit animations */
+  ATTENTION_RING: 2.5,
+} as const;
+
+/**
+ * Scalar Animation X-offset Values (for framer-motion initial/animate/exit variants)
+ * Centralized source of truth for non-trivial scalar `x:` values used in
+ * framer-motion variant state objects (initial/animate/exit/hidden) and
+ * inline initial/animate/exit props.
+ * Complements ANIMATION_SCALE (scalar scale) and Y_OFFSET (y keyframe arrays).
+ * Flexy says: No hardcoded x: -4 / x: 10 in variant objects!
+ * Usage: import { ANIMATION_X_OFFSET } from "@blueprint/shared";
+ *        initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
+ *        exit={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_RIGHT_SMALL }}
+ */
+export const ANIMATION_X_OFFSET = {
+  /** Slide-left far: -10 — for modal/panel exit sliding left out of view */
+  SLIDE_LEFT_FAR: -10,
+  /** Slide-left medium: -6 — for toolbar/header chip enter-from-left */
+  SLIDE_LEFT_MEDIUM: -6,
+  /** Slide-left small: -5 — for copy-button/icon enter-from-left */
+  SLIDE_LEFT_SMALL: -5,
+  /** Slide-left tiny: -4 — for heading-anchor/badge enter-from-left */
+  SLIDE_LEFT_TINY: -4,
+  /** Slide-left micro: -3 — for stacked-step/counter enter-from-left */
+  SLIDE_LEFT_MICRO: -3,
+  /** Slide-right small: 10 — for modal/panel exit sliding right out of view */
+  SLIDE_RIGHT_SMALL: 10,
+} as const;
+
+/**
+ * Scalar Animation Y-offset Values (for framer-motion initial/animate/exit variants)
+ * Centralized source of truth for non-trivial scalar `y:` values used in
+ * framer-motion variant state objects (initial/animate/exit/hidden) and
+ * inline initial/animate/exit props.
+ * Complements ANIMATION_SCALE (scalar scale) and Y_OFFSET (y keyframe arrays).
+ * Flexy says: No hardcoded y: -4 / y: 20 in variant objects!
+ * Usage: import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
+ *        initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_LARGE }}
+ *        exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
+ */
+export const ANIMATION_Y_OFFSET = {
+  /** Rise-up large: -20 — for toast exit flying up and away */
+  RISE_LARGE: -20,
+  /** Rise-up: -10 — for modal/step exit floating upward */
+  RISE: -10,
+  /** Rise-up subtle: -8 — for toast/copy-button exit floating up */
+  RISE_SUBTLE: -8,
+  /** Rise-up small: -6 — for editor pane exit floating up */
+  RISE_SMALL: -6,
+  /** Rise-up micro: -5 — for saved-indicator exit floating up */
+  RISE_MICRO: -5,
+  /** Rise-up tiny: -4 — for chips/badges exit floating up (most common) */
+  RISE_TINY: -4,
+  /** Hover lift: -2 — for whileHover micro-lift on interactive chips */
+  HOVER_LIFT: -2,
+  /** Drop-in tiny: 4 — for progress-bar/step entrance from below */
+  DROP_TINY: 4,
+  /** Drop-in small: 5 — for preview/toast entrance from below */
+  DROP_SMALL: 5,
+  /** Drop-in: 6 — for dialog/editor entrance from below */
+  DROP: 6,
+  /** Drop-in subtle: 8 — for copy-button/empty-state entrance from below */
+  DROP_SUBTLE: 8,
+  /** Drop-in standard: 10 — for step-generating/celebration entrance from below */
+  DROP_STANDARD: 10,
+  /** Drop-in moderate: 12 — for toast/error-fallback entrance from below */
+  DROP_MODERATE: 12,
+  /** Drop-in large: 20 — for dialog/modal entrance from below */
+  DROP_LARGE: 20,
+} as const;
+
+/**
+ * Scalar Animation Opacity Values (for framer-motion initial/animate/exit variants)
+ * Centralized source of truth for non-trivial scalar `opacity:` values used in
+ * framer-motion variant state objects (initial/animate/exit/hidden) and
+ * inline initial/animate/exit props.
+ * Complements OPACITY_PULSE (keyframe arrays) — this covers single-value opacity states.
+ * Flexy says: No hardcoded opacity: 0.8 / opacity: 0.3 in variant objects!
+ * Usage: import { ANIMATION_OPACITY } from "@blueprint/shared";
+ *        initial={{ opacity: ANIMATION_OPACITY.SUBTLE }}
+ */
+export const ANIMATION_OPACITY = {
+  /** Dimmed: 0.3 — for reduced-motion offline banner pulse-ring dim state */
+  DIMMED: 0.3,
+  /** Faded: 0.6 — for toast hover dim state */
+  FADED: 0.6,
+  /** Subtle: 0.8 — for progress-bar / selection-ripple initial opacity */
+  SUBTLE: 0.8,
+} as const;
+
+/**
  * Y-offset Keyframe Pulse Presets (for framer-motion animate keyframes)
  * Centralized source of truth for y-offset keyframe arrays used
  * in floating/bobbing animations across components.

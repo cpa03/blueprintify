@@ -38,6 +38,7 @@ import {
   WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
@@ -300,7 +301,7 @@ export const StepReview = memo(function StepReview({
                     shouldReduceMotion
                       ? undefined
                       : {
-                          hidden: { opacity: 0, scale: 0.9 },
+                          hidden: { opacity: 0, scale: ANIMATION_SCALE.MODAL },
                           visible: {
                             opacity: 1,
                             scale: 1,
@@ -393,7 +394,7 @@ export const StepReview = memo(function StepReview({
                       shouldReduceMotion
                         ? undefined
                         : {
-                            hidden: { opacity: 0, x: -10 },
+                            hidden: { opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_FAR },
                             visible: {
                               opacity: 1,
                               x: 0,
@@ -631,7 +632,9 @@ export const StepReview = memo(function StepReview({
             )}
             {isGenerating && progress && (
               <motion.span
-                initial={shouldReduceMotion ? undefined : { opacity: 0, y: -5 }}
+                initial={
+                  shouldReduceMotion ? undefined : { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_MICRO }
+                }
                 animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
                 role={ARIA_ROLES.STATUS}

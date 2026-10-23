@@ -30,6 +30,7 @@
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import {
   TOAST_CONFIG,
@@ -303,9 +304,13 @@ const ToastItem = memo(
             }
           : {
               layout: true,
-              initial: { opacity: 0, y: 20, scale: 0.9 },
+              initial: {
+                opacity: 0,
+                y: ANIMATION_Y_OFFSET.DROP_LARGE,
+                scale: ANIMATION_SCALE.MODAL,
+              },
               animate: { opacity: 1, y: 0, scale: 1 },
-              exit: { opacity: 0, y: -20, scale: 0.9 },
+              exit: { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_LARGE, scale: ANIMATION_SCALE.MODAL },
               transition: defaultTransition,
             })}
         className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-70 max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
@@ -389,9 +394,17 @@ const ToastItem = memo(
           <AnimatePresence>
             {isHovered && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.5, y: 5 }}
+                initial={{
+                  opacity: 0,
+                  scale: ANIMATION_SCALE.POP_IN,
+                  y: ANIMATION_Y_OFFSET.DROP_SMALL,
+                }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.5, y: 5 }}
+                exit={{
+                  opacity: 0,
+                  scale: ANIMATION_SCALE.POP_IN,
+                  y: ANIMATION_Y_OFFSET.DROP_SMALL,
+                }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...TOAST_SPRING.WARNING_ICON }}
                 className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -477,8 +490,8 @@ const ToastItem = memo(
               onClick={() => onRemove(toast.id)}
               className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 0.6, scale: 1 }}
+              initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
+              animate={{ opacity: ANIMATION_OPACITY.FADED, scale: 1 }}
               transition={{
                 opacity: {
                   duration: ANIMATION.NORMAL,
@@ -591,7 +604,7 @@ function ToastContainerComponent(): JSX.Element {
   const containerAnimation = shouldReduceMotion
     ? {}
     : {
-        initial: { opacity: 0, y: 12 },
+        initial: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_MODERATE },
         animate: { opacity: 1, y: 0 },
         transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
       };
@@ -652,9 +665,13 @@ function ToastContainerComponent(): JSX.Element {
           {showDismissAll && (
             <motion.button
               type="button"
-              initial={{ opacity: 0, y: -8, scale: 0.9 }}
+              initial={{
+                opacity: 0,
+                y: ANIMATION_Y_OFFSET.RISE_SUBTLE,
+                scale: ANIMATION_SCALE.MODAL,
+              }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.9 }}
+              exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SUBTLE, scale: ANIMATION_SCALE.MODAL }}
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               whileHover={HOVER_SCALE.GENTLE}
               whileTap={TAP_SCALE.GENTLE}
@@ -673,7 +690,7 @@ function ToastContainerComponent(): JSX.Element {
                 <motion.span
                   key={toasts.length}
                   className="tabular-nums"
-                  initial={{ scale: 0.5, opacity: 0 }}
+                  initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}

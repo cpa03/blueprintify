@@ -11,6 +11,7 @@
 import { memo, useState, useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -56,7 +57,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_MODERATE },
   visible: {
     opacity: 1,
     y: 0,
@@ -103,7 +104,7 @@ export const ErrorFallback = memo(function ErrorFallback({
         transition: { duration: ANIMATION.NORMAL },
       }
     : {
-        initial: { opacity: 0, scale: 0.95, y: 20 },
+        initial: { opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: ANIMATION_Y_OFFSET.DROP_LARGE },
         animate: { opacity: 1, scale: 1, y: 0 },
         transition: {
           type: FRAMER_TYPE.SPRING,
@@ -270,9 +271,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                     {isCopied ? (
                       <motion.span
                         key="copied"
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         className="flex items-center gap-1 text-accent-emerald"
                       >
                         <svg
@@ -294,9 +295,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                     ) : copyFailed ? (
                       <motion.span
                         key="failed"
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         className="flex items-center gap-1 text-red-400"
                       >
                         <svg
@@ -318,9 +319,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                     ) : (
                       <motion.span
                         key="copy"
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         className="flex items-center gap-1"
                       >
                         <svg

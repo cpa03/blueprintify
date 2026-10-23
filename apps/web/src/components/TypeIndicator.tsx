@@ -13,6 +13,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
   ANIMATION_DEFAULTS,
+  ANIMATION_SCALE,
   ARIA_ATOMIC_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
@@ -64,9 +65,9 @@ export const TypeIndicator = memo(function TypeIndicator({
     <AnimatePresence>
       {isTyping && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
+          exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
           transition={{
             duration: ANIMATION.NORMAL,
             ease: ANIMATION_TIMING.easing.easeOut,

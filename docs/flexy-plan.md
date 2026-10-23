@@ -4,6 +4,66 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 201: Centralize Scalar X/Y Offset & Opacity Variant Values
+
+**Problem**: 105 hardcoded scalar motion-offset & opacity literals remained across 22 web component files, even though `ANIMATION_SCALE` (Iteration 200) already covered scalar `scale:` states — no shared constant covered single-value `x:`/`y:`/`opacity:` variants. Breakdown: 97× `x:`/`y:` offsets (17× `y: -4`, 12× `y: 10`, 9× `y: 20`, 6× `y: -10`, 6× `y: -8`, 6× `x: -6`, 6× `x: -4`, 5× `x: -3`, 5× `y: 4`, 4× `y: 8`, 3× `y: -6`, 3× `y: -5`, 3× `y: 5`, 3× `y: 6`, 2× `x: -10`, 2× `x: -5`, 2× `y: 12`, 2× `y: 20`-modal, 1× `x: 10`, 1× `y: -20`, 1× `y: -2`) and 8× opacity (6× `0.8`, 1× `0.6`, 1× `0.3`). Flexy says: no hardcoded scalar x/y/opacity values in variant objects!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | Added `ANIMATION_X_OFFSET` (6 entries: SLIDE_LEFT_FAR/-10, MEDIUM/-6, SMALL/-5, TINY/-4, MICRO/-3, SLIDE_RIGHT_SMALL/10), `ANIMATION_Y_OFFSET` (14 entries: RISE_LARGE/-20, RISE/-10, RISE_SUBTLE/-8, RISE_SMALL/-6, RISE_MICRO/-5, RISE_TINY/-4, HOVER_LIFT/-2, DROP_TINY/4, DROP_SMALL/5, DROP/6, DROP_SUBTLE/8, DROP_STANDARD/10, DROP_MODERATE/12, DROP_LARGE/20), `ANIMATION_OPACITY` (3 entries: DIMMED/0.3, FADED/0.6, SUBTLE/0.8) |
+| `packages/shared/src/index.ts` | Exported all 3 new constants on the root barrel |
+| `packages/shared/src/config.test.ts` | +29 tests: value assertions + entry counts (6/14/3) + uniqueness/type checks |
+| 22 component files in `apps/web/src/components/` | Replaced 105 scalar x/y/opacity literals (StepGenerating ×22, StepInfo ×15, EditorHeader ×12, Toast ×8, AnimatedCopyButton ×6, KeyboardShortcutsModal ×6, ConfirmDialog ×5, StepFeatures ×5, StepStack ×4, LastSavedIndicator ×3, PageScrollProgressBar ×3, Editor ×2, EditorEmptyState ×2, ErrorFallback ×2, ScrollToTop ×2, StepReview ×2, GenerationCelebration, HeadingAnchor, OfflineBanner, PreviewEmptyState, ScrollProgress, EditorToolbar) |
+| `docs/flexy-plan.md` | Iteration 201 entry |
+
+Deliberately skipped: `x: 0` / `y: 0` / `opacity: 0` / `opacity: 1` (value semantics / identity states — Iteration 199/200 precedent); `ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX`/`STAT_ENTRY_OPACITY` (already centralized web-local named offsets); keyframe arrays (covered by `Y_OFFSET`/`OPACITY_PULSE`); test files (tests assert rendered output); `lib/templates/react.ts` (generated template); CSS `transform` values in class strings (Tailwind utilities, not framer-motion variants).
+
+## Verification (Iteration 201)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.38s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check` (25 touched files) — clean
+- ✅ `npm run test:all` — **1,334 web + 555 api + 991 shared = 2,880 tests passing** (+29 new shared)
+- ✅ Remaining raw non-identity scalar `x:`/`y:`/`opacity:` literals in web components (excluding tests, config dirs, templates & identity 0/1) — **0 occurrences**
+
+## PR (Iteration 201)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3855 | `flexy/iteration-201-xy-opacity-offsets` | refactor(flexy): centralize scalar x/y offset & opacity variant values into shared config (Iteration 201) |
+
+### ✅ Flexy Iteration 200: Centralize Scalar Animation Scale Values
+
+**Problem**: 94 hardcoded scalar `scale:` framer-motion variant literals remained across 19 web component files in `initial`/`animate`/`exit`/`hidden` state objects, even though `HOVER_SCALE`/`TAP_SCALE` (whileHover/whileTap) and `SCALE_PULSE` (keyframe arrays) already existed — no shared constant covered single-value scale states. Breakdown: 32× `scale: 0.8`, 23× `scale: 0.5`, 17× `scale: 0.9`, 10× `scale: 0.95`, 4× `scale: 1.002`, 3× `scale: 0.85`, 3× `scale: 1.5`, 2× `scale: 2.5`, 1× `scale: 0.3`, 1× `scale: 1.3`. Flexy says: no hardcoded scalar scale values in variant objects!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | Added `ANIMATION_SCALE` — 10 entries (TINY 0.3, POP_IN 0.5, STANDARD 0.8, CARD 0.85, MODAL 0.9, SUBTLE 0.95, TYPING_PULSE 1.002, PARTICLE_EXPAND 1.3, BADGE_EXPAND 1.5, ATTENTION_RING 2.5) |
+| `packages/shared/src/index.ts` | Exported `ANIMATION_SCALE` on the root barrel |
+| `packages/shared/src/config.test.ts` | +12 tests: 10 value assertions + entry count (10) + uniqueness/positive-number check |
+| 19 component files in `apps/web/src/components/` | Replaced 94 scalar `scale:` literals with `ANIMATION_SCALE.*` (StepInfo ×15, StepFeatures ×16, StepGenerating ×11, Toast ×8, ErrorFallback ×7, KeyboardShortcutsModal ×6, StepStack ×5, AnimatedCopyButton ×4, HeadingAnchor ×4, GenerationCelebration ×3, ConfirmDialog ×2, LastSavedIndicator ×2, ScrollToTop ×2, TypeIndicator ×2, EditorHeader ×2, EditorToolbar ×2, PageScrollProgressBar ×1, PreviewEmptyState ×1, StepReview ×1) |
+| `docs/flexy-plan.md` | Iteration 200 entry |
+
+Deliberately skipped: `scale: 0` / `scale: 1` (value semantics / identity states — Iteration 199 precedent for `opacity: 0`/`1` ternaries); `whileHover`/`whileTap` scale usage (already centralized via `HOVER_SCALE`/`TAP_SCALE`); `apps/web/src/config/` files (definition sites, not call sites); test files (tests assert rendered output); `lib/templates/react.ts` (generated template); CSS `transform: scale()` in keyframe strings (`effects.ts` — CSS not framer-motion).
+
+## Verification (Iteration 200)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (21 touched files) — clean
+- ✅ `npm run test:all` — **1,333 web + 555 api + 962 shared = 2,850 tests passing** (+12 new shared)
+- ✅ Remaining raw non-trivial scalar `scale:` literals in web components (excluding tests, config dirs, `scale: 0`/`scale: 1`) — **0 occurrences**
+
+## PR (Iteration 200)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3849 | `flexy/iteration-200-animation-scale` | refactor(flexy): centralize scalar animation scale values into shared config (Iteration 200) |
+
 ### ✅ Flexy Iteration 199: Centralize Zero-Duration & Infinite-Repeat Transition Literals
 
 **Problem**: 41 hardcoded framer-motion transition literals remained across 16 web files, even though `ANIMATION_DEFAULTS.ZERO_DURATION` already existed: 32× raw `repeat: Infinity` (including 2× inside the centralized `utils/motion.ts` floating/pulse animations themselves), 2× `repeat: shouldReduceMotion ? 0 : Infinity`, 6× raw `{ duration: 0 }` reduced-motion bypass objects (ScrollToTop, ValidationCheckmark, StepReview, EditorToolbar ×2, TypeIndicator), and 1× scalar `shouldReduceMotion ? 0 : ANIMATION.FAST` (HeadingAnchor). `ANIMATION_REPEAT` only defined `ATTENTION_PULSE` and was **duplicated** — one copy in `packages/shared/src/config/animation.ts`, a second identical copy in `apps/web/src/config/constants/ui.ts` (drift risk). Flexy says: no hardcoded repeat counts or zero-duration transition objects!

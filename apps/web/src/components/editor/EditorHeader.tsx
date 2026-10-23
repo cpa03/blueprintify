@@ -29,6 +29,7 @@
 import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ARIA_HIDDEN_VALUES,
@@ -234,7 +235,7 @@ const ContentStats = React.memo(function ContentStats({
       {content && (
         <motion.div
           key="content-stats"
-          initial={{ opacity: 0, y: -8, scale: 0.95 }}
+          initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SUBTLE, scale: ANIMATION_SCALE.SUBTLE }}
           animate={{
             opacity: 1,
             y: 0,
@@ -246,7 +247,7 @@ const ContentStats = React.memo(function ContentStats({
               ? [...HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS]
               : HEADER_ANIMATION.CONTENT_STATS.SHADOW_STATIC,
           }}
-          exit={{ opacity: 0, y: -8, scale: 0.95 }}
+          exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SUBTLE, scale: ANIMATION_SCALE.SUBTLE }}
           transition={
             isGenerating
               ? {
@@ -273,7 +274,7 @@ const ContentStats = React.memo(function ContentStats({
         >
           {/* Char count — staggers in first */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -303,7 +304,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Word count — staggers in second */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -333,7 +334,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Line count — staggers in third */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -363,7 +364,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Reading time — staggers in fourth */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -389,7 +390,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Tab navigation keyboard hint — staggers in fifth */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -401,9 +402,9 @@ const ContentStats = React.memo(function ContentStats({
             <motion.div
               key="tab-nav-hint"
               className="flex items-center gap-1"
-              initial={{ opacity: 0, x: -4 }}
+              initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -4 }}
+              exit={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               <kbd
@@ -426,7 +427,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Shortcut hint badge — staggers in sixth */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -438,9 +439,9 @@ const ContentStats = React.memo(function ContentStats({
             <motion.div
               key="shortcut-hint"
               className="flex items-center gap-1"
-              initial={{ opacity: 0, x: -4 }}
+              initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -4 }}
+              exit={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               {/* The inner motion.span adds a gentle limited-repeat attention pulse

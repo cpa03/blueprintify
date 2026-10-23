@@ -161,6 +161,10 @@ import {
   STAGGER_CONFIG,
   OPACITY_PULSE,
   SCALE_PULSE,
+  ANIMATION_SCALE,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
+  ANIMATION_OPACITY,
   Y_OFFSET,
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
@@ -5048,6 +5052,201 @@ describe("SCALE_PULSE", () => {
     values.forEach((arr) => {
       expect(Array.isArray(arr)).toBe(true);
       expect(arr.length).toBe(3);
+    });
+  });
+});
+
+describe("ANIMATION_SCALE", () => {
+  it("should have TINY = 0.3", () => {
+    expect(ANIMATION_SCALE.TINY).toBe(0.3);
+  });
+
+  it("should have POP_IN = 0.5", () => {
+    expect(ANIMATION_SCALE.POP_IN).toBe(0.5);
+  });
+
+  it("should have STANDARD = 0.8", () => {
+    expect(ANIMATION_SCALE.STANDARD).toBe(0.8);
+  });
+
+  it("should have CARD = 0.85", () => {
+    expect(ANIMATION_SCALE.CARD).toBe(0.85);
+  });
+
+  it("should have MODAL = 0.9", () => {
+    expect(ANIMATION_SCALE.MODAL).toBe(0.9);
+  });
+
+  it("should have SUBTLE = 0.95", () => {
+    expect(ANIMATION_SCALE.SUBTLE).toBe(0.95);
+  });
+
+  it("should have TYPING_PULSE = 1.002", () => {
+    expect(ANIMATION_SCALE.TYPING_PULSE).toBe(1.002);
+  });
+
+  it("should have PARTICLE_EXPAND = 1.3", () => {
+    expect(ANIMATION_SCALE.PARTICLE_EXPAND).toBe(1.3);
+  });
+
+  it("should have BADGE_EXPAND = 1.5", () => {
+    expect(ANIMATION_SCALE.BADGE_EXPAND).toBe(1.5);
+  });
+
+  it("should have ATTENTION_RING = 2.5", () => {
+    expect(ANIMATION_SCALE.ATTENTION_RING).toBe(2.5);
+  });
+
+  it("should have 10 entries", () => {
+    expect(Object.keys(ANIMATION_SCALE).length).toBe(10);
+  });
+
+  it("should have all unique numeric scale values", () => {
+    const values = Object.values(ANIMATION_SCALE);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("ANIMATION_X_OFFSET", () => {
+  it("should have SLIDE_LEFT_FAR = -10", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_FAR).toBe(-10);
+  });
+
+  it("should have SLIDE_LEFT_MEDIUM = -6", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM).toBe(-6);
+  });
+
+  it("should have SLIDE_LEFT_SMALL = -5", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_SMALL).toBe(-5);
+  });
+
+  it("should have SLIDE_LEFT_TINY = -4", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_TINY).toBe(-4);
+  });
+
+  it("should have SLIDE_LEFT_MICRO = -3", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO).toBe(-3);
+  });
+
+  it("should have SLIDE_RIGHT_SMALL = 10", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_RIGHT_SMALL).toBe(10);
+  });
+
+  it("should have 6 entries", () => {
+    expect(Object.keys(ANIMATION_X_OFFSET).length).toBe(6);
+  });
+
+  it("should have all unique numeric x-offset values", () => {
+    const values = Object.values(ANIMATION_X_OFFSET);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+    });
+  });
+});
+
+describe("ANIMATION_Y_OFFSET", () => {
+  it("should have RISE_LARGE = -20", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_LARGE).toBe(-20);
+  });
+
+  it("should have RISE = -10", () => {
+    expect(ANIMATION_Y_OFFSET.RISE).toBe(-10);
+  });
+
+  it("should have RISE_SUBTLE = -8", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_SUBTLE).toBe(-8);
+  });
+
+  it("should have RISE_SMALL = -6", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_SMALL).toBe(-6);
+  });
+
+  it("should have RISE_MICRO = -5", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_MICRO).toBe(-5);
+  });
+
+  it("should have RISE_TINY = -4", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_TINY).toBe(-4);
+  });
+
+  it("should have HOVER_LIFT = -2", () => {
+    expect(ANIMATION_Y_OFFSET.HOVER_LIFT).toBe(-2);
+  });
+
+  it("should have DROP_TINY = 4", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_TINY).toBe(4);
+  });
+
+  it("should have DROP_SMALL = 5", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_SMALL).toBe(5);
+  });
+
+  it("should have DROP = 6", () => {
+    expect(ANIMATION_Y_OFFSET.DROP).toBe(6);
+  });
+
+  it("should have DROP_SUBTLE = 8", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_SUBTLE).toBe(8);
+  });
+
+  it("should have DROP_STANDARD = 10", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_STANDARD).toBe(10);
+  });
+
+  it("should have DROP_MODERATE = 12", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_MODERATE).toBe(12);
+  });
+
+  it("should have DROP_LARGE = 20", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_LARGE).toBe(20);
+  });
+
+  it("should have 14 entries", () => {
+    expect(Object.keys(ANIMATION_Y_OFFSET).length).toBe(14);
+  });
+
+  it("should have all unique numeric y-offset values", () => {
+    const values = Object.values(ANIMATION_Y_OFFSET);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+    });
+  });
+});
+
+describe("ANIMATION_OPACITY", () => {
+  it("should have DIMMED = 0.3", () => {
+    expect(ANIMATION_OPACITY.DIMMED).toBe(0.3);
+  });
+
+  it("should have FADED = 0.6", () => {
+    expect(ANIMATION_OPACITY.FADED).toBe(0.6);
+  });
+
+  it("should have SUBTLE = 0.8", () => {
+    expect(ANIMATION_OPACITY.SUBTLE).toBe(0.8);
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ANIMATION_OPACITY).length).toBe(3);
+  });
+
+  it("should have all unique numeric opacity values between 0 and 1", () => {
+    const values = Object.values(ANIMATION_OPACITY);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+      expect(v).toBeLessThan(1);
     });
   });
 });

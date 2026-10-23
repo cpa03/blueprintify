@@ -13,6 +13,7 @@
 import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import {
   ANIMATION_DEFAULTS,
@@ -23,6 +24,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   FRAMER_TYPE,
+  GLOW_STATE_VALUES,
   SAVE_STATE_VALUES,
   UI_TIMEOUTS,
 } from "@blueprint/shared/config";
@@ -99,9 +101,13 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
         >
           <motion.div
             key={hasChanges ? "unsaved" : "saved"}
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+            initial={
+              shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_MICRO }
+            }
             animate={{ opacity: 1, y: 0 }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+            exit={
+              shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_MICRO }
+            }
             transition={
               shouldReduceMotion
                 ? ANIMATION_DEFAULTS.ZERO_DURATION
@@ -112,6 +118,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             }`}
             data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
             data-has-changes={hasChanges}
+            data-saved-glow={showSavedGlow ? GLOW_STATE_VALUES.ACTIVE : GLOW_STATE_VALUES.IDLE}
             data-reduced-motion={shouldReduceMotion}
             title={statusText}
           >
@@ -130,8 +137,8 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   {!shouldReduceMotion && (
                     <motion.span
                       className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1.5, opacity: 0 }}
+                      initial={{ scale: ANIMATION_SCALE.STANDARD }}
+                      animate={{ scale: ANIMATION_SCALE.BADGE_EXPAND, opacity: 0 }}
                       transition={{
                         duration: ANIMATION.GENTLE_PULSE,
                         repeat: ANIMATION_REPEAT.INFINITE,
@@ -195,7 +202,11 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   </motion.svg>
                 </motion.span>
                 <motion.span
-                  initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }
+                  }
                   animate={{ opacity: 1, x: 0 }}
                   transition={
                     shouldReduceMotion
