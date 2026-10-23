@@ -9,6 +9,8 @@
  * - Exposes interactive slider semantics (role, orientation, values)
  * - Provides a visible focus indicator (WCAG 2.4.7)
  * - Reveals the thumb on keyboard focus for parity with hover
+ * - Hides from assistive technology (aria-hidden) while not shown
+ * - Retains visibility and keyboard interactivity while focused (WCAG 2.4.7)
  */
 
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -86,6 +88,11 @@ describe("PageScrollProgressBar", () => {
     capturedDivProps = [];
     vi.mocked(useReducedMotion).mockReset();
     vi.mocked(useReducedMotion).mockReturnValue(false);
+    Object.defineProperty(window, "scrollY", { value: 0, configurable: true });
+    Object.defineProperty(document.documentElement, "scrollHeight", {
+      value: 0,
+      configurable: true,
+    });
   });
 
   it("renders the gradient fill", () => {
@@ -235,5 +242,50 @@ describe("PageScrollProgressBar", () => {
 
     expect(scrollToSpy).toHaveBeenCalledOnce();
     expect(scrollToSpy.mock.calls[0]?.[0]).toMatchObject({ behavior: "auto" });
+  });
+
+  it("hides the bar from assistive technology while scrolled out of view", () => {
+    renderPageProgressBar();
+
+    const bar = getBarProps();
+    expect(bar?.["aria-hidden"]).toBe("true");
+    expect(screen.queryByRole("slider")).toBeNull();
+  });
+
+  it("exposes the bar to assistive technology once scrolled into view", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    expect(slider.getAttribute("aria-hidden")).toBe("false");
+  });
+
+  it("stays visible and keyboard-operable while focused after scrolling past the hide threshold", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    fireEvent.focus(slider);
+    expect(slider.getAttribute("data-state")).toBe("visible");
+
+    // Scroll back to the top — the bar would normally hide here, which would
+    // strand focus on an invisible, keyboard-inert element (WCAG 2.4.7)
+    Object.defineProperty(window, "scrollY", { value: 0, configurable: true });
+    fireEvent(window, new Event("scroll"));
+
+    expect(slider.getAttribute("data-state")).toBe("visible");
+    expect(slider.getAttribute("aria-hidden")).toBe("false");
+    expect(slider.getAttribute("tabindex")).toBe("0");
+
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as typeof window.scrollTo;
+    fireEvent.keyDown(slider, { key: "End" });
+    expect(scrollToSpy).toHaveBeenCalledOnce();
+
+    // On blur the retention ends and the bar hides again
+    fireEvent.blur(slider);
+    expect(slider.getAttribute("data-state")).toBe("hidden");
+    expect(slider.getAttribute("aria-hidden")).toBe("true");
+    expect(slider.getAttribute("tabindex")).toBe("-1");
   });
 });
