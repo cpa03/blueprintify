@@ -34,6 +34,7 @@ import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
 
 /**
  * Empty state display shown in the editor when no content has been generated.
@@ -220,7 +221,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         <motion.span
           key={Math.round(progress)}
           className="text-xs text-dark-500 tabular-nums"
-          initial={{ opacity: 0, y: -4 }}
+          initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
         >
@@ -258,7 +259,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         {shortcutItems.map((item, index) => (
           <motion.span
             key={item.key}
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_SUBTLE }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               delay: index * ANIMATION.STAGGER,
