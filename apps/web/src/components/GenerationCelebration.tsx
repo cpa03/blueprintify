@@ -22,7 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
-import { ANIMATION_SCALE, CELEBRATION_STATE_VALUES } from "@blueprint/shared";
+import { ANIMATION_SCALE, CELEBRATION_STATE_VALUES, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
@@ -315,7 +315,7 @@ function GenerationCelebrationComponent({
 
             <motion.p
               className="mt-4 text-lg font-semibold text-accent-emerald"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: TEXT_DELAY_S }}
             >

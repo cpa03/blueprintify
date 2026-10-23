@@ -31,7 +31,7 @@
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
-import { ANIMATION_SCALE } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
@@ -252,13 +252,13 @@ function PageScrollProgressBarComponent({
         <motion.div
           className="relative h-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
           style={{ width }}
-          initial={{ opacity: 0.8 }}
+          initial={{ opacity: ANIMATION_OPACITY.SUBTLE }}
           animate={
             prefersReducedMotion
               ? { opacity: isVisible ? 0.9 : 0.8 }
               : isVisible
                 ? { opacity: [0.8, 1, 0.8] }
-                : { opacity: 0.8 }
+                : { opacity: ANIMATION_OPACITY.SUBTLE }
           }
           transition={
             prefersReducedMotion
@@ -310,7 +310,7 @@ function PageScrollProgressBarComponent({
           <motion.div
             className="absolute -top-8 transform -translate-x-1/2 pointer-events-none z-50"
             style={{ left: `${hoverProgress}%` }}
-            initial={{ opacity: 0, y: 4, scale: ANIMATION_SCALE.MODAL }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY, scale: ANIMATION_SCALE.MODAL }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: ANIMATION.HOVER_POPUP, ease: EASING.easeOut }}
           >

@@ -13,7 +13,7 @@
 import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import {
   ANIMATION_DEFAULTS,
@@ -101,9 +101,13 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
         >
           <motion.div
             key={hasChanges ? "unsaved" : "saved"}
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+            initial={
+              shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_MICRO }
+            }
             animate={{ opacity: 1, y: 0 }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+            exit={
+              shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_MICRO }
+            }
             transition={
               shouldReduceMotion
                 ? ANIMATION_DEFAULTS.ZERO_DURATION
@@ -198,7 +202,11 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   </motion.svg>
                 </motion.span>
                 <motion.span
-                  initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1, x: 0 }
+                      : { opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }
+                  }
                   animate={{ opacity: 1, x: 0 }}
                   transition={
                     shouldReduceMotion

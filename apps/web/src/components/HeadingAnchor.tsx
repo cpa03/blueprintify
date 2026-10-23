@@ -31,7 +31,7 @@
 import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET } from "@blueprint/shared";
 import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
@@ -304,7 +304,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
               </svg>
               <motion.span
                 className="text-accent-emerald font-semibold whitespace-nowrap"
-                initial={{ opacity: 0, x: -4 }}
+                initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{
                   duration: shouldReduceMotion

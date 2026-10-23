@@ -54,6 +54,7 @@ import {
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ANIMATION_OPACITY } from "@blueprint/shared";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation
@@ -218,7 +219,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                     className="absolute inline-flex h-full w-full rounded-full bg-accent-pink"
                     style={
                       shouldReduceMotion
-                        ? { opacity: 0.3 }
+                        ? { opacity: ANIMATION_OPACITY.DIMMED }
                         : { animation: OFFLINE_ANIMATION.PULSE_RING }
                     }
                   />

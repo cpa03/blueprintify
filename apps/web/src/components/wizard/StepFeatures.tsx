@@ -38,7 +38,7 @@ import {
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
   SUGGESTED_FEATURES,
@@ -270,9 +270,9 @@ export const StepFeatures = memo(function StepFeatures({
             {isAtMaxCount && (
               <motion.p
                 role={ARIA_ROLES.STATUS}
-                initial={{ opacity: 0, y: -4 }}
+                initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                 transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                 className="text-xs text-accent-pink mt-1 flex items-center gap-1"
               >
@@ -521,7 +521,7 @@ export const StepFeatures = memo(function StepFeatures({
                     <AnimatePresence>
                       {isJustAdded && (
                         <motion.div
-                          initial={{ scale: 0, opacity: 0.8 }}
+                          initial={{ scale: 0, opacity: ANIMATION_OPACITY.SUBTLE }}
                           animate={{ scale: ANIMATION_SCALE.ATTENTION_RING, opacity: 0 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
@@ -589,9 +589,9 @@ export const StepFeatures = memo(function StepFeatures({
           <motion.div
             role={ARIA_ROLES.ALERT}
             aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
-            initial={{ opacity: 0, y: 20, scale: ANIMATION_SCALE.MODAL }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_LARGE, scale: ANIMATION_SCALE.MODAL }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: ANIMATION_SCALE.MODAL }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE, scale: ANIMATION_SCALE.MODAL }}
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50"
           >
             <motion.div
