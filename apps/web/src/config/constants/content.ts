@@ -319,6 +319,12 @@ export const ACCESSIBILITY_LABELS = {
   CELEBRATION: {
     COMPLETE: "Generation complete",
   },
+  TYPE_INDICATOR: {
+    /** Screen reader announcement for the persistent typing live region.
+     *  Must live in a region that exists BEFORE the text changes — a live
+     *  region that mounts together with its content is routinely skipped. */
+    TYPING: "Typing",
+  },
   KEYBOARD_SHORTCUTS: {
     CLOSE: "Close keyboard shortcuts",
     SEARCH: "Search keyboard shortcuts",
