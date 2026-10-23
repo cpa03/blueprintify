@@ -33,10 +33,10 @@ vi.mock("framer-motion", () => ({
   motion: {
     div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
     span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-    button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
+    button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, layout: _l, ...props }) => (
       <button {...props}>{children}</button>
     )),
-    li: vi.fn(({ children, ...props }) => <li {...props}>{children}</li>),
+    li: vi.fn(({ children, layout: _l, ...props }) => <li {...props}>{children}</li>),
     svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
     path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
     p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
@@ -47,10 +47,10 @@ vi.mock("framer-motion", () => ({
 vi.mock("framer-motion/m", () => ({
   div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
   span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-  button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
+  button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, layout: _l, ...props }) => (
     <button {...props}>{children}</button>
   )),
-  li: vi.fn(({ children, ...props }) => <li {...props}>{children}</li>),
+  li: vi.fn(({ children, layout: _l, ...props }) => <li {...props}>{children}</li>),
   svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
   path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
   p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
@@ -294,6 +294,18 @@ describe("StepStack", () => {
     render(<StepStack />);
     fireEvent.click(screen.getByText(UI_CONTENT.BUTTONS.BACK_TO_INFO));
     expect(mockStore.prevStep).toHaveBeenCalledTimes(1);
+  });
+
+  // ======== DOM State Tracking & Reduced Motion ========
+
+  it("provides state inspection attributes on the root wrapper", () => {
+    mockStore.techStack = [{ name: "React", category: "frontend" }];
+    const { container } = render(<StepStack />);
+    const rootElement = container.firstElementChild;
+    expect(rootElement).toHaveAttribute("data-reduced-motion", "false");
+    expect(rootElement).toHaveAttribute("data-can-proceed", "true");
+    expect(rootElement).toHaveAttribute("data-selected-count", "1");
+    expect(rootElement).toHaveAttribute("data-min-required", String(MIN_REQUIREMENTS.TECH_STACK));
   });
 
   // ======== Accessibility ========
