@@ -133,7 +133,9 @@ const TechChip = memo(function TechChip({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
       style={{
-        animationDelay: shouldReduceMotion ? "0s" : `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
+        animationDelay: shouldReduceMotion
+          ? "0s"
+          : `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
       }}
       whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
