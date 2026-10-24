@@ -46,6 +46,7 @@ import {
   TIME_UNITS,
   TOOLTIP_LABELS,
   UI_TIMEOUTS,
+  CIRCLE_GEOMETRY,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -131,7 +132,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
     const newParticles: Particle[] = [];
 
     for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
-      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const angle = (i / PARTICLE_CONFIG.COUNT) * CIRCLE_GEOMETRY.FULL_TURN_RAD;
       const distance =
         PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color =

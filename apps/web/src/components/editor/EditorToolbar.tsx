@@ -324,7 +324,9 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-2 flex-shrink-0"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   fill={SVG_ICON_DEFAULTS.FILL_NONE}
-                  animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+                  animate={
+                    reducedMotion ? { rotate: 0 } : { rotate: CIRCLE_GEOMETRY.FULL_TURN_DEG }
+                  }
                   transition={
                     reducedMotion
                       ? ANIMATION_DEFAULTS.ZERO_DURATION

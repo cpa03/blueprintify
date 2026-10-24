@@ -32,12 +32,14 @@ import {
   WIZARD_STEP_KEYS,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
+import { NUMBER_RADIX } from "@blueprint/shared";
 import { useWizardStore, useEditorStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import type { IconName } from "../config/icons";
 import {
   WIZARD_STEPS,
+  WIZARD_STEP_SHORTCUT_PATTERN,
   TIMEOUTS,
   PROGRESS_COLORS,
   TOAST_MESSAGES,
@@ -143,9 +145,9 @@ function StepIndicatorComponent(): JSX.Element {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.altKey && /^[1-5]$/.test(e.key)) {
+      if (e.altKey && WIZARD_STEP_SHORTCUT_PATTERN.test(e.key)) {
         e.preventDefault();
-        const stepIndex = parseInt(e.key, 10) - 1;
+        const stepIndex = parseInt(e.key, NUMBER_RADIX.DECIMAL) - 1;
         const targetStep = STEPS[stepIndex];
 
         if (targetStep && canNavigateTo(targetStep.key)) {

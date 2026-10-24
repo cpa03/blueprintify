@@ -356,6 +356,9 @@ export const UI_TIMEOUTS = {
    * Announcing every second is an a11y anti-pattern — only the SR live region is throttled,
    * the on-screen timer still ticks at ELAPSED_TIMER_INTERVAL_MS. */
   ELAPSED_ANNOUNCEMENT_INTERVAL_MS: 30000,
+  /** Fallback timeout for mono-font stylesheet load when requestIdleCallback is unavailable (2s).
+   * Keeps the font-load heuristic off the critical path without waiting forever on slow networks. */
+  MONO_FONT_IDLE_FALLBACK_MS: 2000,
 } as const;
 
 /**
