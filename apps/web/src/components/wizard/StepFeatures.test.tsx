@@ -23,6 +23,7 @@ import type { Mock } from "vitest";
 import { StepFeatures } from "./StepFeatures";
 import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { UI_CONTENT, FORM_LIMITS, SUGGESTED_FEATURES } from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
@@ -30,26 +31,26 @@ import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 // Mock framer-motion to render plain HTML elements
 vi.mock("framer-motion", () => ({
   motion: {
-    div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-    button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
+    div: vi.fn(({ children, layout: _l, ...props }) => <div {...props}>{children}</div>),
+    span: vi.fn(({ children, layout: _l, ...props }) => <span {...props}>{children}</span>),
+    button: vi.fn(({ children, layout: _l, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
       <button {...props}>{children}</button>
     )),
-    svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-    path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
+    svg: vi.fn(({ children, layout: _l, ...props }) => <svg {...props}>{children}</svg>),
+    path: vi.fn(({ children, layout: _l, ...props }) => <path {...props}>{children}</path>),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
 
 vi.mock("framer-motion/m", () => ({
-  div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-  span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-  button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
+  div: vi.fn(({ children, layout: _l, ...props }) => <div {...props}>{children}</div>),
+  span: vi.fn(({ children, layout: _l, ...props }) => <span {...props}>{children}</span>),
+  button: vi.fn(({ children, layout: _l, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
     <button {...props}>{children}</button>
   )),
-  p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
-  svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-  path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
+  p: vi.fn(({ children, layout: _l, ...props }) => <p {...props}>{children}</p>),
+  svg: vi.fn(({ children, layout: _l, ...props }) => <svg {...props}>{children}</svg>),
+  path: vi.fn(({ children, layout: _l, ...props }) => <path {...props}>{children}</path>),
 }));
 
 // Mock platform utilities
@@ -88,9 +89,13 @@ vi.mock("../CharacterCounter", () => ({
   )),
 }));
 
-// Mock the store
+// Mock the store and reduced motion hook
 vi.mock("../../store", () => ({
   useWizardStore: vi.fn(),
+}));
+
+vi.mock("../../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
 }));
 
 const createMockStore = (overrides: Partial<WizardStore> = {}): WizardStore => {
@@ -562,5 +567,38 @@ describe("StepFeatures", () => {
     expect(
       screen.queryByText(UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL)
     ).not.toBeInTheDocument();
+  });
+
+  // ======== DOM State Tracking Attributes & Reduced Motion ========
+
+  it("sets data-reduced-motion to false by default and includes state attributes", () => {
+    mockStore.features = ["Auth"];
+    render(<StepFeatures />);
+    const heading = screen.getByText(UI_CONTENT.WIZARD.STEP_FEATURES.TITLE);
+    const container = heading.closest("[data-reduced-motion]");
+    expect(container).toHaveAttribute("data-reduced-motion", "false");
+    expect(container).toHaveAttribute("data-can-proceed", "true");
+    expect(container).toHaveAttribute("data-features-count", "1");
+    expect(container).toHaveAttribute("data-is-max-count", "false");
+  });
+
+  it("sets data-reduced-motion to true when reduced motion is preferred", () => {
+    (useReducedMotion as unknown as Mock).mockReturnValue(true);
+    render(<StepFeatures />);
+    const heading = screen.getByText(UI_CONTENT.WIZARD.STEP_FEATURES.TITLE);
+    const container = heading.closest("[data-reduced-motion]");
+    expect(container).toHaveAttribute("data-reduced-motion", "true");
+  });
+
+  it("sets data-is-max-count to true when feature limit is reached", () => {
+    mockStore.features = Array.from(
+      { length: FORM_LIMITS.FEATURE.MAX_COUNT },
+      (_, i) => `Feature ${i}`
+    );
+    render(<StepFeatures />);
+    const heading = screen.getByText(UI_CONTENT.WIZARD.STEP_FEATURES.TITLE);
+    const container = heading.closest("[data-reduced-motion]");
+    expect(container).toHaveAttribute("data-is-max-count", "true");
+    expect(container).toHaveAttribute("data-features-count", String(FORM_LIMITS.FEATURE.MAX_COUNT));
   });
 });
