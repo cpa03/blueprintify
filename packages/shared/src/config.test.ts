@@ -17,6 +17,7 @@ import {
   PERCENT_SCALE,
   RATIO_LIMITS,
   CIRCLE_GEOMETRY,
+  CIRCLE_GEOMETRY_LARGE,
   HTTP_STATUS,
   ROUTE_PATHS,
   DEFAULT_URLS,
@@ -131,6 +132,7 @@ import {
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
+  ICON_RECTS,
   COLOR_MIX_OPACITY,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
@@ -578,6 +580,28 @@ describe("CIRCLE_GEOMETRY", () => {
 
   it("should have STROKE_DASHOFFSET = CIRCUMFERENCE * 0.75", () => {
     expect(CIRCLE_GEOMETRY.STROKE_DASHOFFSET).toBeCloseTo(CIRCLE_GEOMETRY.CIRCUMFERENCE * 0.75);
+  });
+});
+
+describe("CIRCLE_GEOMETRY_LARGE", () => {
+  it("should have CENTER_X = 24", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_X).toBe(24);
+  });
+
+  it("should have CENTER_Y = 24", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_Y).toBe(24);
+  });
+
+  it("should have RADIUS = 22", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.RADIUS).toBe(22);
+  });
+
+  it("should have CIRCUMFERENCE = 2 * PI * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CIRCUMFERENCE).toBeCloseTo(2 * Math.PI * 22);
+  });
+
+  it("should inset the ring by 2 units from the 48x48 viewBox edge", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_X - CIRCLE_GEOMETRY_LARGE.RADIUS).toBe(2);
   });
 });
 
@@ -3531,6 +3555,14 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.CHECKMARK).toBe("M5 13l4 4L19 7");
   });
 
+  it("should define large checkmark path for 48x48 celebration rings", () => {
+    expect(ICON_PATHS.CHECKMARK_LARGE).toBe("M14 24L21 31L34 17");
+  });
+
+  it("should define square-copy frame path", () => {
+    expect(ICON_PATHS.COPY_SQUARE).toBe("M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
+  });
+
   it("should define edit path", () => {
     expect(ICON_PATHS.EDIT).toBeTruthy();
   });
@@ -3556,14 +3588,35 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.GITHUB).toBeTruthy();
   });
 
-  it("should have 19 entries", () => {
-    expect(Object.keys(ICON_PATHS).length).toBe(19);
+  it("should have 21 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(21);
   });
 
   it("should have unique path values", () => {
     const paths = Object.values(ICON_PATHS);
     const uniquePaths = new Set(paths);
     expect(uniquePaths.size).toBe(paths.length);
+  });
+});
+
+describe("ICON_RECTS", () => {
+  it("should define the square-copy body rect", () => {
+    expect(ICON_RECTS.COPY_BODY).toEqual({ x: 9, y: 9, width: 13, height: 13, rx: 2, ry: 2 });
+  });
+
+  it("should define the pause-badge bar rects", () => {
+    expect(ICON_RECTS.PAUSE_LEFT).toEqual({ x: 6, y: 4, width: 4, height: 16, rx: 1 });
+    expect(ICON_RECTS.PAUSE_RIGHT).toEqual({ x: 14, y: 4, width: 4, height: 16, rx: 1 });
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ICON_RECTS).length).toBe(3);
+  });
+
+  it("should center the pause bars on the 24x24 viewBox", () => {
+    const leftEdge = ICON_RECTS.PAUSE_LEFT.x;
+    const rightEdge = ICON_RECTS.PAUSE_RIGHT.x + ICON_RECTS.PAUSE_RIGHT.width;
+    expect((leftEdge + rightEdge) / 2).toBe(12);
   });
 });
 

@@ -562,7 +562,7 @@ export const StepReview = memo(function StepReview({
                           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                           strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                           strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                          d={ICON_PATHS.ZAP}
                         />
                       </svg>
                       Generate Blueprint
@@ -605,7 +605,7 @@ export const StepReview = memo(function StepReview({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                      d={ICON_PATHS.ZAP}
                     />
                   </svg>
                   Generate Blueprint

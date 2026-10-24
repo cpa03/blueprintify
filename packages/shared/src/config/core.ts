@@ -79,6 +79,24 @@ export const CIRCLE_GEOMETRY = {
 } as const;
 
 /**
+ * Large SVG Circle Geometry (48×48 viewBox)
+ * Centralized ring geometry for celebration and generation status rings.
+ * Flexy says: No hardcoded cx="24" cy="24" r="22" in large-viewBox SVGs!
+ * Usage: import { CIRCLE_GEOMETRY_LARGE } from "@blueprint/shared";
+ *        <circle cx={CIRCLE_GEOMETRY_LARGE.CENTER_X} cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y} r={CIRCLE_GEOMETRY_LARGE.RADIUS} />
+ */
+export const CIRCLE_GEOMETRY_LARGE = {
+  /** X coordinate of the large ring center */
+  CENTER_X: 24,
+  /** Y coordinate of the large ring center */
+  CENTER_Y: 24,
+  /** Large ring radius */
+  RADIUS: 22,
+  /** Full circumference (2 * PI * RADIUS) for stroke-dasharray */
+  CIRCUMFERENCE: 2 * Math.PI * 22,
+} as const;
+
+/**
  * ID Generation Configuration
  * Centralized settings for generating unique identifiers
  */
