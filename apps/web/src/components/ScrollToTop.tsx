@@ -47,7 +47,7 @@ import {
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { isEditableField } from "../lib/dom";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ICON_PATHS, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -359,14 +359,14 @@ const ScrollToPosition = memo(function ScrollToPosition({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    d={ICON_PATHS.CHEVRON_UP}
                   />
                 ) : (
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    d={ICON_PATHS.CHEVRON_DOWN}
                   />
                 )}
               </motion.svg>
