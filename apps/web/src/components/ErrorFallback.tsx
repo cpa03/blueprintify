@@ -39,7 +39,7 @@ import {
 } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
-import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ICON_RECTS, SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 /**
  * Staggered entrance variants for the fallback UI elements.
@@ -331,8 +331,8 @@ export const ErrorFallback = memo(function ErrorFallback({
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                          <rect {...ICON_RECTS.COPY_BODY} />
+                          <path d={ICON_PATHS.COPY_SQUARE} />
                         </svg>
                         <span>{ERROR_BOUNDARY_TEXT.COPY_ERROR}</span>
                       </motion.span>
