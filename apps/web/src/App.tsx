@@ -16,6 +16,7 @@ import {
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 import { TemplateGrid } from "./components/TemplateGrid";
+import { StartFromScratchButton } from "./components/StartFromScratchButton";
 const ShowEditorButton = lazy(() =>
   import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
 );
@@ -401,7 +402,7 @@ function App(): JSX.Element {
               onAnimationEnd={templatesExiting ? handleTemplatesExitEnd : undefined}
             >
               <TemplateGrid onSelect={activateWizard} />
-              <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
+              <StartFromScratchButton onStart={activateWizard} />
             </div>
           )}
 
