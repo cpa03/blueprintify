@@ -416,9 +416,7 @@ export const StepFeatures = memo(function StepFeatures({
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg || isAtMaxCount}
                 whileHover={
-                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount
-                    ? {}
-                    : HOVER_SCALE.GENTLE
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE
                 }
                 whileTap={
                   shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE
