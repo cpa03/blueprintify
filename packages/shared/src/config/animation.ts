@@ -628,6 +628,19 @@ export const SKELETON_PULSE_DEFAULTS = {
 } as const;
 
 /**
+ * Skeleton Exit Animation Defaults
+ * Centralized source of truth for the CSS animation shorthand main.tsx applies
+ * to dismiss the server-rendered skeleton loader the moment React hydrates.
+ * Flexy says: No hardcoded "skeleton-exit 0.3s ease-out 0s forwards" in main.tsx!
+ * Usage: import { SKELETON_EXIT_DEFAULTS } from "@blueprint/shared";
+ *        skeleton.style.animation = SKELETON_EXIT_DEFAULTS.ANIMATION
+ */
+export const SKELETON_EXIT_DEFAULTS = {
+  /** Full CSS animation shorthand applied to the skeleton on hydration */
+  ANIMATION: "skeleton-exit 0.3s ease-out 0s forwards",
+} as const;
+
+/**
  * Scroll Progress Bar Defaults
  * Centralized source of truth for scroll progress bar UI constants.
  * Flexy says: No hardcoded 80/2/3 pixel values in progress bar components!

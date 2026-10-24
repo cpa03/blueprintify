@@ -1,4 +1,10 @@
-import { DEFAULT_URLS, SHARED_DEFAULTS, ENV_VAR_KEYS, API_PROXY_PATH } from "@blueprint/shared";
+import {
+  DEFAULT_URLS,
+  SHARED_DEFAULTS,
+  ENV_VAR_KEYS,
+  API_PROXY_PATH,
+  NUMBER_RADIX,
+} from "@blueprint/shared";
 
 const { WEB: WEB_ENV } = ENV_VAR_KEYS;
 
@@ -10,7 +16,7 @@ const getEnvVar = (key: string, defaultValue?: string): string => {
 const getNumericEnvVar = (key: string, defaultValue: number): number => {
   const value = import.meta.env[key];
   if (!value) return defaultValue;
-  const parsed = parseInt(value, 10);
+  const parsed = parseInt(value, NUMBER_RADIX.DECIMAL);
   return isNaN(parsed) ? defaultValue : parsed;
 };
 
