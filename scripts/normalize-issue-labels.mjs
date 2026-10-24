@@ -88,7 +88,42 @@ const OVERRIDES = {
   951: ["test", "P2"], // E2E tests for critical flows
   1015: ["test", "P2"], // missing playwright.config.ts - test infra
   1019: ["test", "P2"], // E2E test coverage gap
+  // BroCula hunt findings (2026-09-27, unlabeled)
+  3615: ["bug", "P2"], // og:image dead domain — broken social previews
+  3616: ["bug", "P1"], // keyboard shortcuts modal invisible (opacity: 0)
+  3617: ["bug", "P1"], // no working 'start from scratch' path on landing
+  3622: ["bug", "P2"], // 13 infinite idle animations cause main-thread jank
 };
+
+/** Severity tags used in OCR full-scan finding bodies: "### [HIGH] [bug]". */
+const OCR_TAG = /###\s*\[(CRITICAL|HIGH|MEDIUM|LOW)\]\s*\[([a-z-]+)\]/gi;
+/** "(N high/critical)" suffix on OCR issue titles. */
+const OCR_TITLE_HC = /\((\d+)\s+high\/critical\)/i;
+
+/**
+ * OCR full-scan issues are titled "[OCR Scan] <file> — N findings (M high/critical)".
+ * Category: security if any finding is tagged [security], else bug if any
+ * finding is tagged [bug], else chore. Priority: P1 when the issue reports
+ * high/critical findings, else P2.
+ * @returns {[string, string] | null} [category, priority] or null if not OCR.
+ */
+function deriveOcrLabels(title, body) {
+  if (!title.startsWith("[OCR Scan]")) return null;
+  const text = `${body ?? ""}`;
+  let category = "chore";
+  let hasCriticalOrHighTag = false;
+  for (const match of text.matchAll(OCR_TAG)) {
+    const severity = match[1].toUpperCase();
+    const tag = match[2].toLowerCase();
+    if (severity === "CRITICAL" || severity === "HIGH") hasCriticalOrHighTag = true;
+    if (tag === "security" && category !== "security") category = "security";
+    else if (tag === "bug" && category !== "security") category = "bug";
+  }
+  const hcMatch = OCR_TITLE_HC.exec(title);
+  const highCritical = hcMatch ? Number.parseInt(hcMatch[1], 10) : 0;
+  const priority = highCritical > 0 || hasCriticalOrHighTag ? "P1" : "P2";
+  return [category, priority];
+}
 
 /** Title priority markers (e.g. "[TESTING] HIGH: ...") mapped to canonical priorities. */
 const TITLE_PRIORITY = /\b(HIGH|MEDIUM|LOW|CRITICAL|P[0-3])([:])/i;
@@ -205,12 +240,13 @@ function mostSevere(priorities) {
 }
 
 /** Computes the label changes required for one issue. */
-function computeChanges(number, title, labels) {
+function computeChanges(number, title, labels, body) {
   const cats = labels.filter((l) => CATEGORIES.includes(l));
   const pris = labels.filter((l) => PRIORITIES.includes(l));
   const add = [];
   const remove = [];
   const override = OVERRIDES[number];
+  const ocr = !override ? deriveOcrLabels(title, body) : null;
 
   // Category
   if (override) {
@@ -218,7 +254,7 @@ function computeChanges(number, title, labels) {
     if (!cats.includes(wantCat)) add.push(wantCat);
     for (const c of cats) if (c !== wantCat) remove.push(c);
   } else if (cats.length === 0) {
-    add.push(deriveCategory(labels, title));
+    add.push(ocr ? ocr[0] : deriveCategory(labels, title));
   } else if (cats.length > 1) {
     const keep = mostSpecific(cats);
     for (const c of cats) if (c !== keep) remove.push(c);
@@ -230,7 +266,7 @@ function computeChanges(number, title, labels) {
     if (!pris.includes(wantPrio)) add.push(wantPrio);
     for (const p of pris) if (p !== wantPrio) remove.push(p);
   } else if (pris.length === 0) {
-    add.push(derivePriority(labels, title));
+    add.push(ocr ? ocr[1] : derivePriority(labels, title));
   } else if (pris.length > 1) {
     const keep = mostSevere(pris);
     for (const p of pris) if (p !== keep) remove.push(p);
@@ -251,9 +287,9 @@ function main() {
         "--state",
         "open",
         "--limit",
-        "200",
+        "300",
         "--json",
-        "number,title,labels",
+        "number,title,labels,body",
       ])
     );
   } catch (err) {
@@ -265,7 +301,7 @@ function main() {
   const changes = [];
   for (const issue of issues) {
     const labels = (issue.labels ?? []).map((l) => l.name);
-    const { add, remove } = computeChanges(issue.number, issue.title, labels);
+    const { add, remove } = computeChanges(issue.number, issue.title, labels, issue.body);
     if (add.length || remove.length) {
       changes.push({ number: issue.number, title: issue.title.slice(0, 60), add, remove });
     }
