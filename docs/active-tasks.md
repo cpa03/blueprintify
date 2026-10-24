@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **StepFeatures Micro-UX & Reduced Motion State Inspection (Oct 23 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`, `data-features-count`, `data-is-max-count`) to `StepFeatures.tsx`.
+- [STRENGTHEN] Strengthened `StepFeatures` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false"), `data-can-proceed` ("true"), `data-features-count`, and `data-is-max-count` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated wizard step reduced motion state tracking and feature count selection state attributes across wizard components.
+- [REMOVE] Removed un-gated hover/tap motion effects when reduced motion preference is active in suggestion buttons and quick-add actions.
+
 ## ✅ StorX — **StepStack Micro-UX & Reduced Motion State Inspection (Oct 22 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`, `data-selected-count`, `data-min-required`) to `StepStack.tsx`.
 - [STRENGTHEN] Strengthened `StepStack` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false"), `data-can-proceed` ("true"/"false"), `data-selected-count`, and `data-min-required` attributes for state inspection and accessibility testing.
