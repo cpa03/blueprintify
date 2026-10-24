@@ -45,6 +45,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
+  ICON_PATHS,
   SVG_ICON_DEFAULTS,
 } from "@blueprint/shared/config";
 
@@ -370,7 +371,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      d={ICON_PATHS.SEARCH}
                     />
                   </svg>
                   <input
@@ -511,7 +512,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                         strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                         strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        d={ICON_PATHS.SEARCH}
                       />
                     </svg>
                     <p className="text-sm font-medium text-dark-300">

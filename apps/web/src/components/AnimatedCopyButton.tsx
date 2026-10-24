@@ -36,7 +36,13 @@ import {
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, ARIA_LIVE_VALUES, ARIA_ROLES } from "@blueprint/shared/config";
+import {
+  ANIMATION_ENTRANCE_DELAYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  ICON_PATHS,
+  ICON_RECTS,
+} from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface Particle {
@@ -335,8 +341,8 @@ function AnimatedCopyButtonComponent({
                     : undefined
                 }
               >
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                <rect {...ICON_RECTS.COPY_BODY} />
+                <path d={ICON_PATHS.COPY_SQUARE} />
               </motion.svg>
               <span>{COPY_BUTTON_LABELS.DISPLAY_COPY}</span>
             </motion.span>
