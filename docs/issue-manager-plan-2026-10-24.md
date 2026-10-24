@@ -1,6 +1,6 @@
 # Issue Manager Plan — 2026-10-24
 
-> **Status: ANALYSIS COMPLETE — MUTATIONS BLOCKED.** The loop token (`github-actions[bot]` GITHUB_TOKEN) has **zero REST/GraphQL issue permissions** on this repository (`permissions: admin/maintain/push/triage = false`; verified 403 `Resource not accessible by integration` on `addLabelsToLabelable` for all 143 label edits this cycle). Git push to content branches DOES work. Execute Steps 1–3 mutations with a permission-capable token; Step 4's fix branch is pushed and ready for PR.
+> **Status: ANALYSIS COMPLETE — ISSUE MUTATIONS BLOCKED, REPAIR SHIPPED.** The loop token (`github-actions[bot]` GITHUB_TOKEN) has **zero REST/GraphQL issue permissions** on this repository (403 `Resource not accessible by integration` on both `addLabelsToLabelable` and `addComment`, verified this cycle). Git push and **PR creation DO work** — repair PR #3878 was opened and auto-merge armed. Execute Steps 1–3 mutations with a permission-capable token; Step 4 is complete.
 
 ## Context
 
@@ -97,11 +97,17 @@ These were verified fixed on `main` this cycle (evidence in parentheses); close 
 
 ## Step 4 — Repair Mode
 
-**Selection:** Highest-priority genuinely-unfixed issues are the fresh BroCula P1s **#3616** (shortcuts modal invisible) and **#3617** (no start-from-scratch path). Both verified against `main` this cycle (see verdicts recorded in `docs/findings.md` for 2026-10-24). 
+**Selection:** Highest-priority genuinely-unfixed issues are the fresh BroCula P1s **#3616** (shortcuts modal invisible) and **#3617** (no start-from-scratch path).
 
-**Selected: #3616** (bug/P1) — smallest blast radius, pure frontend, deterministic Playwright-verified failure mode (dialog mounts at opacity:0).
+**#3616 verdict — INDETERMINATE (not selected):** `animate={{opacity:1}}` was already present at report time (`83a870e0`) and is unchanged on `main`; no fix commit exists, but `ConfirmDialog` uses the identical AnimatePresence/framer pattern without such reports. Static analysis cannot distinguish a real main-branch defect from a deployed-site/test-harness artifact (e.g., screenshot mid-0.2s-fade). Per fail-safe rules: do NOT guess — re-verify with a real browser (Playwright against a fresh `main` build, waiting ≥ animation duration) before coding a fix.
 
-**Fix branch:** `agent/fix-3616-shortcuts-modal-opacity` (see commit history of this branch / linked PR).
+**Selected: #3617** (bug/P1) — statically confirmed on `main` at `8f8b3626`: the divider was a plain `<div>` (`App.tsx`, `LAYOUT.TEMPLATES_DIVIDER`) and `wizardActivated` only flipped via `activateWizard`, wired solely to `TemplateGrid onSelect`.
+
+**Fix:** PR **#3878** — branch `agent/fix-3617-start-from-scratch`, commit `edee5978`.
+- New `StartFromScratchButton` component: real `<button type="button">` with hover/focus-visible affordances, calling the existing `activateWizard()`.
+- TDD: 3 component tests written first (RED → GREEN), covering render-as-button, click, and keyboard Enter (via `@testing-library/user-event`).
+- Gates: typecheck ✅ lint ✅ 0 warnings ✅ build ✅ web tests **1351/1351** ✅ prettier ✅ secrets scan ✅ (pre-commit hooks also green).
+- Linked with `Fixes #3617`; auto-merge enabled (`gh pr merge --auto --squash`) pending Cloudflare/Workers checks.
 
 ## Human-Blocked / Needs Permission-Capable Operator
 
@@ -122,3 +128,9 @@ These were verified fixed on `main` this cycle (evidence in parentheses); close 
 | 2026-10-24 | Verify push | agent/im-labels-20261024 | ✅ pushed |
 | 2026-10-24 | Duplicate audit | 14 clusters | all canonicals + dupes still open |
 | 2026-10-24 | Code-resolved spot-verify | 10 issues | ✅ confirmed on main (evidence above) |
+| 2026-10-24 | Verify #3616 statically | KeyboardShortcutsModal.tsx | ⚠️ indeterminate — animate props unchanged since report; not selected (fail-safe) |
+| 2026-10-24 | Verify #3617 statically | App.tsx | ✅ bug confirmed (non-interactive divider div; wizard gated on template select) |
+| 2026-10-24 | TDD fix for #3617 | StartFromScratchButton | RED→GREEN, 3/3 tests |
+| 2026-10-24 | Full gates | typecheck/lint/build/tests/prettier/secrets | ✅ all green (1351/1351 web tests, 0 lint warnings) |
+| 2026-10-24 | Push + PR | agent/fix-3617-start-from-scratch → PR #3878 | ✅ created; auto-merge enabled pending checks |
+| 2026-10-24 | Comment on issue | #3617 | ❌ 403 addComment (issue write still blocked) |
