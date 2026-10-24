@@ -40,6 +40,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   SUGGESTED_FEATURES,
   FORM_LIMITS,
@@ -72,6 +73,7 @@ interface StepFeaturesProps {
 export const StepFeatures = memo(function StepFeatures({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepFeaturesProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const [showAllAddedMsg, setShowAllAddedMsg] = useState(false);
@@ -172,7 +174,14 @@ export const StepFeatures = memo(function StepFeatures({
   }, [suggestedNotAdded, addFeature]);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-can-proceed="true"
+      data-features-count={features.length}
+      data-is-max-count={isAtMaxCount ? "true" : "false"}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}</h2>
@@ -406,8 +415,12 @@ export const StepFeatures = memo(function StepFeatures({
                 type="button"
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg || isAtMaxCount}
-                whileHover={showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE}
-                whileTap={showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE}
+                whileHover={
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE
+                }
+                whileTap={
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE
+                }
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
                 className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
                   showAllAddedMsg
@@ -505,8 +518,8 @@ export const StepFeatures = memo(function StepFeatures({
                         },
                       },
                     }}
-                    whileHover={HOVER_SCALE.STANDARD}
-                    whileTap={TAP_SCALE.STANDARD}
+                    whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
+                    whileTap={shouldReduceMotion ? {} : TAP_SCALE.STANDARD}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
