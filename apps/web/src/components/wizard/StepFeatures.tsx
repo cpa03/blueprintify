@@ -34,6 +34,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -177,10 +178,12 @@ export const StepFeatures = memo(function StepFeatures({
     <motion.div
       {...pageTransition(direction)}
       className="space-y-6"
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-can-proceed="true"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={DATA_BOOLEAN_VALUES.TRUE}
       data-features-count={features.length}
-      data-is-max-count={isAtMaxCount ? "true" : "false"}
+      data-is-max-count={isAtMaxCount ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <div>
         <div className="flex items-center justify-between mb-2">

@@ -36,6 +36,7 @@ import {
   MODIFIER_KEYS,
   REVIEW_STATE_VALUES,
   WIZARD_STEP_KEYS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
@@ -121,7 +122,9 @@ export const StepReview = memo(function StepReview({
         : pageTransition(direction))}
       className="space-y-6"
       data-state={isGenerating ? REVIEW_STATE_VALUES.GENERATING : REVIEW_STATE_VALUES.IDLE}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       {/* Heading - guides attention first */}
       <motion.div

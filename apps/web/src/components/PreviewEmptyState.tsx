@@ -10,7 +10,7 @@
 
 import { memo } from "react";
 import * as motion from "framer-motion/m";
-import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
@@ -80,7 +80,9 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
       data-tab={tab}
       data-has-sibling-content={siblingTabHasContent}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <motion.div className="relative mb-6" variants={fadeInUp}>
         <motion.div

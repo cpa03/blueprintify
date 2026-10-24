@@ -20,6 +20,7 @@ import {
   ARIA_ROLES,
   LOADING_DOTS_COUNT,
   TYPING_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import {
   ANIMATION,
@@ -101,7 +102,9 @@ export const TypeIndicator = memo(function TypeIndicator({
             data-state={TYPING_STATE_VALUES.TYPING}
             data-position={position}
             data-dots-count={LOADING_DOTS_COUNT}
-            data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+            data-reduced-motion={
+              shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+            }
           >
             {Array.from({ length: LOADING_DOTS_COUNT }, (_, index) => (
               <motion.span

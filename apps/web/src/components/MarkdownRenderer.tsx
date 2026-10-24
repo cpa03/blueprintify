@@ -30,6 +30,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   FRAMER_TYPE,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -124,7 +125,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             ? COPY_STATE_VALUES.FAILED
             : COPY_STATE_VALUES.IDLE
       }
-      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-reduced-motion={reducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-language={language}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -166,7 +167,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               ? COPY_STATE_VALUES.FAILED
               : COPY_STATE_VALUES.IDLE
         }
-        data-reduced-motion={reducedMotion ? "true" : "false"}
+        data-reduced-motion={reducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         aria-label={
           copied
             ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED

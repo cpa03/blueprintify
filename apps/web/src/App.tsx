@@ -12,6 +12,7 @@ import {
   UI_TIMEOUTS,
   UI_TIMING,
   WIZARD_STEP_KEYS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
@@ -89,7 +90,7 @@ function App(): JSX.Element {
   const [shortcutsDiscovered, setShortcutsDiscovered] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     try {
-      return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+      return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === DATA_BOOLEAN_VALUES.TRUE;
     } catch {
       return false;
     }
@@ -208,7 +209,7 @@ function App(): JSX.Element {
     setShortcutsDiscovered(true);
     if (typeof window !== "undefined") {
       try {
-        localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+        localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, DATA_BOOLEAN_VALUES.TRUE);
       } catch {
         // localStorage can throw in privacy mode — state update above still applies.
       }

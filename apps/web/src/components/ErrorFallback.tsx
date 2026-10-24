@@ -11,7 +11,7 @@
 import { memo, useState, useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -117,9 +117,11 @@ export const ErrorFallback = memo(function ErrorFallback({
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4"
       role={ARIA_ROLES.ALERT}
       aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
-      data-has-error={error !== undefined ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-has-details={error !== undefined ? "true" : "false"}
+      data-has-error={error !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-details={error !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <motion.div
         className="glass-card p-8 max-w-md w-full text-center relative overflow-hidden"

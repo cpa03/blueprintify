@@ -4,6 +4,43 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 204: Centralize Data-Attribute Boolean & ARIA "true"/"false" String Literals
+
+**Problem**: 75 hardcoded boolean `"true"`/`"false"` string literals survived 203 iterations across four clusters. DOM state: 62× `data-*={cond ? "true" : "false"}` ternaries in 26 web component files (data-reduced-motion ×~25, data-state, data-active, data-loading, data-valid, data-at-limit, …) plus 4× static `data-*="true"` JSX literals (StepFeatures can-proceed, ShowEditorButton editor-toggle, MotionConfigWrapper motion-wrapper, SmartTooltip has-shortcut). Storage: 5× localStorage boolean serialization literals — `setItem(KEY, "true")` (App SHORTCUTS_DISCOVERED, StepGenerating PRO_TIP_SHOWN) and `=== "true"` reads (App, useReducedMotion, ReducedMotionContext) — where a read/write pair using the same literal can silently drift apart. ARIA bypasses: `aria-atomic={isVisible ? "true" : undefined}` (OfflineBanner) and `setAttribute("aria-atomic", "true")` (useFocusOnStepChange) bypassed the existing `ARIA_ATOMIC_VALUES`, `setAttribute("aria-hidden", "true")` (lib/clipboard) bypassed `ARIA_HIDDEN_VALUES`, and `aria-busy={isLoading ? "true" : undefined}` (RippleButton) had no constant at all — even though Iteration 194/195 built the whole `ARIA_*_VALUES` TRUE/FALSE family. Flexy says: no bare boolean `"true"`/`"false"` strings in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DATA_BOOLEAN_VALUES` (TRUE `"true"` / FALSE `"false"` — data-* state attrs + localStorage serialization); NEW `ARIA_BUSY_VALUES` (TRUE/FALSE — completes the ARIA boolean-value family) |
+| `packages/shared/src/index.ts` | Exported `DATA_BOOLEAN_VALUES` + `ARIA_BUSY_VALUES` on the root barrel (`@blueprint/shared/config` barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +8 tests (shared suite 1,012 → 1,020): 5 `DATA_BOOLEAN_VALUES` (TRUE/FALSE values, unique-pair count, `String()` equivalence, valid JSON boolean encodings), 3 `ARIA_BUSY_VALUES` (values + count/uniqueness) |
+| 26 component files in `apps/web/src/components/` | 62× `? "true" : "false"` → `? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE` (CharacterCounter ×8, Toast ×5, StepIndicator ×5, EditorToolbar ×4, Header ×4, RippleButton ×3, ErrorFallback ×3, CircularProgress ×3, StepInfo/StepFeatures/StepStack/TemplateGrid/SmartTooltip/ScrollToTop/MarkdownRenderer/AnimatedNumber/AnimatedCopyButton ×2, others ×1) |
+| `wizard/StepFeatures.tsx` / `ShowEditorButton.tsx` / `MotionConfigWrapper.tsx` / `SmartTooltip.tsx` | 4× static `data-*="true"` → `data-*={DATA_BOOLEAN_VALUES.TRUE}` |
+| `App.tsx` ×2 / `wizard/StepGenerating.tsx` | 3× `setItem(KEY, "true")` → `setItem(KEY, DATA_BOOLEAN_VALUES.TRUE)` |
+| `hooks/useReducedMotion.ts` + `context/ReducedMotionContext.tsx` | 2× `stored === "true"` → `stored === DATA_BOOLEAN_VALUES.TRUE` (read side of the storage contract) |
+| `components/OfflineBanner.tsx` | `aria-atomic={isVisible ? "true" : undefined}` → `ARIA_ATOMIC_VALUES.TRUE` (existing-constant bypass) |
+| `hooks/useFocusOnStepChange.ts` | `setAttribute("aria-atomic", "true")` → `ARIA_ATOMIC_VALUES.TRUE` (existing-constant bypass) |
+| `lib/clipboard.ts` | `setAttribute("aria-hidden", "true")` → `ARIA_HIDDEN_VALUES.TRUE` (existing-constant bypass) |
+| `components/RippleButton.tsx` | `aria-busy={isLoading ? "true" : undefined}` → `ARIA_BUSY_VALUES.TRUE` |
+| `docs/flexy-plan.md` | Iteration 204 entry |
+
+Deliberately skipped: test files (`toHaveAttribute(..., "true")` asserts rendered output — Iteration 194/196 precedent); Tailwind/CSS `[data-x="true"]` selector strings in className & `index.css` (CSS-class category, Iteration 157/169 precedent); `index.html` / `vercel.json` (HTML/JSON runtime, cannot import TS constants); `lib/templates/react.ts` (generated template string); JSDoc prose examples; raw `data-*` attribute **names** (JSX requires literal attribute names — spread-object rewrite would harm readability; names are not values); `ReducedMotionContext` `String(value)` write (dynamic boolean, not a literal); `node_modules`/`dist`.
+
+## Verification (Iteration 204)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (352 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,356 web + 555 api + 1,020 shared = 2,931 tests passing** (+8 new shared)
+- ✅ Residual scan — 0 `? "true" : "false"` ternaries, 0 `data-*="true"` literals, 0 `setItem(KEY, "true")` / `stored === "true"` / `setAttribute("aria-atomic"|"aria-hidden", "true")` occurrences in runtime source (excluding config docs, tests, CSS/HTML & templates)
+
+## PR (Iteration 204)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-204-data-boolean-strings` | refactor(flexy): centralize data-attribute boolean & ARIA "true"/"false" string literals (Iteration 204) |
+
 ### ✅ Flexy Iteration 203: Centralize Full-Turn Geometry, Decimal Radix & Timer/Font Micro-Literals
 
 **Problem**: 16 hardcoded literals survived 202 iterations across three clusters. Geometry: 5× full-turn radians `2 * Math.PI` in particle/angle & circumference math (HeadingAnchor, AnimatedCopyButton, GenerationCelebration, CircularProgress, Toast) and 3× full-turn degrees `360` (GenerationCelebration random rotation, StepGenerating + EditorToolbar spinner `rotate:`) even though `CIRCLE_GEOMETRY` existed but only covered the fixed 12/12/r=10 ring. Parsing: 4× `parseInt(x, 10)` radix literals (StepIndicator Alt+N handler, api `bodyLimit` Content-Length, api `env` numeric vars, web `env` numeric vars) despite `CRYPTO_CONFIG.HEX_RADIX` / `ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX` precedent — only `SHARE_TOKEN_CODEC.EXPIRY_RADIX` was covered. Micro-literals: `padStart(2, "0")` in the StepGenerating MM:SS timer (the Iteration 180 hex-pad pattern never crossed into web), a literal `/^[1-5]$/` Alt+digit regex in StepIndicator diverging from `WIZARD_STEPS`, `window.setTimeout(loadMonoFont, 2000)` in main.tsx, and the full CSS shorthand `"skeleton-exit 0.3s ease-out 0s forwards"` inlined in main.tsx. Flexy says: no bare full-turn geometry, parseInt radix, pad/regex/timeout/CSS shorthand literals!

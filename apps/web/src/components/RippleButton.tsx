@@ -8,7 +8,12 @@ import {
 } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG, CSS_CLASSES } from "../config/constants";
-import { BUTTON_TRANSITION_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared";
+import {
+  BUTTON_TRANSITION_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
+  ARIA_BUSY_VALUES,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 
 interface Ripple {
   id: number;
@@ -156,11 +161,13 @@ function RippleButtonComponent({
           : `transform ${BUTTON_TRANSITION_DEFAULTS.TRANSITION_RESTORE_MS}ms ease-out`,
       }}
       aria-label={ariaLabel}
-      aria-busy={isLoading ? "true" : undefined}
+      aria-busy={isLoading ? ARIA_BUSY_VALUES.TRUE : undefined}
       title={title}
-      data-loading={isLoading ? "true" : "false"}
-      data-disabled={disabled ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-loading={isLoading ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-disabled={disabled ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       data-autofocus={dataAutofocus}
       {...rest}
     >

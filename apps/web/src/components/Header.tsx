@@ -28,6 +28,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   SHORTCUT_LABELS,
   SVG_ICON_DEFAULTS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
@@ -124,10 +125,14 @@ function HeaderComponent({
           ? "border-b border-dark-600/60 shadow-lg shadow-dark-950/30"
           : "border-b border-dark-700/50"
       }`}
-      data-scrolled={isScrolled ? "true" : "false"}
-      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
-      data-shortcuts-discovered={shortcutsDiscovered ? "true" : "false"}
-      data-has-shortcuts={onShowShortcuts ? "true" : "false"}
+      data-scrolled={isScrolled ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-shortcuts-discovered={
+        shortcutsDiscovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-shortcuts={onShowShortcuts ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <button

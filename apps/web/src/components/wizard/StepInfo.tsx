@@ -40,6 +40,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   UI_MESSAGES,
   UI_TIMEOUTS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -345,8 +346,10 @@ export const StepInfo = memo(function StepInfo({
     <motion.div
       {...pageTransition(direction)}
       className="space-y-6"
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-can-proceed={canProceed ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={canProceed ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <div>
         <div className="flex items-center justify-between mb-2">
