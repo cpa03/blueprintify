@@ -4,6 +4,47 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 203: Centralize Full-Turn Geometry, Decimal Radix & Timer/Font Micro-Literals
+
+**Problem**: 16 hardcoded literals survived 202 iterations across three clusters. Geometry: 5× full-turn radians `2 * Math.PI` in particle/angle & circumference math (HeadingAnchor, AnimatedCopyButton, GenerationCelebration, CircularProgress, Toast) and 3× full-turn degrees `360` (GenerationCelebration random rotation, StepGenerating + EditorToolbar spinner `rotate:`) even though `CIRCLE_GEOMETRY` existed but only covered the fixed 12/12/r=10 ring. Parsing: 4× `parseInt(x, 10)` radix literals (StepIndicator Alt+N handler, api `bodyLimit` Content-Length, api `env` numeric vars, web `env` numeric vars) despite `CRYPTO_CONFIG.HEX_RADIX` / `ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX` precedent — only `SHARE_TOKEN_CODEC.EXPIRY_RADIX` was covered. Micro-literals: `padStart(2, "0")` in the StepGenerating MM:SS timer (the Iteration 180 hex-pad pattern never crossed into web), a literal `/^[1-5]$/` Alt+digit regex in StepIndicator diverging from `WIZARD_STEPS`, `window.setTimeout(loadMonoFont, 2000)` in main.tsx, and the full CSS shorthand `"skeleton-exit 0.3s ease-out 0s forwards"` inlined in main.tsx. Flexy says: no bare full-turn geometry, parseInt radix, pad/regex/timeout/CSS shorthand literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | `CIRCLE_GEOMETRY` +2 keys (`FULL_TURN_RAD: 2π`, `FULL_TURN_DEG: 360`); NEW `TIME_FORMAT` (`MM_SS_PAD_WIDTH: 2`, `MM_SS_PAD_CHAR: "0"`); NEW `NUMBER_RADIX.DECIMAL: 10` |
+| `packages/shared/src/config/ui.ts` | `UI_TIMEOUTS` +`MONO_FONT_IDLE_FALLBACK_MS: 2000` (count 23 → 24) |
+| `packages/shared/src/config/animation.ts` | NEW `SKELETON_EXIT_DEFAULTS.ANIMATION` — full hydration skeleton-exit shorthand |
+| `packages/shared/src/index.ts` | Exported `TIME_FORMAT`, `NUMBER_RADIX`, `SKELETON_EXIT_DEFAULTS` from root barrel |
+| `packages/shared/src/config.test.ts` | +10 tests (shared suite 1,002 → 1,012): 3 `CIRCLE_GEOMETRY` full-turn (values + CIRCUMFERENCE = FULL_TURN_RAD × RADIUS consistency), 3 `TIME_FORMAT` (width/char/zero-pad behavior), 2 `NUMBER_RADIX` (value + valid-parseable-radix invariant), 2 `SKELETON_EXIT_DEFAULTS` (shorthand + keyframes/fill match); `UI_TIMEOUTS` list +1, count 23 → 24 |
+| `apps/web/src/config/constants/wizard.ts` | NEW `WIZARD_STEP_SHORTCUT_PATTERN` — `new RegExp('^[1-${WIZARD_STEPS.length}]$')`, derived from the step list so steps and matcher cannot drift |
+| `HeadingAnchor.tsx` / `AnimatedCopyButton.tsx` / `GenerationCelebration.tsx` | 3× particle angle `* Math.PI * 2` → `* CIRCLE_GEOMETRY.FULL_TURN_RAD` |
+| `CircularProgress.tsx` / `Toast.tsx` | 2× parametric `radius * 2 * Math.PI` circumference → `radius * CIRCLE_GEOMETRY.FULL_TURN_RAD` |
+| `GenerationCelebration.tsx` | `Math.random() * 360` → `* CIRCLE_GEOMETRY.FULL_TURN_DEG` |
+| `wizard/StepGenerating.tsx` | spinner `rotate: 360` + `padStart(2, "0")` → `CIRCLE_GEOMETRY.FULL_TURN_DEG` + `TIME_FORMAT.MM_SS_PAD_WIDTH/MM_SS_PAD_CHAR` |
+| `editor/EditorToolbar.tsx` | `rotate: 360` → `CIRCLE_GEOMETRY.FULL_TURN_DEG` |
+| `StepIndicator.tsx` | `/^[1-5]$/` → `WIZARD_STEP_SHORTCUT_PATTERN`; `parseInt(e.key, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/api/src/middleware/bodyLimit.ts` | `parseInt(contentLength, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/api/src/config/env.ts` + `apps/web/src/config/env.ts` | 2× `parseInt(value, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/web/src/main.tsx` | `setTimeout(loadMonoFont, 2000)` → `UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS`; skeleton shorthand → `SKELETON_EXIT_DEFAULTS.ANIMATION` |
+| `docs/flexy-plan.md` | Iteration 203 entry |
+
+Deliberately skipped: Tailwind palette/duration class tokens (`bg-primary-500`, `duration-500` — CSS-class category, Iterations 157/169); the `-1` 0-index adjustment after the radix parse (idiomatic arithmetic, not a literal); `index.html` inline critical-CSS `animation:` strings (HTML runtime, not TS call sites — the TS override in main.tsx IS centralized); parametric `(size - strokeWidth) / 2` center math (derived from props — Iteration 202 precedent); test files; `node_modules`.
+
+## Verification (Iteration 203)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,348 web + 555 api + 1,012 shared = 2,915 tests passing** (+10 new shared)
+- ✅ Residual scan — 0 bare `2 * Math.PI` / `rotate: 360` / `parseInt(x, 10)` / `padStart(2, …)` / `/^[1-5]$/` / `2000` font timeout / `skeleton-exit` shorthand occurrences in app source (excluding config, tests, node_modules)
+
+## PR (Iteration 203)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-203-turn-geometry-radix-timers` | refactor(flexy): centralize full-turn geometry, decimal radix & timer/font micro-literals (Iteration 203) |
+
 ### ✅ Flexy Iteration 202: Centralize Remaining SVG Icon Path, Rect & Large-Ring Geometry Literals
 
 **Problem**: 27 hardcoded SVG literals at call sites bypassed shared config. Paths: 8 exact-match raw `d="..."` occurrences duplicated 6 existing `ICON_PATHS` entries (2× ZAP in StepReview, 2× SEARCH in KeyboardShortcutsModal, CHEVRON_UP + CHEVRON_DOWN in ScrollToTop, COPY in MarkdownRenderer, HELP in Header), plus 2 cross-file duplicated paths with no constant at all (2× celebration checkmark `M14 24L21 31L34 17` in StepGenerating + GenerationCelebration, 2× square-copy frame `M5 15H4a2…` in AnimatedCopyButton + ErrorFallback). Rects: 6 raw `<rect>` attribute literals (2× copy-body in AnimatedCopyButton + ErrorFallback, 4× pause-badge bars in Toast ×2 states). Rings: 3 large-viewBox circles hardcoded `cx="24" cy="24" r="22"` (StepGenerating ×2, GenerationCelebration) bypassing geometry config — `CIRCLE_GEOMETRY` only covered the 24×24 viewBox. Flexy says: no hardcoded SVG path, rect, or ring geometry literals!

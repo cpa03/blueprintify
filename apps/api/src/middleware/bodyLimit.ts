@@ -9,6 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
+import { NUMBER_RADIX } from "@blueprint/shared";
 import {
   HTTP_STATUS,
   ERROR_CODES,
@@ -70,7 +71,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
     const contentLength = c.req.header(API_HEADERS.REQUEST.CONTENT_LENGTH);
 
     if (contentLength) {
-      const size = parseInt(contentLength, 10);
+      const size = parseInt(contentLength, NUMBER_RADIX.DECIMAL);
 
       if (!isNaN(size) && size > maxSize) {
         return c.json(

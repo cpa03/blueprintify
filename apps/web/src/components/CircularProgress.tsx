@@ -20,7 +20,12 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
-import { ARIA_ROLES, SVG_ICON_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import {
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
+  CIRCLE_GEOMETRY,
+} from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -108,7 +113,7 @@ function CircularProgressComponent({
   const clampedValue = Math.max(0, Math.min(100, value));
   const isComplete = clampedValue >= 100;
   const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
+  const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
   const center = size / 2;
 
   // Respect prefers-reduced-motion: the stroke transition is inline-styled,
