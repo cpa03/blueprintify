@@ -31,6 +31,7 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  CIRCLE_GEOMETRY_LARGE,
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
   GENERATION_ERROR_PREFIXES,
@@ -396,9 +397,9 @@ export const StepGenerating = memo(function StepGenerating({
               className="text-accent-emerald"
             >
               <motion.circle
-                cx="24"
-                cy="24"
-                r="22"
+                cx={CIRCLE_GEOMETRY_LARGE.CENTER_X}
+                cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y}
+                r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                 stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -409,7 +410,7 @@ export const StepGenerating = memo(function StepGenerating({
                 }}
               />
               <motion.path
-                d="M14 24L21 31L34 17"
+                d={ICON_PATHS.CHECKMARK_LARGE}
                 stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -443,9 +444,9 @@ export const StepGenerating = memo(function StepGenerating({
               aria-label={GENERATION_ERROR_LABELS.ERROR_ICON_ARIA}
             >
               <motion.circle
-                cx="24"
-                cy="24"
-                r="22"
+                cx={CIRCLE_GEOMETRY_LARGE.CENTER_X}
+                cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y}
+                r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                 stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}

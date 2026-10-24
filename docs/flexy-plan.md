@@ -4,6 +4,45 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 202: Centralize Remaining SVG Icon Path, Rect & Large-Ring Geometry Literals
+
+**Problem**: 27 hardcoded SVG literals at call sites bypassed shared config. Paths: 8 exact-match raw `d="..."` occurrences duplicated 6 existing `ICON_PATHS` entries (2× ZAP in StepReview, 2× SEARCH in KeyboardShortcutsModal, CHEVRON_UP + CHEVRON_DOWN in ScrollToTop, COPY in MarkdownRenderer, HELP in Header), plus 2 cross-file duplicated paths with no constant at all (2× celebration checkmark `M14 24L21 31L34 17` in StepGenerating + GenerationCelebration, 2× square-copy frame `M5 15H4a2…` in AnimatedCopyButton + ErrorFallback). Rects: 6 raw `<rect>` attribute literals (2× copy-body in AnimatedCopyButton + ErrorFallback, 4× pause-badge bars in Toast ×2 states). Rings: 3 large-viewBox circles hardcoded `cx="24" cy="24" r="22"` (StepGenerating ×2, GenerationCelebration) bypassing geometry config — `CIRCLE_GEOMETRY` only covered the 24×24 viewBox. Flexy says: no hardcoded SVG path, rect, or ring geometry literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | `ICON_PATHS` +2 entries (`CHECKMARK_LARGE`, `COPY_SQUARE`) — 19 → 21; NEW `ICON_RECTS` (3 entries: `COPY_BODY`, `PAUSE_LEFT`, `PAUSE_RIGHT` — JSX-spread object shape) |
+| `packages/shared/src/config/core.ts` | NEW `CIRCLE_GEOMETRY_LARGE` (CENTER_X/Y 24, RADIUS 22, CIRCUMFERENCE 2π·22) for 48×48 celebration/generation rings |
+| `packages/shared/src/config.test.ts` | +11 tests: 2 path value assertions + entry count 19 → 21, 5 `CIRCLE_GEOMETRY_LARGE` (values + 2-unit viewBox inset invariant), 4 `ICON_RECTS` (values + count + pause-bar centering) |
+| `ScrollToTop.tsx` | 2 literals → `ICON_PATHS.CHEVRON_UP` / `CHEVRON_DOWN` |
+| `wizard/StepReview.tsx` | 2 literals → `ICON_PATHS.ZAP` |
+| `KeyboardShortcutsModal.tsx` | 2 literals → `ICON_PATHS.SEARCH` |
+| `MarkdownRenderer.tsx` | 1 literal → `ICON_PATHS.COPY` |
+| `Header.tsx` | 1 literal → `ICON_PATHS.HELP` |
+| `AnimatedCopyButton.tsx` | rect → `{...ICON_RECTS.COPY_BODY}` + path → `ICON_PATHS.COPY_SQUARE` |
+| `ErrorFallback.tsx` | rect → `{...ICON_RECTS.COPY_BODY}` + path → `ICON_PATHS.COPY_SQUARE` |
+| `wizard/StepGenerating.tsx` | 2 rings × (cx/cy/r) → `CIRCLE_GEOMETRY_LARGE` + checkmark path → `ICON_PATHS.CHECKMARK_LARGE` |
+| `GenerationCelebration.tsx` | 1 ring × (cx/cy/r) → `CIRCLE_GEOMETRY_LARGE` + checkmark path → `ICON_PATHS.CHECKMARK_LARGE` |
+| `Toast.tsx` | 4 rect literals → `{...ICON_RECTS.PAUSE_LEFT}` / `PAUSE_RIGHT` (both badge states) |
+| `docs/flexy-plan.md` | Iteration 202 entry |
+
+Deliberately skipped: 13 unique one-off raw `d=` paths (star, arrow-left, zap-variant, 48-viewBox close-X, search-x, etc. — Iteration 198 unique-one-off precedent); gradient paint refs (`fill="url(#…)"` — Iteration 196); parametric ring math in CircularProgress/Toast (`(size - strokeWidth) / 2` — derived from props, not literals); static form-field `id=`/`htmlFor=` string pairs (StepInfo DOM IDs — Iteration 197 category, next target); test files (tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 202)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (352 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,345 web + 555 api + 1,002 shared = 2,902 tests passing** (+11 new shared)
+- ✅ Remaining raw exact-match `ICON_PATHS` bypasses, `cx="24"`/`cy="24"`/`r="22"`, hardcoded `<rect x=…>` attrs & the 2 duplicated paths in web components (excluding tests, config, templates, parametric geometry & one-offs) — **0 occurrences**
+
+## PR (Iteration 202)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-202-svg-paths-ring-geometry` | refactor(flexy): centralize remaining SVG icon path, rect & large-ring geometry literals (Iteration 202) |
+
 ### ✅ Flexy Iteration 201: Centralize Scalar X/Y Offset & Opacity Variant Values
 
 **Problem**: 105 hardcoded scalar motion-offset & opacity literals remained across 22 web component files, even though `ANIMATION_SCALE` (Iteration 200) already covered scalar `scale:` states — no shared constant covered single-value `x:`/`y:`/`opacity:` variants. Breakdown: 97× `x:`/`y:` offsets (17× `y: -4`, 12× `y: 10`, 9× `y: 20`, 6× `y: -10`, 6× `y: -8`, 6× `x: -6`, 6× `x: -4`, 5× `x: -3`, 5× `y: 4`, 4× `y: 8`, 3× `y: -6`, 3× `y: -5`, 3× `y: 5`, 3× `y: 6`, 2× `x: -10`, 2× `x: -5`, 2× `y: 12`, 2× `y: 20`-modal, 1× `x: 10`, 1× `y: -20`, 1× `y: -2`) and 8× opacity (6× `0.8`, 1× `0.6`, 1× `0.3`). Flexy says: no hardcoded scalar x/y/opacity values in variant objects!

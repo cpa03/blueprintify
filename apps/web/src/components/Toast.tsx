@@ -65,7 +65,7 @@ import {
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
-import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
+import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY, ICON_RECTS } from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -385,8 +385,8 @@ const ToastItem = memo(
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
-                <rect x="6" y="4" width="4" height="16" rx="1" />
-                <rect x="14" y="4" width="4" height="16" rx="1" />
+                <rect {...ICON_RECTS.PAUSE_LEFT} />
+                <rect {...ICON_RECTS.PAUSE_RIGHT} />
               </svg>
             </div>
           )
@@ -415,8 +415,8 @@ const ToastItem = memo(
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
-                  <rect x="6" y="4" width="4" height="16" rx="1" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                  <rect {...ICON_RECTS.PAUSE_LEFT} />
+                  <rect {...ICON_RECTS.PAUSE_RIGHT} />
                 </svg>
               </motion.div>
             )}

@@ -26,7 +26,7 @@ import { ANIMATION_SCALE, CELEBRATION_STATE_VALUES, ANIMATION_Y_OFFSET } from "@
 import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { CIRCLE_GEOMETRY_LARGE, ICON_PATHS, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 const { CIRCLE_REVEAL_DURATION_S, CHECKMARK_PATH_DELAY_S, TEXT_DELAY_S } = CELEBRATION_ANIMATION;
 
@@ -288,9 +288,9 @@ function GenerationCelebrationComponent({
                 className="text-accent-emerald"
               >
                 <motion.circle
-                  cx="24"
-                  cy="24"
-                  r="22"
+                  cx={CIRCLE_GEOMETRY_LARGE.CENTER_X}
+                  cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y}
+                  r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                   stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   initial={{ pathLength: 0, opacity: 0 }}
@@ -301,7 +301,7 @@ function GenerationCelebrationComponent({
                   }}
                 />
                 <motion.path
-                  d="M14 24L21 31L34 17"
+                  d={ICON_PATHS.CHECKMARK_LARGE}
                   stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
