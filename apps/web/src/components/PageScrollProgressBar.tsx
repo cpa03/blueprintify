@@ -35,7 +35,12 @@
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
-import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_OPACITY,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
@@ -244,7 +249,9 @@ function PageScrollProgressBarComponent({
       data-progress={Math.round(scrollProgress)}
       data-hovered={isHovered}
       data-focused={isFocused}
-      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
+      data-reduced-motion={
+        prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <div
         ref={barRef}

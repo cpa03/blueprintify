@@ -30,6 +30,7 @@ import {
   STEP_INDICATOR_STATE_VALUES,
   SVG_ICON_DEFAULTS,
   WIZARD_STEP_KEYS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { NUMBER_RADIX } from "@blueprint/shared";
@@ -163,7 +164,9 @@ function StepIndicatorComponent(): JSX.Element {
   return (
     <div
       className="flex items-center justify-center gap-3 mb-8 max-w-full overflow-x-auto scrollbar-none py-1"
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <SmartTooltip
         content={ACCESSIBILITY_LABELS.PROGRESS.STEPS_COMPLETE(
@@ -231,10 +234,12 @@ function StepIndicatorComponent(): JSX.Element {
                       ? STEP_INDICATOR_STATE_VALUES.AVAILABLE
                       : STEP_INDICATOR_STATE_VALUES.LOCKED
               }
-              data-active={isActive ? "true" : "false"}
-              data-completed={isCompleted ? "true" : "false"}
-              data-clickable={isClickable ? "true" : "false"}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-active={isActive ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-completed={isCompleted ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-clickable={isClickable ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               // aria-disabled keeps locked steps focusable so keyboard, touch,
               // and screen reader users can discover WHY the step is locked via
               // the aria-describedby hint (a native `disabled` attribute removes

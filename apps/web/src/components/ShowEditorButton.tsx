@@ -30,6 +30,7 @@ import {
   SVG_ICON_DEFAULTS,
   UI_TIMEOUTS,
   UI_TIMING,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -135,7 +136,7 @@ function ShowEditorButtonComponent({
           )}
           aria-label={ariaLabel}
           title={buttonTitle}
-          data-editor-toggle="true"
+          data-editor-toggle={DATA_BOOLEAN_VALUES.TRUE}
           data-has-content={hasContent}
           data-state={
             hasContent ? EDITOR_BUTTON_STATE_VALUES.CONTENT_READY : EDITOR_BUTTON_STATE_VALUES.IDLE

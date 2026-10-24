@@ -186,6 +186,8 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_REQUIRED_VALUES,
+  DATA_BOOLEAN_VALUES,
+  ARIA_BUSY_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5491,5 +5493,47 @@ describe("SKELETON_EXIT_DEFAULTS (Flexy Iteration 203)", () => {
   it("should target the skeleton-exit keyframes with forwards fill", () => {
     expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/^skeleton-exit\s/);
     expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/\sforwards$/);
+  });
+});
+
+describe("DATA_BOOLEAN_VALUES (Flexy Iteration 204)", () => {
+  it("should have true value", () => {
+    expect(DATA_BOOLEAN_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(DATA_BOOLEAN_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(DATA_BOOLEAN_VALUES).length).toBe(2);
+    const values = Object.values(DATA_BOOLEAN_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should serialize booleans identically to String()", () => {
+    expect(String(true)).toBe(DATA_BOOLEAN_VALUES.TRUE);
+    expect(String(false)).toBe(DATA_BOOLEAN_VALUES.FALSE);
+  });
+
+  it("should be valid JSON encodings of boolean true/false", () => {
+    expect(JSON.parse(DATA_BOOLEAN_VALUES.TRUE)).toBe(true);
+    expect(JSON.parse(DATA_BOOLEAN_VALUES.FALSE)).toBe(false);
+  });
+});
+
+describe("ARIA_BUSY_VALUES (Flexy Iteration 204)", () => {
+  it("should have true value", () => {
+    expect(ARIA_BUSY_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_BUSY_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_BUSY_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_BUSY_VALUES);
+    expect(new Set(values).size).toBe(values.length);
   });
 });

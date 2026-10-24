@@ -28,6 +28,7 @@ import {
   ANIMATION_OPACITY,
   ANIMATION_X_OFFSET,
   ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
@@ -324,8 +325,10 @@ export const StepStack = memo(function StepStack({
     <motion.div
       {...pageTransition(direction)}
       className="space-y-6"
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-can-proceed={canProceed ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={canProceed ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-selected-count={techStack.length}
       data-min-required={minRequired}
     >

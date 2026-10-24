@@ -46,6 +46,7 @@ import {
   UI_TIMING,
   WIZARD_STEP_KEYS,
   ICON_PATHS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -316,7 +317,7 @@ export const StepGenerating = memo(function StepGenerating({
       }
       if (!shown) {
         try {
-          localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, "true");
+          localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, DATA_BOOLEAN_VALUES.TRUE);
         } catch {
           // localStorage can throw in privacy mode — toast below still shows once per mount.
         }
