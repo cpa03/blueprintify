@@ -65,7 +65,12 @@ import {
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
-import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY, ICON_RECTS } from "@blueprint/shared/config";
+import {
+  SVG_ICON_DEFAULTS,
+  COLOR_MIX_OPACITY,
+  ICON_RECTS,
+  CIRCLE_GEOMETRY,
+} from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -102,7 +107,7 @@ const ProgressRing = memo(function ProgressRing({
   noTransition = false,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
+  const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (

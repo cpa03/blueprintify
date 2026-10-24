@@ -31,6 +31,7 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  CIRCLE_GEOMETRY,
   CIRCLE_GEOMETRY_LARGE,
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
@@ -48,7 +49,7 @@ import {
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, TIME_FORMAT } from "@blueprint/shared";
 import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
 import { STORAGE_KEYS } from "../../config/keys";
 interface ElapsedTime {
@@ -61,7 +62,7 @@ interface ElapsedTime {
 function formatElapsed(totalSeconds: number): string {
   const minutes = Math.floor(totalSeconds / TIME_UNITS.SECONDS_PER_MINUTE);
   const secs = totalSeconds % TIME_UNITS.SECONDS_PER_MINUTE;
-  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+  return `${minutes}:${secs.toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)}`;
 }
 
 function useElapsedTime(isActive: boolean): ElapsedTime {
@@ -478,7 +479,7 @@ export const StepGenerating = memo(function StepGenerating({
                 borderTopColor: COLORS.primary[500],
                 borderRightColor: COLORS.primary[500],
               }}
-              animate={{ rotate: 360 }}
+              animate={{ rotate: CIRCLE_GEOMETRY.FULL_TURN_DEG }}
               transition={{
                 duration: ANIMATION.SPINNER_ROTATION,
                 repeat: ANIMATION_REPEAT.INFINITE,

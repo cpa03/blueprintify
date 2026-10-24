@@ -28,6 +28,20 @@ export const TIME_UNITS = {
 } as const;
 
 /**
+ * Time Display Format
+ * Centralized zero-padding literals for MM:SS elapsed-timer rendering.
+ * Flexy says: No hardcoded padStart(2, "0") in timer formatters!
+ * Usage: import { TIME_FORMAT } from "@blueprint/shared";
+ *        secs.toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)
+ */
+export const TIME_FORMAT = {
+  /** Minimum width for zero-padded minute/second fields in MM:SS displays */
+  MM_SS_PAD_WIDTH: 2,
+  /** Pad character used to left-pad single-digit time fields */
+  MM_SS_PAD_CHAR: "0",
+} as const;
+
+/**
  * Percent Conversion Constants
  * Centralized scale for converting ratios to percentage values.
  * Flexy says: No hardcoded "* 100" percent-conversion multipliers in components!
@@ -35,6 +49,18 @@ export const TIME_UNITS = {
  *        const percent = Math.round(ratio * PERCENT_SCALE);
  */
 export const PERCENT_SCALE = 100;
+
+/**
+ * Number Parsing Radix
+ * Centralized radix for decimal string-to-number parsing.
+ * Flexy says: No hardcoded parseInt(value, 10) radix literals!
+ * Usage: import { NUMBER_RADIX } from "@blueprint/shared";
+ *        const size = parseInt(header, NUMBER_RADIX.DECIMAL);
+ */
+export const NUMBER_RADIX = {
+  /** Base-10 radix for decimal string parsing */
+  DECIMAL: 10,
+} as const;
 
 /**
  * Ratio Limits
@@ -72,6 +98,10 @@ export const CIRCLE_GEOMETRY = {
   CENTER_Y: 12,
   /** Circle radius */
   RADIUS: 10,
+  /** Full turn in radians (2 * PI, a.k.a. tau) — for particle/angle distribution */
+  FULL_TURN_RAD: 2 * Math.PI,
+  /** Full turn in degrees — for complete rotation animations */
+  FULL_TURN_DEG: 360,
   /** Full circumference (2 * PI * RADIUS) for stroke-dasharray */
   CIRCUMFERENCE: 2 * Math.PI * 10,
   /** Dash offset for the completed ring segment (circumference * 0.75) */
