@@ -409,6 +409,7 @@ export const ACCESSIBILITY_LABELS = {
     START_NEW_PROJECT: "Start new project",
     HIDE_EDITOR: "Hide editor panel",
     HIDE_EDITOR_TITLE: "Hide editor",
+    PANEL: "Editor panel",
     SHOW_EDITOR: "Show Editor panel",
     SHOW_EDITOR_WITH_CONTENT: "View Blueprint in editor panel",
     CONTENT_AVAILABLE: (tabName: string) => `${tabName} content available`,
