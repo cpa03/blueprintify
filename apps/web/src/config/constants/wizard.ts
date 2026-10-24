@@ -39,6 +39,13 @@ export const WIZARD_STEPS = [
 ] as const;
 
 /**
+ * Alt+N step-navigation matcher for digits 1..N.
+ * Derived from WIZARD_STEPS so adding/removing a step keeps the handler in sync.
+ * Flexy says: No hardcoded /^[1-5]$/ literal in StepIndicator keyboard handlers!
+ */
+export const WIZARD_STEP_SHORTCUT_PATTERN = new RegExp(`^[1-${WIZARD_STEPS.length}]$`);
+
+/**
  * Tech stack category icons
  * Maps category keys to their emoji representations
  */

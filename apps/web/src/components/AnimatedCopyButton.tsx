@@ -40,6 +40,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  CIRCLE_GEOMETRY,
   ICON_PATHS,
   ICON_RECTS,
 } from "@blueprint/shared/config";
@@ -113,7 +114,7 @@ function AnimatedCopyButtonComponent({
     const newParticles: Particle[] = [];
 
     for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
-      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const angle = (i / PARTICLE_CONFIG.COUNT) * CIRCLE_GEOMETRY.FULL_TURN_RAD;
       const distance =
         PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color: string =

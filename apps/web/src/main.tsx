@@ -5,6 +5,7 @@ import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
 import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
 import { DEBUG_MESSAGES } from "./config/constants/content";
+import { SKELETON_EXIT_DEFAULTS, UI_TIMEOUTS } from "@blueprint/shared/config";
 import "./index.css";
 
 // Static import App to avoid an extra network round-trip that delays hydration and LCP
@@ -38,7 +39,7 @@ const fadeOutAndRemoveSkeletonLoader = () => {
     // fixed duration. On fast connections this makes the perceived load
     // time match actual readiness — the skeleton disappears as soon as
     // the UI is interactive rather than lingering unnecessarily.
-    skeleton.style.animation = "skeleton-exit 0.3s ease-out 0s forwards";
+    skeleton.style.animation = SKELETON_EXIT_DEFAULTS.ANIMATION;
     // Remove from DOM after animation completes to keep the DOM clean.
     skeleton.addEventListener("animationend", () => skeleton.remove(), { once: true });
   }
@@ -87,7 +88,7 @@ function scheduleMonoFont(): void {
   if (typeof idle === "function") {
     idle.call(window, loadMonoFont);
   } else {
-    window.setTimeout(loadMonoFont, 2000);
+    window.setTimeout(loadMonoFont, UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS);
   }
 }
 

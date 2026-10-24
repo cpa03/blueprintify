@@ -14,6 +14,8 @@ import {
   CRYPTO_CONFIG,
   ID_CHARS,
   TIME_UNITS,
+  TIME_FORMAT,
+  NUMBER_RADIX,
   PERCENT_SCALE,
   RATIO_LIMITS,
   CIRCLE_GEOMETRY,
@@ -123,6 +125,7 @@ import {
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
   SKELETON_PULSE_DEFAULTS,
+  SKELETON_EXIT_DEFAULTS,
   BUILD_CONFIG,
   ENTRANCE_STAGGER_DEFAULTS,
   SCROLLBAR_COLORS,
@@ -580,6 +583,21 @@ describe("CIRCLE_GEOMETRY", () => {
 
   it("should have STROKE_DASHOFFSET = CIRCUMFERENCE * 0.75", () => {
     expect(CIRCLE_GEOMETRY.STROKE_DASHOFFSET).toBeCloseTo(CIRCLE_GEOMETRY.CIRCUMFERENCE * 0.75);
+  });
+
+  it("should have FULL_TURN_RAD = 2 * PI", () => {
+    expect(CIRCLE_GEOMETRY.FULL_TURN_RAD).toBeCloseTo(2 * Math.PI);
+  });
+
+  it("should have FULL_TURN_DEG = 360", () => {
+    expect(CIRCLE_GEOMETRY.FULL_TURN_DEG).toBe(360);
+    expect(Number.isInteger(CIRCLE_GEOMETRY.FULL_TURN_DEG)).toBe(true);
+  });
+
+  it("should keep CIRCUMFERENCE consistent with FULL_TURN_RAD * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY.CIRCUMFERENCE).toBeCloseTo(
+      CIRCLE_GEOMETRY.FULL_TURN_RAD * CIRCLE_GEOMETRY.RADIUS
+    );
   });
 });
 
@@ -2691,11 +2709,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
     expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
     expect(UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS).toBe(30000);
+    expect(UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS).toBe(2000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(23);
+    expect(values.length).toBe(24);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -5431,5 +5450,46 @@ describe("ARIA_REQUIRED_VALUES (Flexy Iteration 195)", () => {
     expect(Object.keys(ARIA_REQUIRED_VALUES).length).toBe(2);
     const values = Object.values(ARIA_REQUIRED_VALUES);
     expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("TIME_FORMAT (Flexy Iteration 203)", () => {
+  it("should have MM_SS_PAD_WIDTH = 2", () => {
+    expect(TIME_FORMAT.MM_SS_PAD_WIDTH).toBe(2);
+    expect(Number.isInteger(TIME_FORMAT.MM_SS_PAD_WIDTH)).toBe(true);
+  });
+
+  it("should have MM_SS_PAD_CHAR = 0", () => {
+    expect(TIME_FORMAT.MM_SS_PAD_CHAR).toBe("0");
+  });
+
+  it("should zero-pad single-digit seconds for MM:SS display", () => {
+    expect((5).toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)).toBe(
+      "05"
+    );
+  });
+});
+
+describe("NUMBER_RADIX (Flexy Iteration 203)", () => {
+  it("should have DECIMAL = 10", () => {
+    expect(NUMBER_RADIX.DECIMAL).toBe(10);
+  });
+
+  it("should be a valid parseInt radix", () => {
+    expect(Number.isInteger(NUMBER_RADIX.DECIMAL)).toBe(true);
+    expect(NUMBER_RADIX.DECIMAL).toBeGreaterThanOrEqual(2);
+    expect(NUMBER_RADIX.DECIMAL).toBeLessThanOrEqual(36);
+    expect(parseInt("42", NUMBER_RADIX.DECIMAL)).toBe(42);
+  });
+});
+
+describe("SKELETON_EXIT_DEFAULTS (Flexy Iteration 203)", () => {
+  it("should have the full skeleton-exit CSS animation shorthand", () => {
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toBe("skeleton-exit 0.3s ease-out 0s forwards");
+  });
+
+  it("should target the skeleton-exit keyframes with forwards fill", () => {
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/^skeleton-exit\s/);
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/\sforwards$/);
   });
 });
