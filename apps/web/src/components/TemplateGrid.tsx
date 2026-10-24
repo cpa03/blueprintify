@@ -33,6 +33,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   BREAKPOINT_DEFAULTS,
   TEMPLATE_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -209,8 +210,12 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-selected={isSelected}
               data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
               data-template-id={template.id}
-              data-loading={isSelected && isLoading ? "true" : "false"}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-loading={
+                isSelected && isLoading ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               role={ARIA_ROLES.OPTION}
               tabIndex={focusIndex === index ? 0 : -1}
               style={

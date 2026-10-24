@@ -23,6 +23,7 @@ import {
   ANIMATION_OPACITY,
   ANIMATION_X_OFFSET,
   ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
@@ -175,8 +176,10 @@ function AnimatedCopyButtonComponent({
         className
       )}
       data-state={isCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-has-content={hasContent ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       title={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       animate={{

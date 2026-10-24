@@ -276,6 +276,8 @@ export {
   ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_REQUIRED_VALUES,
+  DATA_BOOLEAN_VALUES,
+  ARIA_BUSY_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

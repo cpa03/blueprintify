@@ -12,6 +12,7 @@ import {
   RATIO_LIMITS,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -110,11 +111,13 @@ function CharacterCounterComponent({
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         data-state={stateValue}
-        data-at-limit={isAtLimit ? "true" : "false"}
-        data-warning={isWarning ? "true" : "false"}
-        data-valid={isValid ? "true" : "false"}
-        data-has-min={min !== undefined ? "true" : "false"}
-        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+        data-at-limit={isAtLimit ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-warning={isWarning ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-valid={isValid ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-has-min={min !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-reduced-motion={
+          shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+        }
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
         <span className="text-dark-600">/{max}</span>
@@ -194,9 +197,11 @@ function CharacterCounterCompactComponent({
     <div
       className={`flex items-center gap-1.5 ${className}`}
       data-state={compactStateValue}
-      data-at-limit={isAtLimit ? "true" : "false"}
-      data-warning={isWarning ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-at-limit={isAtLimit ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-warning={isWarning ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       role="progressbar"
       aria-label={compactCountLabel}
       aria-valuemin={0}

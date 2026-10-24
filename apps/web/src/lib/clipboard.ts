@@ -1,4 +1,5 @@
 import { EXPORT_CONFIG } from "../config/constants";
+import { ARIA_HIDDEN_VALUES } from "@blueprint/shared";
 
 /**
  * Copies text to clipboard with fallback for older browsers.
@@ -18,7 +19,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     textarea.readOnly = true;
     textarea.tabIndex = -1;
     if (typeof textarea.setAttribute === "function") {
-      textarea.setAttribute("aria-hidden", "true");
+      textarea.setAttribute("aria-hidden", ARIA_HIDDEN_VALUES.TRUE);
       textarea.setAttribute("readonly", "");
       textarea.setAttribute("tabindex", "-1");
     }

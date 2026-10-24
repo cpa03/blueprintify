@@ -1315,3 +1315,36 @@ export const ARIA_REQUIRED_VALUES = {
   /** Input is optional */
   FALSE: "false" as const,
 } as const;
+
+/**
+ * Data Boolean Values
+ * Centralized source of truth for `data-*` boolean state attribute strings
+ * (data-reduced-motion, data-state, data-loading, data-active, etc.) and for
+ * boolean serialization of localStorage reads/writes.
+ * Flexy says: No hardcoded ? "true" : "false" ternaries or bare "true"/"false"
+ * boolean strings in components!
+ * Usage: import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+ *        data-loading={isLoading ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+ *        localStorage.getItem(KEY) === DATA_BOOLEAN_VALUES.TRUE
+ */
+export const DATA_BOOLEAN_VALUES = {
+  /** Serialized boolean true (DOM attribute / storage representation) */
+  TRUE: "true" as const,
+  /** Serialized boolean false (DOM attribute / storage representation) */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Busy Values
+ * Centralized source of truth for `aria-busy` attribute values
+ * marking widgets that are in-progress (loading/updating).
+ * Flexy says: No hardcoded aria-busy="true" strings in components!
+ * Usage: import { ARIA_BUSY_VALUES } from "@blueprint/shared";
+ *        <button aria-busy={isLoading ? ARIA_BUSY_VALUES.TRUE : undefined} />
+ */
+export const ARIA_BUSY_VALUES = {
+  /** Widget is being updated / loading */
+  TRUE: "true" as const,
+  /** Widget is idle */
+  FALSE: "false" as const,
+} as const;

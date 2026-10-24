@@ -23,7 +23,7 @@
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import {
   ANIMATION,
@@ -259,7 +259,9 @@ const ScrollToPosition = memo(function ScrollToPosition({
           data-state={BANNER_STATE_VALUES.VISIBLE}
           data-has-scrolled={hasScrolled}
           data-focus-within={isFocusWithin}
-          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+          data-reduced-motion={
+            shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+          }
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
               the button first appears, drawing the user's eye to the new UI
@@ -325,7 +327,9 @@ const ScrollToPosition = memo(function ScrollToPosition({
               data-direction={direction}
               data-state={BANNER_STATE_VALUES.VISIBLE}
               data-has-scrolled={hasScrolled}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
             >

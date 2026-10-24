@@ -17,6 +17,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   ARIA_HIDDEN_VALUES,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
@@ -298,7 +299,9 @@ function SmartTooltipComponent({
       className="relative inline-flex"
       data-state={isVisible ? "visible" : "hidden"}
       data-position={computedPosition}
-      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
+      data-reduced-motion={
+        prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
@@ -314,7 +317,9 @@ function SmartTooltipComponent({
           role={ARIA_ROLES.TOOLTIP}
           data-state="visible"
           data-position={computedPosition}
-          data-reduced-motion={prefersReducedMotion ? "true" : "false"}
+          data-reduced-motion={
+            prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+          }
           className={`absolute ${positionStyle.container} z-50 pointer-events-none animate-tooltip-in ${className}`}
           style={{ maxWidth }}
         >
@@ -358,7 +363,7 @@ function KeyboardShortcutTooltipComponent({
   const fullShortcut = formatShortcut(shortcut, modifier);
 
   const content = (
-    <div className="flex items-center gap-2" data-has-shortcut="true">
+    <div className="flex items-center gap-2" data-has-shortcut={DATA_BOOLEAN_VALUES.TRUE}>
       {description && <span className="text-dark-300">{description}</span>}
       <kbd className="px-2 py-0.5 bg-dark-700 rounded text-xs font-mono text-white border border-dark-600 shadow-inner">
         {fullShortcut}
