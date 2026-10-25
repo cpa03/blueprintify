@@ -50,6 +50,7 @@ import { generateSlug, childrenToText } from "../utils/slug";
 import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 /**
  * Props for the MarkdownRenderer component.
@@ -183,7 +184,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE_TITLE
         }
       >
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT} initial={false}>
           {copied ? (
             <motion.svg
               key="check"

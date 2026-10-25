@@ -4,6 +4,44 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 207: Centralize Framer Motion Variant State Names & AnimatePresence Modes
+
+**Problem**: 77 hardcoded Framer Motion string-literal call sites survived 206 iterations, in two clusters that share the same silent-failure shape — Framer Motion does not type-check either side. (1) **Variant state names**: 32 bare `hidden:`/`visible:` keys inside `variants` objects (motion.ts ×16, StepReview ×8, ErrorFallback ×4, StepFeatures ×4) paired with 20 quoted references in `initial`/`animate` props (`initial="hidden"`/`animate="visible"` ×3 pairs in PreviewEmptyState, EditorEmptyState, StepFeatures; `initial={shouldReduceMotion ? undefined : "hidden"}` ×6 pairs in StepReview and ×1 pair in ErrorFallback). A typo or rename on either side of the pair silently no-ops the animation — the same read/write-pair drift Iteration 206 eliminated for DOM event names, except here nothing detaches, the element simply never animates. (2) **AnimatePresence modes**: 24 JSX `mode="wait"` (×20) / `mode="popLayout"` (×4) literals across 13 files, plus `StepTransition` whose prop type inlined the union `"wait" | "sync" | "popLayout"` and whose default was a bare `mode = "wait"` — a third copy of the same three-value enum that could drift from framer-motion's actual `mode` union. `FRAMER_TYPE` already covered `type: "spring"`, but the mode and variant-name APIs had no constant at all. Flexy says: no bare Framer Motion variant state names or AnimatePresence mode strings!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | NEW `MOTION_VARIANT_STATES` (HIDDEN `"hidden"`, VISIBLE `"visible"` — definition/reference pairing contract docblock) + NEW `ANIMATE_PRESENCE_MODES` (WAIT/SYNC/POP_LAYOUT — complete framer-motion `mode` union), placed beside `FRAMER_TYPE` |
+| `packages/shared/src/index.ts` | Exported both constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +5 tests (1,023 → 1,028): 3 `MOTION_VARIANT_STATES` (exact values, entry count 2 + uniqueness, lowercase variant-key invariant), 2 `ANIMATE_PRESENCE_MODES` (exact values, count 3 + uniqueness + full union membership) |
+| `apps/web/src/utils/motion.ts` | 16 variants keys (`fadeInUp`, `staggerContainer`, `fadeIn`, `scaleIn`, `slideInRight`, `slideInLeft`, `createStaggerContainer`, `createFadeInUp`) → computed `[MOTION_VARIANT_STATES.HIDDEN/VISIBLE]:` |
+| `components/wizard/StepReview.tsx` | 8 variants keys + 12 `initial`/`animate` references (6 reduced-motion ternary pairs) |
+| `components/wizard/StepFeatures.tsx` | 4 variants keys + 2 prop references + 3 AnimatePresence modes |
+| `components/ErrorFallback.tsx` | 4 variants keys + 2 prop references + 1 AnimatePresence mode |
+| `components/PreviewEmptyState.tsx` / `EditorEmptyState.tsx` | 2 prop references each |
+| `components/StepTransition.tsx` | Prop type `"wait" \| "sync" \| "popLayout"` → derived `AnimatePresenceMode`; default `mode = "wait"` → `ANIMATE_PRESENCE_MODES.WAIT` |
+| `components/Editor.tsx` / `wizard/StepGenerating.tsx` | 4 / 6 AnimatePresence modes |
+| `components/Toast.tsx` / `KeyboardShortcutsModal.tsx` / `wizard/StepStack.tsx` / `wizard/StepFeatures.tsx` | 1 / 1 / 2 / 3 `popLayout` + `wait` modes |
+| `AnimatedCopyButton.tsx` / `HeadingAnchor.tsx` / `LastSavedIndicator.tsx` / `MarkdownRenderer.tsx` / `Wizard.tsx` / `ErrorFallback.tsx` / `editor/EditorToolbar.tsx` | 1 AnimatePresence mode each (Wizard's `StepTransition mode="wait"`) |
+| `docs/flexy-plan.md` | Iteration 207 entry |
+
+Deliberately skipped: `SmartTooltip` `data-state={isVisible ? "visible" : "hidden"}` + `data-state="visible"` (tooltip DOM-state attribute, not a motion variant — `BANNER_STATE_VALUES` is banner-scoped; candidate for a future DOM-state iteration); `useScrollLock` `body.style.overflow === "hidden"` / `= "hidden"` (CSS overflow value — CSS category, Iteration 157/169 precedent); `StepGenerating:718` prose comment describing `mode="wait"` (comment text, not a call site); `MarkdownRenderer` `initial={false}` (boolean opt-out, not a string); JSX `variants={fadeInUp}` object references (already named/centralized); test files (none assert these APIs); `node_modules`/`dist`.
+
+## Verification (Iteration 207)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (8.88s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,375 web + 555 api + 1,028 shared = 2,958 tests passing** (+5 new shared; web baseline 1,375 re-verified against clean `origin/main`)
+- ✅ Residual scan — 0 bare `mode="wait"`/`mode="popLayout"`, 0 bare motion `initial`/`animate` `"hidden"`/`"visible"` references, 0 bare `hidden:`/`visible:` variants keys in runtime source (excluding tests, prose comments, data-state attributes & CSS overflow values)
+
+## PR (Iteration 207)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-207-motion-variant-animate-presence` | refactor(flexy): centralize Framer Motion variant state names & AnimatePresence modes (Iteration 207) |
+
 ### ✅ Flexy Iteration 206: Centralize DOM Event Name String Literals
 
 **Problem**: 64 hardcoded DOM event-type string literals survived 205 iterations across 23 runtime files, with no `DOM_EVENTS` constant anywhere — even though `ACCESSIBILITY_EVENTS` covered the one custom app event and `KEYBOARD_EVENT_KEYS` covered `event.key`. Breakdown: 26× `"keydown"` (App, ConfirmDialog, Editor, KeyboardShortcutsModal, ScrollToTop, SmartTooltip, StepIndicator, Toast, Wizard ×6, StepReview, useFocusTrap — global shortcut/escape/focus-trap handlers), 12× `"scroll"` (Editor, Header, PageScrollProgressBar, ScrollProgress, ScrollToTop, useAutoScroll), 10× `"change"` (TemplateGrid ×4 media queries, ReducedMotionContext, useReducedMotion ×4), 2× each `"resize"`/`"input"` (useAutoResizeTextarea), `"online"`/`"offline"` (useOnlineStatus), `"beforeunload"` (useBeforeUnload), `"mousedown"` (SmartTooltip outside-click), and 1 each `"storage"` (lib/storage cross-tab), `"unhandledrejection"`, `"error"`, `"animationend"` (main.tsx global handlers). Every add-listener site pairs with a `removeEventListener` teardown using the same bare literal — a typo or rename on either side silently leaks the listener or fails to detach it (the same read/write-pair drift Iteration 204 eliminated for localStorage booleans). Flexy says: no bare DOM event-name strings in runtime source!

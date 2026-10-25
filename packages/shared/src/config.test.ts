@@ -189,6 +189,8 @@ import {
   DATA_BOOLEAN_VALUES,
   ARIA_BUSY_VALUES,
   DOM_EVENTS,
+  MOTION_VARIANT_STATES,
+  ANIMATE_PRESENCE_MODES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5568,5 +5570,40 @@ describe("DOM_EVENTS (Flexy Iteration 206)", () => {
       expect(value).toBe(value.toLowerCase());
       expect(value.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("MOTION_VARIANT_STATES (Flexy Iteration 207)", () => {
+  it("should have exact variant state name values", () => {
+    expect(MOTION_VARIANT_STATES.HIDDEN).toBe("hidden");
+    expect(MOTION_VARIANT_STATES.VISIBLE).toBe("visible");
+  });
+
+  it("should have 2 unique state names", () => {
+    expect(Object.keys(MOTION_VARIANT_STATES).length).toBe(2);
+    const values = Object.values(MOTION_VARIANT_STATES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase names so variants-object keys and props resolve identically", () => {
+    for (const value of Object.values(MOTION_VARIANT_STATES)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("ANIMATE_PRESENCE_MODES (Flexy Iteration 207)", () => {
+  it("should have exact mode values", () => {
+    expect(ANIMATE_PRESENCE_MODES.WAIT).toBe("wait");
+    expect(ANIMATE_PRESENCE_MODES.SYNC).toBe("sync");
+    expect(ANIMATE_PRESENCE_MODES.POP_LAYOUT).toBe("popLayout");
+  });
+
+  it("should have 3 unique modes covering framer-motion's full mode union", () => {
+    expect(Object.keys(ANIMATE_PRESENCE_MODES).length).toBe(3);
+    const values = Object.values(ANIMATE_PRESENCE_MODES);
+    expect(new Set(values).size).toBe(values.length);
+    expect(new Set(values)).toEqual(new Set(["wait", "sync", "popLayout"]));
   });
 });

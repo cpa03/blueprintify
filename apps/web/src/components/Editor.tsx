@@ -76,6 +76,7 @@ import clsx from "clsx";
 import "../styles/markdown.css";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
@@ -546,7 +547,7 @@ function EditorComponent(): JSX.Element {
 
         {/* Editor Content */}
         <div className="flex-1 overflow-hidden">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
             {!hasContent && !isGenerating ? (
               <motion.div
                 key="empty-state"
@@ -567,7 +568,7 @@ function EditorComponent(): JSX.Element {
                 transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
                 className="h-full"
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                   <motion.div
                     key={activeTab}
                     initial={{ opacity: 0, x: tabDirection * ENTRANCE_OFFSETS.TAB_SLIDE_X_PX }}
@@ -618,7 +619,7 @@ function EditorComponent(): JSX.Element {
                             </span>
                           </div>
                         )}
-                        <AnimatePresence mode="wait">
+                        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                           {isGenerating && !currentContent ? (
                             <motion.div
                               key="editor-skeleton"
@@ -752,7 +753,7 @@ function EditorComponent(): JSX.Element {
                           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         />
                         <ScrollProgress scrollContainerRef={previewRef} />
-                        <AnimatePresence mode="wait">
+                        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                           {currentContent ? (
                             <motion.div
                               key={`${activeTab}-content`}

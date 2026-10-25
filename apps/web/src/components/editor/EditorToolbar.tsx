@@ -67,6 +67,7 @@ import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -311,7 +312,7 @@ function EditorToolbarComponent({
               : EDITOR_LABELS.BUTTONS.EXPORT_ARIA_LABEL
           }
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
             {isExporting ? (
               <motion.span
                 key="exporting"
