@@ -38,6 +38,7 @@ import {
   WIZARD_STEP_KEYS,
   DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { memo, useCallback, useEffect } from "react";
@@ -106,8 +107,8 @@ export const StepReview = memo(function StepReview({
         handleEditFeatures();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [handleEditInfo, handleEditStack, handleEditFeatures]);
 
   return (

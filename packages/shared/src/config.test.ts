@@ -188,6 +188,7 @@ import {
   ARIA_REQUIRED_VALUES,
   DATA_BOOLEAN_VALUES,
   ARIA_BUSY_VALUES,
+  DOM_EVENTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5535,5 +5536,36 @@ describe("ARIA_BUSY_VALUES (Flexy Iteration 204)", () => {
     expect(Object.keys(ARIA_BUSY_VALUES).length).toBe(2);
     const values = Object.values(ARIA_BUSY_VALUES);
     expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("DOM_EVENTS (Flexy Iteration 206)", () => {
+  it("should have exact event name values", () => {
+    expect(DOM_EVENTS.KEYDOWN).toBe("keydown");
+    expect(DOM_EVENTS.SCROLL).toBe("scroll");
+    expect(DOM_EVENTS.CHANGE).toBe("change");
+    expect(DOM_EVENTS.RESIZE).toBe("resize");
+    expect(DOM_EVENTS.INPUT).toBe("input");
+    expect(DOM_EVENTS.BEFORE_UNLOAD).toBe("beforeunload");
+    expect(DOM_EVENTS.ONLINE).toBe("online");
+    expect(DOM_EVENTS.OFFLINE).toBe("offline");
+    expect(DOM_EVENTS.MOUSE_DOWN).toBe("mousedown");
+    expect(DOM_EVENTS.STORAGE).toBe("storage");
+    expect(DOM_EVENTS.UNHANDLED_REJECTION).toBe("unhandledrejection");
+    expect(DOM_EVENTS.ERROR).toBe("error");
+    expect(DOM_EVENTS.ANIMATION_END).toBe("animationend");
+  });
+
+  it("should have 13 unique event names", () => {
+    expect(Object.keys(DOM_EVENTS).length).toBe(13);
+    const values = Object.values(DOM_EVENTS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase DOM event type names", () => {
+    for (const value of Object.values(DOM_EVENTS)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
   });
 });

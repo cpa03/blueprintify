@@ -22,6 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS_MS,
   ARIA_ATOMIC_VALUES,
@@ -158,8 +159,8 @@ function StepIndicatorComponent(): JSX.Element {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [setStep, canNavigateTo]);
 
   return (

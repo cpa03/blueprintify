@@ -22,6 +22,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 
 export interface OnlineStatus {
   /** Whether the browser currently reports being online */
@@ -60,12 +61,12 @@ export function useOnlineStatus(): OnlineStatus {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    window.addEventListener(DOM_EVENTS.ONLINE, handleOnline);
+    window.addEventListener(DOM_EVENTS.OFFLINE, handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener(DOM_EVENTS.ONLINE, handleOnline);
+      window.removeEventListener(DOM_EVENTS.OFFLINE, handleOffline);
     };
   }, [handleOnline, handleOffline]);
 

@@ -35,6 +35,7 @@
  */
 
 import { useEffect, useRef, useCallback, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -153,10 +154,10 @@ export const ConfirmDialog = memo(function ConfirmDialog({
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     };
   }, [isOpen, onClose, handleConfirm]);
 

@@ -1,4 +1,5 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_HIDDEN_VALUES,
@@ -286,8 +287,8 @@ function App(): JSX.Element {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [handleKeyDown]);
 
   useEffect(() => {

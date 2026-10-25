@@ -1,4 +1,5 @@
 import { useSyncExternalStore, useMemo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { ACCESSIBILITY_EVENTS, SPRING_CONFIG } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
 import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
@@ -8,8 +9,8 @@ function subscribeToReducedMotion(callback: () => void): () => void {
 
   let unsubscribeFromMediaQuery: () => void;
   if (mediaQuery.addEventListener) {
-    mediaQuery.addEventListener("change", callback);
-    unsubscribeFromMediaQuery = () => mediaQuery.removeEventListener("change", callback);
+    mediaQuery.addEventListener(DOM_EVENTS.CHANGE, callback);
+    unsubscribeFromMediaQuery = () => mediaQuery.removeEventListener(DOM_EVENTS.CHANGE, callback);
   } else {
     mediaQuery.addListener(callback);
     unsubscribeFromMediaQuery = () => mediaQuery.removeListener(callback);
@@ -139,8 +140,8 @@ function subscribeToHighContrast(callback: () => void): () => void {
   const mediaQuery = window.matchMedia("(prefers-contrast: more)");
 
   if (mediaQuery.addEventListener) {
-    mediaQuery.addEventListener("change", callback);
-    return () => mediaQuery.removeEventListener("change", callback);
+    mediaQuery.addEventListener(DOM_EVENTS.CHANGE, callback);
+    return () => mediaQuery.removeEventListener(DOM_EVENTS.CHANGE, callback);
   } else {
     mediaQuery.addListener(callback);
     return () => mediaQuery.removeListener(callback);
