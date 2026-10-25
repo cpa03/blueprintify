@@ -234,11 +234,18 @@ export const SHORTCUT_LABELS = {
  * Platform-Aware Shortcut Label Resolver
  * Returns platform-appropriate shortcut label string (e.g. ⌘C on Mac vs Ctrl+C elsewhere).
  * Flexy says: Eliminate hardcoded "Ctrl+C" / "Ctrl+N" strings!
+ *
+ * Platform detection is intentionally NOT performed here: callers pass the result of
+ * the app's canonical `isMacOS()` helper (apps/web/src/lib/platform.ts), keeping this
+ * shared module free of the deprecated `navigator.platform` API and avoiding a
+ * duplicate platform check.
+ *
+ * @param shortcutKey - Key into SHORTCUT_LABELS
+ * @param isMac - Whether the current platform is macOS (pass `isMacOS()`)
  */
 export function getPlatformShortcutLabel(
   shortcutKey: keyof typeof SHORTCUT_LABELS,
-  isMac: boolean = typeof navigator !== "undefined" &&
-    /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent)
+  isMac: boolean
 ): string {
   const baseLabel = SHORTCUT_LABELS[shortcutKey];
   if (!baseLabel.startsWith("Ctrl+")) return baseLabel;
