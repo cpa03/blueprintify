@@ -703,6 +703,8 @@ export const DOM_EVENTS = {
   ERROR: "error" as const,
   /** Animation-end event — skeleton removal after exit animation */
   ANIMATION_END: "animationend" as const,
+  /** Hash-change event — URL fragment deep-link resolution (#section) */
+  HASH_CHANGE: "hashchange" as const,
 } as const;
 
 /**
