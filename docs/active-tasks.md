@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ Palette — **ErrorFallback Recovery Focus Micro-UX (Oct 25 2026)**
+- [CONNECT] Connected `ErrorFallback.tsx` to a mount-time focus effect (`recoveryButtonRef` + `recoveryFocusDelayMs`) that hands focus to the primary "Try again" recovery action once it is on screen.
+- [STRENGTHEN] Strengthened `ErrorFallback` focus order (WCAG 2.4.3) by waiting for the staggered entrance cascade to paint the action row before focusing it, and by skipping the move when focus is no longer idle so an actively navigating user is never interrupted.
+- [CONSOLIDATE] Consolidated the focus delay on `STAGGER_CONFIG.ERROR_FALLBACK` (cascade slot for the action row, `error` details row aware) plus `ANIMATION.NORMAL` spring settle instead of a hardcoded timeout.
+- [REMOVE] Removed the post-crash focus dead end: the error takeover previously unmounted the focused element and left focus on `<body>`, so the next Tab restarted from the top of the document with no route to the recovery actions.
+
 ## ✅ StorX — **EditorHeader Micro-UX & Platform-Aware Shortcut Labels (Oct 25 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-active-tab`, `data-view-mode`, `data-has-content`, `data-generating`, `data-reduced-motion`) to `EditorHeader.tsx`.
 - [STRENGTHEN] Strengthened `EditorHeader` accessibility and state tracking for automated DOM inspection, and added `getPlatformShortcutLabel` to `@blueprint/shared` for platform-aware shortcut labels.
