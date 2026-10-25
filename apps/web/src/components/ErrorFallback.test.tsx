@@ -7,8 +7,8 @@
  * @module components/ErrorFallback.test
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ErrorFallback } from "./ErrorFallback";
 import { ERROR_BOUNDARY_TEXT, ACCESSIBILITY_LABELS } from "../config/constants/content";
 import * as clipboard from "../lib/clipboard";
@@ -241,5 +241,74 @@ describe("ErrorFallback", () => {
     const alert = screen.getByRole("alert");
     expect(alert).toHaveAttribute("data-has-error", "false");
     expect(alert).toHaveAttribute("data-has-details", "false");
+  });
+
+  // ---- Recovery focus management ----
+
+  describe("recovery focus management", () => {
+    /** Comfortably past the derived cascade + spring-settle focus delay (≤780ms). */
+    const AFTER_CASCADE_MS = 1000;
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("moves focus to the primary recovery action after the entrance cascade", () => {
+      render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
+      const tryAgain = screen.getByRole("button", {
+        name: ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN,
+      });
+      expect(document.activeElement).not.toBe(tryAgain);
+
+      act(() => {
+        vi.advanceTimersByTime(AFTER_CASCADE_MS);
+      });
+
+      expect(document.activeElement).toBe(tryAgain);
+    });
+
+    it("focuses the recovery action when no error details row is rendered", () => {
+      render(<ErrorFallback error={undefined} resetErrorBoundary={mockReset} />);
+      const tryAgain = screen.getByRole("button", {
+        name: ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN,
+      });
+
+      act(() => {
+        vi.advanceTimersByTime(AFTER_CASCADE_MS);
+      });
+
+      expect(document.activeElement).toBe(tryAgain);
+    });
+
+    it("leaves focus alone when the user has already navigated elsewhere", () => {
+      render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
+      const elsewhere = document.createElement("button");
+      document.body.appendChild(elsewhere);
+      elsewhere.focus();
+
+      act(() => {
+        vi.advanceTimersByTime(AFTER_CASCADE_MS);
+      });
+
+      expect(document.activeElement).toBe(elsewhere);
+      elsewhere.remove();
+    });
+
+    it("does not attempt to move focus after unmounting", () => {
+      const { unmount } = render(
+        <ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />
+      );
+      unmount();
+
+      act(() => {
+        vi.advanceTimersByTime(AFTER_CASCADE_MS);
+      });
+
+      expect(document.activeElement).toBe(document.body);
+    });
   });
 });
