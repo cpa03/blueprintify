@@ -20,6 +20,7 @@
  * @see {@link useLastSaved} for save state tracking
  */
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { ReactCodeMirrorRef } from "@uiw/react-codemirror";
@@ -70,6 +71,7 @@ import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import { useAutoScroll } from "../hooks/useAutoScroll";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useHashScroll } from "../hooks/useHashScroll";
 import clsx from "clsx";
 import "../styles/markdown.css";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
@@ -233,6 +235,12 @@ function EditorComponent(): JSX.Element {
   const currentContent = activeTab === EDITOR_TABS.BLUEPRINT ? blueprintContent : tasksContent;
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
+  // Resolve URL fragment deep links (#section) once markdown content exists.
+  // refreshKey re-attempts after a tab or view-mode switch so a target that
+  // lives in an inactive surface is found once that surface renders; an
+  // already-handled hash is never re-scrolled (no viewport yank on switch).
+  useHashScroll(Boolean(currentContent), `${activeTab}:${viewMode}`);
+
   // Freeze announcement text at mount via useState initializer so screen readers
   // only announce once when the editor panel appears, not on every re-render
   const [mountAnnouncement] = useState(() =>
@@ -323,7 +331,7 @@ function EditorComponent(): JSX.Element {
         });
       };
 
-      scrollDom.addEventListener("scroll", onScroll, { passive: true });
+      scrollDom.addEventListener(DOM_EVENTS.SCROLL, onScroll, { passive: true });
 
       // Set initial state
       const isTop = scrollDom.scrollTop <= 4;
@@ -332,7 +340,7 @@ function EditorComponent(): JSX.Element {
       setEditorScrollState({ isTop, isBottom });
 
       scrollListenerCleanupRef.current = () => {
-        scrollDom.removeEventListener("scroll", onScroll);
+        scrollDom.removeEventListener(DOM_EVENTS.SCROLL, onScroll);
       };
       return true;
     };
@@ -492,8 +500,8 @@ function EditorComponent(): JSX.Element {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [handleNewProject, handleExport, hasContent, isExporting, setViewMode, toast]);
 
   // Smooth-scroll both panes to top when switching tabs to avoid mid-content
@@ -691,7 +699,7 @@ function EditorComponent(): JSX.Element {
                         ref={previewRef}
                         onScroll={handlePreviewScroll}
                         className={clsx(
-                          "h-full overflow-y-auto overscroll-contain p-4 lg:p-6 relative",
+                          "preview-scroll-pane h-full overflow-y-auto overscroll-contain p-4 lg:p-6 relative",
                           viewMode === VIEW_MODES.SPLIT ? "w-full lg:w-1/2" : "w-full"
                         )}
                       >

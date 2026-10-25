@@ -26,3 +26,4 @@ export { createPersistedStore } from "./usePersistedStore";
 export type { PersistedStoreConfig } from "./usePersistedStore";
 export { useScrollLock } from "./useScrollLock";
 export { useBeforeUnload } from "./useBeforeUnload";
+export { useHashScroll } from "./useHashScroll";

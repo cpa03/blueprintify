@@ -218,6 +218,21 @@ export const TOOLTIP_CONFIG = {
   TOUCH_AUTO_HIDE_DELAY: TOOLTIP_DEFAULTS.TOUCH_AUTO_HIDE_DELAY_MS,
 } as const;
 
+/**
+ * Fragment deep-link (#hash) scroll restoration.
+ * Heading deep links (HeadingAnchor "Copy link") point at elements that only
+ * exist after React renders the markdown, so the browser's native one-shot
+ * hash scroll on page load always misses them. The useHashScroll hook retries
+ * for up to RETRY_ATTEMPTS × RETRY_INTERVAL_MS (3s) to cover async content
+ * (lazy markdown renderer, persisted-store hydration, post-generation render).
+ */
+export const HASH_SCROLL_CONFIG = {
+  /** How many times to re-check for the hash target before giving up */
+  RETRY_ATTEMPTS: 20,
+  /** Delay between hash-target lookup retries (ms) */
+  RETRY_INTERVAL_MS: 150,
+} as const;
+
 // ============================================================================
 // Color Presets
 // ============================================================================

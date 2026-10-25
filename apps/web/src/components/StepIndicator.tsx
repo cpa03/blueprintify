@@ -22,6 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS_MS,
   ARIA_ATOMIC_VALUES,
@@ -31,6 +32,7 @@ import {
   SVG_ICON_DEFAULTS,
   WIZARD_STEP_KEYS,
   DATA_BOOLEAN_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { NUMBER_RADIX } from "@blueprint/shared";
@@ -91,7 +93,7 @@ function StepIndicatorComponent(): JSX.Element {
   // wizard still considers the GENERATING step as "current." This gives users
   // a clear visual cue that the pipeline has finished.
   const effectiveIndex = isGenerationComplete ? STEPS.length - 1 : currentIndex;
-  const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * 100;
+  const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * PERCENT_SCALE;
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
   // Detect forward step navigation and trigger a one-shot completion flash
@@ -157,8 +159,8 @@ function StepIndicatorComponent(): JSX.Element {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [setStep, canNavigateTo]);
 
   return (

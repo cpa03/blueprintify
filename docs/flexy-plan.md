@@ -4,6 +4,86 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 206: Centralize DOM Event Name String Literals
+
+**Problem**: 64 hardcoded DOM event-type string literals survived 205 iterations across 23 runtime files, with no `DOM_EVENTS` constant anywhere — even though `ACCESSIBILITY_EVENTS` covered the one custom app event and `KEYBOARD_EVENT_KEYS` covered `event.key`. Breakdown: 26× `"keydown"` (App, ConfirmDialog, Editor, KeyboardShortcutsModal, ScrollToTop, SmartTooltip, StepIndicator, Toast, Wizard ×6, StepReview, useFocusTrap — global shortcut/escape/focus-trap handlers), 12× `"scroll"` (Editor, Header, PageScrollProgressBar, ScrollProgress, ScrollToTop, useAutoScroll), 10× `"change"` (TemplateGrid ×4 media queries, ReducedMotionContext, useReducedMotion ×4), 2× each `"resize"`/`"input"` (useAutoResizeTextarea), `"online"`/`"offline"` (useOnlineStatus), `"beforeunload"` (useBeforeUnload), `"mousedown"` (SmartTooltip outside-click), and 1 each `"storage"` (lib/storage cross-tab), `"unhandledrejection"`, `"error"`, `"animationend"` (main.tsx global handlers). Every add-listener site pairs with a `removeEventListener` teardown using the same bare literal — a typo or rename on either side silently leaks the listener or fails to detach it (the same read/write-pair drift Iteration 204 eliminated for localStorage booleans). Flexy says: no bare DOM event-name strings in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DOM_EVENTS` — 13 entries (KEYDOWN, SCROLL, CHANGE, RESIZE, INPUT, BEFORE_UNLOAD, ONLINE, OFFLINE, MOUSE_DOWN, STORAGE, UNHANDLED_REJECTION, ERROR, ANIMATION_END) with pairing-contract docblock, placed beside `KEYBOARD_EVENT_KEYS` |
+| `packages/shared/src/index.ts` | Exported `DOM_EVENTS` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests (13 exact-value assertions, entry count 13 + uniqueness, lowercase-DOM-type invariant) |
+| `apps/web/src/App.tsx` + `main.tsx` | 5 sites: 2× keydown pair; global `unhandledrejection`/`error`/`animationend` handlers |
+| `components/ConfirmDialog.tsx` / `KeyboardShortcutsModal.tsx` / `StepIndicator.tsx` / `Toast.tsx` / `wizard/StepReview.tsx` | 2× keydown pair each |
+| `components/Editor.tsx` / `Header.tsx` / `PageScrollProgressBar.tsx` / `ScrollProgress.tsx` | keydown + scroll pairs |
+| `components/ScrollToTop.tsx` / `SmartTooltip.tsx` | 4 sites each (scroll/keydown; mousedown/keydown) |
+| `components/TemplateGrid.tsx` | 4× `"change"` (lg/md MediaQueryList add + remove) |
+| `components/Wizard.tsx` | 6× keydown (3 add + 3 remove teardowns) |
+| `context/ReducedMotionContext.tsx` + `hooks/useReducedMotion.ts` | 6× `"change"` MediaQueryList pairs |
+| `hooks/useAutoResizeTextarea.ts` | 2× input + 2× resize pairs |
+| `hooks/useAutoScroll.ts` / `useBeforeUnload.ts` / `useFocusTrap.ts` | 2 sites each (scroll; beforeunload; keydown) |
+| `hooks/useOnlineStatus.ts` | 2× online + 2× offline pairs |
+| `lib/storage.ts` | 1× `"storage"` cross-tab listener |
+| `docs/flexy-plan.md` | Iteration 206 entry |
+
+Deliberately skipped: test files (`toHaveBeenCalledWith("online")` asserts rendered behavior by exact value — constants preserve the identical string, so assertions stay green — Iteration 194/196 precedent); JSX `on*` handler props (JSX requires literal prop names, not values); `matchMedia("(prefers-…)")` query strings (media-query category, not event types); legacy `addListener`/`removeListener` fallback branches (deprecated no-arg API, not string events); `ACCESSIBILITY_EVENTS` custom event (already centralized); `dispatchEvent(new Event(...))` sites (already reference `ACCESSIBILITY_EVENTS`); `addEventListener` with variable event names (already dynamic); comments/JSDoc prose; `node_modules`/`dist`.
+
+## Verification (Iteration 206)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (357 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,364 web + 555 api + 1,023 shared = 2,942 tests passing** (+3 new shared)
+- ✅ Residual scan — 0 bare `(add|remove)EventListener("…")` string literals in runtime source (excluding tests, config definition docs & generated templates)
+
+## PR (Iteration 206)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3891 | `flexy/iteration-206-dom-events` | refactor(flexy): centralize DOM event name string literals into shared config (Iteration 206) |
+
+### ✅ Flexy Iteration 205: Centralize Percent-Domain `100` Literals & Eliminate PERCENT_SCALE Bypasses
+
+**Problem**: `PERCENT_SCALE = 100` — whose own docblock says "Flexy says: No hardcoded `* 100` percent-conversion multipliers in components!" — was bypassed by 27 bare percent-domain `100` literals across 11 web files, even though 4 call sites already adopt it (api storage route, PageScrollProgressBar hover math, Toast ring countdown, web lib/storage quota). Breakdown: 7 ratio→percent conversions `(x / y) * 100` (StepIndicator step ring, StepInfo form progress, StepStack tech progress, CharacterCounter compact, PageScrollProgressBar, ScrollProgress, EditorEmptyState); 2 inverse `/ 100` stroke-dashoffset conversions (CircularProgress, Toast ProgressRing); 8 clamps/comparisons (`Math.min(…, 100)`, `progress < 100`, `clampedValue >= 100`); 4 progress ranges & offsets (`useTransform(…, [0, 100], …)`, `${100 - scrollProgress}%` ×2, useTransform output pair ×2); 3 ARIA `aria-valuemax={100}`; 2 generation-phase `percent < 100` comparisons; 1 initial state (`useState(100)` Toast ring). Plus two half-centralized pairs: `GENERATION_PHASE_LABELS` lived in config while its 6-value percent map (100/0/5/30/65/45) stayed inline in StepGenerating — labels and percents can drift apart — and `StorageQuotaSchema`'s Zod bound `.max(100)` in shared schema. Flexy says: no bare percent-domain `100` literals outside config!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | `PERCENT_SCALE` docblock extended to document the full percent domain (conversions, clamps, comparisons, ranges, ARIA maxima, percent-state defaults) + clamp usage example |
+| `packages/shared/src/schema.ts` | `StorageQuotaSchema` `percentage: z.number().min(0).max(100)` → `.max(PERCENT_SCALE)` (config import already existed — no cycle) |
+| `apps/web/src/config/constants/content.ts` | NEW `GENERATION_PHASE_PERCENTAGES` — 6 entries paired 1:1 with `GENERATION_PHASE_LABELS` (`COMPLETE: PERCENT_SCALE`, `ERROR: 0`, `STARTING: 5`, `GENERATING_BLUEPRINT: 30`, `GENERATING_TASKS: 65`, `IN_PROGRESS: 45`) |
+| `apps/web/src/config/constants/content.test.ts` | NEW — 4 tests: `COMPLETE === PERCENT_SCALE`, 5 value assertions, every percent within 0–`PERCENT_SCALE`, label/percent key-parity drift guard (`COMPLETE_ARIA` label-only exempt) |
+| `apps/web/src/components/StepIndicator.tsx` | `(effectiveIndex / (STEPS.length - 1)) * 100` → `* PERCENT_SCALE` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | form-progress `(completedFields / totalFields) * 100` → `* PERCENT_SCALE` |
+| `apps/web/src/components/wizard/StepStack.tsx` | `Math.min(x * 100, 100)` → `Math.min(x * PERCENT_SCALE, PERCENT_SCALE)` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 6 inline phase percents → `GENERATION_PHASE_PERCENTAGES.*` (paired with existing labels); `aria-valuemax={100}` + 2× `percent < 100` → `PERCENT_SCALE` |
+| `apps/web/src/components/CharacterCounter.tsx` | compact `(current / max) * 100` + `Math.min(percentage, 100)` → `PERCENT_SCALE` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | 6 sites: conversion, clamp, `[0, PERCENT_SCALE]` range + output pair, `< PERCENT_SCALE`, `aria-valuemax`, `${PERCENT_SCALE - scrollProgress}` (file already imported the constant — pure bypass cleanup) |
+| `apps/web/src/components/ScrollProgress.tsx` | 5 sites: conversion, clamp, range + output pair, `< PERCENT_SCALE`, `${PERCENT_SCALE - scrollProgress}` |
+| `apps/web/src/components/EditorEmptyState.tsx` | `((currentIndex + 1) / WIZARD_STEPS.length) * 100` → `* PERCENT_SCALE` |
+| `apps/web/src/components/CircularProgress.tsx` | 4 sites: `Math.min(PERCENT_SCALE, value)` clamp, `>= PERCENT_SCALE`, `/ PERCENT_SCALE` dashoffset, `aria-valuemax` |
+| `apps/web/src/components/Toast.tsx` | `/ 100` dashoffset + `useState(100)` → `PERCENT_SCALE` (file already imported the constant) |
+| `docs/flexy-plan.md` | Iteration 205 entry |
+
+Deliberately skipped: test files (`toHaveAttribute`/rendered-output assertions — Iteration 194/196 precedent); Tailwind/CSS class tokens (`opacity-100`, `hover:opacity-100`, `scale-100`) and CSS keyframe percentage stops (`0%, 100%` in StepStack chip keyframes — CSS-category, Iteration 157/169 precedent); `lib/templates/react.ts` (`-webkit-text-size-adjust: 100%` generated template); `index.html` (HTML runtime, cannot import TS constants); identity `0`/`1` (`aria-valuemin={0}`, clamp floors — Iteration 199/200 precedent); prose comments mentioning "100%"; parametric math derived from props; `node_modules`/`dist`.
+
+## Verification (Iteration 205)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.09s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (358 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,360 web + 555 api + 1,020 shared = 2,935 tests passing** (+4 new web)
+- ✅ Residual scan — 0 bare percent-domain `100` literals (`* 100` / `/ 100` / `Math.min(max, 100)` / `[0, 100]` / `useState(100)` / `>= 100` / `< 100` / `valuemax={100}` / `.max(100)` / `percent: 100`) in runtime source (excluding config definition dirs, tests, CSS/Tailwind strings, generated templates & comments)
+
+## PR (Iteration 205)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3889 | `flexy/iteration-205-percent-domain-100` | refactor(flexy): centralize percent-domain "100" literals & eliminate PERCENT_SCALE bypasses (Iteration 205) |
+
 ### ✅ Flexy Iteration 204: Centralize Data-Attribute Boolean & ARIA "true"/"false" String Literals
 
 **Problem**: 75 hardcoded boolean `"true"`/`"false"` string literals survived 203 iterations across four clusters. DOM state: 62× `data-*={cond ? "true" : "false"}` ternaries in 26 web component files (data-reduced-motion ×~25, data-state, data-active, data-loading, data-valid, data-at-limit, …) plus 4× static `data-*="true"` JSX literals (StepFeatures can-proceed, ShowEditorButton editor-toggle, MotionConfigWrapper motion-wrapper, SmartTooltip has-shortcut). Storage: 5× localStorage boolean serialization literals — `setItem(KEY, "true")` (App SHORTCUTS_DISCOVERED, StepGenerating PRO_TIP_SHOWN) and `=== "true"` reads (App, useReducedMotion, ReducedMotionContext) — where a read/write pair using the same literal can silently drift apart. ARIA bypasses: `aria-atomic={isVisible ? "true" : undefined}` (OfflineBanner) and `setAttribute("aria-atomic", "true")` (useFocusOnStepChange) bypassed the existing `ARIA_ATOMIC_VALUES`, `setAttribute("aria-hidden", "true")` (lib/clipboard) bypassed `ARIA_HIDDEN_VALUES`, and `aria-busy={isLoading ? "true" : undefined}` (RippleButton) had no constant at all — even though Iteration 194/195 built the whole `ARIA_*_VALUES` TRUE/FALSE family. Flexy says: no bare boolean `"true"`/`"false"` strings in runtime source!

@@ -43,10 +43,14 @@ export const TIME_FORMAT = {
 
 /**
  * Percent Conversion Constants
- * Centralized scale for converting ratios to percentage values.
+ * Centralized scale for converting ratios to percentage values — the single
+ * source of truth for the whole 0-100 percent domain: ratio conversions,
+ * clamps, completion comparisons, progress ranges, ARIA value maxima, and
+ * percent-state defaults.
  * Flexy says: No hardcoded "* 100" percent-conversion multipliers in components!
  * Usage: import { PERCENT_SCALE } from "@blueprint/shared";
  *        const percent = Math.round(ratio * PERCENT_SCALE);
+ *        const clamped = Math.min(value, PERCENT_SCALE);
  */
 export const PERCENT_SCALE = 100;
 

@@ -28,6 +28,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -113,7 +114,7 @@ const ProgressRing = memo(function ProgressRing({
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset = circumference - (progress / PERCENT_SCALE) * circumference;
 
   return (
     <svg
@@ -164,7 +165,7 @@ const ToastItem = memo(
     ref
   ) {
     const [isHovered, setIsHovered] = useState(false);
-    const [progress, setProgress] = useState(100);
+    const [progress, setProgress] = useState(PERCENT_SCALE);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const startTimeRef = useRef<number>(0);
@@ -586,8 +587,8 @@ function ToastContainerComponent(): JSX.Element {
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
+    return () => document.removeEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
   }, [toasts, removeToast, clearAll, handleRemoveToast]);
 
   const handleClearAll = useCallback(() => {

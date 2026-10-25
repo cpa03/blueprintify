@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION, EASING } from "../config/constants";
@@ -9,6 +10,7 @@ import {
   ANIMATION_REPEAT,
   SCROLL_PROGRESS_DEFAULTS,
   ARIA_HIDDEN_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 
 interface ScrollProgressProps {
@@ -63,8 +65,8 @@ export const ScrollProgress = memo(function ScrollProgress({
 
     if (scrollHeight <= 0) return 0;
 
-    const progress = (scrollTop / scrollHeight) * 100;
-    return Math.min(Math.max(progress, 0), 100);
+    const progress = (scrollTop / scrollHeight) * PERCENT_SCALE;
+    return Math.min(Math.max(progress, 0), PERCENT_SCALE);
   }, [scrollContainerRef]);
 
   const springConfig = prefersReducedMotion
@@ -72,7 +74,7 @@ export const ScrollProgress = memo(function ScrollProgress({
     : SCROLL_PROGRESS_SPRING.DEFAULT;
   const smoothProgress = useSpring(0, springConfig);
 
-  const width = useTransform(smoothProgress, [0, 100], ["0%", "100%"]);
+  const width = useTransform(smoothProgress, [0, PERCENT_SCALE], ["0%", `${PERCENT_SCALE}%`]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -83,17 +85,17 @@ export const ScrollProgress = memo(function ScrollProgress({
       const scrollTop = container.scrollTop;
 
       setScrollProgress(progress);
-      setIsVisible(scrollTop > showAfter && progress < 100);
+      setIsVisible(scrollTop > showAfter && progress < PERCENT_SCALE);
 
       smoothProgress.set(progress);
     };
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
 
     handleScroll();
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
     };
   }, [scrollContainerRef, calculateProgress, showAfter, smoothProgress]);
 
@@ -155,7 +157,7 @@ export const ScrollProgress = memo(function ScrollProgress({
       <motion.div
         className="absolute top-0 h-full w-8 pointer-events-none"
         style={{
-          right: `calc(${100 - scrollProgress}% - 16px)`,
+          right: `calc(${PERCENT_SCALE - scrollProgress}% - 16px)`,
           background: SHADOWS.SCROLL_GLOW_GRADIENT,
         }}
         initial={{ opacity: 0 }}

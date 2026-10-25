@@ -21,6 +21,7 @@
  */
 
 import { useState, useEffect, useCallback, memo, useRef } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
@@ -196,11 +197,11 @@ const ScrollToPosition = memo(function ScrollToPosition({
     };
 
     const container = getScrollContainer();
-    container.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
     handleScroll();
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
     };
   }, [getScrollContainer, getScrollY, getMaxScroll, showAfter, isToTop]);
 
@@ -223,8 +224,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [scrollToTarget, hasScrolled, isToTop, shortCutKey]);
 
   const ariaLabel = isToTop
