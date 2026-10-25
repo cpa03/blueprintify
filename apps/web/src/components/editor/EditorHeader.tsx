@@ -29,7 +29,7 @@
 import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ARIA_HIDDEN_VALUES,
@@ -59,6 +59,7 @@ import {
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
+import { useReducedMotion } from "../../hooks";
 import clsx from "clsx";
 
 const STAT_COLORS = {
@@ -161,9 +162,13 @@ const TabButton = React.memo(function TabButton({
         {!isActive && contentAvailable && (
           <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
             {/* Breathing ring — CSS-only pulse that starts after the spring
-                entrance of the core dot settles (~0.6s delay in keyframes). */}
+                entrance of the core dot settles (~0.6s delay in keyframes).
+                Suppressed when motion reduction is preferred. */}
             <span
-              className="absolute inset-0 rounded-full bg-accent-emerald content-dot-breathe"
+              className={clsx(
+                "absolute inset-0 rounded-full bg-accent-emerald",
+                "motion-safe:content-dot-breathe"
+              )}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             />
             {/* Core dot with spring entrance. role={ARIA_ROLES.STATUS} makes the
@@ -496,6 +501,8 @@ function EditorHeaderComponent({
   hasChanges = false,
   content = "",
 }: EditorHeaderProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   const handleTabKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       const currentIndex = TAB_IDS.indexOf(activeTab);
@@ -530,7 +537,14 @@ function EditorHeaderComponent({
   );
 
   return (
-    <div className="flex items-center justify-between p-4 border-b border-dark-700">
+    <div
+      className="flex items-center justify-between p-4 border-b border-dark-700"
+      data-active-tab={activeTab}
+      data-view-mode={viewMode}
+      data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-generating={isGenerating ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+    >
       <div className="flex items-center gap-6">
         <div
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
