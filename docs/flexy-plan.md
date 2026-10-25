@@ -4,6 +4,183 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 204: Centralize Data-Attribute Boolean & ARIA "true"/"false" String Literals
+
+**Problem**: 75 hardcoded boolean `"true"`/`"false"` string literals survived 203 iterations across four clusters. DOM state: 62× `data-*={cond ? "true" : "false"}` ternaries in 26 web component files (data-reduced-motion ×~25, data-state, data-active, data-loading, data-valid, data-at-limit, …) plus 4× static `data-*="true"` JSX literals (StepFeatures can-proceed, ShowEditorButton editor-toggle, MotionConfigWrapper motion-wrapper, SmartTooltip has-shortcut). Storage: 5× localStorage boolean serialization literals — `setItem(KEY, "true")` (App SHORTCUTS_DISCOVERED, StepGenerating PRO_TIP_SHOWN) and `=== "true"` reads (App, useReducedMotion, ReducedMotionContext) — where a read/write pair using the same literal can silently drift apart. ARIA bypasses: `aria-atomic={isVisible ? "true" : undefined}` (OfflineBanner) and `setAttribute("aria-atomic", "true")` (useFocusOnStepChange) bypassed the existing `ARIA_ATOMIC_VALUES`, `setAttribute("aria-hidden", "true")` (lib/clipboard) bypassed `ARIA_HIDDEN_VALUES`, and `aria-busy={isLoading ? "true" : undefined}` (RippleButton) had no constant at all — even though Iteration 194/195 built the whole `ARIA_*_VALUES` TRUE/FALSE family. Flexy says: no bare boolean `"true"`/`"false"` strings in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DATA_BOOLEAN_VALUES` (TRUE `"true"` / FALSE `"false"` — data-* state attrs + localStorage serialization); NEW `ARIA_BUSY_VALUES` (TRUE/FALSE — completes the ARIA boolean-value family) |
+| `packages/shared/src/index.ts` | Exported `DATA_BOOLEAN_VALUES` + `ARIA_BUSY_VALUES` on the root barrel (`@blueprint/shared/config` barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +8 tests (shared suite 1,012 → 1,020): 5 `DATA_BOOLEAN_VALUES` (TRUE/FALSE values, unique-pair count, `String()` equivalence, valid JSON boolean encodings), 3 `ARIA_BUSY_VALUES` (values + count/uniqueness) |
+| 26 component files in `apps/web/src/components/` | 62× `? "true" : "false"` → `? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE` (CharacterCounter ×8, Toast ×5, StepIndicator ×5, EditorToolbar ×4, Header ×4, RippleButton ×3, ErrorFallback ×3, CircularProgress ×3, StepInfo/StepFeatures/StepStack/TemplateGrid/SmartTooltip/ScrollToTop/MarkdownRenderer/AnimatedNumber/AnimatedCopyButton ×2, others ×1) |
+| `wizard/StepFeatures.tsx` / `ShowEditorButton.tsx` / `MotionConfigWrapper.tsx` / `SmartTooltip.tsx` | 4× static `data-*="true"` → `data-*={DATA_BOOLEAN_VALUES.TRUE}` |
+| `App.tsx` ×2 / `wizard/StepGenerating.tsx` | 3× `setItem(KEY, "true")` → `setItem(KEY, DATA_BOOLEAN_VALUES.TRUE)` |
+| `hooks/useReducedMotion.ts` + `context/ReducedMotionContext.tsx` | 2× `stored === "true"` → `stored === DATA_BOOLEAN_VALUES.TRUE` (read side of the storage contract) |
+| `components/OfflineBanner.tsx` | `aria-atomic={isVisible ? "true" : undefined}` → `ARIA_ATOMIC_VALUES.TRUE` (existing-constant bypass) |
+| `hooks/useFocusOnStepChange.ts` | `setAttribute("aria-atomic", "true")` → `ARIA_ATOMIC_VALUES.TRUE` (existing-constant bypass) |
+| `lib/clipboard.ts` | `setAttribute("aria-hidden", "true")` → `ARIA_HIDDEN_VALUES.TRUE` (existing-constant bypass) |
+| `components/RippleButton.tsx` | `aria-busy={isLoading ? "true" : undefined}` → `ARIA_BUSY_VALUES.TRUE` |
+| `docs/flexy-plan.md` | Iteration 204 entry |
+
+Deliberately skipped: test files (`toHaveAttribute(..., "true")` asserts rendered output — Iteration 194/196 precedent); Tailwind/CSS `[data-x="true"]` selector strings in className & `index.css` (CSS-class category, Iteration 157/169 precedent); `index.html` / `vercel.json` (HTML/JSON runtime, cannot import TS constants); `lib/templates/react.ts` (generated template string); JSDoc prose examples; raw `data-*` attribute **names** (JSX requires literal attribute names — spread-object rewrite would harm readability; names are not values); `ReducedMotionContext` `String(value)` write (dynamic boolean, not a literal); `node_modules`/`dist`.
+
+## Verification (Iteration 204)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (352 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,356 web + 555 api + 1,020 shared = 2,931 tests passing** (+8 new shared)
+- ✅ Residual scan — 0 `? "true" : "false"` ternaries, 0 `data-*="true"` literals, 0 `setItem(KEY, "true")` / `stored === "true"` / `setAttribute("aria-atomic"|"aria-hidden", "true")` occurrences in runtime source (excluding config docs, tests, CSS/HTML & templates)
+
+## PR (Iteration 204)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-204-data-boolean-strings` | refactor(flexy): centralize data-attribute boolean & ARIA "true"/"false" string literals (Iteration 204) |
+
+### ✅ Flexy Iteration 203: Centralize Full-Turn Geometry, Decimal Radix & Timer/Font Micro-Literals
+
+**Problem**: 16 hardcoded literals survived 202 iterations across three clusters. Geometry: 5× full-turn radians `2 * Math.PI` in particle/angle & circumference math (HeadingAnchor, AnimatedCopyButton, GenerationCelebration, CircularProgress, Toast) and 3× full-turn degrees `360` (GenerationCelebration random rotation, StepGenerating + EditorToolbar spinner `rotate:`) even though `CIRCLE_GEOMETRY` existed but only covered the fixed 12/12/r=10 ring. Parsing: 4× `parseInt(x, 10)` radix literals (StepIndicator Alt+N handler, api `bodyLimit` Content-Length, api `env` numeric vars, web `env` numeric vars) despite `CRYPTO_CONFIG.HEX_RADIX` / `ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX` precedent — only `SHARE_TOKEN_CODEC.EXPIRY_RADIX` was covered. Micro-literals: `padStart(2, "0")` in the StepGenerating MM:SS timer (the Iteration 180 hex-pad pattern never crossed into web), a literal `/^[1-5]$/` Alt+digit regex in StepIndicator diverging from `WIZARD_STEPS`, `window.setTimeout(loadMonoFont, 2000)` in main.tsx, and the full CSS shorthand `"skeleton-exit 0.3s ease-out 0s forwards"` inlined in main.tsx. Flexy says: no bare full-turn geometry, parseInt radix, pad/regex/timeout/CSS shorthand literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | `CIRCLE_GEOMETRY` +2 keys (`FULL_TURN_RAD: 2π`, `FULL_TURN_DEG: 360`); NEW `TIME_FORMAT` (`MM_SS_PAD_WIDTH: 2`, `MM_SS_PAD_CHAR: "0"`); NEW `NUMBER_RADIX.DECIMAL: 10` |
+| `packages/shared/src/config/ui.ts` | `UI_TIMEOUTS` +`MONO_FONT_IDLE_FALLBACK_MS: 2000` (count 23 → 24) |
+| `packages/shared/src/config/animation.ts` | NEW `SKELETON_EXIT_DEFAULTS.ANIMATION` — full hydration skeleton-exit shorthand |
+| `packages/shared/src/index.ts` | Exported `TIME_FORMAT`, `NUMBER_RADIX`, `SKELETON_EXIT_DEFAULTS` from root barrel |
+| `packages/shared/src/config.test.ts` | +10 tests (shared suite 1,002 → 1,012): 3 `CIRCLE_GEOMETRY` full-turn (values + CIRCUMFERENCE = FULL_TURN_RAD × RADIUS consistency), 3 `TIME_FORMAT` (width/char/zero-pad behavior), 2 `NUMBER_RADIX` (value + valid-parseable-radix invariant), 2 `SKELETON_EXIT_DEFAULTS` (shorthand + keyframes/fill match); `UI_TIMEOUTS` list +1, count 23 → 24 |
+| `apps/web/src/config/constants/wizard.ts` | NEW `WIZARD_STEP_SHORTCUT_PATTERN` — `new RegExp('^[1-${WIZARD_STEPS.length}]$')`, derived from the step list so steps and matcher cannot drift |
+| `HeadingAnchor.tsx` / `AnimatedCopyButton.tsx` / `GenerationCelebration.tsx` | 3× particle angle `* Math.PI * 2` → `* CIRCLE_GEOMETRY.FULL_TURN_RAD` |
+| `CircularProgress.tsx` / `Toast.tsx` | 2× parametric `radius * 2 * Math.PI` circumference → `radius * CIRCLE_GEOMETRY.FULL_TURN_RAD` |
+| `GenerationCelebration.tsx` | `Math.random() * 360` → `* CIRCLE_GEOMETRY.FULL_TURN_DEG` |
+| `wizard/StepGenerating.tsx` | spinner `rotate: 360` + `padStart(2, "0")` → `CIRCLE_GEOMETRY.FULL_TURN_DEG` + `TIME_FORMAT.MM_SS_PAD_WIDTH/MM_SS_PAD_CHAR` |
+| `editor/EditorToolbar.tsx` | `rotate: 360` → `CIRCLE_GEOMETRY.FULL_TURN_DEG` |
+| `StepIndicator.tsx` | `/^[1-5]$/` → `WIZARD_STEP_SHORTCUT_PATTERN`; `parseInt(e.key, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/api/src/middleware/bodyLimit.ts` | `parseInt(contentLength, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/api/src/config/env.ts` + `apps/web/src/config/env.ts` | 2× `parseInt(value, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/web/src/main.tsx` | `setTimeout(loadMonoFont, 2000)` → `UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS`; skeleton shorthand → `SKELETON_EXIT_DEFAULTS.ANIMATION` |
+| `docs/flexy-plan.md` | Iteration 203 entry |
+
+Deliberately skipped: Tailwind palette/duration class tokens (`bg-primary-500`, `duration-500` — CSS-class category, Iterations 157/169); the `-1` 0-index adjustment after the radix parse (idiomatic arithmetic, not a literal); `index.html` inline critical-CSS `animation:` strings (HTML runtime, not TS call sites — the TS override in main.tsx IS centralized); parametric `(size - strokeWidth) / 2` center math (derived from props — Iteration 202 precedent); test files; `node_modules`.
+
+## Verification (Iteration 203)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,348 web + 555 api + 1,012 shared = 2,915 tests passing** (+10 new shared)
+- ✅ Residual scan — 0 bare `2 * Math.PI` / `rotate: 360` / `parseInt(x, 10)` / `padStart(2, …)` / `/^[1-5]$/` / `2000` font timeout / `skeleton-exit` shorthand occurrences in app source (excluding config, tests, node_modules)
+
+## PR (Iteration 203)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-203-turn-geometry-radix-timers` | refactor(flexy): centralize full-turn geometry, decimal radix & timer/font micro-literals (Iteration 203) |
+
+### ✅ Flexy Iteration 202: Centralize Remaining SVG Icon Path, Rect & Large-Ring Geometry Literals
+
+**Problem**: 27 hardcoded SVG literals at call sites bypassed shared config. Paths: 8 exact-match raw `d="..."` occurrences duplicated 6 existing `ICON_PATHS` entries (2× ZAP in StepReview, 2× SEARCH in KeyboardShortcutsModal, CHEVRON_UP + CHEVRON_DOWN in ScrollToTop, COPY in MarkdownRenderer, HELP in Header), plus 2 cross-file duplicated paths with no constant at all (2× celebration checkmark `M14 24L21 31L34 17` in StepGenerating + GenerationCelebration, 2× square-copy frame `M5 15H4a2…` in AnimatedCopyButton + ErrorFallback). Rects: 6 raw `<rect>` attribute literals (2× copy-body in AnimatedCopyButton + ErrorFallback, 4× pause-badge bars in Toast ×2 states). Rings: 3 large-viewBox circles hardcoded `cx="24" cy="24" r="22"` (StepGenerating ×2, GenerationCelebration) bypassing geometry config — `CIRCLE_GEOMETRY` only covered the 24×24 viewBox. Flexy says: no hardcoded SVG path, rect, or ring geometry literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | `ICON_PATHS` +2 entries (`CHECKMARK_LARGE`, `COPY_SQUARE`) — 19 → 21; NEW `ICON_RECTS` (3 entries: `COPY_BODY`, `PAUSE_LEFT`, `PAUSE_RIGHT` — JSX-spread object shape) |
+| `packages/shared/src/config/core.ts` | NEW `CIRCLE_GEOMETRY_LARGE` (CENTER_X/Y 24, RADIUS 22, CIRCUMFERENCE 2π·22) for 48×48 celebration/generation rings |
+| `packages/shared/src/config.test.ts` | +11 tests: 2 path value assertions + entry count 19 → 21, 5 `CIRCLE_GEOMETRY_LARGE` (values + 2-unit viewBox inset invariant), 4 `ICON_RECTS` (values + count + pause-bar centering) |
+| `ScrollToTop.tsx` | 2 literals → `ICON_PATHS.CHEVRON_UP` / `CHEVRON_DOWN` |
+| `wizard/StepReview.tsx` | 2 literals → `ICON_PATHS.ZAP` |
+| `KeyboardShortcutsModal.tsx` | 2 literals → `ICON_PATHS.SEARCH` |
+| `MarkdownRenderer.tsx` | 1 literal → `ICON_PATHS.COPY` |
+| `Header.tsx` | 1 literal → `ICON_PATHS.HELP` |
+| `AnimatedCopyButton.tsx` | rect → `{...ICON_RECTS.COPY_BODY}` + path → `ICON_PATHS.COPY_SQUARE` |
+| `ErrorFallback.tsx` | rect → `{...ICON_RECTS.COPY_BODY}` + path → `ICON_PATHS.COPY_SQUARE` |
+| `wizard/StepGenerating.tsx` | 2 rings × (cx/cy/r) → `CIRCLE_GEOMETRY_LARGE` + checkmark path → `ICON_PATHS.CHECKMARK_LARGE` |
+| `GenerationCelebration.tsx` | 1 ring × (cx/cy/r) → `CIRCLE_GEOMETRY_LARGE` + checkmark path → `ICON_PATHS.CHECKMARK_LARGE` |
+| `Toast.tsx` | 4 rect literals → `{...ICON_RECTS.PAUSE_LEFT}` / `PAUSE_RIGHT` (both badge states) |
+| `docs/flexy-plan.md` | Iteration 202 entry |
+
+Deliberately skipped: 13 unique one-off raw `d=` paths (star, arrow-left, zap-variant, 48-viewBox close-X, search-x, etc. — Iteration 198 unique-one-off precedent); gradient paint refs (`fill="url(#…)"` — Iteration 196); parametric ring math in CircularProgress/Toast (`(size - strokeWidth) / 2` — derived from props, not literals); static form-field `id=`/`htmlFor=` string pairs (StepInfo DOM IDs — Iteration 197 category, next target); test files (tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 202)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (352 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,345 web + 555 api + 1,002 shared = 2,902 tests passing** (+11 new shared)
+- ✅ Remaining raw exact-match `ICON_PATHS` bypasses, `cx="24"`/`cy="24"`/`r="22"`, hardcoded `<rect x=…>` attrs & the 2 duplicated paths in web components (excluding tests, config, templates, parametric geometry & one-offs) — **0 occurrences**
+
+## PR (Iteration 202)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-202-svg-paths-ring-geometry` | refactor(flexy): centralize remaining SVG icon path, rect & large-ring geometry literals (Iteration 202) |
+
+### ✅ Flexy Iteration 201: Centralize Scalar X/Y Offset & Opacity Variant Values
+
+**Problem**: 105 hardcoded scalar motion-offset & opacity literals remained across 22 web component files, even though `ANIMATION_SCALE` (Iteration 200) already covered scalar `scale:` states — no shared constant covered single-value `x:`/`y:`/`opacity:` variants. Breakdown: 97× `x:`/`y:` offsets (17× `y: -4`, 12× `y: 10`, 9× `y: 20`, 6× `y: -10`, 6× `y: -8`, 6× `x: -6`, 6× `x: -4`, 5× `x: -3`, 5× `y: 4`, 4× `y: 8`, 3× `y: -6`, 3× `y: -5`, 3× `y: 5`, 3× `y: 6`, 2× `x: -10`, 2× `x: -5`, 2× `y: 12`, 2× `y: 20`-modal, 1× `x: 10`, 1× `y: -20`, 1× `y: -2`) and 8× opacity (6× `0.8`, 1× `0.6`, 1× `0.3`). Flexy says: no hardcoded scalar x/y/opacity values in variant objects!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | Added `ANIMATION_X_OFFSET` (6 entries: SLIDE_LEFT_FAR/-10, MEDIUM/-6, SMALL/-5, TINY/-4, MICRO/-3, SLIDE_RIGHT_SMALL/10), `ANIMATION_Y_OFFSET` (14 entries: RISE_LARGE/-20, RISE/-10, RISE_SUBTLE/-8, RISE_SMALL/-6, RISE_MICRO/-5, RISE_TINY/-4, HOVER_LIFT/-2, DROP_TINY/4, DROP_SMALL/5, DROP/6, DROP_SUBTLE/8, DROP_STANDARD/10, DROP_MODERATE/12, DROP_LARGE/20), `ANIMATION_OPACITY` (3 entries: DIMMED/0.3, FADED/0.6, SUBTLE/0.8) |
+| `packages/shared/src/index.ts` | Exported all 3 new constants on the root barrel |
+| `packages/shared/src/config.test.ts` | +29 tests: value assertions + entry counts (6/14/3) + uniqueness/type checks |
+| 22 component files in `apps/web/src/components/` | Replaced 105 scalar x/y/opacity literals (StepGenerating ×22, StepInfo ×15, EditorHeader ×12, Toast ×8, AnimatedCopyButton ×6, KeyboardShortcutsModal ×6, ConfirmDialog ×5, StepFeatures ×5, StepStack ×4, LastSavedIndicator ×3, PageScrollProgressBar ×3, Editor ×2, EditorEmptyState ×2, ErrorFallback ×2, ScrollToTop ×2, StepReview ×2, GenerationCelebration, HeadingAnchor, OfflineBanner, PreviewEmptyState, ScrollProgress, EditorToolbar) |
+| `docs/flexy-plan.md` | Iteration 201 entry |
+
+Deliberately skipped: `x: 0` / `y: 0` / `opacity: 0` / `opacity: 1` (value semantics / identity states — Iteration 199/200 precedent); `ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX`/`STAT_ENTRY_OPACITY` (already centralized web-local named offsets); keyframe arrays (covered by `Y_OFFSET`/`OPACITY_PULSE`); test files (tests assert rendered output); `lib/templates/react.ts` (generated template); CSS `transform` values in class strings (Tailwind utilities, not framer-motion variants).
+
+## Verification (Iteration 201)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.38s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check` (25 touched files) — clean
+- ✅ `npm run test:all` — **1,334 web + 555 api + 991 shared = 2,880 tests passing** (+29 new shared)
+- ✅ Remaining raw non-identity scalar `x:`/`y:`/`opacity:` literals in web components (excluding tests, config dirs, templates & identity 0/1) — **0 occurrences**
+
+## PR (Iteration 201)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3855 | `flexy/iteration-201-xy-opacity-offsets` | refactor(flexy): centralize scalar x/y offset & opacity variant values into shared config (Iteration 201) |
+
+### ✅ Flexy Iteration 200: Centralize Scalar Animation Scale Values
+
+**Problem**: 94 hardcoded scalar `scale:` framer-motion variant literals remained across 19 web component files in `initial`/`animate`/`exit`/`hidden` state objects, even though `HOVER_SCALE`/`TAP_SCALE` (whileHover/whileTap) and `SCALE_PULSE` (keyframe arrays) already existed — no shared constant covered single-value scale states. Breakdown: 32× `scale: 0.8`, 23× `scale: 0.5`, 17× `scale: 0.9`, 10× `scale: 0.95`, 4× `scale: 1.002`, 3× `scale: 0.85`, 3× `scale: 1.5`, 2× `scale: 2.5`, 1× `scale: 0.3`, 1× `scale: 1.3`. Flexy says: no hardcoded scalar scale values in variant objects!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | Added `ANIMATION_SCALE` — 10 entries (TINY 0.3, POP_IN 0.5, STANDARD 0.8, CARD 0.85, MODAL 0.9, SUBTLE 0.95, TYPING_PULSE 1.002, PARTICLE_EXPAND 1.3, BADGE_EXPAND 1.5, ATTENTION_RING 2.5) |
+| `packages/shared/src/index.ts` | Exported `ANIMATION_SCALE` on the root barrel |
+| `packages/shared/src/config.test.ts` | +12 tests: 10 value assertions + entry count (10) + uniqueness/positive-number check |
+| 19 component files in `apps/web/src/components/` | Replaced 94 scalar `scale:` literals with `ANIMATION_SCALE.*` (StepInfo ×15, StepFeatures ×16, StepGenerating ×11, Toast ×8, ErrorFallback ×7, KeyboardShortcutsModal ×6, StepStack ×5, AnimatedCopyButton ×4, HeadingAnchor ×4, GenerationCelebration ×3, ConfirmDialog ×2, LastSavedIndicator ×2, ScrollToTop ×2, TypeIndicator ×2, EditorHeader ×2, EditorToolbar ×2, PageScrollProgressBar ×1, PreviewEmptyState ×1, StepReview ×1) |
+| `docs/flexy-plan.md` | Iteration 200 entry |
+
+Deliberately skipped: `scale: 0` / `scale: 1` (value semantics / identity states — Iteration 199 precedent for `opacity: 0`/`1` ternaries); `whileHover`/`whileTap` scale usage (already centralized via `HOVER_SCALE`/`TAP_SCALE`); `apps/web/src/config/` files (definition sites, not call sites); test files (tests assert rendered output); `lib/templates/react.ts` (generated template); CSS `transform: scale()` in keyframe strings (`effects.ts` — CSS not framer-motion).
+
+## Verification (Iteration 200)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean (346 files)
+- ✅ `npx prettier --check` (21 touched files) — clean
+- ✅ `npm run test:all` — **1,333 web + 555 api + 962 shared = 2,850 tests passing** (+12 new shared)
+- ✅ Remaining raw non-trivial scalar `scale:` literals in web components (excluding tests, config dirs, `scale: 0`/`scale: 1`) — **0 occurrences**
+
+## PR (Iteration 200)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3849 | `flexy/iteration-200-animation-scale` | refactor(flexy): centralize scalar animation scale values into shared config (Iteration 200) |
+
 ### ✅ Flexy Iteration 199: Centralize Zero-Duration & Infinite-Repeat Transition Literals
 
 **Problem**: 41 hardcoded framer-motion transition literals remained across 16 web files, even though `ANIMATION_DEFAULTS.ZERO_DURATION` already existed: 32× raw `repeat: Infinity` (including 2× inside the centralized `utils/motion.ts` floating/pulse animations themselves), 2× `repeat: shouldReduceMotion ? 0 : Infinity`, 6× raw `{ duration: 0 }` reduced-motion bypass objects (ScrollToTop, ValidationCheckmark, StepReview, EditorToolbar ×2, TypeIndicator), and 1× scalar `shouldReduceMotion ? 0 : ANIMATION.FAST` (HeadingAnchor). `ANIMATION_REPEAT` only defined `ATTENTION_PULSE` and was **duplicated** — one copy in `packages/shared/src/config/animation.ts`, a second identical copy in `apps/web/src/config/constants/ui.ts` (drift risk). Flexy says: no hardcoded repeat counts or zero-duration transition objects!

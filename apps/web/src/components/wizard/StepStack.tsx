@@ -23,6 +23,13 @@
 
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_OPACITY,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
@@ -42,6 +49,7 @@ import {
   STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   CATEGORY_ICONS,
   MIN_REQUIREMENTS,
@@ -96,6 +104,7 @@ interface TechChipProps {
   onToggle: (tech: { name: string; category: string }) => void;
   justSelected: string | null;
   entranceIndex?: number;
+  shouldReduceMotion?: boolean;
 }
 
 const TechChip = memo(function TechChip({
@@ -104,6 +113,7 @@ const TechChip = memo(function TechChip({
   onToggle,
   justSelected,
   entranceIndex = 0,
+  shouldReduceMotion = false,
 }: TechChipProps) {
   const isJustSelected = justSelected === tech.name;
 
@@ -124,13 +134,15 @@ const TechChip = memo(function TechChip({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
       style={{
-        animationDelay: `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
+        animationDelay: shouldReduceMotion
+          ? "0s"
+          : `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
       }}
-      whileHover={HOVER_SCALE.STANDARD}
-      whileTap={TAP_SCALE.STANDARD}
+      whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
+      whileTap={shouldReduceMotion ? {} : TAP_SCALE.STANDARD}
       animate={
-        isJustSelected
+        isJustSelected && !shouldReduceMotion
           ? {
               scale: SCALE_PULSE.GLOW,
               transition: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut },
@@ -142,8 +154,8 @@ const TechChip = memo(function TechChip({
       <AnimatePresence>
         {isJustSelected && (
           <motion.div
-            initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 2.5, opacity: 0 }}
+            initial={{ scale: 0, opacity: ANIMATION_OPACITY.SUBTLE }}
+            animate={{ scale: ANIMATION_SCALE.ATTENTION_RING, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
             className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
@@ -155,8 +167,8 @@ const TechChip = memo(function TechChip({
       <AnimatePresence>
         {isJustSelected && (
           <motion.div
-            initial={{ scale: 0.8, opacity: 1 }}
-            animate={{ scale: 1.5, opacity: 0 }}
+            initial={{ scale: ANIMATION_SCALE.STANDARD, opacity: 1 }}
+            animate={{ scale: ANIMATION_SCALE.BADGE_EXPAND, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: ANIMATION.FADE_IN, ease: EASING.easeOut }}
             className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
@@ -215,6 +227,7 @@ interface StepStackProps {
 export const StepStack = memo(function StepStack({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepStackProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [isShaking, setIsShaking] = useState(false);
   const [invalidField, setInvalidField] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
@@ -309,7 +322,16 @@ export const StepStack = memo(function StepStack({
   const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={canProceed ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-selected-count={techStack.length}
+      data-min-required={minRequired}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_STACK.TITLE}</h2>
@@ -370,6 +392,7 @@ export const StepStack = memo(function StepStack({
                     onToggle={toggleTech}
                     justSelected={justSelected}
                     entranceIndex={globalIndex}
+                    shouldReduceMotion={shouldReduceMotion}
                   />
                 );
               })}
@@ -392,9 +415,9 @@ export const StepStack = memo(function StepStack({
                   <motion.li
                     key={tech.name}
                     layout
-                    initial={{ opacity: 0, scale: 0.85 }}
+                    initial={{ opacity: 0, scale: ANIMATION_SCALE.CARD }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.85 }}
+                    exit={{ opacity: 0, scale: ANIMATION_SCALE.CARD }}
                     transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.DEFAULT }}
                     className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-500/20 border border-primary-500/30 rounded-full text-sm text-primary-300"
                   >
@@ -422,9 +445,13 @@ export const StepStack = memo(function StepStack({
         {invalidField && (
           <motion.p
             role={ARIA_ROLES.ALERT}
-            initial={{ opacity: 0, y: -6, x: -3 }}
+            initial={{
+              opacity: 0,
+              y: ANIMATION_Y_OFFSET.RISE_SMALL,
+              x: ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO,
+            }}
             animate={{ opacity: 1, y: 0, x: 0 }}
-            exit={{ opacity: 0, y: -6 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SMALL }}
             transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
             className="text-sm text-accent-pink flex items-center gap-1.5"
           >

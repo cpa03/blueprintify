@@ -11,6 +11,7 @@
 import { memo, useState, useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -38,7 +39,7 @@ import {
 } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
-import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ICON_RECTS, SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 
 /**
  * Staggered entrance variants for the fallback UI elements.
@@ -56,7 +57,7 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_MODERATE },
   visible: {
     opacity: 1,
     y: 0,
@@ -103,7 +104,7 @@ export const ErrorFallback = memo(function ErrorFallback({
         transition: { duration: ANIMATION.NORMAL },
       }
     : {
-        initial: { opacity: 0, scale: 0.95, y: 20 },
+        initial: { opacity: 0, scale: ANIMATION_SCALE.SUBTLE, y: ANIMATION_Y_OFFSET.DROP_LARGE },
         animate: { opacity: 1, scale: 1, y: 0 },
         transition: {
           type: FRAMER_TYPE.SPRING,
@@ -116,9 +117,11 @@ export const ErrorFallback = memo(function ErrorFallback({
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4"
       role={ARIA_ROLES.ALERT}
       aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
-      data-has-error={error !== undefined ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-has-details={error !== undefined ? "true" : "false"}
+      data-has-error={error !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-details={error !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <motion.div
         className="glass-card p-8 max-w-md w-full text-center relative overflow-hidden"
@@ -270,9 +273,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                     {isCopied ? (
                       <motion.span
                         key="copied"
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         className="flex items-center gap-1 text-accent-emerald"
                       >
                         <svg
@@ -294,9 +297,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                     ) : copyFailed ? (
                       <motion.span
                         key="failed"
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         className="flex items-center gap-1 text-red-400"
                       >
                         <svg
@@ -318,9 +321,9 @@ export const ErrorFallback = memo(function ErrorFallback({
                     ) : (
                       <motion.span
                         key="copy"
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
+                        exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
                         className="flex items-center gap-1"
                       >
                         <svg
@@ -330,8 +333,8 @@ export const ErrorFallback = memo(function ErrorFallback({
                           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                         >
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                          <rect {...ICON_RECTS.COPY_BODY} />
+                          <path d={ICON_PATHS.COPY_SQUARE} />
                         </svg>
                         <span>{ERROR_BOUNDARY_TEXT.COPY_ERROR}</span>
                       </motion.span>

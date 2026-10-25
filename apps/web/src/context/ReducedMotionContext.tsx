@@ -6,7 +6,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared/config";
+import { CONTEXT_HOOK_ERRORS, DATA_BOOLEAN_VALUES } from "@blueprint/shared/config";
 import { ACCESSIBILITY_EVENTS } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
 
@@ -31,7 +31,7 @@ function getInitialOverride(): boolean | null {
   if (typeof window === "undefined") return null;
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION);
-    return stored !== null ? stored === "true" : null;
+    return stored !== null ? stored === DATA_BOOLEAN_VALUES.TRUE : null;
   } catch {
     // localStorage can throw in privacy mode — treat as no override.
     return null;

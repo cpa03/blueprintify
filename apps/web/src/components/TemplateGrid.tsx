@@ -27,12 +27,13 @@
  * ```
  */
 
-import { useState, memo, useCallback, useRef, useMemo } from "react";
+import { useState, memo, useCallback, useRef, useEffect } from "react";
 import {
   STARTER_TEMPLATES,
   KEYBOARD_EVENT_KEYS,
   BREAKPOINT_DEFAULTS,
   TEMPLATE_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -69,14 +70,37 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
   // tabbable then flipping to roving mode after the first arrow press (ARIA listbox).
   const [focusIndex, setFocusIndex] = useState<number>(0);
 
-  // Estimate grid columns based on viewport — used for ArrowUp/ArrowDown navigation.
-  // Defaults to 1 for mobile, detects 2 at md breakpoint (768px), 3 at lg (1024px).
-  const gridColumns = useMemo(() => {
-    if (typeof window === "undefined") return 1;
-    const width = window.innerWidth;
-    if (width >= BREAKPOINT_DEFAULTS.LG) return 3;
-    if (width >= BREAKPOINT_DEFAULTS.MD) return 2;
-    return 1;
+  // Column count must track the grid's CSS breakpoints (grid-cols-1 md:grid-cols-2
+  // lg:grid-cols-3); a one-time mount computation goes stale on viewport resize
+  // and makes ArrowUp/ArrowDown skip cards. 1 is the SSR/no-JS fallback.
+  const [gridColumns, setGridColumns] = useState(1);
+
+  useEffect(() => {
+    const lgQuery = window.matchMedia(`(min-width: ${BREAKPOINT_DEFAULTS.LG}px)`);
+    const mdQuery = window.matchMedia(`(min-width: ${BREAKPOINT_DEFAULTS.MD}px)`);
+
+    const updateColumns = () => {
+      setGridColumns(lgQuery.matches ? 3 : mdQuery.matches ? 2 : 1);
+    };
+
+    updateColumns();
+
+    // Older Safari only exposes the deprecated addListener pair.
+    if (lgQuery.addEventListener) {
+      lgQuery.addEventListener("change", updateColumns);
+      mdQuery.addEventListener("change", updateColumns);
+      return () => {
+        lgQuery.removeEventListener("change", updateColumns);
+        mdQuery.removeEventListener("change", updateColumns);
+      };
+    }
+
+    lgQuery.addListener(updateColumns);
+    mdQuery.addListener(updateColumns);
+    return () => {
+      lgQuery.removeListener(updateColumns);
+      mdQuery.removeListener(updateColumns);
+    };
   }, []);
 
   const handleTemplateClick = useCallback(
@@ -186,8 +210,12 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-selected={isSelected}
               data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
               data-template-id={template.id}
-              data-loading={isSelected && isLoading ? "true" : "false"}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-loading={
+                isSelected && isLoading ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               role={ARIA_ROLES.OPTION}
               tabIndex={focusIndex === index ? 0 : -1}
               style={

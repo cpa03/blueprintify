@@ -28,6 +28,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   SHORTCUT_LABELS,
   SVG_ICON_DEFAULTS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
@@ -124,10 +125,14 @@ function HeaderComponent({
           ? "border-b border-dark-600/60 shadow-lg shadow-dark-950/30"
           : "border-b border-dark-700/50"
       }`}
-      data-scrolled={isScrolled ? "true" : "false"}
-      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
-      data-shortcuts-discovered={shortcutsDiscovered ? "true" : "false"}
-      data-has-shortcuts={onShowShortcuts ? "true" : "false"}
+      data-scrolled={isScrolled ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-shortcuts-discovered={
+        shortcutsDiscovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-shortcuts={onShowShortcuts ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <button
@@ -221,16 +226,25 @@ function HeaderComponent({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d={ICON_PATHS.HELP}
                   />
                 </svg>
               </RippleButton>
             </KeyboardShortcutTooltip>
           )}
-          <RippleButton
-            onClick={() => window.open(EXTERNAL_URLS.GITHUB, "_blank", "noopener,noreferrer")}
-            className="btn-ghost flex items-center gap-2 group"
-            ariaLabel={ACCESSIBILITY_LABELS.HEADER.GITHUB}
+          {/* Native anchor (not a button + window.open): preserves middle-click /
+              Cmd+Ctrl+click new-tab behavior, right-click "Open Link in New Tab"
+              and "Copy Link Address", the browser status-bar URL preview on hover,
+              and is announced as a "link" (not a button) by screen readers —
+              matching the navigation affordance of the external destination. */}
+          <a
+            href={EXTERNAL_URLS.GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-ghost flex items-center gap-2 group relative overflow-hidden
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
+                       focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
+            aria-label={ACCESSIBILITY_LABELS.HEADER.GITHUB}
             title={ACCESSIBILITY_LABELS.HEADER.GITHUB}
           >
             <svg
@@ -249,7 +263,7 @@ function HeaderComponent({
               name="externalLink"
               className="w-3 h-3 opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5"
             />
-          </RippleButton>
+          </a>
         </nav>
       </div>
 

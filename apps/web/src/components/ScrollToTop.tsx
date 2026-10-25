@@ -23,6 +23,7 @@
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import {
   ANIMATION,
@@ -46,7 +47,7 @@ import {
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { isEditableField } from "../lib/dom";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ICON_PATHS, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -241,9 +242,13 @@ const ScrollToPosition = memo(function ScrollToPosition({
     <AnimatePresence>
       {(isVisible || isFocusWithin) && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          initial={{
+            opacity: 0,
+            scale: ANIMATION_SCALE.STANDARD,
+            y: ANIMATION_Y_OFFSET.DROP_LARGE,
+          }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD, y: ANIMATION_Y_OFFSET.DROP_LARGE }}
           transition={{
             type: FRAMER_TYPE.SPRING,
             ...SPRING_CONFIG.DEFAULT,
@@ -254,7 +259,9 @@ const ScrollToPosition = memo(function ScrollToPosition({
           data-state={BANNER_STATE_VALUES.VISIBLE}
           data-has-scrolled={hasScrolled}
           data-focus-within={isFocusWithin}
-          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+          data-reduced-motion={
+            shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+          }
         >
           {/* Entry pulse ring — a subtle expanding glow that plays once when
               the button first appears, drawing the user's eye to the new UI
@@ -320,7 +327,9 @@ const ScrollToPosition = memo(function ScrollToPosition({
               data-direction={direction}
               data-state={BANNER_STATE_VALUES.VISIBLE}
               data-has-scrolled={hasScrolled}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
             >
@@ -354,14 +363,14 @@ const ScrollToPosition = memo(function ScrollToPosition({
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    d={ICON_PATHS.CHEVRON_UP}
                   />
                 ) : (
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                     strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                     strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    d={ICON_PATHS.CHEVRON_DOWN}
                   />
                 )}
               </motion.svg>

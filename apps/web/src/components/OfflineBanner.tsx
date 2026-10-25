@@ -42,6 +42,7 @@ import {
   STYLE_ID_STRINGS,
   TOAST_TYPES,
   UI_TIMEOUTS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -54,6 +55,7 @@ import {
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ANIMATION_OPACITY } from "@blueprint/shared";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation
@@ -175,10 +177,12 @@ function OfflineBannerComponent(): JSX.Element | null {
         ref={containerRef}
         role={isVisible ? "status" : undefined}
         aria-live={isVisible ? "polite" : undefined}
-        aria-atomic={isVisible ? "true" : undefined}
+        aria-atomic={isVisible ? ARIA_ATOMIC_VALUES.TRUE : undefined}
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-online-status={isOnline ? BANNER_STATE_VALUES.ONLINE : BANNER_STATE_VALUES.OFFLINE}
-        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+        data-reduced-motion={
+          shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+        }
         className={`overflow-hidden ${
           // Outer container handles layout space via max-height
           // while the inner banner slides with GPU-composited transform.
@@ -218,7 +222,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                     className="absolute inline-flex h-full w-full rounded-full bg-accent-pink"
                     style={
                       shouldReduceMotion
-                        ? { opacity: 0.3 }
+                        ? { opacity: ANIMATION_OPACITY.DIMMED }
                         : { animation: OFFLINE_ANIMATION.PULSE_RING }
                     }
                   />

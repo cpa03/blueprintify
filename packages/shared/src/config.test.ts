@@ -14,9 +14,12 @@ import {
   CRYPTO_CONFIG,
   ID_CHARS,
   TIME_UNITS,
+  TIME_FORMAT,
+  NUMBER_RADIX,
   PERCENT_SCALE,
   RATIO_LIMITS,
   CIRCLE_GEOMETRY,
+  CIRCLE_GEOMETRY_LARGE,
   HTTP_STATUS,
   ROUTE_PATHS,
   DEFAULT_URLS,
@@ -122,6 +125,7 @@ import {
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
   SKELETON_PULSE_DEFAULTS,
+  SKELETON_EXIT_DEFAULTS,
   BUILD_CONFIG,
   ENTRANCE_STAGGER_DEFAULTS,
   SCROLLBAR_COLORS,
@@ -131,6 +135,7 @@ import {
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
+  ICON_RECTS,
   COLOR_MIX_OPACITY,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
@@ -161,6 +166,10 @@ import {
   STAGGER_CONFIG,
   OPACITY_PULSE,
   SCALE_PULSE,
+  ANIMATION_SCALE,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
+  ANIMATION_OPACITY,
   Y_OFFSET,
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
@@ -177,6 +186,8 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_REQUIRED_VALUES,
+  DATA_BOOLEAN_VALUES,
+  ARIA_BUSY_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -574,6 +585,43 @@ describe("CIRCLE_GEOMETRY", () => {
 
   it("should have STROKE_DASHOFFSET = CIRCUMFERENCE * 0.75", () => {
     expect(CIRCLE_GEOMETRY.STROKE_DASHOFFSET).toBeCloseTo(CIRCLE_GEOMETRY.CIRCUMFERENCE * 0.75);
+  });
+
+  it("should have FULL_TURN_RAD = 2 * PI", () => {
+    expect(CIRCLE_GEOMETRY.FULL_TURN_RAD).toBeCloseTo(2 * Math.PI);
+  });
+
+  it("should have FULL_TURN_DEG = 360", () => {
+    expect(CIRCLE_GEOMETRY.FULL_TURN_DEG).toBe(360);
+    expect(Number.isInteger(CIRCLE_GEOMETRY.FULL_TURN_DEG)).toBe(true);
+  });
+
+  it("should keep CIRCUMFERENCE consistent with FULL_TURN_RAD * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY.CIRCUMFERENCE).toBeCloseTo(
+      CIRCLE_GEOMETRY.FULL_TURN_RAD * CIRCLE_GEOMETRY.RADIUS
+    );
+  });
+});
+
+describe("CIRCLE_GEOMETRY_LARGE", () => {
+  it("should have CENTER_X = 24", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_X).toBe(24);
+  });
+
+  it("should have CENTER_Y = 24", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_Y).toBe(24);
+  });
+
+  it("should have RADIUS = 22", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.RADIUS).toBe(22);
+  });
+
+  it("should have CIRCUMFERENCE = 2 * PI * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CIRCUMFERENCE).toBeCloseTo(2 * Math.PI * 22);
+  });
+
+  it("should inset the ring by 2 units from the 48x48 viewBox edge", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_X - CIRCLE_GEOMETRY_LARGE.RADIUS).toBe(2);
   });
 });
 
@@ -2663,11 +2711,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
     expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
     expect(UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS).toBe(30000);
+    expect(UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS).toBe(2000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(23);
+    expect(values.length).toBe(24);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -3527,6 +3576,14 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.CHECKMARK).toBe("M5 13l4 4L19 7");
   });
 
+  it("should define large checkmark path for 48x48 celebration rings", () => {
+    expect(ICON_PATHS.CHECKMARK_LARGE).toBe("M14 24L21 31L34 17");
+  });
+
+  it("should define square-copy frame path", () => {
+    expect(ICON_PATHS.COPY_SQUARE).toBe("M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
+  });
+
   it("should define edit path", () => {
     expect(ICON_PATHS.EDIT).toBeTruthy();
   });
@@ -3552,14 +3609,35 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.GITHUB).toBeTruthy();
   });
 
-  it("should have 19 entries", () => {
-    expect(Object.keys(ICON_PATHS).length).toBe(19);
+  it("should have 21 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(21);
   });
 
   it("should have unique path values", () => {
     const paths = Object.values(ICON_PATHS);
     const uniquePaths = new Set(paths);
     expect(uniquePaths.size).toBe(paths.length);
+  });
+});
+
+describe("ICON_RECTS", () => {
+  it("should define the square-copy body rect", () => {
+    expect(ICON_RECTS.COPY_BODY).toEqual({ x: 9, y: 9, width: 13, height: 13, rx: 2, ry: 2 });
+  });
+
+  it("should define the pause-badge bar rects", () => {
+    expect(ICON_RECTS.PAUSE_LEFT).toEqual({ x: 6, y: 4, width: 4, height: 16, rx: 1 });
+    expect(ICON_RECTS.PAUSE_RIGHT).toEqual({ x: 14, y: 4, width: 4, height: 16, rx: 1 });
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ICON_RECTS).length).toBe(3);
+  });
+
+  it("should center the pause bars on the 24x24 viewBox", () => {
+    const leftEdge = ICON_RECTS.PAUSE_LEFT.x;
+    const rightEdge = ICON_RECTS.PAUSE_RIGHT.x + ICON_RECTS.PAUSE_RIGHT.width;
+    expect((leftEdge + rightEdge) / 2).toBe(12);
   });
 });
 
@@ -4947,6 +5025,201 @@ describe("SCALE_PULSE", () => {
   });
 });
 
+describe("ANIMATION_SCALE", () => {
+  it("should have TINY = 0.3", () => {
+    expect(ANIMATION_SCALE.TINY).toBe(0.3);
+  });
+
+  it("should have POP_IN = 0.5", () => {
+    expect(ANIMATION_SCALE.POP_IN).toBe(0.5);
+  });
+
+  it("should have STANDARD = 0.8", () => {
+    expect(ANIMATION_SCALE.STANDARD).toBe(0.8);
+  });
+
+  it("should have CARD = 0.85", () => {
+    expect(ANIMATION_SCALE.CARD).toBe(0.85);
+  });
+
+  it("should have MODAL = 0.9", () => {
+    expect(ANIMATION_SCALE.MODAL).toBe(0.9);
+  });
+
+  it("should have SUBTLE = 0.95", () => {
+    expect(ANIMATION_SCALE.SUBTLE).toBe(0.95);
+  });
+
+  it("should have TYPING_PULSE = 1.002", () => {
+    expect(ANIMATION_SCALE.TYPING_PULSE).toBe(1.002);
+  });
+
+  it("should have PARTICLE_EXPAND = 1.3", () => {
+    expect(ANIMATION_SCALE.PARTICLE_EXPAND).toBe(1.3);
+  });
+
+  it("should have BADGE_EXPAND = 1.5", () => {
+    expect(ANIMATION_SCALE.BADGE_EXPAND).toBe(1.5);
+  });
+
+  it("should have ATTENTION_RING = 2.5", () => {
+    expect(ANIMATION_SCALE.ATTENTION_RING).toBe(2.5);
+  });
+
+  it("should have 10 entries", () => {
+    expect(Object.keys(ANIMATION_SCALE).length).toBe(10);
+  });
+
+  it("should have all unique numeric scale values", () => {
+    const values = Object.values(ANIMATION_SCALE);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("ANIMATION_X_OFFSET", () => {
+  it("should have SLIDE_LEFT_FAR = -10", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_FAR).toBe(-10);
+  });
+
+  it("should have SLIDE_LEFT_MEDIUM = -6", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM).toBe(-6);
+  });
+
+  it("should have SLIDE_LEFT_SMALL = -5", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_SMALL).toBe(-5);
+  });
+
+  it("should have SLIDE_LEFT_TINY = -4", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_TINY).toBe(-4);
+  });
+
+  it("should have SLIDE_LEFT_MICRO = -3", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_LEFT_MICRO).toBe(-3);
+  });
+
+  it("should have SLIDE_RIGHT_SMALL = 10", () => {
+    expect(ANIMATION_X_OFFSET.SLIDE_RIGHT_SMALL).toBe(10);
+  });
+
+  it("should have 6 entries", () => {
+    expect(Object.keys(ANIMATION_X_OFFSET).length).toBe(6);
+  });
+
+  it("should have all unique numeric x-offset values", () => {
+    const values = Object.values(ANIMATION_X_OFFSET);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+    });
+  });
+});
+
+describe("ANIMATION_Y_OFFSET", () => {
+  it("should have RISE_LARGE = -20", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_LARGE).toBe(-20);
+  });
+
+  it("should have RISE = -10", () => {
+    expect(ANIMATION_Y_OFFSET.RISE).toBe(-10);
+  });
+
+  it("should have RISE_SUBTLE = -8", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_SUBTLE).toBe(-8);
+  });
+
+  it("should have RISE_SMALL = -6", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_SMALL).toBe(-6);
+  });
+
+  it("should have RISE_MICRO = -5", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_MICRO).toBe(-5);
+  });
+
+  it("should have RISE_TINY = -4", () => {
+    expect(ANIMATION_Y_OFFSET.RISE_TINY).toBe(-4);
+  });
+
+  it("should have HOVER_LIFT = -2", () => {
+    expect(ANIMATION_Y_OFFSET.HOVER_LIFT).toBe(-2);
+  });
+
+  it("should have DROP_TINY = 4", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_TINY).toBe(4);
+  });
+
+  it("should have DROP_SMALL = 5", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_SMALL).toBe(5);
+  });
+
+  it("should have DROP = 6", () => {
+    expect(ANIMATION_Y_OFFSET.DROP).toBe(6);
+  });
+
+  it("should have DROP_SUBTLE = 8", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_SUBTLE).toBe(8);
+  });
+
+  it("should have DROP_STANDARD = 10", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_STANDARD).toBe(10);
+  });
+
+  it("should have DROP_MODERATE = 12", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_MODERATE).toBe(12);
+  });
+
+  it("should have DROP_LARGE = 20", () => {
+    expect(ANIMATION_Y_OFFSET.DROP_LARGE).toBe(20);
+  });
+
+  it("should have 14 entries", () => {
+    expect(Object.keys(ANIMATION_Y_OFFSET).length).toBe(14);
+  });
+
+  it("should have all unique numeric y-offset values", () => {
+    const values = Object.values(ANIMATION_Y_OFFSET);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+    });
+  });
+});
+
+describe("ANIMATION_OPACITY", () => {
+  it("should have DIMMED = 0.3", () => {
+    expect(ANIMATION_OPACITY.DIMMED).toBe(0.3);
+  });
+
+  it("should have FADED = 0.6", () => {
+    expect(ANIMATION_OPACITY.FADED).toBe(0.6);
+  });
+
+  it("should have SUBTLE = 0.8", () => {
+    expect(ANIMATION_OPACITY.SUBTLE).toBe(0.8);
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ANIMATION_OPACITY).length).toBe(3);
+  });
+
+  it("should have all unique numeric opacity values between 0 and 1", () => {
+    const values = Object.values(ANIMATION_OPACITY);
+    const unique = new Set(values);
+    expect(unique.size).toBe(values.length);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+      expect(v).toBeLessThan(1);
+    });
+  });
+});
+
 describe("Y_OFFSET", () => {
   it("should have SUBTLE = [0, -3, 0]", () => {
     expect(Y_OFFSET.SUBTLE).toEqual([0, -3, 0]);
@@ -5178,6 +5451,89 @@ describe("ARIA_REQUIRED_VALUES (Flexy Iteration 195)", () => {
   it("should have 2 unique values", () => {
     expect(Object.keys(ARIA_REQUIRED_VALUES).length).toBe(2);
     const values = Object.values(ARIA_REQUIRED_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("TIME_FORMAT (Flexy Iteration 203)", () => {
+  it("should have MM_SS_PAD_WIDTH = 2", () => {
+    expect(TIME_FORMAT.MM_SS_PAD_WIDTH).toBe(2);
+    expect(Number.isInteger(TIME_FORMAT.MM_SS_PAD_WIDTH)).toBe(true);
+  });
+
+  it("should have MM_SS_PAD_CHAR = 0", () => {
+    expect(TIME_FORMAT.MM_SS_PAD_CHAR).toBe("0");
+  });
+
+  it("should zero-pad single-digit seconds for MM:SS display", () => {
+    expect((5).toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)).toBe(
+      "05"
+    );
+  });
+});
+
+describe("NUMBER_RADIX (Flexy Iteration 203)", () => {
+  it("should have DECIMAL = 10", () => {
+    expect(NUMBER_RADIX.DECIMAL).toBe(10);
+  });
+
+  it("should be a valid parseInt radix", () => {
+    expect(Number.isInteger(NUMBER_RADIX.DECIMAL)).toBe(true);
+    expect(NUMBER_RADIX.DECIMAL).toBeGreaterThanOrEqual(2);
+    expect(NUMBER_RADIX.DECIMAL).toBeLessThanOrEqual(36);
+    expect(parseInt("42", NUMBER_RADIX.DECIMAL)).toBe(42);
+  });
+});
+
+describe("SKELETON_EXIT_DEFAULTS (Flexy Iteration 203)", () => {
+  it("should have the full skeleton-exit CSS animation shorthand", () => {
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toBe("skeleton-exit 0.3s ease-out 0s forwards");
+  });
+
+  it("should target the skeleton-exit keyframes with forwards fill", () => {
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/^skeleton-exit\s/);
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/\sforwards$/);
+  });
+});
+
+describe("DATA_BOOLEAN_VALUES (Flexy Iteration 204)", () => {
+  it("should have true value", () => {
+    expect(DATA_BOOLEAN_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(DATA_BOOLEAN_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(DATA_BOOLEAN_VALUES).length).toBe(2);
+    const values = Object.values(DATA_BOOLEAN_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should serialize booleans identically to String()", () => {
+    expect(String(true)).toBe(DATA_BOOLEAN_VALUES.TRUE);
+    expect(String(false)).toBe(DATA_BOOLEAN_VALUES.FALSE);
+  });
+
+  it("should be valid JSON encodings of boolean true/false", () => {
+    expect(JSON.parse(DATA_BOOLEAN_VALUES.TRUE)).toBe(true);
+    expect(JSON.parse(DATA_BOOLEAN_VALUES.FALSE)).toBe(false);
+  });
+});
+
+describe("ARIA_BUSY_VALUES (Flexy Iteration 204)", () => {
+  it("should have true value", () => {
+    expect(ARIA_BUSY_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_BUSY_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_BUSY_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_BUSY_VALUES);
     expect(new Set(values).size).toBe(values.length);
   });
 });

@@ -30,6 +30,12 @@
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_OPACITY,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import {
   TOAST_CONFIG,
@@ -64,7 +70,12 @@ import {
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
-import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
+import {
+  SVG_ICON_DEFAULTS,
+  COLOR_MIX_OPACITY,
+  ICON_RECTS,
+  CIRCLE_GEOMETRY,
+} from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -101,7 +112,7 @@ const ProgressRing = memo(function ProgressRing({
   noTransition = false,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
+  const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
@@ -303,9 +314,13 @@ const ToastItem = memo(
             }
           : {
               layout: true,
-              initial: { opacity: 0, y: 20, scale: 0.9 },
+              initial: {
+                opacity: 0,
+                y: ANIMATION_Y_OFFSET.DROP_LARGE,
+                scale: ANIMATION_SCALE.MODAL,
+              },
               animate: { opacity: 1, y: 0, scale: 1 },
-              exit: { opacity: 0, y: -20, scale: 0.9 },
+              exit: { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_LARGE, scale: ANIMATION_SCALE.MODAL },
               transition: defaultTransition,
             })}
         className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-70 max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
@@ -318,11 +333,13 @@ const ToastItem = memo(
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
-        data-hovered={isHovered ? "true" : "false"}
-        data-is-alert={isAlert ? "true" : "false"}
+        data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-is-alert={isAlert ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-state={BANNER_STATE_VALUES.VISIBLE}
         data-progress={Math.round(progress)}
-        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+        data-reduced-motion={
+          shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+        }
       >
         <div
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
@@ -380,8 +397,8 @@ const ToastItem = memo(
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
-                <rect x="6" y="4" width="4" height="16" rx="1" />
-                <rect x="14" y="4" width="4" height="16" rx="1" />
+                <rect {...ICON_RECTS.PAUSE_LEFT} />
+                <rect {...ICON_RECTS.PAUSE_RIGHT} />
               </svg>
             </div>
           )
@@ -389,9 +406,17 @@ const ToastItem = memo(
           <AnimatePresence>
             {isHovered && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.5, y: 5 }}
+                initial={{
+                  opacity: 0,
+                  scale: ANIMATION_SCALE.POP_IN,
+                  y: ANIMATION_Y_OFFSET.DROP_SMALL,
+                }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.5, y: 5 }}
+                exit={{
+                  opacity: 0,
+                  scale: ANIMATION_SCALE.POP_IN,
+                  y: ANIMATION_Y_OFFSET.DROP_SMALL,
+                }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...TOAST_SPRING.WARNING_ICON }}
                 className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -402,8 +427,8 @@ const ToastItem = memo(
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
-                  <rect x="6" y="4" width="4" height="16" rx="1" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                  <rect {...ICON_RECTS.PAUSE_LEFT} />
+                  <rect {...ICON_RECTS.PAUSE_RIGHT} />
                 </svg>
               </motion.div>
             )}
@@ -477,8 +502,8 @@ const ToastItem = memo(
               onClick={() => onRemove(toast.id)}
               className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 0.6, scale: 1 }}
+              initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
+              animate={{ opacity: ANIMATION_OPACITY.FADED, scale: 1 }}
               transition={{
                 opacity: {
                   duration: ANIMATION.NORMAL,
@@ -591,7 +616,7 @@ function ToastContainerComponent(): JSX.Element {
   const containerAnimation = shouldReduceMotion
     ? {}
     : {
-        initial: { opacity: 0, y: 12 },
+        initial: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_MODERATE },
         animate: { opacity: 1, y: 0 },
         transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
       };
@@ -602,9 +627,11 @@ function ToastContainerComponent(): JSX.Element {
       role={ARIA_ROLES.REGION}
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
       data-count={toasts.length}
-      data-has-toasts={toasts.length > 0 ? "true" : "false"}
+      data-has-toasts={toasts.length > 0 ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-state={toasts.length > 0 ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       {...containerAnimation}
     >
       <AnimatePresence mode="popLayout">
@@ -652,9 +679,13 @@ function ToastContainerComponent(): JSX.Element {
           {showDismissAll && (
             <motion.button
               type="button"
-              initial={{ opacity: 0, y: -8, scale: 0.9 }}
+              initial={{
+                opacity: 0,
+                y: ANIMATION_Y_OFFSET.RISE_SUBTLE,
+                scale: ANIMATION_SCALE.MODAL,
+              }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.9 }}
+              exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SUBTLE, scale: ANIMATION_SCALE.MODAL }}
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               whileHover={HOVER_SCALE.GENTLE}
               whileTap={TAP_SCALE.GENTLE}
@@ -673,7 +704,7 @@ function ToastContainerComponent(): JSX.Element {
                 <motion.span
                   key={toasts.length}
                   className="tabular-nums"
-                  initial={{ scale: 0.5, opacity: 0 }}
+                  initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}

@@ -3,7 +3,7 @@ import * as motion from "framer-motion/m";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
-import { TIME_UNITS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import { TIME_UNITS, ARIA_HIDDEN_VALUES, DATA_BOOLEAN_VALUES } from "@blueprint/shared/config";
 import { COUNTER_DIRECTION_VALUES, COUNTER_STATE_VALUES } from "@blueprint/shared";
 import { COUNTER_ANIMATION } from "../config/theme";
 
@@ -86,7 +86,9 @@ function AnimatedNumberComponent({
       className={`tabular-nums ${className}`}
       data-direction={direction}
       data-value={value}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       initial={false}
       animate={
         shouldAnimate && direction !== COUNTER_DIRECTION_VALUES.IDLE
@@ -165,7 +167,9 @@ function AnimatedCounterComponent({
       className={`glass-card px-6 py-4 ${className}`}
       data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
       data-value={value}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       initial={false}
       animate={
         shouldAnimate && pulseKey > 0

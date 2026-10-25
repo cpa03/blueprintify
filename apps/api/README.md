@@ -12,7 +12,7 @@ The API is a Cloudflare Workers application built with [Hono](https://hono.dev/)
 - **Framework**: [Hono](https://hono.dev/) v4
 - **Validation**: [Zod](https://zod.dev/)
 - **AI**: [OpenAI SDK](https://github.com/openai/openai-node)
-- **Testing**: [Vitest](https://vitest.dev/) with [@cloudflare/vitest-pool-workers](https://github.com/cloudflare/vitest-pool-workers)
+- **Testing**: [Vitest](https://vitest.dev/) with [@cloudflare/vitest-plugin](https://developers.cloudflare.com/workers/testing/vitest-integration/)
 
 ## Quick Start
 

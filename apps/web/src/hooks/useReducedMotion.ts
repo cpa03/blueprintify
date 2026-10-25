@@ -1,6 +1,7 @@
 import { useSyncExternalStore, useMemo } from "react";
 import { ACCESSIBILITY_EVENTS, SPRING_CONFIG } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
+import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 
 function subscribeToReducedMotion(callback: () => void): () => void {
   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -34,7 +35,7 @@ function getReducedMotionSnapshot(): boolean {
   }
 
   if (stored !== null) {
-    return stored === "true";
+    return stored === DATA_BOOLEAN_VALUES.TRUE;
   }
 
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;

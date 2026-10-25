@@ -2,6 +2,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { TemplateGrid } from "./TemplateGrid";
 import { ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import { BREAKPOINT_DEFAULTS } from "@blueprint/shared";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -70,6 +71,41 @@ vi.mock("@blueprint/shared", async (importOriginal) => {
   };
 });
 
+const originalMatchMedia = window.matchMedia;
+
+/**
+ * Controllable matchMedia mock: `set` flips breakpoint state and fires the
+ * change listeners the component registered, like a real viewport resize.
+ */
+function installMatchMediaMock(state: { lg: boolean; md: boolean }): {
+  set: (next: Partial<{ lg: boolean; md: boolean }>) => void;
+} {
+  const listeners: Array<() => void> = [];
+  window.matchMedia = vi.fn((query: string) => ({
+    get matches() {
+      if (query.includes(`(min-width: ${BREAKPOINT_DEFAULTS.LG}px)`)) return state.lg;
+      if (query.includes(`(min-width: ${BREAKPOINT_DEFAULTS.MD}px)`)) return state.md;
+      return false;
+    },
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn((_type: string, listener: () => void) => {
+      listeners.push(listener);
+    }),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })) as unknown as typeof window.matchMedia;
+
+  return {
+    set(next: Partial<typeof state>) {
+      Object.assign(state, next);
+      act(() => {
+        listeners.forEach((listener) => listener());
+      });
+    },
+  };
+}
+
 describe("TemplateGrid", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -78,6 +114,7 @@ describe("TemplateGrid", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    window.matchMedia = originalMatchMedia;
   });
 
   it("renders the section title", () => {
@@ -277,5 +314,43 @@ describe("TemplateGrid", () => {
     expect(cards[0]).toHaveFocus();
     expect(cards[0]!).toHaveAttribute("tabindex", "0");
     expect(cards[1]!).toHaveAttribute("tabindex", "-1");
+  });
+
+  it("steps ArrowDown by one card in a single-column layout", () => {
+    installMatchMediaMock({ lg: false, md: false });
+    render(<TemplateGrid />);
+
+    const cards = screen.getAllByRole("option");
+
+    fireEvent.keyDown(cards[0]!, { key: "ArrowDown" });
+    expect(cards[1]).toHaveFocus();
+  });
+
+  it("steps ArrowDown by three cards (clamped to last) at the lg breakpoint", () => {
+    installMatchMediaMock({ lg: true, md: true });
+    render(<TemplateGrid />);
+
+    const cards = screen.getAllByRole("option");
+
+    fireEvent.keyDown(cards[0]!, { key: "ArrowDown" });
+    expect(cards[2]).toHaveFocus();
+  });
+
+  it("follows a live breakpoint change so ArrowDown row math stays correct", () => {
+    const media = installMatchMediaMock({ lg: false, md: false });
+    render(<TemplateGrid />);
+
+    const cards = screen.getAllByRole("option");
+
+    fireEvent.keyDown(cards[0]!, { key: "ArrowDown" });
+    expect(cards[1]).toHaveFocus();
+
+    // Viewport widens past the md breakpoint without a re-mount — the old
+    // mount-time computation kept jumping by 1 and skipped no columns.
+    media.set({ md: true });
+
+    fireEvent.keyDown(cards[1]!, { key: "Home" });
+    fireEvent.keyDown(cards[0]!, { key: "ArrowDown" });
+    expect(cards[2]).toHaveFocus();
   });
 });

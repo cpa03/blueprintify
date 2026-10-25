@@ -28,6 +28,7 @@ import React from "react";
 import clsx from "clsx";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ANIMATION_DEFAULTS,
@@ -155,10 +156,10 @@ function EditorToolbarComponent({
   return (
     <div
       className="flex items-center gap-2"
-      data-reduced-motion={reducedMotion ? "true" : "false"}
-      data-has-content={hasContent ? "true" : "false"}
-      data-is-exporting={isExporting ? "true" : "false"}
-      data-export-success={exportSuccess ? "true" : "false"}
+      data-reduced-motion={reducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-is-exporting={isExporting ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-export-success={exportSuccess ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
@@ -323,7 +324,9 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-2 flex-shrink-0"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   fill={SVG_ICON_DEFAULTS.FILL_NONE}
-                  animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+                  animate={
+                    reducedMotion ? { rotate: 0 } : { rotate: CIRCLE_GEOMETRY.FULL_TURN_DEG }
+                  }
                   transition={
                     reducedMotion
                       ? ANIMATION_DEFAULTS.ZERO_DURATION
@@ -378,9 +381,9 @@ function EditorToolbarComponent({
               <motion.span
                 key="exported"
                 className="flex items-center text-accent-emerald"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               >
                 <motion.svg
@@ -407,7 +410,7 @@ function EditorToolbarComponent({
                   />
                 </motion.svg>
                 <motion.span
-                  initial={{ opacity: 0, x: -5 }}
+                  initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_SMALL }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
                 >

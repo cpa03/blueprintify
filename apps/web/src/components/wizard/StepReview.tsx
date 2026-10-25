@@ -36,8 +36,10 @@ import {
   MODIFIER_KEYS,
   REVIEW_STATE_VALUES,
   WIZARD_STEP_KEYS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
@@ -120,7 +122,9 @@ export const StepReview = memo(function StepReview({
         : pageTransition(direction))}
       className="space-y-6"
       data-state={isGenerating ? REVIEW_STATE_VALUES.GENERATING : REVIEW_STATE_VALUES.IDLE}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       {/* Heading - guides attention first */}
       <motion.div
@@ -300,7 +304,7 @@ export const StepReview = memo(function StepReview({
                     shouldReduceMotion
                       ? undefined
                       : {
-                          hidden: { opacity: 0, scale: 0.9 },
+                          hidden: { opacity: 0, scale: ANIMATION_SCALE.MODAL },
                           visible: {
                             opacity: 1,
                             scale: 1,
@@ -393,7 +397,7 @@ export const StepReview = memo(function StepReview({
                       shouldReduceMotion
                         ? undefined
                         : {
-                            hidden: { opacity: 0, x: -10 },
+                            hidden: { opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_FAR },
                             visible: {
                               opacity: 1,
                               x: 0,
@@ -561,7 +565,7 @@ export const StepReview = memo(function StepReview({
                           strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                           strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                           strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                          d={ICON_PATHS.ZAP}
                         />
                       </svg>
                       Generate Blueprint
@@ -604,7 +608,7 @@ export const StepReview = memo(function StepReview({
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                      d={ICON_PATHS.ZAP}
                     />
                   </svg>
                   Generate Blueprint
@@ -631,7 +635,9 @@ export const StepReview = memo(function StepReview({
             )}
             {isGenerating && progress && (
               <motion.span
-                initial={shouldReduceMotion ? undefined : { opacity: 0, y: -5 }}
+                initial={
+                  shouldReduceMotion ? undefined : { opacity: 0, y: ANIMATION_Y_OFFSET.RISE_MICRO }
+                }
                 animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
                 role={ARIA_ROLES.STATUS}

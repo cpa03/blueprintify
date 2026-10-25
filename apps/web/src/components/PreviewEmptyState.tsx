@@ -10,6 +10,7 @@
 
 import { memo } from "react";
 import * as motion from "framer-motion/m";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import { Icon } from "./Icon";
 import {
@@ -79,7 +80,9 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
       data-tab={tab}
       data-has-sibling-content={siblingTabHasContent}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <motion.div className="relative mb-6" variants={fadeInUp}>
         <motion.div
@@ -175,7 +178,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           <>
             <motion.button
               onClick={onSwitchTab}
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: ANIMATION_SCALE.MODAL, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{
                 type: FRAMER_TYPE.SPRING,
@@ -227,7 +230,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <motion.div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
               whileHover={HOVER_SCALE.MICRO}
-              initial={{ opacity: 0, y: 5 }}
+              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_SMALL }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND,

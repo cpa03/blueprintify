@@ -29,6 +29,12 @@
 import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ARIA_HIDDEN_VALUES,
@@ -58,6 +64,7 @@ import {
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
+import { useReducedMotion } from "../../hooks";
 import clsx from "clsx";
 
 const STAT_COLORS = {
@@ -160,9 +167,13 @@ const TabButton = React.memo(function TabButton({
         {!isActive && contentAvailable && (
           <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
             {/* Breathing ring — CSS-only pulse that starts after the spring
-                entrance of the core dot settles (~0.6s delay in keyframes). */}
+                entrance of the core dot settles (~0.6s delay in keyframes).
+                Suppressed when motion reduction is preferred. */}
             <span
-              className="absolute inset-0 rounded-full bg-accent-emerald content-dot-breathe"
+              className={clsx(
+                "absolute inset-0 rounded-full bg-accent-emerald",
+                "motion-safe:content-dot-breathe"
+              )}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             />
             {/* Core dot with spring entrance. role={ARIA_ROLES.STATUS} makes the
@@ -234,7 +245,7 @@ const ContentStats = React.memo(function ContentStats({
       {content && (
         <motion.div
           key="content-stats"
-          initial={{ opacity: 0, y: -8, scale: 0.95 }}
+          initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SUBTLE, scale: ANIMATION_SCALE.SUBTLE }}
           animate={{
             opacity: 1,
             y: 0,
@@ -246,7 +257,7 @@ const ContentStats = React.memo(function ContentStats({
               ? [...HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS]
               : HEADER_ANIMATION.CONTENT_STATS.SHADOW_STATIC,
           }}
-          exit={{ opacity: 0, y: -8, scale: 0.95 }}
+          exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_SUBTLE, scale: ANIMATION_SCALE.SUBTLE }}
           transition={
             isGenerating
               ? {
@@ -273,7 +284,7 @@ const ContentStats = React.memo(function ContentStats({
         >
           {/* Char count — staggers in first */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -303,7 +314,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Word count — staggers in second */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -333,7 +344,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Line count — staggers in third */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -363,7 +374,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Reading time — staggers in fourth */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -389,7 +400,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Tab navigation keyboard hint — staggers in fifth */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -401,9 +412,9 @@ const ContentStats = React.memo(function ContentStats({
             <motion.div
               key="tab-nav-hint"
               className="flex items-center gap-1"
-              initial={{ opacity: 0, x: -4 }}
+              initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -4 }}
+              exit={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               <kbd
@@ -426,7 +437,7 @@ const ContentStats = React.memo(function ContentStats({
 
           {/* Shortcut hint badge — staggers in sixth */}
           <motion.span
-            initial={{ opacity: 0, x: -6 }}
+            initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_MEDIUM }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
               duration: ANIMATION.QUICK_FADE,
@@ -438,9 +449,9 @@ const ContentStats = React.memo(function ContentStats({
             <motion.div
               key="shortcut-hint"
               className="flex items-center gap-1"
-              initial={{ opacity: 0, x: -4 }}
+              initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -4 }}
+              exit={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               {/* The inner motion.span adds a gentle limited-repeat attention pulse
@@ -495,6 +506,8 @@ function EditorHeaderComponent({
   hasChanges = false,
   content = "",
 }: EditorHeaderProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   const handleTabKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       const currentIndex = TAB_IDS.indexOf(activeTab);
@@ -529,7 +542,16 @@ function EditorHeaderComponent({
   );
 
   return (
-    <div className="flex items-center justify-between p-4 border-b border-dark-700">
+    <div
+      className="flex items-center justify-between p-4 border-b border-dark-700"
+      data-active-tab={activeTab}
+      data-view-mode={viewMode}
+      data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-generating={isGenerating ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+    >
       <div className="flex items-center gap-6">
         <div
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"

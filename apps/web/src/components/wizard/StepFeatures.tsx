@@ -34,11 +34,14 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   SUGGESTED_FEATURES,
   FORM_LIMITS,
@@ -71,6 +74,7 @@ interface StepFeaturesProps {
 export const StepFeatures = memo(function StepFeatures({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepFeaturesProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const [showAllAddedMsg, setShowAllAddedMsg] = useState(false);
@@ -171,7 +175,16 @@ export const StepFeatures = memo(function StepFeatures({
   }, [suggestedNotAdded, addFeature]);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={DATA_BOOLEAN_VALUES.TRUE}
+      data-features-count={features.length}
+      data-is-max-count={isAtMaxCount ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}</h2>
@@ -179,7 +192,7 @@ export const StepFeatures = memo(function StepFeatures({
             <motion.span
               key={features.length}
               className={`tabular-nums ${features.length === 0 ? "text-accent-pink" : "text-dark-400"}`}
-              initial={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
             >
@@ -241,9 +254,9 @@ export const StepFeatures = memo(function StepFeatures({
                 {newFeature && (
                   <motion.button
                     type="button"
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
+                    exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                     transition={transitions.fast}
                     onClick={() => setNewFeature("")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
@@ -269,9 +282,9 @@ export const StepFeatures = memo(function StepFeatures({
             {isAtMaxCount && (
               <motion.p
                 role={ARIA_ROLES.STATUS}
-                initial={{ opacity: 0, y: -4 }}
+                initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                 transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                 className="text-xs text-accent-pink mt-1 flex items-center gap-1"
               >
@@ -344,7 +357,7 @@ export const StepFeatures = memo(function StepFeatures({
                     <motion.span
                       key={feature}
                       layout
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                       animate={{
                         opacity: 1,
                         scale: isJustAdded ? SCALE_PULSE.GENTLE : 1,
@@ -358,7 +371,7 @@ export const StepFeatures = memo(function StepFeatures({
                       }}
                       exit={{
                         opacity: 0,
-                        scale: 0.8,
+                        scale: ANIMATION_SCALE.STANDARD,
                         transition: { duration: ANIMATION.NORMAL, ease: EASING.easeOut },
                       }}
                       className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors duration-300 ${
@@ -405,8 +418,12 @@ export const StepFeatures = memo(function StepFeatures({
                 type="button"
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg || isAtMaxCount}
-                whileHover={showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE}
-                whileTap={showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE}
+                whileHover={
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE
+                }
+                whileTap={
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE
+                }
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
                 className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
                   showAllAddedMsg
@@ -424,9 +441,9 @@ export const StepFeatures = memo(function StepFeatures({
                     <motion.span
                       key="checkmark"
                       className="inline-flex items-center gap-1"
-                      initial={{ scale: 0.5, opacity: 0 }}
+                      initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.5, opacity: 0 }}
+                      exit={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                       transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                     >
                       <svg
@@ -449,9 +466,9 @@ export const StepFeatures = memo(function StepFeatures({
                     <motion.span
                       key="plus"
                       className="inline-flex items-center gap-1"
-                      initial={{ scale: 0.5, opacity: 0 }}
+                      initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.5, opacity: 0 }}
+                      exit={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
                       transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                     >
                       <Icon name="plus" className="w-3.5 h-3.5" />
@@ -494,7 +511,7 @@ export const StepFeatures = memo(function StepFeatures({
                     }}
                     layout
                     variants={{
-                      hidden: { opacity: 0, scale: 0.85 },
+                      hidden: { opacity: 0, scale: ANIMATION_SCALE.CARD },
                       visible: {
                         opacity: 1,
                         scale: 1,
@@ -504,8 +521,8 @@ export const StepFeatures = memo(function StepFeatures({
                         },
                       },
                     }}
-                    whileHover={HOVER_SCALE.STANDARD}
-                    whileTap={TAP_SCALE.STANDARD}
+                    whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
+                    whileTap={shouldReduceMotion ? {} : TAP_SCALE.STANDARD}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
@@ -520,8 +537,8 @@ export const StepFeatures = memo(function StepFeatures({
                     <AnimatePresence>
                       {isJustAdded && (
                         <motion.div
-                          initial={{ scale: 0, opacity: 0.8 }}
-                          animate={{ scale: 2.5, opacity: 0 }}
+                          initial={{ scale: 0, opacity: ANIMATION_OPACITY.SUBTLE }}
+                          animate={{ scale: ANIMATION_SCALE.ATTENTION_RING, opacity: 0 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
                           className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
@@ -532,8 +549,8 @@ export const StepFeatures = memo(function StepFeatures({
                     <AnimatePresence>
                       {isJustAdded && (
                         <motion.div
-                          initial={{ scale: 0.8, opacity: 1 }}
-                          animate={{ scale: 1.5, opacity: 0 }}
+                          initial={{ scale: ANIMATION_SCALE.STANDARD, opacity: 1 }}
+                          animate={{ scale: ANIMATION_SCALE.BADGE_EXPAND, opacity: 0 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: ANIMATION.MEDIUM_SLOW, ease: EASING.easeOut }}
                           className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
@@ -588,14 +605,14 @@ export const StepFeatures = memo(function StepFeatures({
           <motion.div
             role={ARIA_ROLES.ALERT}
             aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_LARGE, scale: ANIMATION_SCALE.MODAL }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.9 }}
+            exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE, scale: ANIMATION_SCALE.MODAL }}
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50"
           >
             <motion.div
               className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
-              initial={showAllAddedMsg ? { scale: 0.9 } : undefined}
+              initial={showAllAddedMsg ? { scale: ANIMATION_SCALE.MODAL } : undefined}
               animate={showAllAddedMsg ? { scale: SCALE_PULSE.GENTLE } : undefined}
               transition={{ duration: ANIMATION.FADE_IN, ease: EASING.easeOut }}
             >

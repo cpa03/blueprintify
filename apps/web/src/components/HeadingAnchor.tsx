@@ -31,6 +31,7 @@
 import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET } from "@blueprint/shared";
 import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
@@ -45,6 +46,7 @@ import {
   TIME_UNITS,
   TOOLTIP_LABELS,
   UI_TIMEOUTS,
+  CIRCLE_GEOMETRY,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -130,7 +132,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
     const newParticles: Particle[] = [];
 
     for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
-      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const angle = (i / PARTICLE_CONFIG.COUNT) * CIRCLE_GEOMETRY.FULL_TURN_RAD;
       const distance =
         PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color =
@@ -261,9 +263,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
             /* Checkmark icon + "Copied!" — springs in replacing the link icon */
             <motion.span
               key="copied"
-              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+              initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN, rotate: -10 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.5, rotate: 10 }}
+              exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN, rotate: 10 }}
               transition={
                 shouldReduceMotion
                   ? ANIMATION_DEFAULTS.ZERO_DURATION
@@ -303,7 +305,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
               </svg>
               <motion.span
                 className="text-accent-emerald font-semibold whitespace-nowrap"
-                initial={{ opacity: 0, x: -4 }}
+                initial={{ opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_TINY }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{
                   duration: shouldReduceMotion
@@ -320,9 +322,9 @@ export const HeadingAnchor = memo(function HeadingAnchor({
             /* Link icon — springs back when copy feedback clears */
             <motion.span
               key="link"
-              initial={{ opacity: 0, scale: 0.5 }}
+              initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
+              exit={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
               transition={
                 shouldReduceMotion
                   ? ANIMATION_DEFAULTS.ZERO_DURATION

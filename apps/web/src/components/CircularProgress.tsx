@@ -19,8 +19,13 @@ import {
   ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
-import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
-import { ARIA_ROLES, SVG_ICON_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import { UI_TIMEOUTS, PROGRESS_STATE_VALUES, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+import {
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
+  CIRCLE_GEOMETRY,
+} from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -108,7 +113,7 @@ function CircularProgressComponent({
   const clampedValue = Math.max(0, Math.min(100, value));
   const isComplete = clampedValue >= 100;
   const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
+  const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
   const center = size / 2;
 
   // Respect prefers-reduced-motion: the stroke transition is inline-styled,
@@ -177,9 +182,11 @@ function CircularProgressComponent({
             ? PROGRESS_STATE_VALUES.ANIMATING
             : PROGRESS_STATE_VALUES.IDLE
       }
-      data-complete={isComplete ? "true" : "false"}
-      data-animating={isAnimating ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-complete={isComplete ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-animating={isAnimating ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <svg
         width={size}
