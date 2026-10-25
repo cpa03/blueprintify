@@ -77,6 +77,7 @@ import {
   ICON_RECTS,
   CIRCLE_GEOMETRY,
 } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -635,7 +636,7 @@ function ToastContainerComponent(): JSX.Element {
       }
       {...containerAnimation}
     >
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
         {toasts.map((toast, index) => (
           <ToastItem
             key={toast.id}

@@ -45,6 +45,7 @@ import {
   ICON_PATHS,
   ICON_RECTS,
 } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface Particle {
@@ -265,7 +266,7 @@ function AnimatedCopyButtonComponent({
       </span>
 
       <span className="relative z-10 flex items-center gap-2">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
           {isCopied ? (
             <motion.span
               key="copied"

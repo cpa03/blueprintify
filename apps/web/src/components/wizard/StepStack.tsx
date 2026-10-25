@@ -77,6 +77,7 @@ import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import clsx from "clsx";
 import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 const attentionKeyframes = `@keyframes stack-card-attention {
   0%, 100% {
@@ -178,7 +179,7 @@ const TechChip = memo(function TechChip({
       </AnimatePresence>
 
       <span className="relative z-10 flex items-center gap-1.5">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
           {isSelected ? (
             <motion.svg
               key="checkmark"
@@ -414,7 +415,7 @@ export const StepStack = memo(function StepStack({
               className="flex flex-wrap gap-2"
               aria-labelledby={DOM_ELEMENT_IDS.SELECTED_TECH_LABEL}
             >
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
                 {techStack.map((tech) => (
                   <motion.li
                     key={tech.name}

@@ -66,6 +66,7 @@ import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES, MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -349,7 +350,7 @@ export const StepFeatures = memo(function StepFeatures({
               role={ARIA_ROLES.LIST}
               aria-labelledby={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}
             >
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
                 {features.map((feature, index) => {
                   const isJustAdded = feature === justAdded;
                   const staggerDelay = index * STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S;
@@ -436,7 +437,7 @@ export const StepFeatures = memo(function StepFeatures({
                     : ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS
                 }
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                   {showAllAddedMsg ? (
                     <motion.span
                       key="checkmark"
@@ -482,11 +483,11 @@ export const StepFeatures = memo(function StepFeatures({
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.GROUP}
               aria-labelledby={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}
-              initial="hidden"
-              animate="visible"
+              initial={MOTION_VARIANT_STATES.HIDDEN}
+              animate={MOTION_VARIANT_STATES.VISIBLE}
               variants={{
-                hidden: {},
-                visible: {
+                [MOTION_VARIANT_STATES.HIDDEN]: {},
+                [MOTION_VARIANT_STATES.VISIBLE]: {
                   transition: {
                     staggerChildren: STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S,
                     delayChildren: ANIMATION.SUBTLE_MOVE,
@@ -511,8 +512,8 @@ export const StepFeatures = memo(function StepFeatures({
                     }}
                     layout
                     variants={{
-                      hidden: { opacity: 0, scale: ANIMATION_SCALE.CARD },
-                      visible: {
+                      [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, scale: ANIMATION_SCALE.CARD },
+                      [MOTION_VARIANT_STATES.VISIBLE]: {
                         opacity: 1,
                         scale: 1,
                         transition: {
@@ -558,7 +559,7 @@ export const StepFeatures = memo(function StepFeatures({
                       )}
                     </AnimatePresence>
                     <span className="relative z-10 flex items-center gap-1.5">
-                      <AnimatePresence mode="wait">
+                      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                         {isJustAdded ? (
                           <motion.svg
                             key="checkmark"
