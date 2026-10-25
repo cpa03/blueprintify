@@ -22,6 +22,7 @@
  */
 
 import { useEffect, useRef } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 
 /**
  * Registers a `beforeunload` guard while `shouldWarn` is true.
@@ -56,7 +57,7 @@ export function useBeforeUnload(shouldWarn: boolean): void {
       event.returnValue = "";
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener(DOM_EVENTS.BEFORE_UNLOAD, handleBeforeUnload);
+    return () => window.removeEventListener(DOM_EVENTS.BEFORE_UNLOAD, handleBeforeUnload);
   }, []);
 }

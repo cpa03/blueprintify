@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION, EASING } from "../config/constants";
@@ -89,12 +90,12 @@ export const ScrollProgress = memo(function ScrollProgress({
       smoothProgress.set(progress);
     };
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
 
     handleScroll();
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
     };
   }, [scrollContainerRef, calculateProgress, showAfter, smoothProgress]);
 

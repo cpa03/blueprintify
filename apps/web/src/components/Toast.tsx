@@ -28,6 +28,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -586,8 +587,8 @@ function ToastContainerComponent(): JSX.Element {
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
+    return () => document.removeEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
   }, [toasts, removeToast, clearAll, handleRemoveToast]);
 
   const handleClearAll = useCallback(() => {

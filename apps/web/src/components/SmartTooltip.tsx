@@ -11,6 +11,7 @@ import {
   isValidElement,
   type ReactElement,
 } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ARIA_ROLES,
   DIRECTION,
@@ -242,8 +243,8 @@ function SmartTooltipComponent({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener(DOM_EVENTS.MOUSE_DOWN, handleClickOutside);
+    return () => document.removeEventListener(DOM_EVENTS.MOUSE_DOWN, handleClickOutside);
   }, [dismissOnClickOutside, isVisible]);
 
   useEffect(() => {
@@ -256,8 +257,8 @@ function SmartTooltipComponent({
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
+    return () => document.removeEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
   }, [dismissOnEscape, isVisible]);
 
   useEffect(() => {
