@@ -71,6 +71,7 @@ import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import { useAutoScroll } from "../hooks/useAutoScroll";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useHashScroll } from "../hooks/useHashScroll";
 import clsx from "clsx";
 import "../styles/markdown.css";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
@@ -233,6 +234,12 @@ function EditorComponent(): JSX.Element {
 
   const currentContent = activeTab === EDITOR_TABS.BLUEPRINT ? blueprintContent : tasksContent;
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
+
+  // Resolve URL fragment deep links (#section) once markdown content exists.
+  // refreshKey re-attempts after a tab or view-mode switch so a target that
+  // lives in an inactive surface is found once that surface renders; an
+  // already-handled hash is never re-scrolled (no viewport yank on switch).
+  useHashScroll(Boolean(currentContent), `${activeTab}:${viewMode}`);
 
   // Freeze announcement text at mount via useState initializer so screen readers
   // only announce once when the editor panel appears, not on every re-render
@@ -692,7 +699,7 @@ function EditorComponent(): JSX.Element {
                         ref={previewRef}
                         onScroll={handlePreviewScroll}
                         className={clsx(
-                          "h-full overflow-y-auto overscroll-contain p-4 lg:p-6 relative",
+                          "preview-scroll-pane h-full overflow-y-auto overscroll-contain p-4 lg:p-6 relative",
                           viewMode === VIEW_MODES.SPLIT ? "w-full lg:w-1/2" : "w-full"
                         )}
                       >

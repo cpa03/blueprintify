@@ -5554,10 +5554,11 @@ describe("DOM_EVENTS (Flexy Iteration 206)", () => {
     expect(DOM_EVENTS.UNHANDLED_REJECTION).toBe("unhandledrejection");
     expect(DOM_EVENTS.ERROR).toBe("error");
     expect(DOM_EVENTS.ANIMATION_END).toBe("animationend");
+    expect(DOM_EVENTS.HASH_CHANGE).toBe("hashchange");
   });
 
-  it("should have 13 unique event names", () => {
-    expect(Object.keys(DOM_EVENTS).length).toBe(13);
+  it("should have 14 unique event names", () => {
+    expect(Object.keys(DOM_EVENTS).length).toBe(14);
     const values = Object.values(DOM_EVENTS);
     expect(new Set(values).size).toBe(values.length);
   });

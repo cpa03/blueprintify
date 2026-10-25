@@ -38,3 +38,4 @@ export type { PersistedStoreConfig, PersistedStoreMethods } from "./usePersisted
 export { useScrollLock } from "./useScrollLock";
 export type { UseScrollLockOptions } from "./useScrollLock";
 export { useBeforeUnload } from "./useBeforeUnload";
+export { useHashScroll } from "./useHashScroll";
