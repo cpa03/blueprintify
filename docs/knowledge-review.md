@@ -11,7 +11,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State (Oct 2026)
 
-**Last Review**: 2026-10-25 (BugFixer Cycle 24: fatal-gate re-verification on `origin/main` `bbd17809`; 3 stale current-state numbers fixed in this file — live `Status` test count 2,942 → 2,953, `scan:secrets` 352 → 354 files, and `DOC-004` CHANGELOG line count 1,053 → 1,054 (this cycle's entry) — first two after #3894 added `useHashScroll.test.ts` (+11 web tests) post cycle-23's measurement. Prior review: RepoKeeper Cycle 23, 2026-10-25, on `adb5c98d` — 2 defects fixed, live `Status` test count and `DOC-004` CHANGELOG line count. Earlier: Cycle 15, 2026-10-23, on `4b74e18c` — 2 defects fixed, `docs/bugs.md` test counts + full-audit vuln tally, `docs/audits/README.md` missing Run 107 index row)  
+**Last Review**: 2026-10-25 (RepoKeeper Cycle 25: hygiene + doc-sync on `origin/main` `a0696ecd`, 0-behind, clean tree — hygiene CLEAN (0 deletions, 640 tracked files); 1 defect fixed (`docs/bugs.md` `Last Updated` footer internally inconsistent with its own 2,958 header — root-caused to cycle-24's final header sync 2,953 → 2,958 from #3898 flexy-207 landing without a footer update); this file's live `Status` line re-measured **already in sync** (tests 2,958/2,958 · scan:secrets 354 files · validate:models 56 agent files), `DOC-004` re-counted 1,055 → 1,056 (post this cycle's entry). Prior review: BugFixer Cycle 24, 2026-10-25, on `bbd17809` — 3 stale current-state numbers fixed (Status test count 2,942 → 2,953, `scan:secrets` 352 → 354 files, `DOC-004` 1,053 → 1,054). Earlier: RepoKeeper Cycle 23, 2026-10-25, on `adb5c98d` — 2 defects fixed, live `Status` test count and `DOC-004` CHANGELOG line count; Cycle 15, 2026-10-23, on `4b74e18c` — 2 defects fixed, `docs/bugs.md` test counts + full-audit vuln tally, `docs/audits/README.md` missing Run 107 index row)  
 **Status**: ✅ All quality gates clean (typecheck ✅ lint ✅ 0/0 (`--max-warnings=0`) ✅ prettier ✅ build ✅ build:api ✅ tests 2,958/2,958 ✅ audit prod 0 vulns ✅ scan:secrets 354 files ✅ validate:wrangler ✅ validate:models 56 agent files ✅)
 
 ### Known Documentation Drift (Resolved)
@@ -35,7 +35,7 @@ All previously tracked drift items resolved in the Sep 2026 consolidation pass:
 | **DOC-001** | CI Workflows | `on-pull.yml` still lacks `issues: write`; blocks Issue Manager automation | Medium |
 | **DOC-002** | CI Workflows | All 5 workflows lack `workflows: write`; blocks self-healing gatekeeper workflows | Medium |
 | **DOC-003** | API Docs | `docs/api-documentation.md` endpoint list verified sync: 14 paths / 15 operations (was tracked as incomplete vs. stale "32 endpoints" claim) | Low |
-| **DOC-004** | CHANGELOG | 1,055 lines of cycle logs; consider moving to archive | Low |
+| **DOC-004** | CHANGELOG | 1,056 lines of cycle logs; consider moving to archive | Low |
 
 ---
 
@@ -52,5 +52,5 @@ All previously tracked drift items resolved in the Sep 2026 consolidation pass:
 
 ---
 
-**Last Updated**: 2026-10-25 — BugFixer Cycle 24 fatal-gate re-verification; 3 stale current-state numbers corrected (Status test count 2,942 → 2,953 +11 web from #3894, scan:secrets 352 → 354 files, DOC-004 CHANGELOG line count 1,053 → 1,054); prior RepoKeeper Cycle 23 consolidation retained  
+**Last Updated**: 2026-10-25 — RepoKeeper Cycle 25 hygiene + doc-sync; 1 defect fixed (`docs/bugs.md` `Last Updated` footer re-synced to its own 2,958 header — cycle-24's final header sync 2,953 → 2,958 from #3898 flexy-207 +5 shared tests landed without a matching footer update); this file's live `Status` line re-measured already in sync (2,958/2,958 · scan:secrets 354 · validate:models 56), `DOC-004` re-counted 1,055 → 1,056 (post-entry); prior BugFixer Cycle 24 corrections retained  
 **Maintainer**: Documentation Specialist
