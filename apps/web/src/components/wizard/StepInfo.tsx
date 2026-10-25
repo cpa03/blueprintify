@@ -36,6 +36,7 @@ import {
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  PERCENT_SCALE,
   RATIO_LIMITS,
   SHORTCUT_DESCRIPTIONS,
   UI_MESSAGES,
@@ -224,7 +225,7 @@ export const StepInfo = memo(function StepInfo({
     return {
       completed: completedFields,
       total: totalFields,
-      percentage: (completedFields / totalFields) * 100,
+      percentage: (completedFields / totalFields) * PERCENT_SCALE,
     };
   }, [projectName.length, description.length, targetAudience.length, constraints.length]);
 

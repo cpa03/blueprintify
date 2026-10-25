@@ -10,6 +10,7 @@ import {
   CHAR_COUNTER_STATE_VALUES,
   CHAR_COUNTER_THRESHOLDS,
   RATIO_LIMITS,
+  PERCENT_SCALE,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
   DATA_BOOLEAN_VALUES,
@@ -163,7 +164,7 @@ function CharacterCounterCompactComponent({
   max,
   className = "",
 }: Omit<CharacterCounterProps, "min" | "warningThreshold">) {
-  const percentage = (current / max) * 100;
+  const percentage = (current / max) * PERCENT_SCALE;
   const isWarning =
     percentage >= CHAR_COUNTER_THRESHOLDS.WARNING_PERCENT &&
     percentage < CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT;
@@ -217,7 +218,7 @@ function CharacterCounterCompactComponent({
             isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
           }`}
           style={{
-            width: `${Math.min(percentage, 100)}%`,
+            width: `${Math.min(percentage, PERCENT_SCALE)}%`,
             transition: shouldReduceMotion ? "none" : undefined,
           }}
         />

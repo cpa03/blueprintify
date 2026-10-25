@@ -45,6 +45,7 @@ import {
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  PERCENT_SCALE,
   SHORTCUT_DESCRIPTIONS,
   STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
@@ -319,7 +320,10 @@ export const StepStack = memo(function StepStack({
 
   const modifierKey = getModifierLabel();
   const minRequired = MIN_REQUIREMENTS.TECH_STACK;
-  const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
+  const progressPercentage = Math.min(
+    (techStack.length / minRequired) * PERCENT_SCALE,
+    PERCENT_SCALE
+  );
 
   return (
     <motion.div

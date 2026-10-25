@@ -11,6 +11,7 @@ import {
   WIZARD_STEP_KEYS,
   EXPORT_ERROR_STRINGS,
   NETWORK_DEFAULTS,
+  PERCENT_SCALE,
   SKELETON_DEFAULTS as SHARED_SKELETON_DEFAULTS,
 } from "@blueprint/shared/config";
 
@@ -640,6 +641,27 @@ export const GENERATION_PHASE_LABELS = {
   IN_PROGRESS: "In progress",
   /** aria-label used for the progress bar when generation is complete */
   COMPLETE_ARIA: "Generation complete",
+} as const;
+
+/**
+ * Phase progress percentages (0-100 scale) paired one-to-one with
+ * GENERATION_PHASE_LABELS — keep the two maps in lockstep so a label can
+ * never ship without its matching percent value.
+ * Flexy says: No hardcoded phase percentages in StepGenerating.tsx!
+ */
+export const GENERATION_PHASE_PERCENTAGES = {
+  /** Generation finished — full percent scale */
+  COMPLETE: PERCENT_SCALE,
+  /** Generation errored — no progress */
+  ERROR: 0,
+  /** Before any progress message is received — initial sliver */
+  STARTING: 5,
+  /** Blueprint generation underway */
+  GENERATING_BLUEPRINT: 30,
+  /** Blueprint complete, task generation underway */
+  GENERATING_TASKS: 65,
+  /** Intermediate/retry progress states */
+  IN_PROGRESS: 45,
 } as const;
 
 // ============================================================================

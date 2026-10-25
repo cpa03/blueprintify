@@ -1,7 +1,7 @@
 export * from "./config.js";
 
 import { z } from "zod";
-import { VALIDATION_LIMITS, EXPORT_LIMITS, SHARE_DEFAULTS } from "./config.js";
+import { VALIDATION_LIMITS, EXPORT_LIMITS, SHARE_DEFAULTS, PERCENT_SCALE } from "./config.js";
 
 // ===== Tech Stack Options =====
 
@@ -307,7 +307,7 @@ export const ImportResultSchema = z.object({
 export const StorageQuotaSchema = z.object({
   used: z.number().int().min(0),
   total: z.number().int().min(0),
-  percentage: z.number().min(0).max(100),
+  percentage: z.number().min(0).max(PERCENT_SCALE),
   projects: z.number().int().min(0),
 });
 

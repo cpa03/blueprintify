@@ -29,6 +29,7 @@ import {
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
   EMPTY_STATE_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
@@ -49,7 +50,7 @@ import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
 export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
-  const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * 100;
+  const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * PERCENT_SCALE;
   const modifierKey = getModifierLabel();
   const altKey = getAltKeyLabel();
   const shouldReduceMotion = useReducedMotion();
