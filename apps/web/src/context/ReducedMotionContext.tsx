@@ -6,6 +6,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { CONTEXT_HOOK_ERRORS, DATA_BOOLEAN_VALUES } from "@blueprint/shared/config";
 import { ACCESSIBILITY_EVENTS } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
@@ -42,8 +43,8 @@ function subscribeToMediaQuery(callback: () => void): () => void {
   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (mediaQuery.addEventListener) {
-    mediaQuery.addEventListener("change", callback);
-    return () => mediaQuery.removeEventListener("change", callback);
+    mediaQuery.addEventListener(DOM_EVENTS.CHANGE, callback);
+    return () => mediaQuery.removeEventListener(DOM_EVENTS.CHANGE, callback);
   } else {
     mediaQuery.addListener(callback);
     return () => mediaQuery.removeListener(callback);

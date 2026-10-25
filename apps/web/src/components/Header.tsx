@@ -17,6 +17,7 @@
  */
 
 import { memo, useState, useEffect, useCallback } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
@@ -114,8 +115,8 @@ function HeaderComponent({
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
+    return () => window.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
   }, []);
 
   return (

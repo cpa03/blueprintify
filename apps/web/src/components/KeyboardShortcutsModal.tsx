@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -247,11 +248,11 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     };
   }, [isOpen, handleKeyDown]);
 

@@ -9,6 +9,7 @@
  */
 
 import { STORAGE_OPERATION_NAMES } from "@blueprint/shared/config";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
@@ -257,7 +258,7 @@ function invalidateQuotaCache(): void {
 // Cross-tab cache invalidation: when another tab writes to localStorage,
 // our running estimate may drift, so trigger a full recalculation
 if (typeof window !== "undefined" && typeof window.addEventListener === "function") {
-  window.addEventListener("storage", () => {
+  window.addEventListener(DOM_EVENTS.STORAGE, () => {
     invalidateQuotaCache();
   });
 }

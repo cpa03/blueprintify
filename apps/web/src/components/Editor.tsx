@@ -20,6 +20,7 @@
  * @see {@link useLastSaved} for save state tracking
  */
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { ReactCodeMirrorRef } from "@uiw/react-codemirror";
@@ -323,7 +324,7 @@ function EditorComponent(): JSX.Element {
         });
       };
 
-      scrollDom.addEventListener("scroll", onScroll, { passive: true });
+      scrollDom.addEventListener(DOM_EVENTS.SCROLL, onScroll, { passive: true });
 
       // Set initial state
       const isTop = scrollDom.scrollTop <= 4;
@@ -332,7 +333,7 @@ function EditorComponent(): JSX.Element {
       setEditorScrollState({ isTop, isBottom });
 
       scrollListenerCleanupRef.current = () => {
-        scrollDom.removeEventListener("scroll", onScroll);
+        scrollDom.removeEventListener(DOM_EVENTS.SCROLL, onScroll);
       };
       return true;
     };
@@ -492,8 +493,8 @@ function EditorComponent(): JSX.Element {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [handleNewProject, handleExport, hasContent, isExporting, setViewMode, toast]);
 
   // Smooth-scroll both panes to top when switching tabs to avoid mid-content

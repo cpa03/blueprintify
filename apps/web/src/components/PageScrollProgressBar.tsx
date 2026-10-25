@@ -34,6 +34,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import {
   ANIMATION_SCALE,
@@ -211,11 +212,11 @@ function PageScrollProgressBarComponent({
       smoothProgress.set(progress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
     handleScroll();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
     };
   }, [calculateProgress, showAfter, smoothProgress]);
 

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { useReducedMotion } from "./useReducedMotion";
 import { ANIMATION, TEXTAREA_CONFIG, CSS_VALUES } from "../config/constants";
 
@@ -92,9 +93,9 @@ export function useAutoResizeTextarea(
       }
     };
 
-    textarea.addEventListener("input", handleInput, { passive: true });
+    textarea.addEventListener(DOM_EVENTS.INPUT, handleInput, { passive: true });
     return () => {
-      textarea.removeEventListener("input", handleInput);
+      textarea.removeEventListener(DOM_EVENTS.INPUT, handleInput);
       if (rafId !== null) {
         cancelAnimationFrame(rafId);
       }
@@ -112,8 +113,8 @@ export function useAutoResizeTextarea(
       });
     };
 
-    window.addEventListener("resize", handleWindowResize, { passive: true });
-    return () => window.removeEventListener("resize", handleWindowResize);
+    window.addEventListener(DOM_EVENTS.RESIZE, handleWindowResize, { passive: true });
+    return () => window.removeEventListener(DOM_EVENTS.RESIZE, handleWindowResize);
   }, [calculateAndApplyHeight]);
 
   useEffect(() => {
