@@ -7,19 +7,12 @@ import {
   RefineRequestSchema,
   TemplateSchema,
   StreamChunkSchema,
-  GenerationResultSchema,
   TaskStatusSchema,
   TaskPrioritySchema,
   TaskItemSchema,
   ExportFormatSchema,
-  ExportRequestSchema,
-  ImportRequestSchema,
-  ImportResultSchema,
   StorageQuotaSchema,
   StorageClearRequestSchema,
-  StorageReportRequestSchema,
-  CreateShareSchema,
-  VerifySharePassphraseSchema,
 } from "./schema.js";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -66,12 +59,6 @@ export type Template = z.infer<typeof TemplateSchema>;
 export type StreamChunk = z.infer<typeof StreamChunkSchema>;
 
 /**
- * Complete result of blueprint or task generation.
- * Contains the full generated content and metadata.
- */
-export type GenerationResult = z.infer<typeof GenerationResultSchema>;
-
-/**
  * Status of a generated task (e.g., "pending", "in_progress", "completed").
  */
 export type TaskStatus = z.infer<typeof TaskStatusSchema>;
@@ -96,24 +83,6 @@ export type TaskItem = z.infer<typeof TaskItemSchema>;
 export type ExportFormat = z.infer<typeof ExportFormatSchema>;
 
 /**
- * Request payload for exporting project data.
- * Specifies the format and content to export.
- */
-export type ExportRequest = z.infer<typeof ExportRequestSchema>;
-
-/**
- * Request payload for importing project data.
- * Contains the data to import and optional conflict resolution strategy.
- */
-export type ImportRequest = z.infer<typeof ImportRequestSchema>;
-
-/**
- * Result of an import operation.
- * Contains success status, imported data, and any warnings/errors.
- */
-export type ImportResult = z.infer<typeof ImportResultSchema>;
-
-/**
  * Current storage quota information.
  * Shows used/available space in localStorage.
  */
@@ -123,19 +92,6 @@ export type StorageQuota = z.infer<typeof StorageQuotaSchema>;
  * Request payload for clearing stored data.
  */
 export type StorageClearRequest = z.infer<typeof StorageClearRequestSchema>;
-
-/**
- * Request payload for reporting client storage usage.
- */
-export type StorageReportRequest = z.infer<typeof StorageReportRequestSchema>;
-
-// ===== Share Types =====
-
-/**
- * Request payload for creating a shareable blueprint link.
- */
-export type CreateShareRequest = z.infer<typeof CreateShareSchema>;
-export type VerifySharePassphraseRequest = z.infer<typeof VerifySharePassphraseSchema>;
 
 // ===== Wizard Step Types =====
 
@@ -172,19 +128,6 @@ export interface Session {
   generatedTasks: string | null;
   createdAt: string;
   updatedAt: string;
-}
-
-// ===== API Client Types =====
-
-/**
- * Callback handlers for streaming AI responses.
- * Used with SSE (Server-Sent Events) for real-time content generation.
- */
-export interface StreamCallbacks {
-  onChunk: (chunk: string) => void;
-  onError: (error: string) => void;
-  onDone: () => void;
-  onRetry?: (attempt: number, maxRetries: number) => void;
 }
 
 // ===== Editor Types =====

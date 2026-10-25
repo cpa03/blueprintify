@@ -49,7 +49,7 @@ function formatRelativeTime(timestamp: number): string {
   }
 }
 
-export interface UseLastSavedReturn {
+interface UseLastSavedReturn {
   lastSavedText: string;
   markSaved: () => void;
   setLastSaved: (timestamp: number) => void;

@@ -56,7 +56,7 @@ export async function generatePythonProject(
   zip.file("README.md", generateProjectReadme(projectName, description, features, "Python"));
 }
 
-export function generateDjangoManagePy(projectName: string): string {
+function generateDjangoManagePy(projectName: string): string {
   return `#!/usr/bin/env python
 import os
 import sys
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 `;
 }
 
-export function generateDjangoSettings(projectName: string): string {
+function generateDjangoSettings(projectName: string): string {
   return `from pathlib import Path
 from decouple import config
 
@@ -169,7 +169,7 @@ REST_FRAMEWORK = {
 `;
 }
 
-export function generateDjangoURLs(): string {
+function generateDjangoURLs(): string {
   return `from django.contrib import admin
 from django.urls import path, include
 
@@ -179,7 +179,7 @@ urlpatterns = [
 ]`;
 }
 
-export function generateDjangoWSGI(projectName: string): string {
+function generateDjangoWSGI(projectName: string): string {
   return `import os
 
 from django.core.wsgi import get_wsgi_application
@@ -190,7 +190,7 @@ application = get_wsgi_application()
 `;
 }
 
-export function generateDjangoModels(_features: string[]): string {
+function generateDjangoModels(_features: string[]): string {
   void _features;
   return `from django.db import models
 
@@ -214,7 +214,7 @@ class Feature(models.Model):
 `;
 }
 
-export function generateDjangoViews(_features: string[]): string {
+function generateDjangoViews(_features: string[]): string {
   void _features;
   return `from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -235,7 +235,7 @@ def health_check(request):
 `;
 }
 
-export function generateDjangoAppURLs(): string {
+function generateDjangoAppURLs(): string {
   return `from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
@@ -251,7 +251,7 @@ urlpatterns = [
 `;
 }
 
-export function generateFlaskApp(projectName: string, features: string[]): string {
+function generateFlaskApp(projectName: string, features: string[]): string {
   return `from flask import Flask, jsonify
 from flask_restful import Api, Resource
 from decouple import config
@@ -278,7 +278,7 @@ if __name__ == '__main__':
 `;
 }
 
-export function generateFlaskModels(_features: string[]): string {
+function generateFlaskModels(_features: string[]): string {
   void _features;
   return `from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -321,7 +321,7 @@ class Feature(db.Model):
 `;
 }
 
-export function generateFastAPIIndex(projectName: string, features: string[]): string {
+function generateFastAPIIndex(projectName: string, features: string[]): string {
   return `from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
@@ -358,7 +358,7 @@ if __name__ == "__main__":
 `;
 }
 
-export function generateFastAPIModels(_features: string[]): string {
+function generateFastAPIModels(_features: string[]): string {
   void _features;
   return `from pydantic import BaseModel
 from typing import List, Optional

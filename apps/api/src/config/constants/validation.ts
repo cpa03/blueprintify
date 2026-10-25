@@ -8,7 +8,7 @@
  * @module config/constants/validation
  */
 
-export const FIELD_LABELS = {
+const FIELD_LABELS = {
   PROJECT_NAME: "project name",
   DESCRIPTION: "description",
   TARGET_AUDIENCE: "target audience",
@@ -24,7 +24,7 @@ export const FIELD_LABELS = {
   TITLE: "share title",
 } as const;
 
-export const FIELD_PATHS = {
+const FIELD_PATHS = {
   PROJECT_NAME: "projectName",
   DESCRIPTION: "description",
   TARGET_AUDIENCE: "targetAudience",

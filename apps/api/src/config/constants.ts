@@ -49,10 +49,8 @@ export {
   CACHE_CONFIG,
 } from "./constants/resilience";
 export {
-  DB_ID_CONFIG,
   STORAGE_KV_CONFIG,
   STORAGE_CONFIG,
-  BODY_SIZE_LIMITS,
   BODY_SIZE_MAX,
   KB,
   MB,
@@ -76,8 +74,6 @@ export {
 export { LOGGER_CONFIG } from "./constants/logger";
 export { EXTERNAL_URLS } from "./constants/external";
 export {
-  FIELD_LABELS,
-  FIELD_PATHS,
   INJECTION_FIELD_DEFINITIONS,
   INJECTION_ERROR_MESSAGE,
   ROUTE_PATH_ALL,

@@ -138,5 +138,3 @@ export function useAutoResizeTextarea(
     resize,
   };
 }
-
-export type { UseAutoResizeTextareaOptions, UseAutoResizeTextareaReturn };

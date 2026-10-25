@@ -94,19 +94,14 @@ All schemas have corresponding TypeScript types inferred via `z.infer`:
 - `RefineRequest`
 - `Template`
 - `StreamChunk`
-- `GenerationResult`
 - `WizardState`
 - `WizardStep`
 - `Session`
 - `EditorState`
 - `EditorTab`
 - `ExportFormat`
-- `ExportRequest`
-- `ImportRequest`
 - `StorageQuota`
 - `StorageClearRequest`
-- `StorageReportRequest`
-- `ImportResult`
 
 ### Configuration
 

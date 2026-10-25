@@ -149,7 +149,7 @@ export interface AppVariables {
  * Environment type derived from shared ENVIRONMENT_NAMES config.
  * Flexy says: No hardcoded "development" | "production" string unions!
  */
-export type Environment = (typeof ENVIRONMENT_NAMES)[keyof typeof ENVIRONMENT_NAMES];
+type Environment = (typeof ENVIRONMENT_NAMES)[keyof typeof ENVIRONMENT_NAMES];
 
 /**
  * User role types for authorization.

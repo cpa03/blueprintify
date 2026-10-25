@@ -133,4 +133,3 @@ export function useReducedMotionContext(): ReducedMotionContextType {
 }
 
 export { ReducedMotionContext };
-export type { ReducedMotionContextType, ReducedMotionProviderProps };
