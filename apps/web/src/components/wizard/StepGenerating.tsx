@@ -47,6 +47,7 @@ import {
   WIZARD_STEP_KEYS,
   ICON_PATHS,
   DATA_BOOLEAN_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -118,6 +119,7 @@ import {
   SPRING_CONFIG,
   WIZARD_GENERATING_LABELS,
   GENERATION_PHASE_LABELS,
+  GENERATION_PHASE_PERCENTAGES,
   GENERATION_ERROR_LABELS,
   CELEBRATION_TEXT,
   OPACITY_PULSE,
@@ -214,17 +216,38 @@ export const StepGenerating = memo(function StepGenerating({
   // users get an intuitive visual sense of progress beyond the text status.
   // The bar fills smoothly: 5% on start → 30% blueprint → 65% tasks → 100% complete.
   const generationPhase = useMemo<{ percent: number; label: string }>(() => {
-    if (isComplete) return { percent: 100, label: GENERATION_PHASE_LABELS.COMPLETE };
-    if (isError) return { percent: 0, label: GENERATION_PHASE_LABELS.ERROR };
-    if (!progress) return { percent: 5, label: GENERATION_PHASE_LABELS.STARTING };
+    if (isComplete) {
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.COMPLETE,
+        label: GENERATION_PHASE_LABELS.COMPLETE,
+      };
+    }
+    if (isError) {
+      return { percent: GENERATION_PHASE_PERCENTAGES.ERROR, label: GENERATION_PHASE_LABELS.ERROR };
+    }
+    if (!progress) {
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.STARTING,
+        label: GENERATION_PHASE_LABELS.STARTING,
+      };
+    }
 
     if (progress === GENERATION_MESSAGES.BLUEPRINT_START) {
-      return { percent: 30, label: GENERATION_PHASE_LABELS.GENERATING_BLUEPRINT };
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.GENERATING_BLUEPRINT,
+        label: GENERATION_PHASE_LABELS.GENERATING_BLUEPRINT,
+      };
     }
     if (progress === GENERATION_MESSAGES.BLUEPRINT_COMPLETE) {
-      return { percent: 65, label: GENERATION_PHASE_LABELS.GENERATING_TASKS };
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.GENERATING_TASKS,
+        label: GENERATION_PHASE_LABELS.GENERATING_TASKS,
+      };
     }
-    return { percent: 45, label: GENERATION_PHASE_LABELS.IN_PROGRESS };
+    return {
+      percent: GENERATION_PHASE_PERCENTAGES.IN_PROGRESS,
+      label: GENERATION_PHASE_LABELS.IN_PROGRESS,
+    };
   }, [progress, isComplete, isError]);
 
   // Elapsed time timer — ticks while generation is actively running.
@@ -642,7 +665,7 @@ export const StepGenerating = memo(function StepGenerating({
             role={ARIA_ROLES.PROGRESSBAR}
             aria-valuenow={generationPhase.percent}
             aria-valuemin={0}
-            aria-valuemax={100}
+            aria-valuemax={PERCENT_SCALE}
             aria-label={
               isComplete
                 ? GENERATION_PHASE_LABELS.COMPLETE_ARIA
@@ -655,14 +678,14 @@ export const StepGenerating = memo(function StepGenerating({
               animate={{
                 width: generationPhase.percent + "%",
                 opacity:
-                  isGenerating && generationPhase.percent < 100
+                  isGenerating && generationPhase.percent < PERCENT_SCALE
                     ? shouldReduceMotion
                       ? 0.9
                       : [0.85, 1, 0.85]
                     : 1,
               }}
               transition={
-                isGenerating && generationPhase.percent < 100 && !shouldReduceMotion
+                isGenerating && generationPhase.percent < PERCENT_SCALE && !shouldReduceMotion
                   ? {
                       width: { duration: ANIMATION.PULSE, ease: EASING.easeOut },
                       opacity: {
