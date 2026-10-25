@@ -36,7 +36,7 @@ import {
 } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
-import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
+import { getModifierLabel, getAltKeyLabel, isMacOS } from "../lib/platform";
 import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
 import {
@@ -47,6 +47,7 @@ import {
   ARIA_ROLES,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
+  getPlatformShortcutLabel,
 } from "@blueprint/shared/config";
 
 /**
@@ -125,7 +126,7 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.GENERATION,
     },
     {
-      keys: [modifier, "N"],
+      keys: getPlatformShortcutLabel("NEW_PROJECT", isMacOS()).split("+"),
       description: KEYBOARD_SHORTCUTS.NEW_PROJECT.DESCRIPTION,
       category: SHORTCUT_CATEGORIES.GENERAL,
     },

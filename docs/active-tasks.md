@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **EditorHeader Micro-UX & Platform-Aware Shortcut Labels (Oct 25 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-active-tab`, `data-view-mode`, `data-has-content`, `data-generating`, `data-reduced-motion`) to `EditorHeader.tsx`.
+- [STRENGTHEN] Strengthened `EditorHeader` accessibility and state tracking for automated DOM inspection, and added `getPlatformShortcutLabel` to `@blueprint/shared` for platform-aware shortcut labels.
+- [CONSOLIDATE] Consolidated platform-aware shortcut label resolution across `packages/shared/src/config/ui.ts` and `KeyboardShortcutsModal.tsx`.
+- [REMOVE] Removed hardcoded "Ctrl" modifier label in shortcut modal items in favor of platform-aware resolver (`getPlatformShortcutLabel`).
+
 ## ✅ StorX — **StepFeatures Micro-UX & Reduced Motion State Inspection (Oct 23 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`, `data-features-count`, `data-is-max-count`) to `StepFeatures.tsx`.
 - [STRENGTHEN] Strengthened `StepFeatures` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false"), `data-can-proceed` ("true"), `data-features-count`, and `data-is-max-count` ("true"/"false") attributes for state inspection and accessibility testing.
