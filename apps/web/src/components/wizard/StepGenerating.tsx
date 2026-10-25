@@ -52,6 +52,7 @@ import {
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, TIME_FORMAT } from "@blueprint/shared";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
 import { STORAGE_KEYS } from "../../config/keys";
 interface ElapsedTime {
@@ -555,7 +556,7 @@ export const StepGenerating = memo(function StepGenerating({
         )}
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
         {isComplete ? (
           <motion.div
             key="complete"
@@ -624,7 +625,7 @@ export const StepGenerating = memo(function StepGenerating({
                   ease: EASING.easeInOut,
                 }}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                   <motion.span
                     key={progress || "starting"}
                     initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY }}
@@ -749,7 +750,7 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} relative`}>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
               {awaitingContent ? (
                 <motion.span
                   key="awaiting-blueprint"
@@ -824,7 +825,7 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} relative`}>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
               {awaitingContent ? (
                 <motion.span
                   key="awaiting-tasks"
@@ -867,7 +868,7 @@ export const StepGenerating = memo(function StepGenerating({
         </motion.div>
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
         {isComplete ? (
           <motion.div
             key="complete-actions"
@@ -1081,7 +1082,7 @@ export const StepGenerating = memo(function StepGenerating({
               className="text-sm text-dark-500 mt-8 flex items-center gap-1.5"
             >
               <Icon name="helpCircleOutline" className="w-4 h-4 flex-shrink-0" />
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                 <motion.span
                   key={blueprintLines > 0 ? "streaming" : "empty"}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY }}

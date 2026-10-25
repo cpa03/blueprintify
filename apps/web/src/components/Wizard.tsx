@@ -46,6 +46,7 @@ import {
   UI_MESSAGES,
   WIZARD_STEP_KEYS,
 } from "@blueprint/shared";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
 
@@ -262,7 +263,7 @@ function WizardComponent(): JSX.Element {
         role={ARIA_ROLES.REGION}
         aria-label={ACCESSIBILITY_LABELS.WIZARD.STEP_ARIA(currentStepLabel)}
       >
-        <StepTransition mode="wait">{renderStep()}</StepTransition>
+        <StepTransition mode={ANIMATE_PRESENCE_MODES.WAIT}>{renderStep()}</StepTransition>
       </div>
 
       {/* Bottom scroll shadow — fades in when there's more wizard content

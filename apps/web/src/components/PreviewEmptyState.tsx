@@ -27,6 +27,7 @@ import {
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 import {
   EMPTY_STATE_CONFIG,
   SPRING_CONFIG,
@@ -73,8 +74,8 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
     <motion.div
       className="h-full flex flex-col items-center justify-center text-dark-500 p-8"
       variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
+      initial={MOTION_VARIANT_STATES.HIDDEN}
+      animate={MOTION_VARIANT_STATES.VISIBLE}
       role={ARIA_ROLES.STATUS}
       aria-live={ARIA_LIVE_VALUES.POLITE}
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
