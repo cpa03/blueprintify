@@ -113,7 +113,7 @@ const ProgressRing = memo(function ProgressRing({
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset = circumference - (progress / PERCENT_SCALE) * circumference;
 
   return (
     <svg
@@ -164,7 +164,7 @@ const ToastItem = memo(
     ref
   ) {
     const [isHovered, setIsHovered] = useState(false);
-    const [progress, setProgress] = useState(100);
+    const [progress, setProgress] = useState(PERCENT_SCALE);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const startTimeRef = useRef<number>(0);
