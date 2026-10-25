@@ -110,7 +110,7 @@ export interface ErrorResponse {
  * throw new APIError(ErrorType.VALIDATION, "Invalid input", 400, ERROR_CODES.VALIDATION_ERROR, { field: "email" });
  * ```
  */
-export class APIError extends Error {
+class APIError extends Error {
   /** The error type classification */
   public readonly type: ErrorType;
   /** HTTP status code for the error response */
@@ -272,7 +272,7 @@ export class ConfigurationError extends APIError {
  * Error for unexpected internal failures (HTTP 500).
  * Used as a catch-all for unhandled errors.
  */
-export class InternalServerError extends APIError {
+class InternalServerError extends APIError {
   /**
    * Creates a new InternalServerError instance.
    * @param message - Human-readable internal error message

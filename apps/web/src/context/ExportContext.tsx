@@ -114,4 +114,3 @@ export function useExportContext(): ExportContextType {
 }
 
 export { ExportContext };
-export type { ExportContextType, ExportProviderProps };
