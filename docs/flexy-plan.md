@@ -42,7 +42,7 @@ Deliberately skipped: test files (`toHaveBeenCalledWith("online")` asserts rende
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-206-dom-events` | refactor(flexy): centralize DOM event name string literals into shared config (Iteration 206) |
+| #3891 | `flexy/iteration-206-dom-events` | refactor(flexy): centralize DOM event name string literals into shared config (Iteration 206) |
 
 ### ✅ Flexy Iteration 205: Centralize Percent-Domain `100` Literals & Eliminate PERCENT_SCALE Bypasses
 
