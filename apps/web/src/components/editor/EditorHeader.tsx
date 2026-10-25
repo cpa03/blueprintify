@@ -29,7 +29,12 @@
 import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_X_OFFSET,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ARIA_HIDDEN_VALUES,
@@ -543,7 +548,9 @@ function EditorHeaderComponent({
       data-view-mode={viewMode}
       data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-generating={isGenerating ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
-      data-reduced-motion={shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <div className="flex items-center gap-6">
         <div
