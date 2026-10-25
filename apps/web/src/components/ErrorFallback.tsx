@@ -8,7 +8,7 @@
  * @module components/ErrorFallback
  */
 
-import { memo, useState, useCallback } from "react";
+import { memo, useState, useCallback, useEffect, useRef } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
@@ -36,6 +36,7 @@ import {
   ARIA_ROLES,
   COPY_STATE_VALUES,
   FRAMER_TYPE,
+  TIME_UNITS,
 } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
@@ -69,6 +70,33 @@ const itemVariants = {
 };
 
 /**
+ * Zero-based position of the action-button row in the cascade
+ * (icon → title → description → [details] → actions).
+ */
+function recoveryActionRowIndex(hasDetails: boolean): number {
+  return hasDetails ? 4 : 3;
+}
+
+/**
+ * Delay before focusing the primary recovery action, in milliseconds.
+ *
+ * The card reveals children in a staggered cascade, so the action row is still
+ * at `opacity: 0` while the rows above it animate in — focusing it earlier
+ * would hand keyboard/screen-reader users an invisible focus target
+ * (WCAG 2.4.3 Focus Order). Derived from the shared stagger config plus
+ * `ANIMATION.NORMAL` for the row's spring to settle, so it tracks cascade
+ * changes instead of drifting as a magic number.
+ */
+function recoveryFocusDelayMs(hasDetails: boolean): number {
+  const { DELAY_CHILDREN_S, STAGGER_S } = STAGGER_CONFIG.ERROR_FALLBACK;
+  const cascadeDelayMs = Math.round(
+    (DELAY_CHILDREN_S + STAGGER_S * recoveryActionRowIndex(hasDetails)) * TIME_UNITS.MS_PER_SECOND
+  );
+  const settleMs = Math.round(ANIMATION.NORMAL * TIME_UNITS.MS_PER_SECOND);
+  return cascadeDelayMs + settleMs;
+}
+
+/**
  * Error fallback UI rendered when a child component throws.
  * Provides a calming, animated recovery interface.
  */
@@ -79,6 +107,27 @@ export const ErrorFallback = memo(function ErrorFallback({
   const shouldReduceMotion = useReducedMotion();
   const [isCopied, setIsCopied] = useState(false);
   const [copyFailed, setIsCopyFailed] = useState(false);
+
+  const recoveryButtonRef = useRef<HTMLButtonElement>(null);
+  const hasDetails = error !== undefined;
+  const focusDelayMs = recoveryFocusDelayMs(hasDetails);
+
+  // A render error unmounts the whole subtree, which drops focus back to
+  // <body> — the next Tab then restarts from the top of the document. Once the
+  // action row has painted, hand focus to the primary recovery action so
+  // keyboard and screen-reader users land directly on their way out. Skipped
+  // when focus is no longer idle, so we never yank focus away from a user who
+  // has already started navigating since the fallback mounted.
+  useEffect(() => {
+    const focusTimer = setTimeout(() => {
+      const active = document.activeElement;
+      const focusIsIdle =
+        active === null || active === document.body || active === document.documentElement;
+      if (!focusIsIdle) return;
+      recoveryButtonRef.current?.focus({ preventScroll: true });
+    }, focusDelayMs);
+    return () => clearTimeout(focusTimer);
+  }, [focusDelayMs]);
 
   const handleReload = (): void => {
     window.location.reload();
@@ -364,6 +413,7 @@ export const ErrorFallback = memo(function ErrorFallback({
             variants={shouldReduceMotion ? undefined : itemVariants}
           >
             <motion.button
+              ref={recoveryButtonRef}
               onClick={resetErrorBoundary}
               whileHover={
                 shouldReduceMotion
