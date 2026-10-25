@@ -49,10 +49,8 @@ export {
   CACHE_CONFIG,
 } from "./constants/resilience";
 export {
-  DB_ID_CONFIG,
   STORAGE_KV_CONFIG,
   STORAGE_CONFIG,
-  BODY_SIZE_LIMITS,
   BODY_SIZE_MAX,
   KB,
   MB,
