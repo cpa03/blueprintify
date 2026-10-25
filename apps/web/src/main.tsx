@@ -1,4 +1,5 @@
 import { StrictMode } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
@@ -12,13 +13,13 @@ import "./index.css";
 import App from "./App";
 
 // Global error handlers for uncaught errors and unhandled Promise rejections
-window.addEventListener("unhandledrejection", (event) => {
+window.addEventListener(DOM_EVENTS.UNHANDLED_REJECTION, (event) => {
   console.error(DEBUG_MESSAGES.UNHANDLED_REJECTION, event.reason);
   // Prevent the default browser behavior (which shows a cryptic error in console)
   event.preventDefault();
 });
 
-window.addEventListener("error", (event) => {
+window.addEventListener(DOM_EVENTS.ERROR, (event) => {
   console.error(DEBUG_MESSAGES.UNCAUGHT_ERROR, event.message, event.error?.stack ?? "");
   // Prevent the default browser behavior for non-critical errors
   if (!event.isTrusted) {
@@ -41,7 +42,7 @@ const fadeOutAndRemoveSkeletonLoader = () => {
     // the UI is interactive rather than lingering unnecessarily.
     skeleton.style.animation = SKELETON_EXIT_DEFAULTS.ANIMATION;
     // Remove from DOM after animation completes to keep the DOM clean.
-    skeleton.addEventListener("animationend", () => skeleton.remove(), { once: true });
+    skeleton.addEventListener(DOM_EVENTS.ANIMATION_END, () => skeleton.remove(), { once: true });
   }
 };
 

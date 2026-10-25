@@ -28,6 +28,7 @@
  */
 
 import { useState, memo, useCallback, useRef, useEffect } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   STARTER_TEMPLATES,
   KEYBOARD_EVENT_KEYS,
@@ -87,11 +88,11 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
 
     // Older Safari only exposes the deprecated addListener pair.
     if (lgQuery.addEventListener) {
-      lgQuery.addEventListener("change", updateColumns);
-      mdQuery.addEventListener("change", updateColumns);
+      lgQuery.addEventListener(DOM_EVENTS.CHANGE, updateColumns);
+      mdQuery.addEventListener(DOM_EVENTS.CHANGE, updateColumns);
       return () => {
-        lgQuery.removeEventListener("change", updateColumns);
-        mdQuery.removeEventListener("change", updateColumns);
+        lgQuery.removeEventListener(DOM_EVENTS.CHANGE, updateColumns);
+        mdQuery.removeEventListener(DOM_EVENTS.CHANGE, updateColumns);
       };
     }
 

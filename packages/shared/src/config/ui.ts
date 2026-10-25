@@ -665,6 +665,47 @@ export const KEYBOARD_EVENT_KEYS = {
 } as const;
 
 /**
+ * DOM Event Names
+ * Centralized source of truth for standard DOM event type strings passed to
+ * `addEventListener` / `removeEventListener` / `dispatchEvent`.
+ * Most call sites register a listener and later remove it with the same event
+ * string — a bare-literal typo on either side silently leaks the listener or
+ * fails to detach it. Pairs must reference the same constant.
+ * Flexy says: No hardcoded "keydown" / "scroll" / ... event strings in components!
+ * Usage: import { DOM_EVENTS } from "@blueprint/shared/config";
+ *        window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+ *        return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+ */
+export const DOM_EVENTS = {
+  /** Key press event — keyboard shortcuts, focus traps, escape handlers */
+  KEYDOWN: "keydown" as const,
+  /** Scroll event — scroll progress, lazy headers, auto-scroll containers */
+  SCROLL: "scroll" as const,
+  /** Change event — MediaQueryList matches listener */
+  CHANGE: "change" as const,
+  /** Resize event — viewport/window resize handlers */
+  RESIZE: "resize" as const,
+  /** Input event — textarea auto-resize handlers */
+  INPUT: "input" as const,
+  /** Before-unload event — unsaved-changes navigation guard */
+  BEFORE_UNLOAD: "beforeunload" as const,
+  /** Online event — network connectivity restored */
+  ONLINE: "online" as const,
+  /** Offline event — network connectivity lost */
+  OFFLINE: "offline" as const,
+  /** Mouse-down event — outside-click dismissal handlers */
+  MOUSE_DOWN: "mousedown" as const,
+  /** Storage event — cross-tab localStorage synchronization */
+  STORAGE: "storage" as const,
+  /** Unhandled promise rejection event — global error boundary */
+  UNHANDLED_REJECTION: "unhandledrejection" as const,
+  /** Error event — global runtime error boundary */
+  ERROR: "error" as const,
+  /** Animation-end event — skeleton removal after exit animation */
+  ANIMATION_END: "animationend" as const,
+} as const;
+
+/**
  * ARIA Keyboard Shortcuts
  * Centralized source of truth for `aria-keyshortcuts` attribute values.
  * Derived from KEYBOARD_EVENT_KEYS so the WAI-ARIA key names always stay

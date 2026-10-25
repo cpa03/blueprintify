@@ -20,6 +20,7 @@
  */
 
 import React, { Suspense, lazy, useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { StepTransition } from "./StepTransition";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -181,13 +182,13 @@ function WizardComponent(): JSX.Element {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleCmdEnter);
-    window.addEventListener("keydown", handleAltArrowLeft);
-    window.addEventListener("keydown", handleAltArrowRight);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleCmdEnter);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowLeft);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowRight);
     return () => {
-      window.removeEventListener("keydown", handleCmdEnter);
-      window.removeEventListener("keydown", handleAltArrowLeft);
-      window.removeEventListener("keydown", handleAltArrowRight);
+      window.removeEventListener(DOM_EVENTS.KEYDOWN, handleCmdEnter);
+      window.removeEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowLeft);
+      window.removeEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowRight);
     };
   }, [handleCmdEnter, handleAltArrowLeft, handleAltArrowRight]);
 
