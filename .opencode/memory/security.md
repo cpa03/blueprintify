@@ -31,6 +31,12 @@
 
 ## Lessons Learned
 
+### 2026-10-25: Security Audit — RepoKeeper Cycle 25 doc-sync PR (4-file docs-only diff vs origin/main, 0-behind/1-ahead), 0 introduced issues
+
+- **Finding**: `git diff --name-only origin/main` → 4 modified `.md` files only (`CHANGELOG.md` +2/−1, `docs/findings.md` +8, `docs/bugs.md` +1/−1, `docs/knowledge-review.md` +3/−3; 14 added lines, 0 added/deleted files, 0 code files) — a RepoKeeper hygiene + doc-sync record (footer re-sync to the live 2,958 header, DOC-004 re-count 1,055 → 1,056, Last Review/Last Updated refreshes, cycle-25 findings + changelog entries). Introduces 0 vulnerabilities, 0 secrets, 0 deprecated-API usage — nothing to remove.
+- **Verification**: added-lines (14) strict secret regex 0x (AWS/GitHub/OpenAI/Anthropic/Slack/Google/JWT/npm/GitLab/SendGrid tokens, PEM blocks, URL creds) · key=value secret assignments 0x · markdown injection 0x (raw `<script>`/`<iframe>`/`javascript:`/`on*=` handlers) · token-bearing URLs 0x · deprecated-API 0x · `scan:secrets` ✅ 354 files · `npm audit --omit=dev` ✅ 0 vulns · **no `package.json`/lockfile in diff → lockfile byte-identical to origin/main → zero new CVE surface** · root trust-boundary stubs (`task.md`/`bug.md`/`blueprint.md`) not reintroduced (0x) · no test asserts on `CHANGELOG` content (grep `*test*` → 0 files) so the doc edits cannot shift any gate.
+- **Lesson**: **Cycle-24's own defect was a partial sync** — the header was re-measured to 2,958 but the footer left narrating 2,953, i.e. *internal* doc inconsistency (two live claims in one file disagreeing) is a drift class separate from doc-vs-code drift. Added to the checklist: when touching a file with both a header metric and a `Last Updated` footer that *narrates* that metric, sync both in the same edit or the next cycle finds a contradiction that no external measurement flags (both numbers were checked against tests separately and only the cross-reference failed).
+
 ### 2026-10-25: Security Audit — RepoKeeper Cycle 24 doc-sync PR (4-file docs-only diff vs origin/main, 0-behind/1-ahead), 0 introduced issues
 
 - **Finding**: `git diff --name-only origin/main` → 4 modified `.md` files only (`CHANGELOG.md` +1, `docs/bugs.md` +2, `docs/findings.md` +7, `docs/knowledge-review.md` +4; 14 added lines, 0 added/deleted files, 0 code files) — a RepoKeeper hygiene + doc-sync record (test-count re-sync 2,942 → 2,953, scan:secrets 352 → 354, DOC-004 re-count, footers). Introduces 0 vulnerabilities, 0 secrets, 0 deprecated-API usage — nothing to remove.
