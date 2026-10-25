@@ -109,8 +109,8 @@ function PageScrollProgressBarComponent({
 
     if (scrollHeight <= 0) return 0;
 
-    const progress = (scrollTop / scrollHeight) * 100;
-    return Math.min(Math.max(progress, 0), 100);
+    const progress = (scrollTop / scrollHeight) * PERCENT_SCALE;
+    return Math.min(Math.max(progress, 0), PERCENT_SCALE);
   }, []);
 
   /**
@@ -198,7 +198,7 @@ function PageScrollProgressBarComponent({
     : SCROLL_PROGRESS_SPRING.PAGE_BAR_NORMAL;
 
   const smoothProgress = useSpring(0, springConfig);
-  const width = useTransform(smoothProgress, [0, 100], ["0%", "100%"]);
+  const width = useTransform(smoothProgress, [0, PERCENT_SCALE], ["0%", `${PERCENT_SCALE}%`]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -206,7 +206,7 @@ function PageScrollProgressBarComponent({
       const scrollTop = window.scrollY;
 
       setScrollProgress(progress);
-      setIsVisible(scrollTop > showAfter && progress < 100);
+      setIsVisible(scrollTop > showAfter && progress < PERCENT_SCALE);
 
       smoothProgress.set(progress);
     };
@@ -229,7 +229,7 @@ function PageScrollProgressBarComponent({
       aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       aria-valuenow={Math.round(scrollProgress)}
       aria-valuemin={0}
-      aria-valuemax={100}
+      aria-valuemax={PERCENT_SCALE}
       aria-valuetext={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_PERCENT(scrollProgress)}
       aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION}
       aria-hidden={isBarVisible ? ARIA_HIDDEN_VALUES.FALSE : ARIA_HIDDEN_VALUES.TRUE}
@@ -315,7 +315,7 @@ function PageScrollProgressBarComponent({
         <motion.div
           className="absolute top-0 h-full w-10 pointer-events-none"
           style={{
-            right: `calc(${100 - scrollProgress}% - 20px)`,
+            right: `calc(${PERCENT_SCALE - scrollProgress}% - 20px)`,
             background: `linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary-500) ${COLOR_MIX_OPACITY.HIGHLIGHT}, transparent) 50%, transparent 100%)`,
           }}
           initial={{ opacity: 0 }}
