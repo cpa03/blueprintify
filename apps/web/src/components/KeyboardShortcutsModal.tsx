@@ -50,6 +50,7 @@ import {
   SVG_ICON_DEFAULTS,
   getPlatformShortcutLabel,
 } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -456,7 +457,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         )}
                       </div>
                       <div className="flex flex-col">
-                        <AnimatePresence mode="popLayout">
+                        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
                           {categoryShortcuts.map((shortcut, index) => (
                             <motion.div
                               key={shortcut.description}

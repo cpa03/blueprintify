@@ -30,6 +30,7 @@ import {
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -86,7 +87,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
   const statusText = hasChanges ? "Unsaved changes" : text;
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
       {isVisible && (
         // Persistent live region: must exist in the DOM before its text
         // changes, otherwise screen readers routinely skip the announcement.

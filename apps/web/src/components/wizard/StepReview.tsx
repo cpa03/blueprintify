@@ -64,6 +64,7 @@ import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -129,8 +130,8 @@ export const StepReview = memo(function StepReview({
     >
       {/* Heading - guides attention first */}
       <motion.div
-        initial={shouldReduceMotion ? undefined : "hidden"}
-        animate={shouldReduceMotion ? undefined : "visible"}
+        initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+        animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
         variants={shouldReduceMotion ? undefined : fadeInUp}
         transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE }}
       >
@@ -142,8 +143,8 @@ export const StepReview = memo(function StepReview({
 
       {/* Main review card with project details - appears second */}
       <motion.div
-        initial={shouldReduceMotion ? undefined : "hidden"}
-        animate={shouldReduceMotion ? undefined : "visible"}
+        initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+        animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
         variants={shouldReduceMotion ? undefined : fadeInUp}
         transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE + 0.08 }}
       >
@@ -282,14 +283,14 @@ export const StepReview = memo(function StepReview({
             </div>
             <motion.div
               className="flex flex-wrap gap-2"
-              initial={shouldReduceMotion ? undefined : "hidden"}
-              animate={shouldReduceMotion ? undefined : "visible"}
+              initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+              animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
               variants={
                 shouldReduceMotion
                   ? undefined
                   : {
-                      hidden: {},
-                      visible: {
+                      [MOTION_VARIANT_STATES.HIDDEN]: {},
+                      [MOTION_VARIANT_STATES.VISIBLE]: {
                         transition: {
                           staggerChildren: STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S,
                           delayChildren: ANIMATION.SUBTLE_MOVE + 0.12,
@@ -305,8 +306,11 @@ export const StepReview = memo(function StepReview({
                     shouldReduceMotion
                       ? undefined
                       : {
-                          hidden: { opacity: 0, scale: ANIMATION_SCALE.MODAL },
-                          visible: {
+                          [MOTION_VARIANT_STATES.HIDDEN]: {
+                            opacity: 0,
+                            scale: ANIMATION_SCALE.MODAL,
+                          },
+                          [MOTION_VARIANT_STATES.VISIBLE]: {
                             opacity: 1,
                             scale: 1,
                             transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
@@ -375,14 +379,14 @@ export const StepReview = memo(function StepReview({
               </div>
               <motion.ul
                 className="space-y-2"
-                initial={shouldReduceMotion ? undefined : "hidden"}
-                animate={shouldReduceMotion ? undefined : "visible"}
+                initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+                animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
                 variants={
                   shouldReduceMotion
                     ? undefined
                     : {
-                        hidden: {},
-                        visible: {
+                        [MOTION_VARIANT_STATES.HIDDEN]: {},
+                        [MOTION_VARIANT_STATES.VISIBLE]: {
                           transition: {
                             staggerChildren: STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S,
                             delayChildren: ANIMATION.SUBTLE_MOVE + 0.14,
@@ -398,8 +402,11 @@ export const StepReview = memo(function StepReview({
                       shouldReduceMotion
                         ? undefined
                         : {
-                            hidden: { opacity: 0, x: ANIMATION_X_OFFSET.SLIDE_LEFT_FAR },
-                            visible: {
+                            [MOTION_VARIANT_STATES.HIDDEN]: {
+                              opacity: 0,
+                              x: ANIMATION_X_OFFSET.SLIDE_LEFT_FAR,
+                            },
+                            [MOTION_VARIANT_STATES.VISIBLE]: {
                               opacity: 1,
                               x: 0,
                               transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
@@ -433,8 +440,8 @@ export const StepReview = memo(function StepReview({
 
       {/* "What happens next?" info card - appears third */}
       <motion.div
-        initial={shouldReduceMotion ? undefined : "hidden"}
-        animate={shouldReduceMotion ? undefined : "visible"}
+        initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+        animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
         variants={shouldReduceMotion ? undefined : fadeInUp}
         transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE + 0.16 }}
       >
@@ -460,8 +467,8 @@ export const StepReview = memo(function StepReview({
 
       {/* Action buttons - appear last to cap the visual hierarchy */}
       <motion.div
-        initial={shouldReduceMotion ? undefined : "hidden"}
-        animate={shouldReduceMotion ? undefined : "visible"}
+        initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+        animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
         variants={shouldReduceMotion ? undefined : fadeInUp}
         transition={shouldReduceMotion ? undefined : { delay: ANIMATION.SUBTLE_MOVE + 0.24 }}
       >

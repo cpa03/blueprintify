@@ -36,6 +36,7 @@ import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from ".
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 /**
  * Empty state display shown in the editor when no content has been generated.
@@ -94,8 +95,8 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
     <motion.div
       className="h-full flex flex-col items-center justify-center text-dark-500"
       variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
+      initial={MOTION_VARIANT_STATES.HIDDEN}
+      animate={MOTION_VARIANT_STATES.VISIBLE}
       role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL}
       data-state={EMPTY_STATE_VALUES.WAITING}
