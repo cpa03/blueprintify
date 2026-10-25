@@ -41,14 +41,15 @@ import {
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
 import { ICON_RECTS, SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES, MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 /**
  * Staggered entrance variants for the fallback UI elements.
  * Each child enters with a small delay, creating a polished cascade.
  */
 const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0 },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     transition: {
       staggerChildren: STAGGER_CONFIG.ERROR_FALLBACK.STAGGER_S,
@@ -58,8 +59,8 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_MODERATE },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_MODERATE },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     y: 0,
     transition: {
@@ -185,8 +186,8 @@ export const ErrorFallback = memo(function ErrorFallback({
         <motion.div
           className="space-y-6"
           variants={shouldReduceMotion ? undefined : containerVariants}
-          initial={shouldReduceMotion ? undefined : "hidden"}
-          animate={shouldReduceMotion ? undefined : "visible"}
+          initial={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.HIDDEN}
+          animate={shouldReduceMotion ? undefined : MOTION_VARIANT_STATES.VISIBLE}
         >
           {/* Animated warning icon */}
           <motion.div className="mb-6" variants={shouldReduceMotion ? undefined : itemVariants}>
@@ -318,7 +319,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   }
                 >
                   {/* Clipboard icon */}
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                     {isCopied ? (
                       <motion.span
                         key="copied"

@@ -61,6 +61,7 @@ import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -258,7 +259,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         // the button. onFocus below flips isVisible, fading the button in.
         tabIndex={0}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
           {showCopied ? (
             /* Checkmark icon + "Copied!" — springs in replacing the link icon */
             <motion.span
