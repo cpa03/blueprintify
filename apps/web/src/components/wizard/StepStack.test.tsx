@@ -249,6 +249,16 @@ describe("StepStack", () => {
     expect(mockStore.removeTechStack).toHaveBeenCalledWith("React");
   });
 
+  it("pads the summary remove button to a 24×24 touch target (WCAG 2.2 SC 2.5.8)", () => {
+    mockStore.techStack = TECH_STACK_MOCK;
+    render(<StepStack />);
+    const removeButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_STACK.REMOVE_TECH("React")
+    );
+    expect(removeButton.className).toContain("p-1");
+    expect(removeButton.className).toContain("-m-1");
+  });
+
   it("does not render the selected summary when nothing is selected", () => {
     render(<StepStack />);
     expect(
