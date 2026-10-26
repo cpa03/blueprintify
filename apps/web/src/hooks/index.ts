@@ -18,6 +18,7 @@ export { useBlueprintStream } from "./useBlueprintStream";
 export { useAutoSaveToast } from "./useAutoSaveToast";
 export { useFocusOnStepChange, useStepAnnouncer } from "./useFocusOnStepChange";
 export { useEditorPanelFocus } from "./useEditorPanelFocus";
+export { useTemplatesExitFocus } from "./useTemplatesExitFocus";
 export { useDocumentTitle } from "./useDocumentTitle";
 export { useOnlineStatus } from "./useOnlineStatus";
 export type { OnlineStatus } from "./useOnlineStatus";
