@@ -1,6 +1,20 @@
 # Findings
 
-> **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
+> **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserve in git history).
+
+## Security Engineer — PR Diff Scan: dependabot @vitest/coverage-v8 4.1.12→5.0.5 (2026-10-26)
+
+**Request**: "Scan the changed files in this PR (git diff --name-only origin/main). Remove any introduced vulnerabilities, secrets, or usage of deprecated functions."
+**Branch scanned**: `dependabot/npm_and_yarn/vitest/coverage-v8-5.0.5` (commit `19713295`, `chore(deps-dev): bump @vitest/coverage-v8 from 4.1.12 to 5.0.5`, semver-major, dev-only).
+**Changed files vs origin/main**: `apps/web/package.json`, `package.json`, `package-lock.json` (3 files; +62/−115). **No application source code changed.**
+
+**Scan verdict — all 3 requested categories CLEAN, 0 introduced**:
+1. **Secrets**: 0. Full-diff regex sweep (`password|secret|api[_-]?key|token|private[_-]?key|BEGIN .*PRIVATE|ghp_|sk-|AKIA|Bearer |auth`) → no hits. All new `resolved` URLs are `registry.npmjs.org` only.
+2. **Introduced CVEs**: 0. `npm audit --package-lock-only` totals **identical main vs PR** (8 = 4 moderate + 4 high: `zod`/`chromium-bidi`/`puppeteer-core`/`@cloudflare/vitest-plugin` high chain + `postcss-selector-parser`/`tailwindcss`/`@tailwindcss/typography`/`postcss-nested` moderate chain — all pre-existing, none in the PR's package set). Snyk: `@vitest/coverage-v8@5.0.5` = 0 direct vulns. CVE-2026-53633 (Missing Authorization, coverage-v8 `<5.0.0-beta.4` in 5.x line) — 5.0.5 is patched. CVE-2026-112948 / GHSA-p458-7748-mcp3 (`server.fs.deny` info-disclosure) affects vitest 5.0.0-beta.6–5.0.4 only — **project stays on vitest 4.1.12, explicitly unaffected** ("Vitest 4 and earlier are unaffected"). All 7 new lockfile entries' `integrity` sha512 values verified byte-for-byte against `npm view … dist.integrity`. No `preinstall`/`install`/`postinstall`/`hasInstallScript` on any newly added package (`@vitest/istanbul-lib-coverage@1.0.2`, `@vitest/istanbul-lib-report@1.0.2`, `obug@3.0.0`, `std-env@4.3.0`, `magicast@0.5.5`, `ast-v8-to-istanbul@1.0.7`). Removed packages (`html-escaper`, `istanbul-lib-coverage/-report/-reports`, `make-dir`) have 0 residual references in the lockfile.
+3. **Deprecated functions**: 0. Diff is manifests + lockfile only; no TS/JS source touched, so no deprecated API usage introduced.
+
+**⚠️ Structural finding — NOT a CVE, but merge-blocking (report-only, not auto-removed)**: **broken peer-dependency graph introduced by this PR.** `@vitest/coverage-v8@5.0.5` declares exact peer `vitest@5.0.5` (+ optional `@vitest/browser@5.0.5`), while the tree still resolves `vitest@4.1.12` (and `@vitest/ui@4.1.12`, `@vitest/mocker@4.1.12`, `@vitest/expect@4.1.12`). `npm ls` → `ELSPROBLEMS` / `invalid: "5.0.5" from node_modules/@vitest/coverage-v8`. This is a **partial semver-major bump**: dependabot updated only the coverage provider, not the vitest core it is pinned to. Consequences: (a) npm reports the tree invalid; (b) the v5 coverage provider was never tested against v4 vitest — `vitest --coverage` may fail or silently produce wrong reports, degrading the security quality gate; (c) it regresses the alignment that #3900 intentionally established (root pin `4.1.12` to match hoisted vitest). **Recommendation for maintainer**: either **close/revert this dependabot PR** (keep `4.1.12`), or open a follow-up that upgrades `vitest` + `@vitest/ui` + `@vitest/browser` (if used) **to 5.0.5 together** in one atomic change (5.0.5 is the patched release for CVE-2026-112948 in the 5.x line). Do not merge the coverage-only bump as-is.
+**Code changes in this cycle**: none to source or manifests (scan was clean on the 3 requested categories; peer-dep fix is a version-alignment product decision deferred to maintainer). Only this findings entry added.
 
 ## Janitor Cleanup — Disabled Request, Sync-Only (2026-10-26)
 
