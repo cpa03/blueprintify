@@ -28,6 +28,7 @@ import {
   ANIMATION_OPACITY,
   ANIMATION_X_OFFSET,
   ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
@@ -44,10 +45,12 @@ import {
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  PERCENT_SCALE,
   SHORTCUT_DESCRIPTIONS,
   STYLE_ID_STRINGS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   CATEGORY_ICONS,
   MIN_REQUIREMENTS,
@@ -74,6 +77,7 @@ import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import clsx from "clsx";
 import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 const attentionKeyframes = `@keyframes stack-card-attention {
   0%, 100% {
@@ -102,6 +106,7 @@ interface TechChipProps {
   onToggle: (tech: { name: string; category: string }) => void;
   justSelected: string | null;
   entranceIndex?: number;
+  shouldReduceMotion?: boolean;
 }
 
 const TechChip = memo(function TechChip({
@@ -110,6 +115,7 @@ const TechChip = memo(function TechChip({
   onToggle,
   justSelected,
   entranceIndex = 0,
+  shouldReduceMotion = false,
 }: TechChipProps) {
   const isJustSelected = justSelected === tech.name;
 
@@ -130,13 +136,15 @@ const TechChip = memo(function TechChip({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
       style={{
-        animationDelay: `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
+        animationDelay: shouldReduceMotion
+          ? "0s"
+          : `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
       }}
-      whileHover={HOVER_SCALE.STANDARD}
-      whileTap={TAP_SCALE.STANDARD}
+      whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
+      whileTap={shouldReduceMotion ? {} : TAP_SCALE.STANDARD}
       animate={
-        isJustSelected
+        isJustSelected && !shouldReduceMotion
           ? {
               scale: SCALE_PULSE.GLOW,
               transition: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut },
@@ -171,7 +179,7 @@ const TechChip = memo(function TechChip({
       </AnimatePresence>
 
       <span className="relative z-10 flex items-center gap-1.5">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
           {isSelected ? (
             <motion.svg
               key="checkmark"
@@ -221,6 +229,7 @@ interface StepStackProps {
 export const StepStack = memo(function StepStack({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepStackProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [isShaking, setIsShaking] = useState(false);
   const [invalidField, setInvalidField] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
@@ -312,10 +321,22 @@ export const StepStack = memo(function StepStack({
 
   const modifierKey = getModifierLabel();
   const minRequired = MIN_REQUIREMENTS.TECH_STACK;
-  const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
+  const progressPercentage = Math.min(
+    (techStack.length / minRequired) * PERCENT_SCALE,
+    PERCENT_SCALE
+  );
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={canProceed ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-selected-count={techStack.length}
+      data-min-required={minRequired}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_STACK.TITLE}</h2>
@@ -376,6 +397,7 @@ export const StepStack = memo(function StepStack({
                     onToggle={toggleTech}
                     justSelected={justSelected}
                     entranceIndex={globalIndex}
+                    shouldReduceMotion={shouldReduceMotion}
                   />
                 );
               })}
@@ -393,7 +415,7 @@ export const StepStack = memo(function StepStack({
               className="flex flex-wrap gap-2"
               aria-labelledby={DOM_ELEMENT_IDS.SELECTED_TECH_LABEL}
             >
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
                 {techStack.map((tech) => (
                   <motion.li
                     key={tech.name}

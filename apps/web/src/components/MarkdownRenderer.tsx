@@ -30,6 +30,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   FRAMER_TYPE,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -49,6 +50,7 @@ import { generateSlug, childrenToText } from "../utils/slug";
 import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 /**
  * Props for the MarkdownRenderer component.
@@ -124,7 +126,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             ? COPY_STATE_VALUES.FAILED
             : COPY_STATE_VALUES.IDLE
       }
-      data-reduced-motion={reducedMotion ? "true" : "false"}
+      data-reduced-motion={reducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-language={language}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -166,7 +168,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               ? COPY_STATE_VALUES.FAILED
               : COPY_STATE_VALUES.IDLE
         }
-        data-reduced-motion={reducedMotion ? "true" : "false"}
+        data-reduced-motion={reducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         aria-label={
           copied
             ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED
@@ -182,7 +184,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE_TITLE
         }
       >
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT} initial={false}>
           {copied ? (
             <motion.svg
               key="check"
@@ -237,7 +239,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                 strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                d={ICON_PATHS.COPY}
               />
             </motion.svg>
           )}

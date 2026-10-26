@@ -71,7 +71,7 @@ function getNumericEnvVar(
 ): number {
   const value = env[key];
   if (value === undefined) return defaultValue;
-  const parsed = parseInt(value, 10);
+  const parsed = parseInt(value, NUMBER_RADIX.DECIMAL);
   return isNaN(parsed) ? defaultValue : parsed;
 }
 
@@ -229,6 +229,7 @@ import {
   ENV_VAR_KEYS,
   ENVIRONMENT_NAMES,
   ENV_ERROR_MESSAGES,
+  NUMBER_RADIX,
 } from "@blueprint/shared";
 import { getEnvConfig, setEnvConfig as setConstantsConfig } from "./constants";
 

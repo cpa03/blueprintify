@@ -28,13 +28,43 @@ export const TIME_UNITS = {
 } as const;
 
 /**
+ * Time Display Format
+ * Centralized zero-padding literals for MM:SS elapsed-timer rendering.
+ * Flexy says: No hardcoded padStart(2, "0") in timer formatters!
+ * Usage: import { TIME_FORMAT } from "@blueprint/shared";
+ *        secs.toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)
+ */
+export const TIME_FORMAT = {
+  /** Minimum width for zero-padded minute/second fields in MM:SS displays */
+  MM_SS_PAD_WIDTH: 2,
+  /** Pad character used to left-pad single-digit time fields */
+  MM_SS_PAD_CHAR: "0",
+} as const;
+
+/**
  * Percent Conversion Constants
- * Centralized scale for converting ratios to percentage values.
+ * Centralized scale for converting ratios to percentage values — the single
+ * source of truth for the whole 0-100 percent domain: ratio conversions,
+ * clamps, completion comparisons, progress ranges, ARIA value maxima, and
+ * percent-state defaults.
  * Flexy says: No hardcoded "* 100" percent-conversion multipliers in components!
  * Usage: import { PERCENT_SCALE } from "@blueprint/shared";
  *        const percent = Math.round(ratio * PERCENT_SCALE);
+ *        const clamped = Math.min(value, PERCENT_SCALE);
  */
 export const PERCENT_SCALE = 100;
+
+/**
+ * Number Parsing Radix
+ * Centralized radix for decimal string-to-number parsing.
+ * Flexy says: No hardcoded parseInt(value, 10) radix literals!
+ * Usage: import { NUMBER_RADIX } from "@blueprint/shared";
+ *        const size = parseInt(header, NUMBER_RADIX.DECIMAL);
+ */
+export const NUMBER_RADIX = {
+  /** Base-10 radix for decimal string parsing */
+  DECIMAL: 10,
+} as const;
 
 /**
  * Ratio Limits
@@ -72,10 +102,32 @@ export const CIRCLE_GEOMETRY = {
   CENTER_Y: 12,
   /** Circle radius */
   RADIUS: 10,
+  /** Full turn in radians (2 * PI, a.k.a. tau) — for particle/angle distribution */
+  FULL_TURN_RAD: 2 * Math.PI,
+  /** Full turn in degrees — for complete rotation animations */
+  FULL_TURN_DEG: 360,
   /** Full circumference (2 * PI * RADIUS) for stroke-dasharray */
   CIRCUMFERENCE: 2 * Math.PI * 10,
   /** Dash offset for the completed ring segment (circumference * 0.75) */
   STROKE_DASHOFFSET: 2 * Math.PI * 10 * 0.75,
+} as const;
+
+/**
+ * Large SVG Circle Geometry (48×48 viewBox)
+ * Centralized ring geometry for celebration and generation status rings.
+ * Flexy says: No hardcoded cx="24" cy="24" r="22" in large-viewBox SVGs!
+ * Usage: import { CIRCLE_GEOMETRY_LARGE } from "@blueprint/shared";
+ *        <circle cx={CIRCLE_GEOMETRY_LARGE.CENTER_X} cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y} r={CIRCLE_GEOMETRY_LARGE.RADIUS} />
+ */
+export const CIRCLE_GEOMETRY_LARGE = {
+  /** X coordinate of the large ring center */
+  CENTER_X: 24,
+  /** Y coordinate of the large ring center */
+  CENTER_Y: 24,
+  /** Large ring radius */
+  RADIUS: 22,
+  /** Full circumference (2 * PI * RADIUS) for stroke-dasharray */
+  CIRCUMFERENCE: 2 * Math.PI * 22,
 } as const;
 
 /**
@@ -240,50 +292,6 @@ export const PLAYWRIGHT_DEFAULTS = {
   VISIBILITY_TIMEOUT_MS: 3000,
   /** Short element visibility timeout in ms for optional e2e isVisible checks */
   SHORT_VISIBILITY_TIMEOUT_MS: 2000,
-} as const;
-
-/**
- * Preview Server Defaults
- * Centralized defaults for Vite preview and Lighthouse testing.
- * Flexy says: No hardcoded preview URLs or ports!
- */
-export const PREVIEW_DEFAULTS = {
-  /** Default port for Vite preview server */
-  PREVIEW_PORT: 4173,
-  /** Default preview server host */
-  PREVIEW_HOST: "localhost",
-  /** Full default preview URL */
-  PREVIEW_URL: "http://localhost:4173",
-} as const;
-
-/**
- * Observability Configuration Defaults
- * Centralized sampling rates and limits for Cloudflare Workers observability.
- * Flexy says: No hardcoded sampling rates!
- */
-export const OBSERVABILITY_DEFAULTS = {
-  /** Trace sampling rate for production (0.0 - 1.0) */
-  TRACES_SAMPLING_RATE: 0.1,
-  /** Log sampling rate for production (0.0 - 1.0) */
-  LOGS_SAMPLING_RATE: 0.5,
-  /** CPU limit in ms for Cloudflare Workers */
-  CPU_LIMIT_MS: 50000,
-} as const;
-
-/**
- * Worker Queue Configuration Defaults
- * Centralized defaults for Cloudflare Workers Queue bindings.
- * Flexy says: No hardcoded queue config values!
- */
-export const QUEUE_DEFAULTS = {
-  /** Default max batch size for queue consumers */
-  MAX_BATCH_SIZE: 10,
-  /** Default max batch timeout in seconds for queue consumers */
-  MAX_BATCH_TIMEOUT_S: 30,
-  /** Default max retries for queue consumers */
-  MAX_RETRIES: 5,
-  /** Default retry delay in seconds for queue consumers */
-  RETRY_DELAY_S: 60,
 } as const;
 
 /**

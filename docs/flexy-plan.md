@@ -4,6 +4,241 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 207: Centralize Framer Motion Variant State Names & AnimatePresence Modes
+
+**Problem**: 77 hardcoded Framer Motion string-literal call sites survived 206 iterations, in two clusters that share the same silent-failure shape — Framer Motion does not type-check either side. (1) **Variant state names**: 32 bare `hidden:`/`visible:` keys inside `variants` objects (motion.ts ×16, StepReview ×8, ErrorFallback ×4, StepFeatures ×4) paired with 20 quoted references in `initial`/`animate` props (`initial="hidden"`/`animate="visible"` ×3 pairs in PreviewEmptyState, EditorEmptyState, StepFeatures; `initial={shouldReduceMotion ? undefined : "hidden"}` ×6 pairs in StepReview and ×1 pair in ErrorFallback). A typo or rename on either side of the pair silently no-ops the animation — the same read/write-pair drift Iteration 206 eliminated for DOM event names, except here nothing detaches, the element simply never animates. (2) **AnimatePresence modes**: 24 JSX `mode="wait"` (×20) / `mode="popLayout"` (×4) literals across 13 files, plus `StepTransition` whose prop type inlined the union `"wait" | "sync" | "popLayout"` and whose default was a bare `mode = "wait"` — a third copy of the same three-value enum that could drift from framer-motion's actual `mode` union. `FRAMER_TYPE` already covered `type: "spring"`, but the mode and variant-name APIs had no constant at all. Flexy says: no bare Framer Motion variant state names or AnimatePresence mode strings!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | NEW `MOTION_VARIANT_STATES` (HIDDEN `"hidden"`, VISIBLE `"visible"` — definition/reference pairing contract docblock) + NEW `ANIMATE_PRESENCE_MODES` (WAIT/SYNC/POP_LAYOUT — complete framer-motion `mode` union), placed beside `FRAMER_TYPE` |
+| `packages/shared/src/index.ts` | Exported both constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +5 tests (1,023 → 1,028): 3 `MOTION_VARIANT_STATES` (exact values, entry count 2 + uniqueness, lowercase variant-key invariant), 2 `ANIMATE_PRESENCE_MODES` (exact values, count 3 + uniqueness + full union membership) |
+| `apps/web/src/utils/motion.ts` | 16 variants keys (`fadeInUp`, `staggerContainer`, `fadeIn`, `scaleIn`, `slideInRight`, `slideInLeft`, `createStaggerContainer`, `createFadeInUp`) → computed `[MOTION_VARIANT_STATES.HIDDEN/VISIBLE]:` |
+| `components/wizard/StepReview.tsx` | 8 variants keys + 12 `initial`/`animate` references (6 reduced-motion ternary pairs) |
+| `components/wizard/StepFeatures.tsx` | 4 variants keys + 2 prop references + 3 AnimatePresence modes |
+| `components/ErrorFallback.tsx` | 4 variants keys + 2 prop references + 1 AnimatePresence mode |
+| `components/PreviewEmptyState.tsx` / `EditorEmptyState.tsx` | 2 prop references each |
+| `components/StepTransition.tsx` | Prop type `"wait" \| "sync" \| "popLayout"` → derived `AnimatePresenceMode`; default `mode = "wait"` → `ANIMATE_PRESENCE_MODES.WAIT` |
+| `components/Editor.tsx` / `wizard/StepGenerating.tsx` | 4 / 6 AnimatePresence modes |
+| `components/Toast.tsx` / `KeyboardShortcutsModal.tsx` / `wizard/StepStack.tsx` / `wizard/StepFeatures.tsx` | 1 / 1 / 2 / 3 `popLayout` + `wait` modes |
+| `AnimatedCopyButton.tsx` / `HeadingAnchor.tsx` / `LastSavedIndicator.tsx` / `MarkdownRenderer.tsx` / `Wizard.tsx` / `ErrorFallback.tsx` / `editor/EditorToolbar.tsx` | 1 AnimatePresence mode each (Wizard's `StepTransition mode="wait"`) |
+| `docs/flexy-plan.md` | Iteration 207 entry |
+
+Deliberately skipped: `SmartTooltip` `data-state={isVisible ? "visible" : "hidden"}` + `data-state="visible"` (tooltip DOM-state attribute, not a motion variant — `BANNER_STATE_VALUES` is banner-scoped; candidate for a future DOM-state iteration); `useScrollLock` `body.style.overflow === "hidden"` / `= "hidden"` (CSS overflow value — CSS category, Iteration 157/169 precedent); `StepGenerating:718` prose comment describing `mode="wait"` (comment text, not a call site); `MarkdownRenderer` `initial={false}` (boolean opt-out, not a string); JSX `variants={fadeInUp}` object references (already named/centralized); test files (none assert these APIs); `node_modules`/`dist`.
+
+## Verification (Iteration 207)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (8.88s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,375 web + 555 api + 1,028 shared = 2,958 tests passing** (+5 new shared; web baseline 1,375 re-verified against clean `origin/main`)
+- ✅ Residual scan — 0 bare `mode="wait"`/`mode="popLayout"`, 0 bare motion `initial`/`animate` `"hidden"`/`"visible"` references, 0 bare `hidden:`/`visible:` variants keys in runtime source (excluding tests, prose comments, data-state attributes & CSS overflow values)
+
+## PR (Iteration 207)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-207-motion-variant-animate-presence` | refactor(flexy): centralize Framer Motion variant state names & AnimatePresence modes (Iteration 207) |
+
+### ✅ Flexy Iteration 206: Centralize DOM Event Name String Literals
+
+**Problem**: 64 hardcoded DOM event-type string literals survived 205 iterations across 23 runtime files, with no `DOM_EVENTS` constant anywhere — even though `ACCESSIBILITY_EVENTS` covered the one custom app event and `KEYBOARD_EVENT_KEYS` covered `event.key`. Breakdown: 26× `"keydown"` (App, ConfirmDialog, Editor, KeyboardShortcutsModal, ScrollToTop, SmartTooltip, StepIndicator, Toast, Wizard ×6, StepReview, useFocusTrap — global shortcut/escape/focus-trap handlers), 12× `"scroll"` (Editor, Header, PageScrollProgressBar, ScrollProgress, ScrollToTop, useAutoScroll), 10× `"change"` (TemplateGrid ×4 media queries, ReducedMotionContext, useReducedMotion ×4), 2× each `"resize"`/`"input"` (useAutoResizeTextarea), `"online"`/`"offline"` (useOnlineStatus), `"beforeunload"` (useBeforeUnload), `"mousedown"` (SmartTooltip outside-click), and 1 each `"storage"` (lib/storage cross-tab), `"unhandledrejection"`, `"error"`, `"animationend"` (main.tsx global handlers). Every add-listener site pairs with a `removeEventListener` teardown using the same bare literal — a typo or rename on either side silently leaks the listener or fails to detach it (the same read/write-pair drift Iteration 204 eliminated for localStorage booleans). Flexy says: no bare DOM event-name strings in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DOM_EVENTS` — 13 entries (KEYDOWN, SCROLL, CHANGE, RESIZE, INPUT, BEFORE_UNLOAD, ONLINE, OFFLINE, MOUSE_DOWN, STORAGE, UNHANDLED_REJECTION, ERROR, ANIMATION_END) with pairing-contract docblock, placed beside `KEYBOARD_EVENT_KEYS` |
+| `packages/shared/src/index.ts` | Exported `DOM_EVENTS` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests (13 exact-value assertions, entry count 13 + uniqueness, lowercase-DOM-type invariant) |
+| `apps/web/src/App.tsx` + `main.tsx` | 5 sites: 2× keydown pair; global `unhandledrejection`/`error`/`animationend` handlers |
+| `components/ConfirmDialog.tsx` / `KeyboardShortcutsModal.tsx` / `StepIndicator.tsx` / `Toast.tsx` / `wizard/StepReview.tsx` | 2× keydown pair each |
+| `components/Editor.tsx` / `Header.tsx` / `PageScrollProgressBar.tsx` / `ScrollProgress.tsx` | keydown + scroll pairs |
+| `components/ScrollToTop.tsx` / `SmartTooltip.tsx` | 4 sites each (scroll/keydown; mousedown/keydown) |
+| `components/TemplateGrid.tsx` | 4× `"change"` (lg/md MediaQueryList add + remove) |
+| `components/Wizard.tsx` | 6× keydown (3 add + 3 remove teardowns) |
+| `context/ReducedMotionContext.tsx` + `hooks/useReducedMotion.ts` | 6× `"change"` MediaQueryList pairs |
+| `hooks/useAutoResizeTextarea.ts` | 2× input + 2× resize pairs |
+| `hooks/useAutoScroll.ts` / `useBeforeUnload.ts` / `useFocusTrap.ts` | 2 sites each (scroll; beforeunload; keydown) |
+| `hooks/useOnlineStatus.ts` | 2× online + 2× offline pairs |
+| `lib/storage.ts` | 1× `"storage"` cross-tab listener |
+| `docs/flexy-plan.md` | Iteration 206 entry |
+
+Deliberately skipped: test files (`toHaveBeenCalledWith("online")` asserts rendered behavior by exact value — constants preserve the identical string, so assertions stay green — Iteration 194/196 precedent); JSX `on*` handler props (JSX requires literal prop names, not values); `matchMedia("(prefers-…)")` query strings (media-query category, not event types); legacy `addListener`/`removeListener` fallback branches (deprecated no-arg API, not string events); `ACCESSIBILITY_EVENTS` custom event (already centralized); `dispatchEvent(new Event(...))` sites (already reference `ACCESSIBILITY_EVENTS`); `addEventListener` with variable event names (already dynamic); comments/JSDoc prose; `node_modules`/`dist`.
+
+## Verification (Iteration 206)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (357 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,364 web + 555 api + 1,023 shared = 2,942 tests passing** (+3 new shared)
+- ✅ Residual scan — 0 bare `(add|remove)EventListener("…")` string literals in runtime source (excluding tests, config definition docs & generated templates)
+
+## PR (Iteration 206)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3891 | `flexy/iteration-206-dom-events` | refactor(flexy): centralize DOM event name string literals into shared config (Iteration 206) |
+
+### ✅ Flexy Iteration 205: Centralize Percent-Domain `100` Literals & Eliminate PERCENT_SCALE Bypasses
+
+**Problem**: `PERCENT_SCALE = 100` — whose own docblock says "Flexy says: No hardcoded `* 100` percent-conversion multipliers in components!" — was bypassed by 27 bare percent-domain `100` literals across 11 web files, even though 4 call sites already adopt it (api storage route, PageScrollProgressBar hover math, Toast ring countdown, web lib/storage quota). Breakdown: 7 ratio→percent conversions `(x / y) * 100` (StepIndicator step ring, StepInfo form progress, StepStack tech progress, CharacterCounter compact, PageScrollProgressBar, ScrollProgress, EditorEmptyState); 2 inverse `/ 100` stroke-dashoffset conversions (CircularProgress, Toast ProgressRing); 8 clamps/comparisons (`Math.min(…, 100)`, `progress < 100`, `clampedValue >= 100`); 4 progress ranges & offsets (`useTransform(…, [0, 100], …)`, `${100 - scrollProgress}%` ×2, useTransform output pair ×2); 3 ARIA `aria-valuemax={100}`; 2 generation-phase `percent < 100` comparisons; 1 initial state (`useState(100)` Toast ring). Plus two half-centralized pairs: `GENERATION_PHASE_LABELS` lived in config while its 6-value percent map (100/0/5/30/65/45) stayed inline in StepGenerating — labels and percents can drift apart — and `StorageQuotaSchema`'s Zod bound `.max(100)` in shared schema. Flexy says: no bare percent-domain `100` literals outside config!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | `PERCENT_SCALE` docblock extended to document the full percent domain (conversions, clamps, comparisons, ranges, ARIA maxima, percent-state defaults) + clamp usage example |
+| `packages/shared/src/schema.ts` | `StorageQuotaSchema` `percentage: z.number().min(0).max(100)` → `.max(PERCENT_SCALE)` (config import already existed — no cycle) |
+| `apps/web/src/config/constants/content.ts` | NEW `GENERATION_PHASE_PERCENTAGES` — 6 entries paired 1:1 with `GENERATION_PHASE_LABELS` (`COMPLETE: PERCENT_SCALE`, `ERROR: 0`, `STARTING: 5`, `GENERATING_BLUEPRINT: 30`, `GENERATING_TASKS: 65`, `IN_PROGRESS: 45`) |
+| `apps/web/src/config/constants/content.test.ts` | NEW — 4 tests: `COMPLETE === PERCENT_SCALE`, 5 value assertions, every percent within 0–`PERCENT_SCALE`, label/percent key-parity drift guard (`COMPLETE_ARIA` label-only exempt) |
+| `apps/web/src/components/StepIndicator.tsx` | `(effectiveIndex / (STEPS.length - 1)) * 100` → `* PERCENT_SCALE` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | form-progress `(completedFields / totalFields) * 100` → `* PERCENT_SCALE` |
+| `apps/web/src/components/wizard/StepStack.tsx` | `Math.min(x * 100, 100)` → `Math.min(x * PERCENT_SCALE, PERCENT_SCALE)` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 6 inline phase percents → `GENERATION_PHASE_PERCENTAGES.*` (paired with existing labels); `aria-valuemax={100}` + 2× `percent < 100` → `PERCENT_SCALE` |
+| `apps/web/src/components/CharacterCounter.tsx` | compact `(current / max) * 100` + `Math.min(percentage, 100)` → `PERCENT_SCALE` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | 6 sites: conversion, clamp, `[0, PERCENT_SCALE]` range + output pair, `< PERCENT_SCALE`, `aria-valuemax`, `${PERCENT_SCALE - scrollProgress}` (file already imported the constant — pure bypass cleanup) |
+| `apps/web/src/components/ScrollProgress.tsx` | 5 sites: conversion, clamp, range + output pair, `< PERCENT_SCALE`, `${PERCENT_SCALE - scrollProgress}` |
+| `apps/web/src/components/EditorEmptyState.tsx` | `((currentIndex + 1) / WIZARD_STEPS.length) * 100` → `* PERCENT_SCALE` |
+| `apps/web/src/components/CircularProgress.tsx` | 4 sites: `Math.min(PERCENT_SCALE, value)` clamp, `>= PERCENT_SCALE`, `/ PERCENT_SCALE` dashoffset, `aria-valuemax` |
+| `apps/web/src/components/Toast.tsx` | `/ 100` dashoffset + `useState(100)` → `PERCENT_SCALE` (file already imported the constant) |
+| `docs/flexy-plan.md` | Iteration 205 entry |
+
+Deliberately skipped: test files (`toHaveAttribute`/rendered-output assertions — Iteration 194/196 precedent); Tailwind/CSS class tokens (`opacity-100`, `hover:opacity-100`, `scale-100`) and CSS keyframe percentage stops (`0%, 100%` in StepStack chip keyframes — CSS-category, Iteration 157/169 precedent); `lib/templates/react.ts` (`-webkit-text-size-adjust: 100%` generated template); `index.html` (HTML runtime, cannot import TS constants); identity `0`/`1` (`aria-valuemin={0}`, clamp floors — Iteration 199/200 precedent); prose comments mentioning "100%"; parametric math derived from props; `node_modules`/`dist`.
+
+## Verification (Iteration 205)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.09s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (358 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,360 web + 555 api + 1,020 shared = 2,935 tests passing** (+4 new web)
+- ✅ Residual scan — 0 bare percent-domain `100` literals (`* 100` / `/ 100` / `Math.min(max, 100)` / `[0, 100]` / `useState(100)` / `>= 100` / `< 100` / `valuemax={100}` / `.max(100)` / `percent: 100`) in runtime source (excluding config definition dirs, tests, CSS/Tailwind strings, generated templates & comments)
+
+## PR (Iteration 205)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3889 | `flexy/iteration-205-percent-domain-100` | refactor(flexy): centralize percent-domain "100" literals & eliminate PERCENT_SCALE bypasses (Iteration 205) |
+
+### ✅ Flexy Iteration 204: Centralize Data-Attribute Boolean & ARIA "true"/"false" String Literals
+
+**Problem**: 75 hardcoded boolean `"true"`/`"false"` string literals survived 203 iterations across four clusters. DOM state: 62× `data-*={cond ? "true" : "false"}` ternaries in 26 web component files (data-reduced-motion ×~25, data-state, data-active, data-loading, data-valid, data-at-limit, …) plus 4× static `data-*="true"` JSX literals (StepFeatures can-proceed, ShowEditorButton editor-toggle, MotionConfigWrapper motion-wrapper, SmartTooltip has-shortcut). Storage: 5× localStorage boolean serialization literals — `setItem(KEY, "true")` (App SHORTCUTS_DISCOVERED, StepGenerating PRO_TIP_SHOWN) and `=== "true"` reads (App, useReducedMotion, ReducedMotionContext) — where a read/write pair using the same literal can silently drift apart. ARIA bypasses: `aria-atomic={isVisible ? "true" : undefined}` (OfflineBanner) and `setAttribute("aria-atomic", "true")` (useFocusOnStepChange) bypassed the existing `ARIA_ATOMIC_VALUES`, `setAttribute("aria-hidden", "true")` (lib/clipboard) bypassed `ARIA_HIDDEN_VALUES`, and `aria-busy={isLoading ? "true" : undefined}` (RippleButton) had no constant at all — even though Iteration 194/195 built the whole `ARIA_*_VALUES` TRUE/FALSE family. Flexy says: no bare boolean `"true"`/`"false"` strings in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DATA_BOOLEAN_VALUES` (TRUE `"true"` / FALSE `"false"` — data-* state attrs + localStorage serialization); NEW `ARIA_BUSY_VALUES` (TRUE/FALSE — completes the ARIA boolean-value family) |
+| `packages/shared/src/index.ts` | Exported `DATA_BOOLEAN_VALUES` + `ARIA_BUSY_VALUES` on the root barrel (`@blueprint/shared/config` barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +8 tests (shared suite 1,012 → 1,020): 5 `DATA_BOOLEAN_VALUES` (TRUE/FALSE values, unique-pair count, `String()` equivalence, valid JSON boolean encodings), 3 `ARIA_BUSY_VALUES` (values + count/uniqueness) |
+| 26 component files in `apps/web/src/components/` | 62× `? "true" : "false"` → `? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE` (CharacterCounter ×8, Toast ×5, StepIndicator ×5, EditorToolbar ×4, Header ×4, RippleButton ×3, ErrorFallback ×3, CircularProgress ×3, StepInfo/StepFeatures/StepStack/TemplateGrid/SmartTooltip/ScrollToTop/MarkdownRenderer/AnimatedNumber/AnimatedCopyButton ×2, others ×1) |
+| `wizard/StepFeatures.tsx` / `ShowEditorButton.tsx` / `MotionConfigWrapper.tsx` / `SmartTooltip.tsx` | 4× static `data-*="true"` → `data-*={DATA_BOOLEAN_VALUES.TRUE}` |
+| `App.tsx` ×2 / `wizard/StepGenerating.tsx` | 3× `setItem(KEY, "true")` → `setItem(KEY, DATA_BOOLEAN_VALUES.TRUE)` |
+| `hooks/useReducedMotion.ts` + `context/ReducedMotionContext.tsx` | 2× `stored === "true"` → `stored === DATA_BOOLEAN_VALUES.TRUE` (read side of the storage contract) |
+| `components/OfflineBanner.tsx` | `aria-atomic={isVisible ? "true" : undefined}` → `ARIA_ATOMIC_VALUES.TRUE` (existing-constant bypass) |
+| `hooks/useFocusOnStepChange.ts` | `setAttribute("aria-atomic", "true")` → `ARIA_ATOMIC_VALUES.TRUE` (existing-constant bypass) |
+| `lib/clipboard.ts` | `setAttribute("aria-hidden", "true")` → `ARIA_HIDDEN_VALUES.TRUE` (existing-constant bypass) |
+| `components/RippleButton.tsx` | `aria-busy={isLoading ? "true" : undefined}` → `ARIA_BUSY_VALUES.TRUE` |
+| `docs/flexy-plan.md` | Iteration 204 entry |
+
+Deliberately skipped: test files (`toHaveAttribute(..., "true")` asserts rendered output — Iteration 194/196 precedent); Tailwind/CSS `[data-x="true"]` selector strings in className & `index.css` (CSS-class category, Iteration 157/169 precedent); `index.html` / `vercel.json` (HTML/JSON runtime, cannot import TS constants); `lib/templates/react.ts` (generated template string); JSDoc prose examples; raw `data-*` attribute **names** (JSX requires literal attribute names — spread-object rewrite would harm readability; names are not values); `ReducedMotionContext` `String(value)` write (dynamic boolean, not a literal); `node_modules`/`dist`.
+
+## Verification (Iteration 204)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (352 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,356 web + 555 api + 1,020 shared = 2,931 tests passing** (+8 new shared)
+- ✅ Residual scan — 0 `? "true" : "false"` ternaries, 0 `data-*="true"` literals, 0 `setItem(KEY, "true")` / `stored === "true"` / `setAttribute("aria-atomic"|"aria-hidden", "true")` occurrences in runtime source (excluding config docs, tests, CSS/HTML & templates)
+
+## PR (Iteration 204)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-204-data-boolean-strings` | refactor(flexy): centralize data-attribute boolean & ARIA "true"/"false" string literals (Iteration 204) |
+
+### ✅ Flexy Iteration 203: Centralize Full-Turn Geometry, Decimal Radix & Timer/Font Micro-Literals
+
+**Problem**: 16 hardcoded literals survived 202 iterations across three clusters. Geometry: 5× full-turn radians `2 * Math.PI` in particle/angle & circumference math (HeadingAnchor, AnimatedCopyButton, GenerationCelebration, CircularProgress, Toast) and 3× full-turn degrees `360` (GenerationCelebration random rotation, StepGenerating + EditorToolbar spinner `rotate:`) even though `CIRCLE_GEOMETRY` existed but only covered the fixed 12/12/r=10 ring. Parsing: 4× `parseInt(x, 10)` radix literals (StepIndicator Alt+N handler, api `bodyLimit` Content-Length, api `env` numeric vars, web `env` numeric vars) despite `CRYPTO_CONFIG.HEX_RADIX` / `ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX` precedent — only `SHARE_TOKEN_CODEC.EXPIRY_RADIX` was covered. Micro-literals: `padStart(2, "0")` in the StepGenerating MM:SS timer (the Iteration 180 hex-pad pattern never crossed into web), a literal `/^[1-5]$/` Alt+digit regex in StepIndicator diverging from `WIZARD_STEPS`, `window.setTimeout(loadMonoFont, 2000)` in main.tsx, and the full CSS shorthand `"skeleton-exit 0.3s ease-out 0s forwards"` inlined in main.tsx. Flexy says: no bare full-turn geometry, parseInt radix, pad/regex/timeout/CSS shorthand literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | `CIRCLE_GEOMETRY` +2 keys (`FULL_TURN_RAD: 2π`, `FULL_TURN_DEG: 360`); NEW `TIME_FORMAT` (`MM_SS_PAD_WIDTH: 2`, `MM_SS_PAD_CHAR: "0"`); NEW `NUMBER_RADIX.DECIMAL: 10` |
+| `packages/shared/src/config/ui.ts` | `UI_TIMEOUTS` +`MONO_FONT_IDLE_FALLBACK_MS: 2000` (count 23 → 24) |
+| `packages/shared/src/config/animation.ts` | NEW `SKELETON_EXIT_DEFAULTS.ANIMATION` — full hydration skeleton-exit shorthand |
+| `packages/shared/src/index.ts` | Exported `TIME_FORMAT`, `NUMBER_RADIX`, `SKELETON_EXIT_DEFAULTS` from root barrel |
+| `packages/shared/src/config.test.ts` | +10 tests (shared suite 1,002 → 1,012): 3 `CIRCLE_GEOMETRY` full-turn (values + CIRCUMFERENCE = FULL_TURN_RAD × RADIUS consistency), 3 `TIME_FORMAT` (width/char/zero-pad behavior), 2 `NUMBER_RADIX` (value + valid-parseable-radix invariant), 2 `SKELETON_EXIT_DEFAULTS` (shorthand + keyframes/fill match); `UI_TIMEOUTS` list +1, count 23 → 24 |
+| `apps/web/src/config/constants/wizard.ts` | NEW `WIZARD_STEP_SHORTCUT_PATTERN` — `new RegExp('^[1-${WIZARD_STEPS.length}]$')`, derived from the step list so steps and matcher cannot drift |
+| `HeadingAnchor.tsx` / `AnimatedCopyButton.tsx` / `GenerationCelebration.tsx` | 3× particle angle `* Math.PI * 2` → `* CIRCLE_GEOMETRY.FULL_TURN_RAD` |
+| `CircularProgress.tsx` / `Toast.tsx` | 2× parametric `radius * 2 * Math.PI` circumference → `radius * CIRCLE_GEOMETRY.FULL_TURN_RAD` |
+| `GenerationCelebration.tsx` | `Math.random() * 360` → `* CIRCLE_GEOMETRY.FULL_TURN_DEG` |
+| `wizard/StepGenerating.tsx` | spinner `rotate: 360` + `padStart(2, "0")` → `CIRCLE_GEOMETRY.FULL_TURN_DEG` + `TIME_FORMAT.MM_SS_PAD_WIDTH/MM_SS_PAD_CHAR` |
+| `editor/EditorToolbar.tsx` | `rotate: 360` → `CIRCLE_GEOMETRY.FULL_TURN_DEG` |
+| `StepIndicator.tsx` | `/^[1-5]$/` → `WIZARD_STEP_SHORTCUT_PATTERN`; `parseInt(e.key, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/api/src/middleware/bodyLimit.ts` | `parseInt(contentLength, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/api/src/config/env.ts` + `apps/web/src/config/env.ts` | 2× `parseInt(value, 10)` → `NUMBER_RADIX.DECIMAL` |
+| `apps/web/src/main.tsx` | `setTimeout(loadMonoFont, 2000)` → `UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS`; skeleton shorthand → `SKELETON_EXIT_DEFAULTS.ANIMATION` |
+| `docs/flexy-plan.md` | Iteration 203 entry |
+
+Deliberately skipped: Tailwind palette/duration class tokens (`bg-primary-500`, `duration-500` — CSS-class category, Iterations 157/169); the `-1` 0-index adjustment after the radix parse (idiomatic arithmetic, not a literal); `index.html` inline critical-CSS `animation:` strings (HTML runtime, not TS call sites — the TS override in main.tsx IS centralized); parametric `(size - strokeWidth) / 2` center math (derived from props — Iteration 202 precedent); test files; `node_modules`.
+
+## Verification (Iteration 203)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (348 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,348 web + 555 api + 1,012 shared = 2,915 tests passing** (+10 new shared)
+- ✅ Residual scan — 0 bare `2 * Math.PI` / `rotate: 360` / `parseInt(x, 10)` / `padStart(2, …)` / `/^[1-5]$/` / `2000` font timeout / `skeleton-exit` shorthand occurrences in app source (excluding config, tests, node_modules)
+
+## PR (Iteration 203)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-203-turn-geometry-radix-timers` | refactor(flexy): centralize full-turn geometry, decimal radix & timer/font micro-literals (Iteration 203) |
+
+### ✅ Flexy Iteration 202: Centralize Remaining SVG Icon Path, Rect & Large-Ring Geometry Literals
+
+**Problem**: 27 hardcoded SVG literals at call sites bypassed shared config. Paths: 8 exact-match raw `d="..."` occurrences duplicated 6 existing `ICON_PATHS` entries (2× ZAP in StepReview, 2× SEARCH in KeyboardShortcutsModal, CHEVRON_UP + CHEVRON_DOWN in ScrollToTop, COPY in MarkdownRenderer, HELP in Header), plus 2 cross-file duplicated paths with no constant at all (2× celebration checkmark `M14 24L21 31L34 17` in StepGenerating + GenerationCelebration, 2× square-copy frame `M5 15H4a2…` in AnimatedCopyButton + ErrorFallback). Rects: 6 raw `<rect>` attribute literals (2× copy-body in AnimatedCopyButton + ErrorFallback, 4× pause-badge bars in Toast ×2 states). Rings: 3 large-viewBox circles hardcoded `cx="24" cy="24" r="22"` (StepGenerating ×2, GenerationCelebration) bypassing geometry config — `CIRCLE_GEOMETRY` only covered the 24×24 viewBox. Flexy says: no hardcoded SVG path, rect, or ring geometry literals!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | `ICON_PATHS` +2 entries (`CHECKMARK_LARGE`, `COPY_SQUARE`) — 19 → 21; NEW `ICON_RECTS` (3 entries: `COPY_BODY`, `PAUSE_LEFT`, `PAUSE_RIGHT` — JSX-spread object shape) |
+| `packages/shared/src/config/core.ts` | NEW `CIRCLE_GEOMETRY_LARGE` (CENTER_X/Y 24, RADIUS 22, CIRCUMFERENCE 2π·22) for 48×48 celebration/generation rings |
+| `packages/shared/src/config.test.ts` | +11 tests: 2 path value assertions + entry count 19 → 21, 5 `CIRCLE_GEOMETRY_LARGE` (values + 2-unit viewBox inset invariant), 4 `ICON_RECTS` (values + count + pause-bar centering) |
+| `ScrollToTop.tsx` | 2 literals → `ICON_PATHS.CHEVRON_UP` / `CHEVRON_DOWN` |
+| `wizard/StepReview.tsx` | 2 literals → `ICON_PATHS.ZAP` |
+| `KeyboardShortcutsModal.tsx` | 2 literals → `ICON_PATHS.SEARCH` |
+| `MarkdownRenderer.tsx` | 1 literal → `ICON_PATHS.COPY` |
+| `Header.tsx` | 1 literal → `ICON_PATHS.HELP` |
+| `AnimatedCopyButton.tsx` | rect → `{...ICON_RECTS.COPY_BODY}` + path → `ICON_PATHS.COPY_SQUARE` |
+| `ErrorFallback.tsx` | rect → `{...ICON_RECTS.COPY_BODY}` + path → `ICON_PATHS.COPY_SQUARE` |
+| `wizard/StepGenerating.tsx` | 2 rings × (cx/cy/r) → `CIRCLE_GEOMETRY_LARGE` + checkmark path → `ICON_PATHS.CHECKMARK_LARGE` |
+| `GenerationCelebration.tsx` | 1 ring × (cx/cy/r) → `CIRCLE_GEOMETRY_LARGE` + checkmark path → `ICON_PATHS.CHECKMARK_LARGE` |
+| `Toast.tsx` | 4 rect literals → `{...ICON_RECTS.PAUSE_LEFT}` / `PAUSE_RIGHT` (both badge states) |
+| `docs/flexy-plan.md` | Iteration 202 entry |
+
+Deliberately skipped: 13 unique one-off raw `d=` paths (star, arrow-left, zap-variant, 48-viewBox close-X, search-x, etc. — Iteration 198 unique-one-off precedent); gradient paint refs (`fill="url(#…)"` — Iteration 196); parametric ring math in CircularProgress/Toast (`(size - strokeWidth) / 2` — derived from props, not literals); static form-field `id=`/`htmlFor=` string pairs (StepInfo DOM IDs — Iteration 197 category, next target); test files (tests assert rendered output); `lib/templates/react.ts` (generated template).
+
+## Verification (Iteration 202)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (352 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,345 web + 555 api + 1,002 shared = 2,902 tests passing** (+11 new shared)
+- ✅ Remaining raw exact-match `ICON_PATHS` bypasses, `cx="24"`/`cy="24"`/`r="22"`, hardcoded `<rect x=…>` attrs & the 2 duplicated paths in web components (excluding tests, config, templates, parametric geometry & one-offs) — **0 occurrences**
+
+## PR (Iteration 202)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-202-svg-paths-ring-geometry` | refactor(flexy): centralize remaining SVG icon path, rect & large-ring geometry literals (Iteration 202) |
+
 ### ✅ Flexy Iteration 201: Centralize Scalar X/Y Offset & Opacity Variant Values
 
 **Problem**: 105 hardcoded scalar motion-offset & opacity literals remained across 22 web component files, even though `ANIMATION_SCALE` (Iteration 200) already covered scalar `scale:` states — no shared constant covered single-value `x:`/`y:`/`opacity:` variants. Breakdown: 97× `x:`/`y:` offsets (17× `y: -4`, 12× `y: 10`, 9× `y: 20`, 6× `y: -10`, 6× `y: -8`, 6× `x: -6`, 6× `x: -4`, 5× `x: -3`, 5× `y: 4`, 4× `y: 8`, 3× `y: -6`, 3× `y: -5`, 3× `y: 5`, 3× `y: 6`, 2× `x: -10`, 2× `x: -5`, 2× `y: 12`, 2× `y: 20`-modal, 1× `x: 10`, 1× `y: -20`, 1× `y: -2`) and 8× opacity (6× `0.8`, 1× `0.6`, 1× `0.3`). Flexy says: no hardcoded scalar x/y/opacity values in variant objects!

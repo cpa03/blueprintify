@@ -1,4 +1,5 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS,
   ARIA_HIDDEN_VALUES,
@@ -12,10 +13,12 @@ import {
   UI_TIMEOUTS,
   UI_TIMING,
   WIZARD_STEP_KEYS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 import { TemplateGrid } from "./components/TemplateGrid";
+import { StartFromScratchButton } from "./components/StartFromScratchButton";
 const ShowEditorButton = lazy(() =>
   import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
 );
@@ -35,7 +38,12 @@ const ScrollToBottomLazy = lazy(() =>
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore, resetAllStores } from "./store";
 import { STORAGE_KEYS } from "./config/keys";
-import { useOnlineStatus, useBeforeUnload } from "./hooks";
+import {
+  useOnlineStatus,
+  useBeforeUnload,
+  useEditorPanelFocus,
+  useTemplatesExitFocus,
+} from "./hooks";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -78,13 +86,17 @@ function App(): JSX.Element {
 
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
   const [editorExiting, setEditorExiting] = useState(false);
+  // Opening the panel unmounts the FAB that had focus, stranding keyboard
+  // users on <body> — restore focus into the panel when that happens.
+  // Pairs with handleHideEditorComplete, which refocuses the FAB on close.
+  useEditorPanelFocus(showEditor);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   // Persisted so the header's one-shot attention-glow only fires for genuine
   // first-time visitors, not on every page load for returning users.
   const [shortcutsDiscovered, setShortcutsDiscovered] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     try {
-      return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+      return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === DATA_BOOLEAN_VALUES.TRUE;
     } catch {
       return false;
     }
@@ -184,6 +196,12 @@ function App(): JSX.Element {
     setTemplatesExiting(false);
   }, []);
 
+  // The wizard panel is the focus destination when the template block leaves:
+  // the template card the user just activated unmounts with it, dropping focus
+  // to <body> (WCAG 2.4.3 Focus Order).
+  const wizardPanelRef = useRef<HTMLDivElement>(null);
+  useTemplatesExitFocus(showTemplates || templatesExiting, wizardPanelRef);
+
   // Memoized handlers for stable references to child components
   const handleHideEditor = useCallback(() => {
     setEditorExiting(true);
@@ -203,7 +221,7 @@ function App(): JSX.Element {
     setShortcutsDiscovered(true);
     if (typeof window !== "undefined") {
       try {
-        localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+        localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, DATA_BOOLEAN_VALUES.TRUE);
       } catch {
         // localStorage can throw in privacy mode — state update above still applies.
       }
@@ -280,8 +298,8 @@ function App(): JSX.Element {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [handleKeyDown]);
 
   useEffect(() => {
@@ -401,7 +419,7 @@ function App(): JSX.Element {
               onAnimationEnd={templatesExiting ? handleTemplatesExitEnd : undefined}
             >
               <TemplateGrid onSelect={activateWizard} />
-              <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
+              <StartFromScratchButton onStart={activateWizard} />
             </div>
           )}
 
@@ -427,6 +445,11 @@ function App(): JSX.Element {
             {/* Wizard Panel — deferred until first interaction to keep
                 framer-motion (45 KB) out of the initial page load */}
             <div
+              ref={wizardPanelRef}
+              // Focusable container (tabIndex -1) so useTemplatesExitFocus has
+              // a home inside the panel while the lazy wizard is still
+              // loading; the next Tab then lands on the first wizard control.
+              tabIndex={-1}
               className={`${LAYOUT.GLASS_CARD_FLEX} ${
                 showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
@@ -469,6 +492,12 @@ function App(): JSX.Element {
             {(showEditor || editorExiting) && (
               <div
                 id={DOM_ELEMENT_IDS.EDITOR_PANEL}
+                // Focusable container (tabIndex -1) so useEditorPanelFocus can
+                // park focus here when the FAB unmounts; the named region role
+                // makes the jump announce as "Editor panel" for screen readers.
+                role={ARIA_ROLES.REGION}
+                aria-label={ACCESSIBILITY_LABELS.EDITOR.PANEL}
+                tabIndex={-1}
                 className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} ${
                   editorExiting ? "animate-slide-out-right" : "animate-slide-in-right"
                 }`}

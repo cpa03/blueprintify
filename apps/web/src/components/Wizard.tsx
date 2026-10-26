@@ -20,6 +20,7 @@
  */
 
 import React, { Suspense, lazy, useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { StepTransition } from "./StepTransition";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -45,6 +46,7 @@ import {
   UI_MESSAGES,
   WIZARD_STEP_KEYS,
 } from "@blueprint/shared";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
 
@@ -181,13 +183,13 @@ function WizardComponent(): JSX.Element {
   );
 
   useEffect(() => {
-    window.addEventListener("keydown", handleCmdEnter);
-    window.addEventListener("keydown", handleAltArrowLeft);
-    window.addEventListener("keydown", handleAltArrowRight);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleCmdEnter);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowLeft);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowRight);
     return () => {
-      window.removeEventListener("keydown", handleCmdEnter);
-      window.removeEventListener("keydown", handleAltArrowLeft);
-      window.removeEventListener("keydown", handleAltArrowRight);
+      window.removeEventListener(DOM_EVENTS.KEYDOWN, handleCmdEnter);
+      window.removeEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowLeft);
+      window.removeEventListener(DOM_EVENTS.KEYDOWN, handleAltArrowRight);
     };
   }, [handleCmdEnter, handleAltArrowLeft, handleAltArrowRight]);
 
@@ -261,7 +263,7 @@ function WizardComponent(): JSX.Element {
         role={ARIA_ROLES.REGION}
         aria-label={ACCESSIBILITY_LABELS.WIZARD.STEP_ARIA(currentStepLabel)}
       >
-        <StepTransition mode="wait">{renderStep()}</StepTransition>
+        <StepTransition mode={ANIMATE_PRESENCE_MODES.WAIT}>{renderStep()}</StepTransition>
       </div>
 
       {/* Bottom scroll shadow — fades in when there's more wizard content

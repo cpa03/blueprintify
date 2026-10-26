@@ -14,9 +14,12 @@ import {
   CRYPTO_CONFIG,
   ID_CHARS,
   TIME_UNITS,
+  TIME_FORMAT,
+  NUMBER_RADIX,
   PERCENT_SCALE,
   RATIO_LIMITS,
   CIRCLE_GEOMETRY,
+  CIRCLE_GEOMETRY_LARGE,
   HTTP_STATUS,
   ROUTE_PATHS,
   DEFAULT_URLS,
@@ -122,6 +125,7 @@ import {
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
   SKELETON_PULSE_DEFAULTS,
+  SKELETON_EXIT_DEFAULTS,
   BUILD_CONFIG,
   ENTRANCE_STAGGER_DEFAULTS,
   SCROLLBAR_COLORS,
@@ -131,6 +135,7 @@ import {
   SVG_TRANSITION_DEFAULTS,
   SVG_ICON_DEFAULTS,
   ICON_PATHS,
+  ICON_RECTS,
   COLOR_MIX_OPACITY,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
@@ -181,6 +186,11 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_REQUIRED_VALUES,
+  DATA_BOOLEAN_VALUES,
+  ARIA_BUSY_VALUES,
+  DOM_EVENTS,
+  MOTION_VARIANT_STATES,
+  ANIMATE_PRESENCE_MODES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -578,6 +588,43 @@ describe("CIRCLE_GEOMETRY", () => {
 
   it("should have STROKE_DASHOFFSET = CIRCUMFERENCE * 0.75", () => {
     expect(CIRCLE_GEOMETRY.STROKE_DASHOFFSET).toBeCloseTo(CIRCLE_GEOMETRY.CIRCUMFERENCE * 0.75);
+  });
+
+  it("should have FULL_TURN_RAD = 2 * PI", () => {
+    expect(CIRCLE_GEOMETRY.FULL_TURN_RAD).toBeCloseTo(2 * Math.PI);
+  });
+
+  it("should have FULL_TURN_DEG = 360", () => {
+    expect(CIRCLE_GEOMETRY.FULL_TURN_DEG).toBe(360);
+    expect(Number.isInteger(CIRCLE_GEOMETRY.FULL_TURN_DEG)).toBe(true);
+  });
+
+  it("should keep CIRCUMFERENCE consistent with FULL_TURN_RAD * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY.CIRCUMFERENCE).toBeCloseTo(
+      CIRCLE_GEOMETRY.FULL_TURN_RAD * CIRCLE_GEOMETRY.RADIUS
+    );
+  });
+});
+
+describe("CIRCLE_GEOMETRY_LARGE", () => {
+  it("should have CENTER_X = 24", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_X).toBe(24);
+  });
+
+  it("should have CENTER_Y = 24", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_Y).toBe(24);
+  });
+
+  it("should have RADIUS = 22", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.RADIUS).toBe(22);
+  });
+
+  it("should have CIRCUMFERENCE = 2 * PI * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CIRCUMFERENCE).toBeCloseTo(2 * Math.PI * 22);
+  });
+
+  it("should inset the ring by 2 units from the 48x48 viewBox edge", () => {
+    expect(CIRCLE_GEOMETRY_LARGE.CENTER_X - CIRCLE_GEOMETRY_LARGE.RADIUS).toBe(2);
   });
 });
 
@@ -2772,11 +2819,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
     expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
     expect(UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS).toBe(30000);
+    expect(UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS).toBe(2000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(23);
+    expect(values.length).toBe(24);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -3636,6 +3684,14 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.CHECKMARK).toBe("M5 13l4 4L19 7");
   });
 
+  it("should define large checkmark path for 48x48 celebration rings", () => {
+    expect(ICON_PATHS.CHECKMARK_LARGE).toBe("M14 24L21 31L34 17");
+  });
+
+  it("should define square-copy frame path", () => {
+    expect(ICON_PATHS.COPY_SQUARE).toBe("M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
+  });
+
   it("should define edit path", () => {
     expect(ICON_PATHS.EDIT).toBeTruthy();
   });
@@ -3661,14 +3717,35 @@ describe("ICON_PATHS", () => {
     expect(ICON_PATHS.GITHUB).toBeTruthy();
   });
 
-  it("should have 19 entries", () => {
-    expect(Object.keys(ICON_PATHS).length).toBe(19);
+  it("should have 21 entries", () => {
+    expect(Object.keys(ICON_PATHS).length).toBe(21);
   });
 
   it("should have unique path values", () => {
     const paths = Object.values(ICON_PATHS);
     const uniquePaths = new Set(paths);
     expect(uniquePaths.size).toBe(paths.length);
+  });
+});
+
+describe("ICON_RECTS", () => {
+  it("should define the square-copy body rect", () => {
+    expect(ICON_RECTS.COPY_BODY).toEqual({ x: 9, y: 9, width: 13, height: 13, rx: 2, ry: 2 });
+  });
+
+  it("should define the pause-badge bar rects", () => {
+    expect(ICON_RECTS.PAUSE_LEFT).toEqual({ x: 6, y: 4, width: 4, height: 16, rx: 1 });
+    expect(ICON_RECTS.PAUSE_RIGHT).toEqual({ x: 14, y: 4, width: 4, height: 16, rx: 1 });
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ICON_RECTS).length).toBe(3);
+  });
+
+  it("should center the pause bars on the 24x24 viewBox", () => {
+    const leftEdge = ICON_RECTS.PAUSE_LEFT.x;
+    const rightEdge = ICON_RECTS.PAUSE_RIGHT.x + ICON_RECTS.PAUSE_RIGHT.width;
+    expect((leftEdge + rightEdge) / 2).toBe(12);
   });
 });
 
@@ -5483,5 +5560,155 @@ describe("ARIA_REQUIRED_VALUES (Flexy Iteration 195)", () => {
     expect(Object.keys(ARIA_REQUIRED_VALUES).length).toBe(2);
     const values = Object.values(ARIA_REQUIRED_VALUES);
     expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("TIME_FORMAT (Flexy Iteration 203)", () => {
+  it("should have MM_SS_PAD_WIDTH = 2", () => {
+    expect(TIME_FORMAT.MM_SS_PAD_WIDTH).toBe(2);
+    expect(Number.isInteger(TIME_FORMAT.MM_SS_PAD_WIDTH)).toBe(true);
+  });
+
+  it("should have MM_SS_PAD_CHAR = 0", () => {
+    expect(TIME_FORMAT.MM_SS_PAD_CHAR).toBe("0");
+  });
+
+  it("should zero-pad single-digit seconds for MM:SS display", () => {
+    expect((5).toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)).toBe(
+      "05"
+    );
+  });
+});
+
+describe("NUMBER_RADIX (Flexy Iteration 203)", () => {
+  it("should have DECIMAL = 10", () => {
+    expect(NUMBER_RADIX.DECIMAL).toBe(10);
+  });
+
+  it("should be a valid parseInt radix", () => {
+    expect(Number.isInteger(NUMBER_RADIX.DECIMAL)).toBe(true);
+    expect(NUMBER_RADIX.DECIMAL).toBeGreaterThanOrEqual(2);
+    expect(NUMBER_RADIX.DECIMAL).toBeLessThanOrEqual(36);
+    expect(parseInt("42", NUMBER_RADIX.DECIMAL)).toBe(42);
+  });
+});
+
+describe("SKELETON_EXIT_DEFAULTS (Flexy Iteration 203)", () => {
+  it("should have the full skeleton-exit CSS animation shorthand", () => {
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toBe("skeleton-exit 0.3s ease-out 0s forwards");
+  });
+
+  it("should target the skeleton-exit keyframes with forwards fill", () => {
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/^skeleton-exit\s/);
+    expect(SKELETON_EXIT_DEFAULTS.ANIMATION).toMatch(/\sforwards$/);
+  });
+});
+
+describe("DATA_BOOLEAN_VALUES (Flexy Iteration 204)", () => {
+  it("should have true value", () => {
+    expect(DATA_BOOLEAN_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(DATA_BOOLEAN_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(DATA_BOOLEAN_VALUES).length).toBe(2);
+    const values = Object.values(DATA_BOOLEAN_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should serialize booleans identically to String()", () => {
+    expect(String(true)).toBe(DATA_BOOLEAN_VALUES.TRUE);
+    expect(String(false)).toBe(DATA_BOOLEAN_VALUES.FALSE);
+  });
+
+  it("should be valid JSON encodings of boolean true/false", () => {
+    expect(JSON.parse(DATA_BOOLEAN_VALUES.TRUE)).toBe(true);
+    expect(JSON.parse(DATA_BOOLEAN_VALUES.FALSE)).toBe(false);
+  });
+});
+
+describe("ARIA_BUSY_VALUES (Flexy Iteration 204)", () => {
+  it("should have true value", () => {
+    expect(ARIA_BUSY_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have false value", () => {
+    expect(ARIA_BUSY_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique values", () => {
+    expect(Object.keys(ARIA_BUSY_VALUES).length).toBe(2);
+    const values = Object.values(ARIA_BUSY_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("DOM_EVENTS (Flexy Iteration 206)", () => {
+  it("should have exact event name values", () => {
+    expect(DOM_EVENTS.KEYDOWN).toBe("keydown");
+    expect(DOM_EVENTS.SCROLL).toBe("scroll");
+    expect(DOM_EVENTS.CHANGE).toBe("change");
+    expect(DOM_EVENTS.RESIZE).toBe("resize");
+    expect(DOM_EVENTS.INPUT).toBe("input");
+    expect(DOM_EVENTS.BEFORE_UNLOAD).toBe("beforeunload");
+    expect(DOM_EVENTS.ONLINE).toBe("online");
+    expect(DOM_EVENTS.OFFLINE).toBe("offline");
+    expect(DOM_EVENTS.MOUSE_DOWN).toBe("mousedown");
+    expect(DOM_EVENTS.STORAGE).toBe("storage");
+    expect(DOM_EVENTS.UNHANDLED_REJECTION).toBe("unhandledrejection");
+    expect(DOM_EVENTS.ERROR).toBe("error");
+    expect(DOM_EVENTS.ANIMATION_END).toBe("animationend");
+    expect(DOM_EVENTS.HASH_CHANGE).toBe("hashchange");
+  });
+
+  it("should have 14 unique event names", () => {
+    expect(Object.keys(DOM_EVENTS).length).toBe(14);
+    const values = Object.values(DOM_EVENTS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase DOM event type names", () => {
+    for (const value of Object.values(DOM_EVENTS)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("MOTION_VARIANT_STATES (Flexy Iteration 207)", () => {
+  it("should have exact variant state name values", () => {
+    expect(MOTION_VARIANT_STATES.HIDDEN).toBe("hidden");
+    expect(MOTION_VARIANT_STATES.VISIBLE).toBe("visible");
+  });
+
+  it("should have 2 unique state names", () => {
+    expect(Object.keys(MOTION_VARIANT_STATES).length).toBe(2);
+    const values = Object.values(MOTION_VARIANT_STATES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase names so variants-object keys and props resolve identically", () => {
+    for (const value of Object.values(MOTION_VARIANT_STATES)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("ANIMATE_PRESENCE_MODES (Flexy Iteration 207)", () => {
+  it("should have exact mode values", () => {
+    expect(ANIMATE_PRESENCE_MODES.WAIT).toBe("wait");
+    expect(ANIMATE_PRESENCE_MODES.SYNC).toBe("sync");
+    expect(ANIMATE_PRESENCE_MODES.POP_LAYOUT).toBe("popLayout");
+  });
+
+  it("should have 3 unique modes covering framer-motion's full mode union", () => {
+    expect(Object.keys(ANIMATE_PRESENCE_MODES).length).toBe(3);
+    const values = Object.values(ANIMATE_PRESENCE_MODES);
+    expect(new Set(values).size).toBe(values.length);
+    expect(new Set(values)).toEqual(new Set(["wait", "sync", "popLayout"]));
   });
 });

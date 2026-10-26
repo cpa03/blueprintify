@@ -46,6 +46,7 @@ import {
   TIME_UNITS,
   TOOLTIP_LABELS,
   UI_TIMEOUTS,
+  CIRCLE_GEOMETRY,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -60,6 +61,7 @@ import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;
@@ -131,7 +133,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
     const newParticles: Particle[] = [];
 
     for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
-      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const angle = (i / PARTICLE_CONFIG.COUNT) * CIRCLE_GEOMETRY.FULL_TURN_RAD;
       const distance =
         PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color =
@@ -257,7 +259,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         // the button. onFocus below flips isVisible, fading the button in.
         tabIndex={0}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
           {showCopied ? (
             /* Checkmark icon + "Copied!" — springs in replacing the link icon */
             <motion.span

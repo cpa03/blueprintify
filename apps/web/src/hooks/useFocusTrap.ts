@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, type RefObject } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
 import { FOCUSABLE_SELECTOR_STRING } from "../config/constants";
 
@@ -160,8 +161,8 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => document.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [isActive, getFocusableElements]);
 
   return {
@@ -171,5 +172,4 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
   };
 }
 
-export type { UseFocusTrapOptions, UseFocusTrapReturn };
 export default useFocusTrap;

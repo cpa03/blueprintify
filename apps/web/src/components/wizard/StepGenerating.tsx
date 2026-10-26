@@ -31,6 +31,8 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  CIRCLE_GEOMETRY,
+  CIRCLE_GEOMETRY_LARGE,
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
   GENERATION_ERROR_PREFIXES,
@@ -44,10 +46,13 @@ import {
   UI_TIMING,
   WIZARD_STEP_KEYS,
   ICON_PATHS,
+  DATA_BOOLEAN_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_Y_OFFSET, TIME_FORMAT } from "@blueprint/shared";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
 import { STORAGE_KEYS } from "../../config/keys";
 interface ElapsedTime {
@@ -60,7 +65,7 @@ interface ElapsedTime {
 function formatElapsed(totalSeconds: number): string {
   const minutes = Math.floor(totalSeconds / TIME_UNITS.SECONDS_PER_MINUTE);
   const secs = totalSeconds % TIME_UNITS.SECONDS_PER_MINUTE;
-  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+  return `${minutes}:${secs.toString().padStart(TIME_FORMAT.MM_SS_PAD_WIDTH, TIME_FORMAT.MM_SS_PAD_CHAR)}`;
 }
 
 function useElapsedTime(isActive: boolean): ElapsedTime {
@@ -115,6 +120,7 @@ import {
   SPRING_CONFIG,
   WIZARD_GENERATING_LABELS,
   GENERATION_PHASE_LABELS,
+  GENERATION_PHASE_PERCENTAGES,
   GENERATION_ERROR_LABELS,
   CELEBRATION_TEXT,
   OPACITY_PULSE,
@@ -211,17 +217,38 @@ export const StepGenerating = memo(function StepGenerating({
   // users get an intuitive visual sense of progress beyond the text status.
   // The bar fills smoothly: 5% on start → 30% blueprint → 65% tasks → 100% complete.
   const generationPhase = useMemo<{ percent: number; label: string }>(() => {
-    if (isComplete) return { percent: 100, label: GENERATION_PHASE_LABELS.COMPLETE };
-    if (isError) return { percent: 0, label: GENERATION_PHASE_LABELS.ERROR };
-    if (!progress) return { percent: 5, label: GENERATION_PHASE_LABELS.STARTING };
+    if (isComplete) {
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.COMPLETE,
+        label: GENERATION_PHASE_LABELS.COMPLETE,
+      };
+    }
+    if (isError) {
+      return { percent: GENERATION_PHASE_PERCENTAGES.ERROR, label: GENERATION_PHASE_LABELS.ERROR };
+    }
+    if (!progress) {
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.STARTING,
+        label: GENERATION_PHASE_LABELS.STARTING,
+      };
+    }
 
     if (progress === GENERATION_MESSAGES.BLUEPRINT_START) {
-      return { percent: 30, label: GENERATION_PHASE_LABELS.GENERATING_BLUEPRINT };
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.GENERATING_BLUEPRINT,
+        label: GENERATION_PHASE_LABELS.GENERATING_BLUEPRINT,
+      };
     }
     if (progress === GENERATION_MESSAGES.BLUEPRINT_COMPLETE) {
-      return { percent: 65, label: GENERATION_PHASE_LABELS.GENERATING_TASKS };
+      return {
+        percent: GENERATION_PHASE_PERCENTAGES.GENERATING_TASKS,
+        label: GENERATION_PHASE_LABELS.GENERATING_TASKS,
+      };
     }
-    return { percent: 45, label: GENERATION_PHASE_LABELS.IN_PROGRESS };
+    return {
+      percent: GENERATION_PHASE_PERCENTAGES.IN_PROGRESS,
+      label: GENERATION_PHASE_LABELS.IN_PROGRESS,
+    };
   }, [progress, isComplete, isError]);
 
   // Elapsed time timer — ticks while generation is actively running.
@@ -314,7 +341,7 @@ export const StepGenerating = memo(function StepGenerating({
       }
       if (!shown) {
         try {
-          localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, "true");
+          localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, DATA_BOOLEAN_VALUES.TRUE);
         } catch {
           // localStorage can throw in privacy mode — toast below still shows once per mount.
         }
@@ -396,9 +423,9 @@ export const StepGenerating = memo(function StepGenerating({
               className="text-accent-emerald"
             >
               <motion.circle
-                cx="24"
-                cy="24"
-                r="22"
+                cx={CIRCLE_GEOMETRY_LARGE.CENTER_X}
+                cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y}
+                r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                 stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -409,7 +436,7 @@ export const StepGenerating = memo(function StepGenerating({
                 }}
               />
               <motion.path
-                d="M14 24L21 31L34 17"
+                d={ICON_PATHS.CHECKMARK_LARGE}
                 stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                 strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
@@ -443,9 +470,9 @@ export const StepGenerating = memo(function StepGenerating({
               aria-label={GENERATION_ERROR_LABELS.ERROR_ICON_ARIA}
             >
               <motion.circle
-                cx="24"
-                cy="24"
-                r="22"
+                cx={CIRCLE_GEOMETRY_LARGE.CENTER_X}
+                cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y}
+                r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                 stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                 strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -477,7 +504,7 @@ export const StepGenerating = memo(function StepGenerating({
                 borderTopColor: COLORS.primary[500],
                 borderRightColor: COLORS.primary[500],
               }}
-              animate={{ rotate: 360 }}
+              animate={{ rotate: CIRCLE_GEOMETRY.FULL_TURN_DEG }}
               transition={{
                 duration: ANIMATION.SPINNER_ROTATION,
                 repeat: ANIMATION_REPEAT.INFINITE,
@@ -529,7 +556,7 @@ export const StepGenerating = memo(function StepGenerating({
         )}
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
         {isComplete ? (
           <motion.div
             key="complete"
@@ -598,7 +625,7 @@ export const StepGenerating = memo(function StepGenerating({
                   ease: EASING.easeInOut,
                 }}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                   <motion.span
                     key={progress || "starting"}
                     initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY }}
@@ -639,7 +666,7 @@ export const StepGenerating = memo(function StepGenerating({
             role={ARIA_ROLES.PROGRESSBAR}
             aria-valuenow={generationPhase.percent}
             aria-valuemin={0}
-            aria-valuemax={100}
+            aria-valuemax={PERCENT_SCALE}
             aria-label={
               isComplete
                 ? GENERATION_PHASE_LABELS.COMPLETE_ARIA
@@ -652,14 +679,14 @@ export const StepGenerating = memo(function StepGenerating({
               animate={{
                 width: generationPhase.percent + "%",
                 opacity:
-                  isGenerating && generationPhase.percent < 100
+                  isGenerating && generationPhase.percent < PERCENT_SCALE
                     ? shouldReduceMotion
                       ? 0.9
                       : [0.85, 1, 0.85]
                     : 1,
               }}
               transition={
-                isGenerating && generationPhase.percent < 100 && !shouldReduceMotion
+                isGenerating && generationPhase.percent < PERCENT_SCALE && !shouldReduceMotion
                   ? {
                       width: { duration: ANIMATION.PULSE, ease: EASING.easeOut },
                       opacity: {
@@ -723,7 +750,7 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} relative`}>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
               {awaitingContent ? (
                 <motion.span
                   key="awaiting-blueprint"
@@ -798,7 +825,7 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} relative`}>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
               {awaitingContent ? (
                 <motion.span
                   key="awaiting-tasks"
@@ -841,7 +868,7 @@ export const StepGenerating = memo(function StepGenerating({
         </motion.div>
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
         {isComplete ? (
           <motion.div
             key="complete-actions"
@@ -1055,7 +1082,7 @@ export const StepGenerating = memo(function StepGenerating({
               className="text-sm text-dark-500 mt-8 flex items-center gap-1.5"
             >
               <Icon name="helpCircleOutline" className="w-4 h-4 flex-shrink-0" />
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                 <motion.span
                   key={blueprintLines > 0 ? "streaming" : "empty"}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY }}

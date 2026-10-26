@@ -8,6 +8,7 @@
 import type { Variants, Transition } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING, MOTION_OFFSETS } from "../config/constants";
 import { ANIMATION_DIRECTIONS, ANIMATION_REPEAT, FRAMER_TYPE } from "@blueprint/shared/config";
+import { MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 /**
  * Common transition configurations
@@ -29,8 +30,8 @@ export const transitions = {
  * Use for elements that should appear with a subtle upward motion
  */
 export const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     y: 0,
     transition: transitions.slow,
@@ -42,8 +43,8 @@ export const fadeInUp: Variants = {
  * Use as parent container with fadeInUp children
  */
 export const staggerContainer: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0 },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     transition: {
       staggerChildren: ANIMATION.STAGGER,
@@ -57,8 +58,8 @@ export const staggerContainer: Variants = {
  * Use for elements that should appear without motion
  */
 export const fadeIn: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0 },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     transition: transitions.normal,
   },
@@ -69,8 +70,8 @@ export const fadeIn: Variants = {
  * Use for elements that should grow into view
  */
 export const scaleIn: Variants = {
-  hidden: { opacity: 0, scale: MOTION_OFFSETS.SCALE_INITIAL },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, scale: MOTION_OFFSETS.SCALE_INITIAL },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     scale: 1,
     transition: transitions.spring,
@@ -82,8 +83,8 @@ export const scaleIn: Variants = {
  * Use for panels or modals entering from the right
  */
 export const slideInRight: Variants = {
-  hidden: { opacity: 0, x: MOTION_OFFSETS.SLIDE_RIGHT_X_PX },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, x: MOTION_OFFSETS.SLIDE_RIGHT_X_PX },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     x: 0,
     transition: transitions.normal,
@@ -95,8 +96,8 @@ export const slideInRight: Variants = {
  * Use for panels or modals entering from the left
  */
 export const slideInLeft: Variants = {
-  hidden: { opacity: 0, x: MOTION_OFFSETS.SLIDE_LEFT_X_PX },
-  visible: {
+  [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, x: MOTION_OFFSETS.SLIDE_LEFT_X_PX },
+  [MOTION_VARIANT_STATES.VISIBLE]: {
     opacity: 1,
     x: 0,
     transition: transitions.normal,
@@ -169,8 +170,8 @@ export function createStaggerContainer(
   delayChildren: number = ANIMATION.NORMAL
 ): Variants {
   return {
-    hidden: { opacity: 0 },
-    visible: {
+    [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0 },
+    [MOTION_VARIANT_STATES.VISIBLE]: {
       opacity: 1,
       transition: {
         staggerChildren,
@@ -186,8 +187,8 @@ export function createStaggerContainer(
  */
 export function createFadeInUp(duration: number = ANIMATION.HALF_SECOND): Variants {
   return {
-    hidden: { opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX },
-    visible: {
+    [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX },
+    [MOTION_VARIANT_STATES.VISIBLE]: {
       opacity: 1,
       y: 0,
       transition: { duration, ease: EASING.easeOut },

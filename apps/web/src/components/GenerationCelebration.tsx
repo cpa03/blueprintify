@@ -26,7 +26,12 @@ import { ANIMATION_SCALE, CELEBRATION_STATE_VALUES, ANIMATION_Y_OFFSET } from "@
 import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import {
+  CIRCLE_GEOMETRY,
+  CIRCLE_GEOMETRY_LARGE,
+  ICON_PATHS,
+  SVG_ICON_DEFAULTS,
+} from "@blueprint/shared/config";
 
 const { CIRCLE_REVEAL_DURATION_S, CHECKMARK_PATH_DELAY_S, TEXT_DELAY_S } = CELEBRATION_ANIMATION;
 
@@ -57,14 +62,15 @@ function generateParticles(centerX: number, centerY: number): Particle[] {
 
   for (let i = 0; i < CELEBRATION_PARTICLE.COUNT; i++) {
     const angle =
-      (i / CELEBRATION_PARTICLE.COUNT) * Math.PI * 2 + Math.random() * RATIO_LIMITS.HALF;
+      (i / CELEBRATION_PARTICLE.COUNT) * CIRCLE_GEOMETRY.FULL_TURN_RAD +
+      Math.random() * RATIO_LIMITS.HALF;
     const distance =
       CELEBRATION_PARTICLE.BASE_DISTANCE_PX +
       Math.random() * CELEBRATION_PARTICLE.RANDOM_DISTANCE_PX;
     const color = CELEBRATION_COLORS[i % CELEBRATION_COLORS.length]!;
     const size =
       CELEBRATION_PARTICLE.BASE_SIZE_PX + Math.random() * CELEBRATION_PARTICLE.RANDOM_SIZE_PX;
-    const rotation = Math.random() * 360;
+    const rotation = Math.random() * CIRCLE_GEOMETRY.FULL_TURN_DEG;
     const shape = particleShapes[i % particleShapes.length]!;
 
     particles.push({
@@ -288,9 +294,9 @@ function GenerationCelebrationComponent({
                 className="text-accent-emerald"
               >
                 <motion.circle
-                  cx="24"
-                  cy="24"
-                  r="22"
+                  cx={CIRCLE_GEOMETRY_LARGE.CENTER_X}
+                  cy={CIRCLE_GEOMETRY_LARGE.CENTER_Y}
+                  r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                   stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
                   initial={{ pathLength: 0, opacity: 0 }}
@@ -301,7 +307,7 @@ function GenerationCelebrationComponent({
                   }}
                 />
                 <motion.path
-                  d="M14 24L21 31L34 17"
+                  d={ICON_PATHS.CHECKMARK_LARGE}
                   stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}

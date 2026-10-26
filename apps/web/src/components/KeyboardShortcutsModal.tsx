@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -36,7 +37,7 @@ import {
 } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
-import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
+import { getModifierLabel, getAltKeyLabel, isMacOS } from "../lib/platform";
 import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
 import {
@@ -45,8 +46,11 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
+  ICON_PATHS,
   SVG_ICON_DEFAULTS,
+  getPlatformShortcutLabel,
 } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -124,7 +128,7 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.GENERATION,
     },
     {
-      keys: [modifier, "N"],
+      keys: getPlatformShortcutLabel("NEW_PROJECT", isMacOS()).split("+"),
       description: KEYBOARD_SHORTCUTS.NEW_PROJECT.DESCRIPTION,
       category: SHORTCUT_CATEGORIES.GENERAL,
     },
@@ -245,11 +249,11 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     };
   }, [isOpen, handleKeyDown]);
 
@@ -370,7 +374,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                       strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                       strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_DEFAULT}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      d={ICON_PATHS.SEARCH}
                     />
                   </svg>
                   <input
@@ -453,7 +457,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         )}
                       </div>
                       <div className="flex flex-col">
-                        <AnimatePresence mode="popLayout">
+                        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
                           {categoryShortcuts.map((shortcut, index) => (
                             <motion.div
                               key={shortcut.description}
@@ -511,7 +515,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                         strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
                         strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_LIGHT}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        d={ICON_PATHS.SEARCH}
                       />
                     </svg>
                     <p className="text-sm font-medium text-dark-300">

@@ -1,23 +1,25 @@
 import { StrictMode } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
 import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
 import { DEBUG_MESSAGES } from "./config/constants/content";
+import { SKELETON_EXIT_DEFAULTS, UI_TIMEOUTS } from "@blueprint/shared/config";
 import "./index.css";
 
 // Static import App to avoid an extra network round-trip that delays hydration and LCP
 import App from "./App";
 
 // Global error handlers for uncaught errors and unhandled Promise rejections
-window.addEventListener("unhandledrejection", (event) => {
+window.addEventListener(DOM_EVENTS.UNHANDLED_REJECTION, (event) => {
   console.error(DEBUG_MESSAGES.UNHANDLED_REJECTION, event.reason);
   // Prevent the default browser behavior (which shows a cryptic error in console)
   event.preventDefault();
 });
 
-window.addEventListener("error", (event) => {
+window.addEventListener(DOM_EVENTS.ERROR, (event) => {
   console.error(DEBUG_MESSAGES.UNCAUGHT_ERROR, event.message, event.error?.stack ?? "");
   // Prevent the default browser behavior for non-critical errors
   if (!event.isTrusted) {
@@ -38,9 +40,9 @@ const fadeOutAndRemoveSkeletonLoader = () => {
     // fixed duration. On fast connections this makes the perceived load
     // time match actual readiness — the skeleton disappears as soon as
     // the UI is interactive rather than lingering unnecessarily.
-    skeleton.style.animation = "skeleton-exit 0.3s ease-out 0s forwards";
+    skeleton.style.animation = SKELETON_EXIT_DEFAULTS.ANIMATION;
     // Remove from DOM after animation completes to keep the DOM clean.
-    skeleton.addEventListener("animationend", () => skeleton.remove(), { once: true });
+    skeleton.addEventListener(DOM_EVENTS.ANIMATION_END, () => skeleton.remove(), { once: true });
   }
 };
 
@@ -87,7 +89,7 @@ function scheduleMonoFont(): void {
   if (typeof idle === "function") {
     idle.call(window, loadMonoFont);
   } else {
-    window.setTimeout(loadMonoFont, 2000);
+    window.setTimeout(loadMonoFont, UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS);
   }
 }
 

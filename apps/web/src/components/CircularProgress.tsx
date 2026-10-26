@@ -19,8 +19,14 @@ import {
   ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
-import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
-import { ARIA_ROLES, SVG_ICON_DEFAULTS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import { UI_TIMEOUTS, PROGRESS_STATE_VALUES, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+import {
+  ARIA_ROLES,
+  SVG_ICON_DEFAULTS,
+  ARIA_HIDDEN_VALUES,
+  CIRCLE_GEOMETRY,
+  PERCENT_SCALE,
+} from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -105,10 +111,10 @@ function CircularProgressComponent({
   mountAnimationDelayMs = 0,
   isAnimating = false,
 }: CircularProgressProps): JSX.Element {
-  const clampedValue = Math.max(0, Math.min(100, value));
-  const isComplete = clampedValue >= 100;
+  const clampedValue = Math.max(0, Math.min(PERCENT_SCALE, value));
+  const isComplete = clampedValue >= PERCENT_SCALE;
   const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
+  const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
   const center = size / 2;
 
   // Respect prefers-reduced-motion: the stroke transition is inline-styled,
@@ -159,7 +165,7 @@ function CircularProgressComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clampedValue]);
 
-  const strokeDashoffset = circumference - (animatedValue / 100) * circumference;
+  const strokeDashoffset = circumference - (animatedValue / PERCENT_SCALE) * circumference;
 
   return (
     <div
@@ -168,7 +174,7 @@ function CircularProgressComponent({
       role={ARIA_ROLES.PROGRESSBAR}
       aria-valuenow={Math.round(animatedValue)}
       aria-valuemin={0}
-      aria-valuemax={100}
+      aria-valuemax={PERCENT_SCALE}
       aria-label={ariaLabel ?? ACCESSIBILITY_LABELS.PROGRESS.PERCENT_COMPLETE(clampedValue)}
       data-state={
         isComplete
@@ -177,9 +183,11 @@ function CircularProgressComponent({
             ? PROGRESS_STATE_VALUES.ANIMATING
             : PROGRESS_STATE_VALUES.IDLE
       }
-      data-complete={isComplete ? "true" : "false"}
-      data-animating={isAnimating ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-complete={isComplete ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-animating={isAnimating ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <svg
         width={size}

@@ -29,12 +29,14 @@ import {
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
   EMPTY_STATE_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import { MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 /**
  * Empty state display shown in the editor when no content has been generated.
@@ -49,7 +51,7 @@ import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
 export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
-  const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * 100;
+  const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * PERCENT_SCALE;
   const modifierKey = getModifierLabel();
   const altKey = getAltKeyLabel();
   const shouldReduceMotion = useReducedMotion();
@@ -93,8 +95,8 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
     <motion.div
       className="h-full flex flex-col items-center justify-center text-dark-500"
       variants={staggerContainer}
-      initial="hidden"
-      animate="visible"
+      initial={MOTION_VARIANT_STATES.HIDDEN}
+      animate={MOTION_VARIANT_STATES.VISIBLE}
       role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL}
       data-state={EMPTY_STATE_VALUES.WAITING}

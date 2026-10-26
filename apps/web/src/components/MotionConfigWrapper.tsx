@@ -17,6 +17,7 @@
 
 import { memo, useEffect, type ReactNode } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 
 /**
  * Props for the MotionConfigWrapper component.
@@ -58,8 +59,10 @@ export const MotionConfigWrapper = memo(function MotionConfigWrapper({
   return (
     <div
       className="contents"
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-motion-wrapper="true"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-motion-wrapper={DATA_BOOLEAN_VALUES.TRUE}
     >
       {children}
     </div>

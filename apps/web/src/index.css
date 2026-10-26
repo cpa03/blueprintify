@@ -97,6 +97,15 @@
     scroll-padding-top: var(--fixed-header-offset);
   }
 
+  /* Preview pane is its own scrollport, so html scroll-padding does not
+     apply to scrollIntoView calls on targets inside it. Without this,
+     useHashScroll deep-link targets land flush against the pane top,
+     underneath the split-mode pane label and top scroll shadow. 2.5rem
+     clears both (label sits at 0.5rem with ~1.5rem height). */
+  .preview-scroll-pane {
+    scroll-padding-top: 2.5rem;
+  }
+
   /* ===== Base Styles ===== */
   body {
     @apply bg-dark-950 text-dark-100 font-sans antialiased;

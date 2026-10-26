@@ -21,14 +21,18 @@
 
 import { lazy, Suspense, type ReactNode } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 const AnimatePresence = lazy(() =>
   import("framer-motion").then((m) => ({ default: m.AnimatePresence }))
 );
 
+type AnimatePresenceMode = (typeof ANIMATE_PRESENCE_MODES)[keyof typeof ANIMATE_PRESENCE_MODES];
+
 interface StepTransitionProps {
   readonly children: ReactNode;
-  readonly mode?: "wait" | "sync" | "popLayout";
+  readonly mode?: AnimatePresenceMode;
 }
 
 /**
@@ -36,12 +40,17 @@ interface StepTransitionProps {
  * Shows children directly (no animation wrapper) until the library loads,
  * then seamlessly enables AnimatePresence with the specified mode.
  */
-export function StepTransition({ children, mode = "wait" }: StepTransitionProps): JSX.Element {
+export function StepTransition({
+  children,
+  mode = ANIMATE_PRESENCE_MODES.WAIT,
+}: StepTransitionProps): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <div
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       data-mode={mode}
       className="contents"
     >

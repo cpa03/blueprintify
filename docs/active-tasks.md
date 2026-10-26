@@ -2,6 +2,30 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ Palette — **ErrorFallback Recovery Focus Micro-UX (Oct 25 2026)**
+- [CONNECT] Connected `ErrorFallback.tsx` to a mount-time focus effect (`recoveryButtonRef` + `recoveryFocusDelayMs`) that hands focus to the primary "Try again" recovery action once it is on screen.
+- [STRENGTHEN] Strengthened `ErrorFallback` focus order (WCAG 2.4.3) by waiting for the staggered entrance cascade to paint the action row before focusing it, and by skipping the move when focus is no longer idle so an actively navigating user is never interrupted.
+- [CONSOLIDATE] Consolidated the focus delay on `STAGGER_CONFIG.ERROR_FALLBACK` (cascade slot for the action row, `error` details row aware) plus `ANIMATION.NORMAL` spring settle instead of a hardcoded timeout.
+- [REMOVE] Removed the post-crash focus dead end: the error takeover previously unmounted the focused element and left focus on `<body>`, so the next Tab restarted from the top of the document with no route to the recovery actions.
+
+## ✅ StorX — **EditorHeader Micro-UX & Platform-Aware Shortcut Labels (Oct 25 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-active-tab`, `data-view-mode`, `data-has-content`, `data-generating`, `data-reduced-motion`) to `EditorHeader.tsx`.
+- [STRENGTHEN] Strengthened `EditorHeader` accessibility and state tracking for automated DOM inspection, and added `getPlatformShortcutLabel` to `@blueprint/shared` for platform-aware shortcut labels.
+- [CONSOLIDATE] Consolidated platform-aware shortcut label resolution across `packages/shared/src/config/ui.ts` and `KeyboardShortcutsModal.tsx`.
+- [REMOVE] Removed hardcoded "Ctrl" modifier label in shortcut modal items in favor of platform-aware resolver (`getPlatformShortcutLabel`).
+
+## ✅ StorX — **StepFeatures Micro-UX & Reduced Motion State Inspection (Oct 23 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`, `data-features-count`, `data-is-max-count`) to `StepFeatures.tsx`.
+- [STRENGTHEN] Strengthened `StepFeatures` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false"), `data-can-proceed` ("true"), `data-features-count`, and `data-is-max-count` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated wizard step reduced motion state tracking and feature count selection state attributes across wizard components.
+- [REMOVE] Removed un-gated hover/tap motion effects when reduced motion preference is active in suggestion buttons and quick-add actions.
+
+## ✅ StorX — **StepStack Micro-UX & Reduced Motion State Inspection (Oct 22 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`, `data-selected-count`, `data-min-required`) to `StepStack.tsx`.
+- [STRENGTHEN] Strengthened `StepStack` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false"), `data-can-proceed` ("true"/"false"), `data-selected-count`, and `data-min-required` attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated wizard step reduced motion state tracking and tech stack selection state attributes across wizard components.
+- [REMOVE] Removed un-gated hover/tap motion effects when reduced motion preference is active in `TechChip`.
+
 ## ✅ StorX — **StepInfo Micro-UX & Reduced Motion State Inspection (Oct 21 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and DOM state inspection attributes (`data-reduced-motion`, `data-can-proceed`) to `StepInfo.tsx`.
 - [STRENGTHEN] Strengthened `StepInfo` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") and `data-can-proceed` ("true"/"false") attributes for state inspection and accessibility testing.

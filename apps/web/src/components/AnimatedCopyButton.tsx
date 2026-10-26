@@ -23,6 +23,7 @@ import {
   ANIMATION_OPACITY,
   ANIMATION_X_OFFSET,
   ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
@@ -36,7 +37,15 @@ import {
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, ARIA_LIVE_VALUES, ARIA_ROLES } from "@blueprint/shared/config";
+import {
+  ANIMATION_ENTRANCE_DELAYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  CIRCLE_GEOMETRY,
+  ICON_PATHS,
+  ICON_RECTS,
+} from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface Particle {
@@ -107,7 +116,7 @@ function AnimatedCopyButtonComponent({
     const newParticles: Particle[] = [];
 
     for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
-      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const angle = (i / PARTICLE_CONFIG.COUNT) * CIRCLE_GEOMETRY.FULL_TURN_RAD;
       const distance =
         PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color: string =
@@ -168,8 +177,10 @@ function AnimatedCopyButtonComponent({
         className
       )}
       data-state={isCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-has-content={hasContent ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       title={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       animate={{
@@ -255,7 +266,7 @@ function AnimatedCopyButtonComponent({
       </span>
 
       <span className="relative z-10 flex items-center gap-2">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
           {isCopied ? (
             <motion.span
               key="copied"
@@ -335,8 +346,8 @@ function AnimatedCopyButtonComponent({
                     : undefined
                 }
               >
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                <rect {...ICON_RECTS.COPY_BODY} />
+                <path d={ICON_PATHS.COPY_SQUARE} />
               </motion.svg>
               <span>{COPY_BUTTON_LABELS.DISPLAY_COPY}</span>
             </motion.span>

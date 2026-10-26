@@ -34,12 +34,14 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   SUGGESTED_FEATURES,
   FORM_LIMITS,
@@ -64,6 +66,7 @@ import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES, MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -72,6 +75,7 @@ interface StepFeaturesProps {
 export const StepFeatures = memo(function StepFeatures({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepFeaturesProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const [showAllAddedMsg, setShowAllAddedMsg] = useState(false);
@@ -172,7 +176,16 @@ export const StepFeatures = memo(function StepFeatures({
   }, [suggestedNotAdded, addFeature]);
 
   return (
-    <motion.div {...pageTransition(direction)} className="space-y-6">
+    <motion.div
+      {...pageTransition(direction)}
+      className="space-y-6"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-can-proceed={DATA_BOOLEAN_VALUES.TRUE}
+      data-features-count={features.length}
+      data-is-max-count={isAtMaxCount ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+    >
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}</h2>
@@ -337,7 +350,7 @@ export const StepFeatures = memo(function StepFeatures({
               role={ARIA_ROLES.LIST}
               aria-labelledby={DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL}
             >
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
                 {features.map((feature, index) => {
                   const isJustAdded = feature === justAdded;
                   const staggerDelay = index * STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S;
@@ -406,8 +419,12 @@ export const StepFeatures = memo(function StepFeatures({
                 type="button"
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg || isAtMaxCount}
-                whileHover={showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE}
-                whileTap={showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE}
+                whileHover={
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE
+                }
+                whileTap={
+                  shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE
+                }
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
                 className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
                   showAllAddedMsg
@@ -420,7 +437,7 @@ export const StepFeatures = memo(function StepFeatures({
                     : ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS
                 }
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                   {showAllAddedMsg ? (
                     <motion.span
                       key="checkmark"
@@ -466,11 +483,11 @@ export const StepFeatures = memo(function StepFeatures({
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.GROUP}
               aria-labelledby={DOM_ELEMENT_IDS.SUGGESTIONS_LABEL}
-              initial="hidden"
-              animate="visible"
+              initial={MOTION_VARIANT_STATES.HIDDEN}
+              animate={MOTION_VARIANT_STATES.VISIBLE}
               variants={{
-                hidden: {},
-                visible: {
+                [MOTION_VARIANT_STATES.HIDDEN]: {},
+                [MOTION_VARIANT_STATES.VISIBLE]: {
                   transition: {
                     staggerChildren: STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S,
                     delayChildren: ANIMATION.SUBTLE_MOVE,
@@ -495,8 +512,8 @@ export const StepFeatures = memo(function StepFeatures({
                     }}
                     layout
                     variants={{
-                      hidden: { opacity: 0, scale: ANIMATION_SCALE.CARD },
-                      visible: {
+                      [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0, scale: ANIMATION_SCALE.CARD },
+                      [MOTION_VARIANT_STATES.VISIBLE]: {
                         opacity: 1,
                         scale: 1,
                         transition: {
@@ -505,8 +522,8 @@ export const StepFeatures = memo(function StepFeatures({
                         },
                       },
                     }}
-                    whileHover={HOVER_SCALE.STANDARD}
-                    whileTap={TAP_SCALE.STANDARD}
+                    whileHover={shouldReduceMotion ? {} : HOVER_SCALE.STANDARD}
+                    whileTap={shouldReduceMotion ? {} : TAP_SCALE.STANDARD}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
@@ -542,7 +559,7 @@ export const StepFeatures = memo(function StepFeatures({
                       )}
                     </AnimatePresence>
                     <span className="relative z-10 flex items-center gap-1.5">
-                      <AnimatePresence mode="wait">
+                      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
                         {isJustAdded ? (
                           <motion.svg
                             key="checkmark"

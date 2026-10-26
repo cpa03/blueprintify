@@ -99,7 +99,7 @@ export async function generateNodeProject(
   zip.file("README.md", generateProjectReadme(projectName, description, features, "Node.js"));
 }
 
-export function generateHonoIndex(projectName: string, features: string[]): string {
+function generateHonoIndex(projectName: string, features: string[]): string {
   return `import { Hono } from 'hono'
 
 const app = new Hono()
@@ -118,7 +118,7 @@ app.get('/health', (c) => {
 export default app`;
 }
 
-export function generateExpressIndex(projectName: string, features: string[]): string {
+function generateExpressIndex(projectName: string, features: string[]): string {
   return `import express from 'express'
 
 const app = express()
@@ -144,7 +144,7 @@ app.listen(PORT, () => {
 export default app`;
 }
 
-export function generateBasicNodeIndex(projectName: string, features: string[]): string {
+function generateBasicNodeIndex(projectName: string, features: string[]): string {
   return `const http = require('http')
 
 const PORT = process.env.PORT || ${TEMPLATE_NODE_PORT}
@@ -170,7 +170,7 @@ server.listen(PORT, () => {
 })`;
 }
 
-export function generateAPITests(): string {
+function generateAPITests(): string {
   return `const request = require('supertest')
 
 describe('API Tests', () => {

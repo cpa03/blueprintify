@@ -14,6 +14,10 @@
  * - Hover reveals a thumb indicator for discoverability
  * - Keyboard accessible with proper ARIA slider role
  * - Visible focus indicator for keyboard users (WCAG 2.4.7)
+ * - Stays visible while focused so keyboard users never strand focus on an
+ *   invisible bar (WCAG 2.4.7), mirroring ScrollToTop's focus retention
+ * - Hidden from assistive technology (aria-hidden) whenever it is not shown,
+ *   so screen readers never encounter a phantom invisible slider
  * - Smooth spring-based scroll animation
  * - Window scroll detection (no container ref needed)
  * - Gradient progress bar matching the app's design language
@@ -30,8 +34,14 @@
  */
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
-import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_OPACITY,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
@@ -39,6 +49,7 @@ import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import {
   ANIMATION_REPEAT,
+  ARIA_HIDDEN_VALUES,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
@@ -86,14 +97,21 @@ function PageScrollProgressBarComponent({
   const barRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
+  // Focus retention (WCAG 2.4.7): scrubbing past the show/hide thresholds
+  // would fade the bar to opacity 0 and strip its keyboard handlers while
+  // focus is still inside it, stranding keyboard users on an invisible,
+  // inert slider. Keep it mounted/visible until focus leaves — the same
+  // retention ScrollToTop uses. aria-hidden therefore never applies while focused.
+  const isBarVisible = isVisible || isFocused;
+
   const calculateProgress = useCallback(() => {
     const scrollTop = window.scrollY;
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
 
     if (scrollHeight <= 0) return 0;
 
-    const progress = (scrollTop / scrollHeight) * 100;
-    return Math.min(Math.max(progress, 0), 100);
+    const progress = (scrollTop / scrollHeight) * PERCENT_SCALE;
+    return Math.min(Math.max(progress, 0), PERCENT_SCALE);
   }, []);
 
   /**
@@ -181,7 +199,7 @@ function PageScrollProgressBarComponent({
     : SCROLL_PROGRESS_SPRING.PAGE_BAR_NORMAL;
 
   const smoothProgress = useSpring(0, springConfig);
-  const width = useTransform(smoothProgress, [0, 100], ["0%", "100%"]);
+  const width = useTransform(smoothProgress, [0, PERCENT_SCALE], ["0%", `${PERCENT_SCALE}%`]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -189,16 +207,16 @@ function PageScrollProgressBarComponent({
       const scrollTop = window.scrollY;
 
       setScrollProgress(progress);
-      setIsVisible(scrollTop > showAfter && progress < 100);
+      setIsVisible(scrollTop > showAfter && progress < PERCENT_SCALE);
 
       smoothProgress.set(progress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
     handleScroll();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
     };
   }, [calculateProgress, showAfter, smoothProgress]);
 
@@ -212,38 +230,41 @@ function PageScrollProgressBarComponent({
       aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       aria-valuenow={Math.round(scrollProgress)}
       aria-valuemin={0}
-      aria-valuemax={100}
+      aria-valuemax={PERCENT_SCALE}
       aria-valuetext={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_PERCENT(scrollProgress)}
       aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION}
-      tabIndex={isVisible ? 0 : -1}
-      onKeyDown={isVisible ? handleBarClick : undefined}
+      aria-hidden={isBarVisible ? ARIA_HIDDEN_VALUES.FALSE : ARIA_HIDDEN_VALUES.TRUE}
+      tabIndex={isBarVisible ? 0 : -1}
+      onKeyDown={isBarVisible ? handleBarClick : undefined}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       style={{ marginTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: isVisible ? 1 : 0 }}
+      animate={{ opacity: isBarVisible ? 1 : 0 }}
       transition={{
         duration: prefersReducedMotion ? 0 : ANIMATION.CHECKMARK_REVEAL,
         ease: EASING.easeOut,
       }}
       className={`fixed top-0 left-0 right-0 z-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 ${className}`}
-      data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+      data-state={isBarVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
       data-progress={Math.round(scrollProgress)}
       data-hovered={isHovered}
       data-focused={isFocused}
-      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
+      data-reduced-motion={
+        prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <div
         ref={barRef}
         className="relative w-full cursor-pointer group"
         style={{ height: `${height + (isHovered || isFocused ? 6 : 0)}px` }}
-        onClick={isVisible ? handleBarClick : undefined}
+        onClick={isBarVisible ? handleBarClick : undefined}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
           setIsHovered(false);
           handleBarHoverEnd();
         }}
-        onMouseMove={isVisible ? handleBarHover : undefined}
+        onMouseMove={isBarVisible ? handleBarHover : undefined}
       >
         {/* Track background */}
         <div className="absolute inset-0 bg-dark-800/30 backdrop-blur-sm transition-all duration-200 group-hover:bg-dark-800/50" />
@@ -255,8 +276,8 @@ function PageScrollProgressBarComponent({
           initial={{ opacity: ANIMATION_OPACITY.SUBTLE }}
           animate={
             prefersReducedMotion
-              ? { opacity: isVisible ? 0.9 : 0.8 }
-              : isVisible
+              ? { opacity: isBarVisible ? 0.9 : 0.8 }
+              : isBarVisible
                 ? { opacity: [0.8, 1, 0.8] }
                 : { opacity: ANIMATION_OPACITY.SUBTLE }
           }
@@ -283,8 +304,8 @@ function PageScrollProgressBarComponent({
           }}
           initial={false}
           animate={{
-            scale: (isHovered || isFocused) && isVisible ? 1 : 0,
-            opacity: (isHovered || isFocused) && isVisible ? 1 : 0,
+            scale: (isHovered || isFocused) && isBarVisible ? 1 : 0,
+            opacity: (isHovered || isFocused) && isBarVisible ? 1 : 0,
           }}
           transition={SPRING_SCROLL_HOVER}
         />
@@ -295,18 +316,18 @@ function PageScrollProgressBarComponent({
         <motion.div
           className="absolute top-0 h-full w-10 pointer-events-none"
           style={{
-            right: `calc(${100 - scrollProgress}% - 20px)`,
+            right: `calc(${PERCENT_SCALE - scrollProgress}% - 20px)`,
             background: `linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary-500) ${COLOR_MIX_OPACITY.HIGHLIGHT}, transparent) 50%, transparent 100%)`,
           }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: isVisible ? 0.6 : 0 }}
+          animate={{ opacity: isBarVisible ? 0.6 : 0 }}
           transition={{ duration: prefersReducedMotion ? 0 : ANIMATION.MEDIUM }}
         />
 
         {/* Hover scrub label — shows the scroll percentage at the cursor position
             so users know exactly where they'll jump before clicking. Appears above
             the bar during mouse movement, with a small arrow pointing down. */}
-        {isHovered && hoverProgress !== null && isVisible && (
+        {isHovered && hoverProgress !== null && isBarVisible && (
           <motion.div
             className="absolute -top-8 transform -translate-x-1/2 pointer-events-none z-50"
             style={{ left: `${hoverProgress}%` }}

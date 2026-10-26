@@ -28,6 +28,7 @@
  */
 
 import { useRef, useState, useCallback, useEffect } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import { AUTO_SCROLL_DEFAULTS, SCROLL_BEHAVIOR } from "@blueprint/shared/config";
 
 interface UseAutoScrollOptions {
@@ -117,8 +118,8 @@ export function useAutoScroll({
       }
     };
 
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
+    el.addEventListener(DOM_EVENTS.SCROLL, handleScroll, { passive: true });
+    return () => el.removeEventListener(DOM_EVENTS.SCROLL, handleScroll);
   }, [scrollContainerRef, checkNearBottom]);
 
   /**
@@ -174,5 +175,3 @@ export function useAutoScroll({
     scrollToBottom,
   };
 }
-
-export type { UseAutoScrollOptions, UseAutoScrollReturn };

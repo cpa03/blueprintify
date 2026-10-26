@@ -28,7 +28,7 @@ import React from "react";
 import clsx from "clsx";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_X_OFFSET } from "@blueprint/shared";
+import { ANIMATION_SCALE, ANIMATION_X_OFFSET, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   ANIMATION_DEFAULTS,
@@ -67,6 +67,7 @@ import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -156,10 +157,10 @@ function EditorToolbarComponent({
   return (
     <div
       className="flex items-center gap-2"
-      data-reduced-motion={reducedMotion ? "true" : "false"}
-      data-has-content={hasContent ? "true" : "false"}
-      data-is-exporting={isExporting ? "true" : "false"}
-      data-export-success={exportSuccess ? "true" : "false"}
+      data-reduced-motion={reducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-is-exporting={isExporting ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-export-success={exportSuccess ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
@@ -311,7 +312,7 @@ function EditorToolbarComponent({
               : EDITOR_LABELS.BUTTONS.EXPORT_ARIA_LABEL
           }
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
             {isExporting ? (
               <motion.span
                 key="exporting"
@@ -324,7 +325,9 @@ function EditorToolbarComponent({
                   className="w-4 h-4 mr-2 flex-shrink-0"
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   fill={SVG_ICON_DEFAULTS.FILL_NONE}
-                  animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
+                  animate={
+                    reducedMotion ? { rotate: 0 } : { rotate: CIRCLE_GEOMETRY.FULL_TURN_DEG }
+                  }
                   transition={
                     reducedMotion
                       ? ANIMATION_DEFAULTS.ZERO_DURATION

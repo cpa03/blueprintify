@@ -35,6 +35,7 @@
  */
 
 import { useEffect, useRef, useCallback, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -49,6 +50,7 @@ import {
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -152,10 +154,10 @@ export const ConfirmDialog = memo(function ConfirmDialog({
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     };
   }, [isOpen, onClose, handleConfirm]);
 
@@ -199,7 +201,9 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             aria-describedby={DOM_ELEMENT_IDS.CONFIRM_DIALOG_DESCRIPTION}
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-icon={icon}
-            data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+            data-reduced-motion={
+              shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+            }
           >
             <div
               className="glass-card w-full max-w-md p-6 shadow-2xl shadow-dark-950/50 pointer-events-auto"

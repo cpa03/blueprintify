@@ -8,31 +8,12 @@
  */
 
 import {
-  ID_GENERATION_CONFIG,
-  ID_CHARS,
-  DB_ID_PREFIXES,
   KV_STORAGE_KEYS,
   TIME_UNITS,
   BYTE_CONVERSION,
-  API_CONFIG_DEFAULTS,
   BODY_SIZE_LIMITS as SHARED_BODY_SIZE_LIMITS,
 } from "@blueprint/shared";
 import { getEnvConfig } from "./env";
-
-/**
- * Database ID generation configuration.
- * Flexy says: No hardcoded strings - everything in config!
- */
-export const DB_ID_CONFIG = {
-  /** Characters used for generating secure random IDs */
-  ID_CHARS: ID_CHARS.LOWERCASE,
-  /** Prefixes for different entity types - from shared single source of truth */
-  ID_PREFIXES: DB_ID_PREFIXES,
-  /** Default limit for popular templates query */
-  DEFAULT_POPULAR_LIMIT: API_CONFIG_DEFAULTS.DEFAULT_POPULAR_LIMIT,
-  /** String length for random ID portion (uses shared config) */
-  RANDOM_STRING_LENGTH: ID_GENERATION_CONFIG.RANDOM_STRING_LENGTH,
-} as const;
 
 /**
  * Storage KV configuration.
@@ -60,7 +41,7 @@ export const STORAGE_CONFIG = {
  * Body size limits configuration.
  * Flexy says: extracted from middleware/bodyLimit.ts for shared access.
  */
-export const BODY_SIZE_LIMITS = {
+const BODY_SIZE_LIMITS = {
   /** Default maximum body size (from shared single source of truth) */
   DEFAULT_MB: SHARED_BODY_SIZE_LIMITS.DEFAULT_MB,
   /** Strict limit in KB (from shared single source of truth) */

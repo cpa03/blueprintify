@@ -329,6 +329,47 @@ export const FRAMER_TYPE = {
 } as const;
 
 /**
+ * Motion Variant State Names
+ * Centralized source of truth for the Framer Motion variant state keys.
+ *
+ * The same name appears twice for every animated element: once as a key of a
+ * `variants` object (the definition side) and once as the value of an
+ * `initial`/`animate`/`exit`/`whileInView` prop (the reference side).
+ * Framer Motion does NOT type-check that a prop value matches a defined
+ * variant, so a typo or rename on either side silently no-ops the animation.
+ * Both sides must reference this constant so they cannot drift apart.
+ * Flexy says: No hardcoded "hidden"/"visible" variant state names!
+ * Usage: import { MOTION_VARIANT_STATES } from "@blueprint/shared";
+ *        const variants: Variants = { [MOTION_VARIANT_STATES.HIDDEN]: { opacity: 0 }, ... };
+ *        <motion.div initial={MOTION_VARIANT_STATES.HIDDEN} animate={MOTION_VARIANT_STATES.VISIBLE} />
+ *        type MotionVariantState = (typeof MOTION_VARIANT_STATES)[keyof typeof MOTION_VARIANT_STATES];
+ */
+export const MOTION_VARIANT_STATES = {
+  /** Resting/off-screen state — where elements start (and exit back to) */
+  HIDDEN: "hidden" as const,
+  /** Revealed/engaged state — the target state of entrance animations */
+  VISIBLE: "visible" as const,
+} as const;
+
+/**
+ * AnimatePresence Mode Constants
+ * Centralized source of truth for Framer Motion's `AnimatePresence mode`
+ * values (the complete framer-motion `mode` union).
+ * Flexy says: No hardcoded mode="wait"/"popLayout" strings in components!
+ * Usage: import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared";
+ *        <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
+ *        type AnimatePresenceMode = (typeof ANIMATE_PRESENCE_MODES)[keyof typeof ANIMATE_PRESENCE_MODES];
+ */
+export const ANIMATE_PRESENCE_MODES = {
+  /** Exit the old child fully, then enter the new one (sequential crossfade) */
+  WAIT: "wait" as const,
+  /** Enter the new child immediately while the old one exits (default) */
+  SYNC: "sync" as const,
+  /** Keep exiting children in flow so the layout does not jump (shared-layout) */
+  POP_LAYOUT: "popLayout" as const,
+} as const;
+
+/**
  * Entrance Stagger Defaults
  * Centralized source of truth for staggered entrance animation timing.
  * Flexy says: No hardcoded stagger delays in component entrance animations!
@@ -625,6 +666,19 @@ export const SKELETON_PULSE_DEFAULTS = {
   OPACITY_PEAK: 1,
   /** Filter brightness at peak of pulse */
   BRIGHTNESS_PEAK: 1.15,
+} as const;
+
+/**
+ * Skeleton Exit Animation Defaults
+ * Centralized source of truth for the CSS animation shorthand main.tsx applies
+ * to dismiss the server-rendered skeleton loader the moment React hydrates.
+ * Flexy says: No hardcoded "skeleton-exit 0.3s ease-out 0s forwards" in main.tsx!
+ * Usage: import { SKELETON_EXIT_DEFAULTS } from "@blueprint/shared";
+ *        skeleton.style.animation = SKELETON_EXIT_DEFAULTS.ANIMATION
+ */
+export const SKELETON_EXIT_DEFAULTS = {
+  /** Full CSS animation shorthand applied to the skeleton on hydration */
+  ANIMATION: "skeleton-exit 0.3s ease-out 0s forwards",
 } as const;
 
 /**

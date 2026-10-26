@@ -28,9 +28,15 @@
  */
 
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
+import {
+  ANIMATION_SCALE,
+  ANIMATION_OPACITY,
+  ANIMATION_Y_OFFSET,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import {
   TOAST_CONFIG,
@@ -65,7 +71,13 @@ import {
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
-import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
+import {
+  SVG_ICON_DEFAULTS,
+  COLOR_MIX_OPACITY,
+  ICON_RECTS,
+  CIRCLE_GEOMETRY,
+} from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -102,8 +114,8 @@ const ProgressRing = memo(function ProgressRing({
   noTransition = false,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const circumference = radius * CIRCLE_GEOMETRY.FULL_TURN_RAD;
+  const strokeDashoffset = circumference - (progress / PERCENT_SCALE) * circumference;
 
   return (
     <svg
@@ -154,7 +166,7 @@ const ToastItem = memo(
     ref
   ) {
     const [isHovered, setIsHovered] = useState(false);
-    const [progress, setProgress] = useState(100);
+    const [progress, setProgress] = useState(PERCENT_SCALE);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const startTimeRef = useRef<number>(0);
@@ -323,11 +335,13 @@ const ToastItem = memo(
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
-        data-hovered={isHovered ? "true" : "false"}
-        data-is-alert={isAlert ? "true" : "false"}
+        data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-is-alert={isAlert ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-state={BANNER_STATE_VALUES.VISIBLE}
         data-progress={Math.round(progress)}
-        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+        data-reduced-motion={
+          shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+        }
       >
         <div
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
@@ -385,8 +399,8 @@ const ToastItem = memo(
                 viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                 aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               >
-                <rect x="6" y="4" width="4" height="16" rx="1" />
-                <rect x="14" y="4" width="4" height="16" rx="1" />
+                <rect {...ICON_RECTS.PAUSE_LEFT} />
+                <rect {...ICON_RECTS.PAUSE_RIGHT} />
               </svg>
             </div>
           )
@@ -415,8 +429,8 @@ const ToastItem = memo(
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
                   aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
-                  <rect x="6" y="4" width="4" height="16" rx="1" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                  <rect {...ICON_RECTS.PAUSE_LEFT} />
+                  <rect {...ICON_RECTS.PAUSE_RIGHT} />
                 </svg>
               </motion.div>
             )}
@@ -574,8 +588,8 @@ function ToastContainerComponent(): JSX.Element {
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
+    return () => document.removeEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
   }, [toasts, removeToast, clearAll, handleRemoveToast]);
 
   const handleClearAll = useCallback(() => {
@@ -615,12 +629,14 @@ function ToastContainerComponent(): JSX.Element {
       role={ARIA_ROLES.REGION}
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
       data-count={toasts.length}
-      data-has-toasts={toasts.length > 0 ? "true" : "false"}
+      data-has-toasts={toasts.length > 0 ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-state={toasts.length > 0 ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       {...containerAnimation}
     >
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode={ANIMATE_PRESENCE_MODES.POP_LAYOUT}>
         {toasts.map((toast, index) => (
           <ToastItem
             key={toast.id}

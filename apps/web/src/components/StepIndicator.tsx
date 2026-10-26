@@ -22,6 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
+import { DOM_EVENTS } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS_MS,
   ARIA_ATOMIC_VALUES,
@@ -30,14 +31,18 @@ import {
   STEP_INDICATOR_STATE_VALUES,
   SVG_ICON_DEFAULTS,
   WIZARD_STEP_KEYS,
+  DATA_BOOLEAN_VALUES,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
+import { NUMBER_RADIX } from "@blueprint/shared";
 import { useWizardStore, useEditorStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
 import type { IconName } from "../config/icons";
 import {
   WIZARD_STEPS,
+  WIZARD_STEP_SHORTCUT_PATTERN,
   TIMEOUTS,
   PROGRESS_COLORS,
   TOAST_MESSAGES,
@@ -88,7 +93,7 @@ function StepIndicatorComponent(): JSX.Element {
   // wizard still considers the GENERATING step as "current." This gives users
   // a clear visual cue that the pipeline has finished.
   const effectiveIndex = isGenerationComplete ? STEPS.length - 1 : currentIndex;
-  const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * 100;
+  const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * PERCENT_SCALE;
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
   // Detect forward step navigation and trigger a one-shot completion flash
@@ -143,9 +148,9 @@ function StepIndicatorComponent(): JSX.Element {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.altKey && /^[1-5]$/.test(e.key)) {
+      if (e.altKey && WIZARD_STEP_SHORTCUT_PATTERN.test(e.key)) {
         e.preventDefault();
-        const stepIndex = parseInt(e.key, 10) - 1;
+        const stepIndex = parseInt(e.key, NUMBER_RADIX.DECIMAL) - 1;
         const targetStep = STEPS[stepIndex];
 
         if (targetStep && canNavigateTo(targetStep.key)) {
@@ -154,14 +159,16 @@ function StepIndicatorComponent(): JSX.Element {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
   }, [setStep, canNavigateTo]);
 
   return (
     <div
       className="flex items-center justify-center gap-3 mb-8 max-w-full overflow-x-auto scrollbar-none py-1"
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
     >
       <SmartTooltip
         content={ACCESSIBILITY_LABELS.PROGRESS.STEPS_COMPLETE(
@@ -229,10 +236,12 @@ function StepIndicatorComponent(): JSX.Element {
                       ? STEP_INDICATOR_STATE_VALUES.AVAILABLE
                       : STEP_INDICATOR_STATE_VALUES.LOCKED
               }
-              data-active={isActive ? "true" : "false"}
-              data-completed={isCompleted ? "true" : "false"}
-              data-clickable={isClickable ? "true" : "false"}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-active={isActive ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-completed={isCompleted ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-clickable={isClickable ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               // aria-disabled keeps locked steps focusable so keyboard, touch,
               // and screen reader users can discover WHY the step is locked via
               // the aria-describedby hint (a native `disabled` attribute removes

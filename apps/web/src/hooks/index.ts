@@ -5,35 +5,26 @@ export {
   getAnimationDuration,
   getSpringConfig,
 } from "./useReducedMotion";
-export type {
-  ReducedMotionContextType,
-  ReducedMotionProviderProps,
-} from "../context/ReducedMotionContext";
 export {
   ReducedMotionProvider,
   useReducedMotionContext,
   ReducedMotionContext,
 } from "../context/ReducedMotionContext";
 export { useLastSaved } from "./useLastSaved";
-export type { UseLastSavedReturn } from "./useLastSaved";
 export { useFocusTrap } from "./useFocusTrap";
-export type { UseFocusTrapOptions, UseFocusTrapReturn } from "./useFocusTrap";
 export { useAutoResizeTextarea } from "./useAutoResizeTextarea";
-export type {
-  UseAutoResizeTextareaOptions,
-  UseAutoResizeTextareaReturn,
-} from "./useAutoResizeTextarea";
 
 export { useBlueprintStream } from "./useBlueprintStream";
 export { useAutoSaveToast } from "./useAutoSaveToast";
 export { useFocusOnStepChange, useStepAnnouncer } from "./useFocusOnStepChange";
+export { useEditorPanelFocus } from "./useEditorPanelFocus";
+export { useTemplatesExitFocus } from "./useTemplatesExitFocus";
 export { useDocumentTitle } from "./useDocumentTitle";
 export { useOnlineStatus } from "./useOnlineStatus";
 export type { OnlineStatus } from "./useOnlineStatus";
 export { useAutoScroll } from "./useAutoScroll";
-export type { UseAutoScrollOptions, UseAutoScrollReturn } from "./useAutoScroll";
 export { createPersistedStore } from "./usePersistedStore";
-export type { PersistedStoreConfig, PersistedStoreMethods } from "./usePersistedStore";
+export type { PersistedStoreConfig } from "./usePersistedStore";
 export { useScrollLock } from "./useScrollLock";
-export type { UseScrollLockOptions } from "./useScrollLock";
 export { useBeforeUnload } from "./useBeforeUnload";
+export { useHashScroll } from "./useHashScroll";
