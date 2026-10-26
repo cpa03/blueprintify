@@ -271,6 +271,7 @@ export {
   ARIA_REQUIRED_VALUES,
   DATA_BOOLEAN_VALUES,
   ARIA_BUSY_VALUES,
+  DIVIDER_BUTTON_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";
