@@ -292,7 +292,13 @@ function EditorToolbarComponent({
         content={
           <div className="flex items-center gap-2">
             <span>
-              {exportSuccess ? TOOLTIP_LABELS.EDITOR.EXPORTED : TOOLTIP_LABELS.EDITOR.EXPORT_AS_ZIP}
+              {exportSuccess
+                ? TOOLTIP_LABELS.EDITOR.EXPORTED
+                : !hasContent
+                  ? TOOLTIP_LABELS.EDITOR.NO_CONTENT_TO_EXPORT
+                  : isExporting
+                    ? TOOLTIP_LABELS.EDITOR.EXPORTING
+                    : TOOLTIP_LABELS.EDITOR.EXPORT_AS_ZIP}
             </span>
             <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
               {SHORTCUT_LABELS.EXPORT}
@@ -309,7 +315,11 @@ function EditorToolbarComponent({
           aria-label={
             exportSuccess
               ? EDITOR_LABELS.BUTTONS.EXPORT_SUCCESS_ARIA
-              : EDITOR_LABELS.BUTTONS.EXPORT_ARIA_LABEL
+              : !hasContent
+                ? EDITOR_LABELS.BUTTONS.EXPORT_NO_CONTENT_ARIA
+                : isExporting
+                  ? EDITOR_LABELS.BUTTONS.EXPORT_IN_PROGRESS_ARIA
+                  : EDITOR_LABELS.BUTTONS.EXPORT_ARIA_LABEL
           }
         >
           <AnimatePresence mode={ANIMATE_PRESENCE_MODES.WAIT}>
