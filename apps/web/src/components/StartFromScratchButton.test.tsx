@@ -5,12 +5,15 @@ import { StartFromScratchButton } from "./StartFromScratchButton";
 import { UI_CONTENT } from "../config/constants/content";
 
 describe("StartFromScratchButton", () => {
-  it("renders the templates divider text as a real button", () => {
+  it("renders the templates divider text as a real button with accessible attributes", () => {
     render(<StartFromScratchButton onStart={vi.fn()} />);
 
     const button = screen.getByRole("button", { name: UI_CONTENT.TEMPLATES_DIVIDER });
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute("type", "button");
+    expect(button).toHaveAttribute("aria-label", UI_CONTENT.TEMPLATES_DIVIDER);
+    expect(button).toHaveAttribute("data-state", "idle");
+    expect(button).toHaveAttribute("data-reduced-motion");
   });
 
   it("calls onStart when activated by click", () => {

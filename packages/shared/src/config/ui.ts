@@ -1413,3 +1413,15 @@ export const ARIA_BUSY_VALUES = {
   /** Widget is idle */
   FALSE: "false" as const,
 } as const;
+
+/**
+ * Start From Scratch Divider Button State Values
+ * Centralized state tracking values for start-from-scratch divider button (StartFromScratchButton).
+ * Flexy says: No hardcoded "idle" strings in StartFromScratchButton!
+ * Usage: import { DIVIDER_BUTTON_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={DIVIDER_BUTTON_STATE_VALUES.IDLE}
+ */
+export const DIVIDER_BUTTON_STATE_VALUES = {
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
