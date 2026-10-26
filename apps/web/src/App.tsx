@@ -38,7 +38,12 @@ const ScrollToBottomLazy = lazy(() =>
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore, resetAllStores } from "./store";
 import { STORAGE_KEYS } from "./config/keys";
-import { useOnlineStatus, useBeforeUnload, useEditorPanelFocus } from "./hooks";
+import {
+  useOnlineStatus,
+  useBeforeUnload,
+  useEditorPanelFocus,
+  useTemplatesExitFocus,
+} from "./hooks";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -190,6 +195,12 @@ function App(): JSX.Element {
   const handleTemplatesExitEnd = useCallback(() => {
     setTemplatesExiting(false);
   }, []);
+
+  // The wizard panel is the focus destination when the template block leaves:
+  // the template card the user just activated unmounts with it, dropping focus
+  // to <body> (WCAG 2.4.3 Focus Order).
+  const wizardPanelRef = useRef<HTMLDivElement>(null);
+  useTemplatesExitFocus(showTemplates || templatesExiting, wizardPanelRef);
 
   // Memoized handlers for stable references to child components
   const handleHideEditor = useCallback(() => {
@@ -434,6 +445,11 @@ function App(): JSX.Element {
             {/* Wizard Panel — deferred until first interaction to keep
                 framer-motion (45 KB) out of the initial page load */}
             <div
+              ref={wizardPanelRef}
+              // Focusable container (tabIndex -1) so useTemplatesExitFocus has
+              // a home inside the panel while the lazy wizard is still
+              // loading; the next Tab then lands on the first wizard control.
+              tabIndex={-1}
               className={`${LAYOUT.GLASS_CARD_FLEX} ${
                 showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
