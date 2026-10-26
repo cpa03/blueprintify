@@ -429,7 +429,10 @@ export const StepStack = memo(function StepStack({
                     {tech.name}
                     <button
                       onClick={() => removeTechStack(tech.name)}
-                      className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
+                      // p-1 grows the bare 16px icon to a 24×24 hit area (WCAG 2.2
+                      // SC 2.5.8 AA); -m-1 keeps the chip layout unchanged. Matches
+                      // StepInfo's clear buttons, which pad to 24×24 the same way.
+                      className="p-1 -m-1 hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
                       aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.REMOVE_TECH(tech.name)}
                     >
                       <Icon name="close" className="w-4 h-4" />

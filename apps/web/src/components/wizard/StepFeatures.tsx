@@ -395,7 +395,10 @@ export const StepFeatures = memo(function StepFeatures({
                           }
                         }}
                         onClick={() => removeFeature(feature)}
-                        className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors group"
+                        // p-1 grows the bare 16px icon to a 24×24 hit area (WCAG 2.2
+                        // SC 2.5.8 AA); -m-1 keeps the chip layout unchanged. Same
+                        // pattern as StepInfo clear buttons and StepStack remove chips.
+                        className="p-1 -m-1 hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors group"
                         aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(feature)}
                       >
                         <Icon name="close" className={CSS_CLASSES.ICON_HOVER_ROTATE_90} />

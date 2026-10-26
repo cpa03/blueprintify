@@ -2503,6 +2503,8 @@ describe("TOOLTIP_LABELS", () => {
     expect(TOOLTIP_LABELS.EDITOR.EXPORTED).toBe("Exported!");
     expect(TOOLTIP_LABELS.EDITOR.START_NEW_PROJECT).toBe("Start new project");
     expect(TOOLTIP_LABELS.EDITOR.NO_CONTENT_TO_COPY).toBe("No content to copy");
+    expect(TOOLTIP_LABELS.EDITOR.NO_CONTENT_TO_EXPORT).toBe("No content to export");
+    expect(TOOLTIP_LABELS.EDITOR.EXPORTING).toBe("Exporting...");
   });
 
   it("should have all string values", () => {

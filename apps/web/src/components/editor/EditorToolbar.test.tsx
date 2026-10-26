@@ -139,6 +139,8 @@ vi.mock("../../config/constants", () => ({
       EXPORT_ZIP: "Export .zip",
       EXPORT_ARIA_LABEL: "Export as ZIP",
       EXPORT_SUCCESS_ARIA: "Export successful",
+      EXPORT_NO_CONTENT_ARIA: "Export as ZIP (no content to export)",
+      EXPORT_IN_PROGRESS_ARIA: "Exporting ZIP",
       NEW_PROJECT: "New",
     },
   },
@@ -161,6 +163,8 @@ vi.mock("../../config/constants", () => ({
       COPY_TO_CLIPBOARD: "Copy to clipboard",
       EXPORTED: "Exported!",
       EXPORT_AS_ZIP: "Export as ZIP",
+      NO_CONTENT_TO_EXPORT: "No content to export",
+      EXPORTING: "Exporting...",
       START_NEW_PROJECT: "Start new project",
     },
   },
@@ -363,6 +367,28 @@ describe("EditorToolbar", () => {
     it("enables when hasContent and not exporting", () => {
       renderToolbar({ hasContent: true, isExporting: false });
       expect(screen.getByRole("button", { name: /export/i })).toBeEnabled();
+    });
+
+    it("announces no-content state on the disabled export button", () => {
+      renderToolbar({ hasContent: false });
+      expect(
+        screen.getByRole("button", { name: "Export as ZIP (no content to export)" })
+      ).toBeDisabled();
+    });
+
+    it("announces in-progress state on the disabled export button", () => {
+      renderToolbar({ isExporting: true });
+      expect(screen.getByRole("button", { name: "Exporting ZIP" })).toBeDisabled();
+    });
+
+    it("uses the default export label when enabled", () => {
+      renderToolbar({ hasContent: true, isExporting: false });
+      expect(screen.getByRole("button", { name: "Export as ZIP" })).toBeEnabled();
+    });
+
+    it("announces success state after export", () => {
+      renderToolbar({ exportSuccess: true });
+      expect(screen.getByRole("button", { name: "Export successful" })).toBeInTheDocument();
     });
   });
 

@@ -324,6 +324,16 @@ describe("StepFeatures", () => {
     expect(mockStore.removeFeature).toHaveBeenCalledWith("Auth");
   });
 
+  it("pads the remove button to a 24×24 touch target (WCAG 2.2 SC 2.5.8)", () => {
+    mockStore.features = ["Auth"];
+    render(<StepFeatures />);
+    const removeButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE("Auth")
+    );
+    expect(removeButton.className).toContain("p-1");
+    expect(removeButton.className).toContain("-m-1");
+  });
+
   // ======== Clear All Features ========
 
   it("calls clearFeatures when clear all button is clicked", () => {
