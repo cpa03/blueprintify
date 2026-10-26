@@ -186,6 +186,7 @@ vi.mock("../../config/constants", () => ({
     END: "End",
   },
   MODIFIER_KEYS: { CMD: "cmd", CTRL: "ctrl", ALT: "alt", NONE: "none" },
+  CSS_CLASSES: { DISABLED_STATE: "opacity-50 cursor-not-allowed" },
 }));
 
 vi.mock("../../config/theme", () => ({
@@ -356,29 +357,41 @@ describe("EditorToolbar", () => {
 
     it("disables when hasContent is false", () => {
       renderToolbar({ hasContent: false });
-      expect(screen.getByRole("button", { name: /export/i })).toBeDisabled();
+      expect(screen.getByRole("button", { name: /export/i })).toHaveAttribute(
+        "aria-disabled",
+        "true"
+      );
     });
 
     it("disables when isExporting", () => {
       renderToolbar({ isExporting: true });
-      expect(screen.getByRole("button", { name: /export/i })).toBeDisabled();
+      expect(screen.getByRole("button", { name: /export/i })).toHaveAttribute(
+        "aria-disabled",
+        "true"
+      );
     });
 
     it("enables when hasContent and not exporting", () => {
       renderToolbar({ hasContent: true, isExporting: false });
-      expect(screen.getByRole("button", { name: /export/i })).toBeEnabled();
+      expect(screen.getByRole("button", { name: /export/i })).toHaveAttribute(
+        "aria-disabled",
+        "false"
+      );
     });
 
     it("announces no-content state on the disabled export button", () => {
       renderToolbar({ hasContent: false });
       expect(
         screen.getByRole("button", { name: "Export as ZIP (no content to export)" })
-      ).toBeDisabled();
+      ).toHaveAttribute("aria-disabled", "true");
     });
 
     it("announces in-progress state on the disabled export button", () => {
       renderToolbar({ isExporting: true });
-      expect(screen.getByRole("button", { name: "Exporting ZIP" })).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Exporting ZIP" })).toHaveAttribute(
+        "aria-disabled",
+        "true"
+      );
     });
 
     it("uses the default export label when enabled", () => {
