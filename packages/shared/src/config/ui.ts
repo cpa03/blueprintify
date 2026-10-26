@@ -207,6 +207,10 @@ export const TOOLTIP_LABELS = {
     START_NEW_PROJECT: "Start new project",
     /** Tooltip when there is no content to copy */
     NO_CONTENT_TO_COPY: "No content to copy",
+    /** Tooltip when export is disabled because there is no content yet */
+    NO_CONTENT_TO_EXPORT: "No content to export",
+    /** Tooltip while an export is in progress */
+    EXPORTING: "Exporting...",
   },
 } as const;
 
