@@ -326,7 +326,11 @@ export const StepFeatures = memo(function StepFeatures({
               </label>
               <button
                 onClick={clearFeatures}
-                className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-1 transition-colors flex items-center gap-1"
+                // px-2 py-1 grows the button to a 24×24 touch target (WCAG 2.2
+                // SC 2.5.8 AA); the previous px-1 with no vertical padding left
+                // it ~16px tall. Matches StepInfo's clear-all button, which pads
+                // to 24×24 the same way.
+                className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-2 py-1 transition-colors flex items-center gap-1"
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES}
               >
                 <svg
@@ -334,6 +338,7 @@ export const StepFeatures = memo(function StepFeatures({
                   fill={SVG_ICON_DEFAULTS.FILL_NONE}
                   stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
+                  aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
                 >
                   <path
                     strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
