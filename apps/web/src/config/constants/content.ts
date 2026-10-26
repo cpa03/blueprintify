@@ -166,6 +166,8 @@ export const EDITOR_LABELS = {
     NEW_PROJECT: "New",
     EXPORT_ARIA_LABEL: "Export as ZIP",
     EXPORT_SUCCESS_ARIA: "Export successful",
+    EXPORT_NO_CONTENT_ARIA: "Export as ZIP (no content to export)",
+    EXPORT_IN_PROGRESS_ARIA: "Exporting ZIP",
   },
 } as const;
 
