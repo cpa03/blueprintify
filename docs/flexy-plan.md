@@ -4,6 +4,41 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 208: Centralize matchMedia Query Strings & Eliminate ARIA Role/Live Bypasses
+
+**Problem**: Two clusters survived 207 iterations with the same silent-failure shape — string literals whose read/write pairs drift without any type error. (1) **matchMedia query strings**: 7 bare runtime `window.matchMedia("…")` call sites with no `MEDIA_QUERIES` constant anywhere — `"(prefers-reduced-motion: reduce)"` ×5 (`ReducedMotionContext` ×2, `useReducedMotion` ×2, `utils/scroll` ×1) and `"(prefers-contrast: more)"` ×2 (`useReducedMotion` ×2). Every subscription site pairs with a `.matches` snapshot read using the same bare literal, and the string must stay byte-identical to the CSS `@media` feature in `index.css` — a typo or rename on any side silently returns `matches === false` (the preference never matches, nothing throws, animations stay on for reduced-motion users). `DOM_EVENTS` covered event names but media-query strings had no constant. (2) **ARIA role/aria-live bypasses**: 6 runtime sites bypassed the existing `ARIA_ROLES` / `ARIA_LIVE_VALUES` families built in Iterations 194–195 — `role="progressbar"` (`CharacterCounter`), `role={ariaLabel ? "img" : undefined}` (`Icon`), `role={isVisible ? "status" : undefined}` + `aria-live={isVisible ? "polite" : undefined}` (`OfflineBanner`), and `setAttribute("role", "status")` + `setAttribute("aria-live", "polite")` (`useFocusOnStepChange` — whose very next line already used `ARIA_ATOMIC_VALUES.TRUE`, a partial-constant bypass in the same three-line block). Flexy says: no bare media-query strings, and no role/aria-live literals where a constant family already exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `MEDIA_QUERIES` (PREFERS_REDUCED_MOTION, PREFERS_CONTRAST_MORE — pairing-contract docblock covering both the subscription/snapshot pair and the JS↔CSS `@media` byte-identity invariant), placed beside `DOM_EVENTS` |
+| `packages/shared/src/index.ts` | Exported `MEDIA_QUERIES` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests (1,029 → 1,032): exact values, entry count 2 + uniqueness, parenthesized lowercase `prefers-*` invariant |
+| `apps/web/src/hooks/useReducedMotion.ts` | 4 sites: 2× `PREFERS_REDUCED_MOTION` (subscribe + snapshot), 2× `PREFERS_CONTRAST_MORE` (subscribe + snapshot) |
+| `apps/web/src/context/ReducedMotionContext.tsx` | 2 sites: `PREFERS_REDUCED_MOTION` (subscribe + snapshot) |
+| `apps/web/src/utils/scroll.ts` | 1 site: `PREFERS_REDUCED_MOTION` (snapshot) |
+| `apps/web/src/components/CharacterCounter.tsx` | `role="progressbar"` → `ARIA_ROLES.PROGRESSBAR` |
+| `apps/web/src/components/Icon.tsx` | `role={ariaLabel ? "img" : undefined}` → `ARIA_ROLES.IMG` |
+| `apps/web/src/components/OfflineBanner.tsx` | `role="status"` ternary → `ARIA_ROLES.STATUS`; `aria-live="polite"` ternary → `ARIA_LIVE_VALUES.POLITE` |
+| `apps/web/src/hooks/useFocusOnStepChange.ts` | `setAttribute("role", "status")` → `ARIA_ROLES.STATUS`; `setAttribute("aria-live", "polite")` → `ARIA_LIVE_VALUES.POLITE` (sibling line already used `ARIA_ATOMIC_VALUES.TRUE`) |
+| `docs/flexy-plan.md` | Iteration 208 entry |
+
+Deliberately skipped: `TemplateGrid` `matchMedia(\`(min-width: ${BREAKPOINT_DEFAULTS.LG}px)\`)` template literals (already modular — breakpoint values come from `BREAKPOINT_DEFAULTS`); `lib/templates/react.ts` `role="img"` inside a generated SVG template string (output content, not a runtime call site — generated-template precedent); test files (mock `matchMedia` by exact query string; constants preserve the identical byte value so mocks stay green — Iteration 194/196/206 precedent); `@media` CSS rules in `index.css` (CSS file, not TS runtime source); prose comments mentioning `prefers-reduced-motion`; `node_modules`/`dist`.
+
+## Verification (Iteration 208)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,397 web + 555 api + 1,032 shared = 2,984 tests passing** (+3 new shared)
+- ✅ Residual scan — 0 bare `matchMedia("…")` string literals in runtime source; 0 bare `role="…"` / `aria-live="…"` / `setAttribute("role"|"aria-live", "…")` literals where a constant exists (excluding tests, generated templates & comments)
+
+## PR (Iteration 208)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-208-media-query-aria-bypasses` | refactor(flexy): centralize matchMedia query strings & eliminate ARIA role/live bypasses (Iteration 208) |
+
 ### ✅ Flexy Iteration 207: Centralize Framer Motion Variant State Names & AnimatePresence Modes
 
 **Problem**: 77 hardcoded Framer Motion string-literal call sites survived 206 iterations, in two clusters that share the same silent-failure shape — Framer Motion does not type-check either side. (1) **Variant state names**: 32 bare `hidden:`/`visible:` keys inside `variants` objects (motion.ts ×16, StepReview ×8, ErrorFallback ×4, StepFeatures ×4) paired with 20 quoted references in `initial`/`animate` props (`initial="hidden"`/`animate="visible"` ×3 pairs in PreviewEmptyState, EditorEmptyState, StepFeatures; `initial={shouldReduceMotion ? undefined : "hidden"}` ×6 pairs in StepReview and ×1 pair in ErrorFallback). A typo or rename on either side of the pair silently no-ops the animation — the same read/write-pair drift Iteration 206 eliminated for DOM event names, except here nothing detaches, the element simply never animates. (2) **AnimatePresence modes**: 24 JSX `mode="wait"` (×20) / `mode="popLayout"` (×4) literals across 13 files, plus `StepTransition` whose prop type inlined the union `"wait" | "sync" | "popLayout"` and whose default was a bare `mode = "wait"` — a third copy of the same three-value enum that could drift from framer-motion's actual `mode` union. `FRAMER_TYPE` already covered `type: "spring"`, but the mode and variant-name APIs had no constant at all. Flexy says: no bare Framer Motion variant state names or AnimatePresence mode strings!

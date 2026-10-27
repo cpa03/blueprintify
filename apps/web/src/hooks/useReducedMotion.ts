@@ -1,11 +1,11 @@
 import { useSyncExternalStore, useMemo } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, MEDIA_QUERIES } from "@blueprint/shared/config";
 import { ACCESSIBILITY_EVENTS, SPRING_CONFIG } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
 import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 
 function subscribeToReducedMotion(callback: () => void): () => void {
-  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const mediaQuery = window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION);
 
   let unsubscribeFromMediaQuery: () => void;
   if (mediaQuery.addEventListener) {
@@ -39,7 +39,7 @@ function getReducedMotionSnapshot(): boolean {
     return stored === DATA_BOOLEAN_VALUES.TRUE;
   }
 
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION).matches;
 }
 
 function getReducedMotionServerSnapshot(): boolean {
@@ -137,7 +137,7 @@ export function useAccessibleAnimation<T extends Record<string, unknown>>(
 }
 
 function subscribeToHighContrast(callback: () => void): () => void {
-  const mediaQuery = window.matchMedia("(prefers-contrast: more)");
+  const mediaQuery = window.matchMedia(MEDIA_QUERIES.PREFERS_CONTRAST_MORE);
 
   if (mediaQuery.addEventListener) {
     mediaQuery.addEventListener(DOM_EVENTS.CHANGE, callback);
@@ -150,7 +150,7 @@ function subscribeToHighContrast(callback: () => void): () => void {
 
 function getHighContrastSnapshot(): boolean {
   if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-contrast: more)").matches;
+  return window.matchMedia(MEDIA_QUERIES.PREFERS_CONTRAST_MORE).matches;
 }
 
 function getHighContrastServerSnapshot(): boolean {

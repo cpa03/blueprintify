@@ -16,7 +16,7 @@ import {
   SCROLL_INTO_VIEW_BLOCK,
 } from "../config/constants";
 import { getScrollBehavior } from "../utils/scroll";
-import { ARIA_ATOMIC_VALUES } from "@blueprint/shared";
+import { ARIA_ATOMIC_VALUES, ARIA_LIVE_VALUES, ARIA_ROLES } from "@blueprint/shared";
 
 /** Configuration options for step change focus behavior */
 interface UseFocusOnStepChangeOptions {
@@ -133,8 +133,8 @@ export function useStepAnnouncer(stepId: string, stepLabel: string): void {
   useEffect(() => {
     if (!liveRegionRef.current) {
       liveRegionRef.current = document.createElement("div");
-      liveRegionRef.current.setAttribute("role", "status");
-      liveRegionRef.current.setAttribute("aria-live", "polite");
+      liveRegionRef.current.setAttribute("role", ARIA_ROLES.STATUS);
+      liveRegionRef.current.setAttribute("aria-live", ARIA_LIVE_VALUES.POLITE);
       liveRegionRef.current.setAttribute("aria-atomic", ARIA_ATOMIC_VALUES.TRUE);
       liveRegionRef.current.className = FOCUS_ANNOUNCER.LIVE_REGION_CLASS;
       document.body.appendChild(liveRegionRef.current);

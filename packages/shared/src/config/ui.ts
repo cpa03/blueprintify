@@ -712,6 +712,28 @@ export const DOM_EVENTS = {
 } as const;
 
 /**
+ * Media Query Strings
+ * Centralized source of truth for `window.matchMedia(...)` query strings.
+ *
+ * Pairing contract: every `matchMedia(MEDIA_QUERIES.X)` subscription site and
+ * its `.matches` snapshot read MUST reference the same constant entry — a typo
+ * or rename on either side silently returns `matches === false` (the feature
+ * never matches, but nothing throws). The query string must stay byte-identical
+ * to the CSS `@media` feature name/value in `index.css` so JS and CSS always
+ * observe the same user preference.
+ * Flexy says: No bare "prefers-reduced-motion: reduce" / "prefers-contrast: more"
+ * strings in runtime source!
+ * Usage: import { MEDIA_QUERIES } from "@blueprint/shared/config";
+ *        const mq = window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION);
+ */
+export const MEDIA_QUERIES = {
+  /** User prefers reduced motion — animation/scroll gating across the app */
+  PREFERS_REDUCED_MOTION: "(prefers-reduced-motion: reduce)" as const,
+  /** User prefers more contrast — high-contrast accessibility preference */
+  PREFERS_CONTRAST_MORE: "(prefers-contrast: more)" as const,
+} as const;
+
+/**
  * ARIA Keyboard Shortcuts
  * Centralized source of truth for `aria-keyshortcuts` attribute values.
  * Derived from KEYBOARD_EVENT_KEYS so the WAI-ARIA key names always stay

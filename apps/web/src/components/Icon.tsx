@@ -12,7 +12,7 @@
  */
 
 import { memo } from "react";
-import { SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
+import { ARIA_ROLES, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 import { ICONS, type IconName } from "../config/icons";
 
 interface IconProps {
@@ -41,7 +41,7 @@ const Icon = memo(function Icon({
       fill={SVG_ICON_DEFAULTS.FILL_NONE}
       stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
       viewBox={icon.viewBox}
-      role={ariaLabel ? "img" : undefined}
+      role={ariaLabel ? ARIA_ROLES.IMG : undefined}
       aria-hidden={!ariaLabel}
       aria-label={ariaLabel}
     >
