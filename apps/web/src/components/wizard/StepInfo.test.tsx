@@ -817,6 +817,44 @@ describe("StepInfo", () => {
     expect(description).not.toHaveFocus();
   });
 
+  it('hints enterKeyHint="next" on project name while the form is not submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("enterkeyhint", "next");
+  });
+
+  it('flips project name enterKeyHint to "go" when the form becomes submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description =
+      "A valid project description that meets the minimum length requirement.";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("enterkeyhint", "go");
+  });
+
+  it('flips target audience enterKeyHint to "go" when the form becomes submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description =
+      "A valid project description that meets the minimum length requirement.";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    expect(input).toHaveAttribute("enterkeyhint", "go");
+  });
+
+  it('keeps target audience enterKeyHint="next" while the form is not submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    expect(input).toHaveAttribute("enterkeyhint", "next");
+  });
+
   // ======== Edge Cases ========
 
   it("handles empty state gracefully", () => {

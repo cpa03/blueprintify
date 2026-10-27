@@ -286,10 +286,13 @@ export const StepInfo = memo(function StepInfo({
     }
   };
 
-  // Enter-to-advance: honors enterKeyHint="next". While the form cannot be
-  // submitted yet (submit button disabled), Enter would otherwise do nothing,
-  // stranding keyboard/mobile users on the same field — so Enter advances to
-  // the next field instead. When submittable, Enter keeps default submit.
+  // Enter-to-advance: while the form cannot be submitted yet (submit button
+  // disabled), Enter would otherwise do nothing, stranding keyboard/mobile
+  // users on the same field — so Enter advances to the next field instead
+  // (enterKeyHint="next"). When submittable, Enter keeps default submit, so
+  // the soft-key hint flips to enterKeyHint="go" to match: a static "next"
+  // key that actually submits the form misleads mobile users about what the
+  // key will do.
   const handleProjectNameKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (e.key !== KEYBOARD_EVENT_KEYS.ENTER || canProceed) return;
@@ -492,7 +495,7 @@ export const StepInfo = memo(function StepInfo({
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
-              enterKeyHint="next"
+              enterKeyHint={canProceed ? "go" : "next"}
               dir="auto"
               value={projectName}
               onKeyDown={handleProjectNameKeyDown}
@@ -788,7 +791,7 @@ export const StepInfo = memo(function StepInfo({
               name="targetAudience"
               type="text"
               autoComplete="off"
-              enterKeyHint="next"
+              enterKeyHint={canProceed ? "go" : "next"}
               dir="auto"
               value={targetAudience}
               onKeyDown={handleTargetAudienceKeyDown}
