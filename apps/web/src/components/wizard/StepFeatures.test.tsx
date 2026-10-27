@@ -346,6 +346,16 @@ describe("StepFeatures", () => {
     expect(mockStore.clearFeatures).toHaveBeenCalledTimes(1);
   });
 
+  it("pads the clear all button to a 24×24 touch target (WCAG 2.2 SC 2.5.8)", () => {
+    mockStore.features = ["Auth", "API", "DB"];
+    render(<StepFeatures />);
+    const clearAllButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES
+    );
+    expect(clearAllButton.className).toContain("px-2");
+    expect(clearAllButton.className).toContain("py-1");
+  });
+
   // ======== Suggestions ========
 
   it("displays suggestion chips when suggestions remain", () => {
