@@ -203,7 +203,7 @@ function CharacterCounterCompactComponent({
       data-reduced-motion={
         shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
       }
-      role="progressbar"
+      role={ARIA_ROLES.PROGRESSBAR}
       aria-label={compactCountLabel}
       aria-valuemin={0}
       aria-valuemax={max}

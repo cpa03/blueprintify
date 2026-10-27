@@ -189,6 +189,7 @@ import {
   DATA_BOOLEAN_VALUES,
   ARIA_BUSY_VALUES,
   DOM_EVENTS,
+  MEDIA_QUERIES,
   MOTION_VARIANT_STATES,
   ANIMATE_PRESENCE_MODES,
 } from "./config.js";
@@ -5712,5 +5713,27 @@ describe("ANIMATE_PRESENCE_MODES (Flexy Iteration 207)", () => {
     const values = Object.values(ANIMATE_PRESENCE_MODES);
     expect(new Set(values).size).toBe(values.length);
     expect(new Set(values)).toEqual(new Set(["wait", "sync", "popLayout"]));
+  });
+});
+
+describe("MEDIA_QUERIES (Flexy Iteration 208)", () => {
+  it("should have exact media query string values", () => {
+    expect(MEDIA_QUERIES.PREFERS_REDUCED_MOTION).toBe("(prefers-reduced-motion: reduce)");
+    expect(MEDIA_QUERIES.PREFERS_CONTRAST_MORE).toBe("(prefers-contrast: more)");
+  });
+
+  it("should have 2 unique media query strings", () => {
+    expect(Object.keys(MEDIA_QUERIES).length).toBe(2);
+    const values = Object.values(MEDIA_QUERIES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use parenthesized lowercase prefers-* media features", () => {
+    for (const value of Object.values(MEDIA_QUERIES)) {
+      expect(value.startsWith("(")).toBe(true);
+      expect(value.endsWith(")")).toBe(true);
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
   });
 });

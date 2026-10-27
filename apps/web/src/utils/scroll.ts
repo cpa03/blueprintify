@@ -13,6 +13,7 @@
  * handling (see `index.css`).
  */
 
+import { MEDIA_QUERIES } from "@blueprint/shared/config";
 import { SCROLL_BEHAVIOR } from "../config/constants";
 
 /**
@@ -32,7 +33,7 @@ import { SCROLL_BEHAVIOR } from "../config/constants";
  */
 export function getScrollBehavior(): ScrollBehavior {
   if (typeof window === "undefined") return SCROLL_BEHAVIOR.AUTO;
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const prefersReducedMotion = window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION).matches;
   return prefersReducedMotion ? SCROLL_BEHAVIOR.INSTANT : SCROLL_BEHAVIOR.SMOOTH;
 }
 
