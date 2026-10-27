@@ -28,6 +28,13 @@ const EXCLUDED_DIRS = new Set([
   ".git",
   "node_modules",
   ".opencode",
+  // `.omo/` is gitignored agent runtime state (session-continuation JSON),
+  // same class as `.opencode`/`.husky`. Walking it made the reported file
+  // count depend on which agent sessions happened to be present locally
+  // (356 clean vs 361 with 5 sessions), causing recurring doc drift in the
+  // live `scan:secrets N files` status fields. Excluded so the count is
+  // stable and reproducible in every environment.
+  ".omo",
   "dist",
   "build",
   "coverage",
