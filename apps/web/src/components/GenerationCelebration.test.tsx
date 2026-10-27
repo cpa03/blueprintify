@@ -15,7 +15,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CELEBRATION_STATE_VALUES } from "@blueprint/shared";
 import { GenerationCelebration } from "./GenerationCelebration";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { CELEBRATION_TIMING } from "../config/constants";
+import { CELEBRATION_TIMING, CELEBRATION_TEXT } from "../config/constants";
 
 vi.mock("framer-motion/m", () => ({
   div: vi.fn(
@@ -163,5 +163,26 @@ describe("GenerationCelebration", () => {
     });
 
     expect(onComplete).not.toHaveBeenCalled();
+  });
+
+  it("shows the completion checkmark without the decorative ripple under reduced motion", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<GenerationCelebration isComplete={true} />);
+
+    const status = screen.getByRole("status");
+    const checkmark = status.querySelector('[data-reduced-motion="true"]');
+    expect(checkmark).not.toBeNull();
+    expect(checkmark).toHaveTextContent(CELEBRATION_TEXT.COMPLETE);
+    expect(status.querySelector("[data-ripple]")).toBeNull();
+  });
+
+  it("renders the decorative ripple and checkmark when reduced motion is not preferred", () => {
+    render(<GenerationCelebration isComplete={true} />);
+
+    const status = screen.getByRole("status");
+    const checkmark = status.querySelector('[data-reduced-motion="false"]');
+    expect(checkmark).not.toBeNull();
+    expect(checkmark).toHaveTextContent(CELEBRATION_TEXT.COMPLETE);
+    expect(status.querySelector("[data-ripple]")).not.toBeNull();
   });
 });
