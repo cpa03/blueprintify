@@ -1428,4 +1428,8 @@ export const ARIA_BUSY_VALUES = {
 export const DIVIDER_BUTTON_STATE_VALUES = {
   /** Idle state identifier */
   IDLE: "idle" as const,
+  /** Hovered state identifier */
+  HOVERED: "hovered" as const,
+  /** Focused state identifier */
+  FOCUSED: "focused" as const,
 } as const;
