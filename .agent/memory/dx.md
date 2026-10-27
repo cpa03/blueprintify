@@ -268,4 +268,4 @@ _Last updated: 2026-02-25_
 
 _Last updated: 2026-02-22_
 
-> **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../docs/troubleshooting.md)
+> **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../../docs/troubleshooting.md)
