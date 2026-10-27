@@ -812,7 +812,7 @@ export class StorageManager {
 // Pre-configured Storage Services
 // ============================================================================
 
-export const storageManager = new StorageManager();
+const storageManager = new StorageManager();
 
 // Wizard storage with reliability features
 export const wizardStorage = storageManager.create({

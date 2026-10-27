@@ -61,6 +61,7 @@ import {
   VIEW_MODE_MODIFIER,
   OPACITY_PULSE,
   KEYBOARD_SHORTCUTS,
+  CSS_CLASSES,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -309,9 +310,16 @@ function EditorToolbarComponent({
         delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <button
-          onClick={onExport}
-          disabled={!hasContent || isExporting}
-          className="btn-secondary text-sm relative overflow-hidden"
+          onClick={() => {
+            // Re-entry guard. Uses aria-disabled (not native disabled) so
+            // keyboard focus stays on the button during export (WCAG 2.4.3).
+            if (isExporting || !hasContent) return;
+            onExport();
+          }}
+          aria-disabled={isExporting || !hasContent}
+          className={`btn-secondary text-sm relative overflow-hidden ${
+            isExporting || !hasContent ? CSS_CLASSES.DISABLED_STATE : ""
+          }`}
           aria-label={
             exportSuccess
               ? EDITOR_LABELS.BUTTONS.EXPORT_SUCCESS_ARIA

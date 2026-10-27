@@ -36,6 +36,7 @@
     "lh:warm": "node scripts/lh-warm.mjs",
     "normalize:issues": "node scripts/normalize-issue-labels.mjs",
     "validate:wrangler": "node scripts/validate-wrangler.mjs",
+    "validate:secrets": "node scripts/validate-wrangler.mjs --check-secrets",
     "validate:models": "node scripts/validate-models.mjs",
     "validate:all": "npm run validate:wrangler && npm run validate:models && npm run scan:secrets && npm run audit",
     "predeploy:api": "npm run validate:wrangler",
