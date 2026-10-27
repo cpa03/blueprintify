@@ -175,8 +175,8 @@ function OfflineBannerComponent(): JSX.Element | null {
     <>
       <div
         ref={containerRef}
-        role={isVisible ? "status" : undefined}
-        aria-live={isVisible ? "polite" : undefined}
+        role={isVisible ? ARIA_ROLES.STATUS : undefined}
+        aria-live={isVisible ? ARIA_LIVE_VALUES.POLITE : undefined}
         aria-atomic={isVisible ? ARIA_ATOMIC_VALUES.TRUE : undefined}
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-online-status={isOnline ? BANNER_STATE_VALUES.ONLINE : BANNER_STATE_VALUES.OFFLINE}
