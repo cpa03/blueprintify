@@ -60,6 +60,7 @@ import {
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
+  CSS_VALUES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
@@ -145,7 +146,7 @@ const ProgressRing = memo(function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         style={{
-          transition: noTransition ? "none" : TOAST_SPRING.PROGRESS_RING_TRANSITION,
+          transition: noTransition ? CSS_VALUES.NONE : TOAST_SPRING.PROGRESS_RING_TRANSITION,
         }}
       />
     </svg>
@@ -351,7 +352,7 @@ const ToastItem = memo(
             // Match ProgressRing's noTransition behavior above (WCAG 2.3.3):
             // the width countdown is decorative motion, so snap instantly
             // when the user prefers reduced motion.
-            transition: shouldReduceMotion ? "none" : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
+            transition: shouldReduceMotion ? CSS_VALUES.NONE : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
           }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />

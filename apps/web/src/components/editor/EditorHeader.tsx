@@ -41,6 +41,7 @@ import {
   ARIA_KEYSHORTCUTS,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
+  CSS_VALUES,
   EDITOR_FILENAMES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
@@ -139,7 +140,7 @@ const TabButton = React.memo(function TabButton({
           animate={
             isGenerating
               ? { boxShadow: [...HEADER_ANIMATION.TAB_GLOW.BOX_SHADOWS] }
-              : { boxShadow: "none" }
+              : { boxShadow: CSS_VALUES.NONE }
           }
           transition={
             isGenerating
