@@ -179,6 +179,7 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  TOOLTIP_STATE_VALUES,
   ARIA_ROLES,
   ARIA_LIVE_VALUES,
   ARIA_ATOMIC_VALUES,
@@ -2263,6 +2264,22 @@ describe("BANNER_STATE_VALUES", () => {
 
   it("should have unique state values", () => {
     const values = Object.values(BANNER_STATE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("TOOLTIP_STATE_VALUES", () => {
+  it("should have VISIBLE and HIDDEN states", () => {
+    expect(TOOLTIP_STATE_VALUES.VISIBLE).toBe("visible");
+    expect(TOOLTIP_STATE_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(TOOLTIP_STATE_VALUES).length).toBe(2);
+  });
+
+  it("should have unique state values", () => {
+    const values = Object.values(TOOLTIP_STATE_VALUES);
     expect(new Set(values).size).toBe(values.length);
   });
 });

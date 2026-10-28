@@ -35,6 +35,7 @@ import {
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -654,7 +655,7 @@ export const StepFeatures = memo(function StepFeatures({
         <KeyboardShortcutTooltip
           shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
           description={SHORTCUT_DESCRIPTIONS.GO_BACK}
-          position="right"
+          position={DIRECTION.RIGHT}
           modifier={MODIFIER_KEYS.ALT}
         >
           <RippleButton
@@ -687,7 +688,7 @@ export const StepFeatures = memo(function StepFeatures({
         <KeyboardShortcutTooltip
           shortcut={KEYBOARD_EVENT_KEYS.ENTER}
           description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-          position="left"
+          position={DIRECTION.LEFT}
         >
           <RippleButton
             onClick={nextStep}

@@ -913,6 +913,27 @@ export const BANNER_STATE_VALUES = {
 } as const;
 
 /**
+ * Tooltip Display State Values
+ * Centralized state tracking values for tooltip open/close visibility
+ * (e.g. SmartTooltip trigger container + floating panel).
+ * Pairing contract: every write of a tooltip `data-state` attribute and every
+ * read (CSS selector / test assertion) must use the same constant on both
+ * sides — a typo or rename on either side silently breaks styling/tests.
+ * Deliberately distinct from BANNER_STATE_VALUES (banner-scoped online/offline
+ * family); tooltip open/close is a separate domain even though the
+ * "visible"/"hidden" string values coincide.
+ * Flexy says: No hardcoded "visible"/"hidden" strings in tooltip components!
+ * Usage: import { TOOLTIP_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isVisible ? TOOLTIP_STATE_VALUES.VISIBLE : TOOLTIP_STATE_VALUES.HIDDEN}
+ */
+export const TOOLTIP_STATE_VALUES = {
+  /** Tooltip open / visible state identifier */
+  VISIBLE: "visible" as const,
+  /** Tooltip closed / hidden state identifier */
+  HIDDEN: "hidden" as const,
+} as const;
+
+/**
  * Typing Indicator State Values
  * Centralized state tracking values for typing / generating indicator states.
  * Flexy says: No hardcoded "typing"/"idle" strings in TypeIndicator components!

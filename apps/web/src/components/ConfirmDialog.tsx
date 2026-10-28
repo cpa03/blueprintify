@@ -35,7 +35,7 @@
  */
 
 import { useEffect, useRef, useCallback, memo } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, DIRECTION } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -304,7 +304,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 <KeyboardShortcutTooltip
                   shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                   description={SHORTCUT_DESCRIPTIONS.CONFIRM_ACTION}
-                  position="left"
+                  position={DIRECTION.LEFT}
                   modifier={MODIFIER_KEYS.NONE}
                 >
                   <motion.button

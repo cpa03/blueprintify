@@ -22,7 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, DIRECTION } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS_MS,
   ARIA_ATOMIC_VALUES,
@@ -175,7 +175,7 @@ function StepIndicatorComponent(): JSX.Element {
           progressPercentage,
           STEPS.length - 1 - effectiveIndex
         )}
-        position="left"
+        position={DIRECTION.LEFT}
       >
         <div className="relative group animate-fade-in shrink-0">
           <CircularProgress

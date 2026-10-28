@@ -43,6 +43,7 @@ import {
   TOAST_TYPES,
   UI_TIMEOUTS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -258,7 +259,7 @@ function OfflineBannerComponent(): JSX.Element | null {
 
               <SmartTooltip
                 content={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
-                position="left"
+                position={DIRECTION.LEFT}
                 delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
               >
                 <button
