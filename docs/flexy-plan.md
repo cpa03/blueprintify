@@ -4,6 +4,44 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 210: Centralize CSS `none`/`hidden`/`auto` Value Bypasses & Eliminate MODIFIER_KEYS Bypasses in platform.ts
+
+**Problem**: Two clusters survived 209 iterations with the same silent-failure shape — string literals whose read/write or type/value pairs drift without any type error. (1) **CSS value-string bypasses of `CSS_VALUES`**: 13 bare runtime sites bypassed the existing `CSS_VALUES` family whose own docblock says "No hardcoded CSS value strings like `auto` in component logic!" — 8× `"none"` (`Toast` transition ring + bar, `CharacterCounter` transition, `CircularProgress` transition, `SkipLink` animation ×2, `EditorHeader` boxShadow, `clipboard` pointerEvents), 2× `"hidden"` (`useScrollLock` overflow read + write — no `HIDDEN` key existed at all), and 2× `"auto"` (`SkipLink` willChange, `HeadingAnchor` motion width). Every reduced-motion ternary pairs a `"none"` write with a constant-backed animation config on the other branch; every scroll-lock read/write pair uses the same overflow keyword — a typo silently leaves transitions running or the body scrollable with no type error. (2) **`MODIFIER_KEYS` bypasses in `platform.ts`**: the sole remaining runtime owner of the four-value modifier enum inlined a *third* copy of `"cmd" | "ctrl" | "alt" | "none"` (twice — once with a reordered union), two bare defaults (`= "none"`, `= "cmd"`), and six bare comparisons (`=== "none"` ×2, `=== "alt"` ×2, `=== "ctrl"` ×2) — even though Iteration 209 just converted SmartTooltip's identical union to `(typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]`, and `keyboard.ts` still had 2× bare `MODIFIER: "none"`. Flexy says: no bare CSS `none`/`hidden`/`auto` style-value literals, and no inlined modifier unions/defaults/comparisons where `MODIFIER_KEYS` exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | `CSS_VALUES` +`HIDDEN` (`"hidden"` — overflow locking), docblock extended with full pairing contract (transition/animation/boxShadow/pointerEvents/overflow/willChange/width) + usage examples (count 2 → 3) |
+| `packages/shared/src/config.test.ts` | +2 tests (1,035 → 1,037): exact `HIDDEN` value, entry count 3, NONE/HIDDEN/AUTO pairwise-distinct invariant |
+| `apps/web/src/components/Toast.tsx` | 2× `transition: … ? "none" : …` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/CharacterCounter.tsx` | 1× reduced-motion `transition: "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/CircularProgress.tsx` | 1× reduced-motion `transition: "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/SkipLink.tsx` | 2× `animation: … ? "none" : …` + 1× `willChange: … ? "auto" : …` → `CSS_VALUES.NONE` / `CSS_VALUES.AUTO` |
+| `apps/web/src/components/editor/EditorHeader.tsx` | 1× `boxShadow: "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/HeadingAnchor.tsx` | 1× motion `width: … ? "auto" : 0` → `CSS_VALUES.AUTO` |
+| `apps/web/src/lib/clipboard.ts` | 1× `pointerEvents = "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/hooks/useScrollLock.ts` | 2× `overflow === "hidden"` / `= "hidden"` → `CSS_VALUES.HIDDEN` |
+| `apps/web/src/lib/platform.ts` | NEW exported `ShortcutModifier = (typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]`; 2× inlined unions → `ShortcutModifier`; 2× defaults → `MODIFIER_KEYS.NONE` / `MODIFIER_KEYS.CMD`; 6× comparisons → `MODIFIER_KEYS.NONE/ALT/CTRL` |
+| `apps/web/src/config/constants/keyboard.ts` | 2× `MODIFIER: "none"` → `MODIFIER_KEYS.NONE` |
+| `docs/flexy-plan.md` | Iteration 210 entry |
+
+Deliberately skipped: test files (`toBe("hidden")` / `overflow` assertions — constants preserve the identical byte value — Iteration 194/196/206/208 precedent); `dir="auto"` HTML text-direction attributes ×11 (i18n attribute, not a CSS style manipulation — JSX-attribute precedent); `clipboard` `position="fixed"` / `top="0"` / `opacity="0"` (one-off off-screen positioning + identity `0` — Iteration 199/200 precedent); `keyboard.ts` compound `MODIFIER: "ctrl/cmd"` / `"ctrl/cmd+shift"` display labels (not members of `MODIFIER_KEYS`); `platform.ts` human-readable labels (`"Ctrl"`/`"Alt"`/`"Meta"`/`"Control"`/`"⌘"`/`"⌥"` — display strings, not modifier identifiers); `security.ts` CSP `'none'` sources (CSP-directive category); SVG `fill`/`stroke` `"none"` (already `SVG_ICON_DEFAULTS.FILL_NONE`/`STROKE_NONE`); JSDoc prose examples; `lib/templates/*` (generated); `node_modules`/`dist`.
+
+## Verification (Iteration 210)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (11.55s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,399 web + 555 api + 1,037 shared = 2,991 tests passing** (+2 new shared)
+- ✅ Residual scan — 0 bare `transition/animation/boxShadow/pointerEvents: "none"` style literals, 0 bare `overflow … "hidden"`, 0 bare `willChange/width … "auto"` in runtime source, 0 inlined `"cmd" | "ctrl" | "alt" | "none"` unions, 0 bare `modifier === "none"|"alt"|"ctrl"` comparisons, 0 bare `MODIFIER: "none"` (excluding tests, JSDoc prose, CSP/`dir` attributes & generated templates)
+
+## PR (Iteration 210)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3945 | `flexy/iteration-210-css-none-modifier-bypasses` | refactor(flexy): centralize CSS none/hidden/auto value bypasses & eliminate MODIFIER_KEYS bypasses in platform.ts (Iteration 210) |
+
 ### ✅ Flexy Iteration 209: Centralize Tooltip data-state Values & Eliminate DIRECTION/MODIFIER Bypasses
 
 **Problem**: Three clusters survived 208 iterations with the same silent-failure shape — string literals whose read/write or prop/value pairs drift without any type error. (1) **Tooltip `data-state`**: SmartTooltip was the lone runtime bypass of the 18-family `*_STATE_VALUES` system — `data-state={isVisible ? "visible" : "hidden"}` on the trigger container and a static `data-state="visible"` on the floating panel, while every sibling component already used a named state family. A typo on either side silently breaks CSS selectors and test assertions (Iteration 207 explicitly flagged this as a future DOM-state candidate). (2) **`DIRECTION` position bypasses**: 34 bare `position="left"|"right"|"top"|"bottom"` JSX prop call sites across 15 files fed SmartTooltip / KeyboardShortcutTooltip / InfoTooltip, plus TypeIndicator's inlined `position?: "left" | "right"` type + `position = "right"` default + `position === "left"` comparison, plus ScrollToTop's `type ScrollDirection = "top" | "bottom"`, `direction === "top"`, and `tooltipPosition = isToTop ? ("left" as const) : ("right" as const)` — all bypassing the existing `DIRECTION` family whose own docblock says "No hardcoded top/bottom/left/right direction strings!" (3) **`MODIFIER_KEYS` type bypass**: KeyboardShortcutTooltip's `modifier?: "cmd" | "ctrl" | "alt" | "none"` inlined a third copy of the four-value enum that `MODIFIER_KEYS` already owns (call sites already pass `MODIFIER_KEYS.*`). Flexy says: no bare tooltip state strings, no bare direction/position literals, and no inlined modifier unions where a constant family exists!

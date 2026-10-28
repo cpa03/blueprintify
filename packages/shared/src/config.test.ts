@@ -4611,8 +4611,12 @@ describe("CSS_VALUES", () => {
     expect(CSS_VALUES.NONE).toBe("none");
   });
 
-  it("should have 2 properties", () => {
-    expect(Object.keys(CSS_VALUES).length).toBe(2);
+  it("should have HIDDEN = 'hidden'", () => {
+    expect(CSS_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 3 properties", () => {
+    expect(Object.keys(CSS_VALUES).length).toBe(3);
   });
 
   it("should have all values as strings", () => {
@@ -4623,6 +4627,14 @@ describe("CSS_VALUES", () => {
   it("should have unique values", () => {
     const values = Object.values(CSS_VALUES);
     expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep NONE and HIDDEN as distinct CSS keywords", () => {
+    // Reduced-motion `transition: none` and scroll-lock `overflow: hidden`
+    // are different properties — collapsing them would break both contracts.
+    expect(CSS_VALUES.NONE).not.toBe(CSS_VALUES.HIDDEN);
+    expect(CSS_VALUES.NONE).not.toBe(CSS_VALUES.AUTO);
+    expect(CSS_VALUES.HIDDEN).not.toBe(CSS_VALUES.AUTO);
   });
 });
 
