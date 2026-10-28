@@ -875,6 +875,24 @@ describe("StepInfo", () => {
     expect(input).toHaveAttribute("enterkeyhint", "next");
   });
 
+  it("enables sentence capitalization and spellcheck on the description prose field", () => {
+    render(<StepInfo />);
+    const description = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL)
+    );
+    expect(description).toHaveAttribute("autocapitalize", "sentences");
+    expect(description).toHaveAttribute("spellcheck", "true");
+  });
+
+  it("disables autocapitalize and spellcheck on the constraints field", () => {
+    render(<StepInfo />);
+    const constraints = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL)
+    );
+    expect(constraints).toHaveAttribute("autocapitalize", "off");
+    expect(constraints).toHaveAttribute("spellcheck", "false");
+  });
+
   // ======== Edge Cases ========
 
   it("handles empty state gracefully", () => {

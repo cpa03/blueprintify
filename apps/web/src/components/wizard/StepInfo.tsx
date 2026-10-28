@@ -638,6 +638,13 @@ export const StepInfo = memo(function StepInfo({
               id="description"
               name="description"
               autoComplete="off"
+              // Prose field: sentence capitalization and spellcheck help users
+              // write a clear project description on mobile. This is the
+              // intentional opposite of the technical fields above (projectName,
+              // targetAudience, constraints), which disable these because they
+              // hold identifiers/tokens that autocorrect mangles.
+              autoCapitalize="sentences"
+              spellCheck={true}
               dir="auto"
               value={description}
               onChange={(e) => {
