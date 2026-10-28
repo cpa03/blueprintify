@@ -42,6 +42,7 @@ import {
   UI_MESSAGES,
   UI_TIMEOUTS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -903,14 +904,14 @@ export const StepInfo = memo(function StepInfo({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                 description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-                position="left"
+                position={DIRECTION.LEFT}
               >
                 {nextButton}
               </KeyboardShortcutTooltip>
             ) : (
               <SmartTooltip
                 content={ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP}
-                position="left"
+                position={DIRECTION.LEFT}
                 delay={0}
               >
                 {nextButton}

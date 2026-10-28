@@ -4,6 +4,46 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 209: Centralize Tooltip data-state Values & Eliminate DIRECTION/MODIFIER Bypasses
+
+**Problem**: Three clusters survived 208 iterations with the same silent-failure shape — string literals whose read/write or prop/value pairs drift without any type error. (1) **Tooltip `data-state`**: SmartTooltip was the lone runtime bypass of the 18-family `*_STATE_VALUES` system — `data-state={isVisible ? "visible" : "hidden"}` on the trigger container and a static `data-state="visible"` on the floating panel, while every sibling component already used a named state family. A typo on either side silently breaks CSS selectors and test assertions (Iteration 207 explicitly flagged this as a future DOM-state candidate). (2) **`DIRECTION` position bypasses**: 34 bare `position="left"|"right"|"top"|"bottom"` JSX prop call sites across 15 files fed SmartTooltip / KeyboardShortcutTooltip / InfoTooltip, plus TypeIndicator's inlined `position?: "left" | "right"` type + `position = "right"` default + `position === "left"` comparison, plus ScrollToTop's `type ScrollDirection = "top" | "bottom"`, `direction === "top"`, and `tooltipPosition = isToTop ? ("left" as const) : ("right" as const)` — all bypassing the existing `DIRECTION` family whose own docblock says "No hardcoded top/bottom/left/right direction strings!" (3) **`MODIFIER_KEYS` type bypass**: KeyboardShortcutTooltip's `modifier?: "cmd" | "ctrl" | "alt" | "none"` inlined a third copy of the four-value enum that `MODIFIER_KEYS` already owns (call sites already pass `MODIFIER_KEYS.*`). Flexy says: no bare tooltip state strings, no bare direction/position literals, and no inlined modifier unions where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `TOOLTIP_STATE_VALUES` (VISIBLE `"visible"`, HIDDEN `"hidden"` — pairing-contract docblock; deliberately distinct from banner-scoped `BANNER_STATE_VALUES` even though string values coincide), placed beside `BANNER_STATE_VALUES` |
+| `packages/shared/src/index.ts` | Exported `TOOLTIP_STATE_VALUES` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests (1,032 → 1,035): exact values, entry count 2 + uniqueness |
+| `apps/web/src/components/SmartTooltip.tsx` | 2 `data-state` sites → `TOOLTIP_STATE_VALUES.*`; `modifier?: "cmd" \| "ctrl" \| "alt" \| "none"` → `(typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]` |
+| `apps/web/src/components/TypeIndicator.tsx` | `position?: "left" \| "right"` → `typeof DIRECTION.LEFT \| typeof DIRECTION.RIGHT`; default → `DIRECTION.RIGHT`; comparison → `DIRECTION.LEFT` |
+| `apps/web/src/components/ScrollToTop.tsx` | `type ScrollDirection = "top" \| "bottom"` → `typeof DIRECTION.TOP \| typeof DIRECTION.BOTTOM`; `direction === "top"` → `DIRECTION.TOP`; `tooltipPosition` pair → `DIRECTION.LEFT` / `DIRECTION.RIGHT` |
+| `apps/web/src/App.tsx` | 3× `position="left"` → `DIRECTION.LEFT` |
+| `components/OfflineBanner.tsx` / `StepIndicator.tsx` / `ShowEditorButton.tsx` / `ConfirmDialog.tsx` | 1× `position="left"` each → `DIRECTION.LEFT` |
+| `components/Toast.tsx` / `Header.tsx` | 2× each → `DIRECTION.LEFT` / `DIRECTION.BOTTOM` |
+| `components/editor/EditorHeader.tsx` | 2× `position="bottom"` → `DIRECTION.BOTTOM` |
+| `components/editor/EditorToolbar.tsx` | 4× `position="bottom"` → `DIRECTION.BOTTOM` |
+| `components/wizard/StepInfo.tsx` / `StepFeatures.tsx` / `StepStack.tsx` | 2× each → `DIRECTION.LEFT` / `DIRECTION.RIGHT` |
+| `components/wizard/StepGenerating.tsx` | 3× left/right + 1× `position="top"` → `DIRECTION.*` |
+| `components/wizard/StepReview.tsx` | 6× left/right → `DIRECTION.*` |
+| `docs/flexy-plan.md` | Iteration 209 entry |
+
+Deliberately skipped: test files (`toHaveAttribute("data-state", "visible")`, `position="left"` render props, `[data-position='left']` selectors — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208 precedent); `ValidationCheckmark` `size?: "inline" | "input"` (separate size-variant family, not direction/state — candidate for a future size iteration); `ScrollToTop` / `TypeIndicator` JSDoc prose (`@default "right"`, example prose); `lib/templates/react.ts` (generated template); CSS `[data-state=…]` selectors if any (none in `index.css`); `node_modules`/`dist`.
+
+## Verification (Iteration 209)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (15.87s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,397 web + 555 api + 1,035 shared = 2,987 tests passing** (+3 new shared)
+- ✅ Residual scan — 0 bare `data-state` `"visible"`/`"hidden"` literals, 0 bare `position="left|right|top|bottom"` props, 0 bare `=== "top"|"bottom"|"left"|"right"` comparisons, 0 inlined `"cmd" | "ctrl" | "alt" | "none"` unions, 0 `("left" as const)` pairs in runtime source (excluding tests, config definition docs, JSDoc prose & generated templates)
+
+## PR (Iteration 209)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-209-data-state-tooltip` | refactor(flexy): centralize tooltip data-state values & eliminate DIRECTION/MODIFIER bypasses (Iteration 209) |
+
 ### ✅ Flexy Iteration 208: Centralize matchMedia Query Strings & Eliminate ARIA Role/Live Bypasses
 
 **Problem**: Two clusters survived 207 iterations with the same silent-failure shape — string literals whose read/write pairs drift without any type error. (1) **matchMedia query strings**: 7 bare runtime `window.matchMedia("…")` call sites with no `MEDIA_QUERIES` constant anywhere — `"(prefers-reduced-motion: reduce)"` ×5 (`ReducedMotionContext` ×2, `useReducedMotion` ×2, `utils/scroll` ×1) and `"(prefers-contrast: more)"` ×2 (`useReducedMotion` ×2). Every subscription site pairs with a `.matches` snapshot read using the same bare literal, and the string must stay byte-identical to the CSS `@media` feature in `index.css` — a typo or rename on any side silently returns `matches === false` (the preference never matches, nothing throws, animations stay on for reduced-motion users). `DOM_EVENTS` covered event names but media-query strings had no constant. (2) **ARIA role/aria-live bypasses**: 6 runtime sites bypassed the existing `ARIA_ROLES` / `ARIA_LIVE_VALUES` families built in Iterations 194–195 — `role="progressbar"` (`CharacterCounter`), `role={ariaLabel ? "img" : undefined}` (`Icon`), `role={isVisible ? "status" : undefined}` + `aria-live={isVisible ? "polite" : undefined}` (`OfflineBanner`), and `setAttribute("role", "status")` + `setAttribute("aria-live", "polite")` (`useFocusOnStepChange` — whose very next line already used `ARIA_ATOMIC_VALUES.TRUE`, a partial-constant bypass in the same three-line block). Flexy says: no bare media-query strings, and no role/aria-live literals where a constant family already exists!
