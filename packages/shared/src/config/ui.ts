@@ -833,15 +833,27 @@ export const DIRECTION = {
  * Centralized source of truth for commonly-used CSS property value strings
  * used in JavaScript style manipulations. Eliminates hardcoded CSS value
  * strings like "auto" in component logic.
- * Flexy says: No hardcoded CSS value strings like "auto" in component logic!
+ * Flexy says: No hardcoded CSS value strings like "auto" / "none" / "hidden"
+ * in component logic!
+ * Pairing contract: every `style.transition` / `style.animation` /
+ * `style.boxShadow` / `style.pointerEvents` / `style.overflow` /
+ * `style.willChange` / motion `width` write-or-compare site must read the
+ * same family member — a typo on either side silently changes rendered
+ * behavior with no type error (e.g. reduced-motion `transition: none` that
+ * becomes `"onoe"` still parses as an invalid value and the transition
+ * stays active).
  * Usage: import { CSS_VALUES } from "@blueprint/shared";
  *        textarea.style.height = CSS_VALUES.AUTO
+ *        style={{ transition: shouldReduceMotion ? CSS_VALUES.NONE : … }}
+ *        document.body.style.overflow = CSS_VALUES.HIDDEN
  */
 export const CSS_VALUES = {
-  /** CSS auto value — used for height, width, margin, etc. */
+  /** CSS auto value — used for height, width, margin, will-change, etc. */
   AUTO: "auto" as const,
-  /** CSS none value — used for transitions, animations, etc. */
+  /** CSS none value — used for transitions, animations, box-shadow, pointer-events, etc. */
   NONE: "none" as const,
+  /** CSS hidden value — used for overflow locking (scroll-lock body style) */
+  HIDDEN: "hidden" as const,
 } as const;
 
 /**
