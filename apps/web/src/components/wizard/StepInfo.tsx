@@ -792,6 +792,14 @@ export const StepInfo = memo(function StepInfo({
               name="targetAudience"
               type="text"
               autoComplete="off"
+              // Mobile keyboard hygiene: target audience entries are often
+              // technical role tokens ("devops", "SRE", "frontend eng") that
+              // iOS/Android autocapitalize and Safari autocorrect rewrite
+              // ("devops" -> "DevOps", "SRE" -> "sore"). Matches the
+              // autoCapitalize/autoCorrect/spellCheck pattern on projectName.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               enterKeyHint={canProceed ? "go" : "next"}
               dir="auto"
               value={targetAudience}
@@ -855,6 +863,9 @@ export const StepInfo = memo(function StepInfo({
               id="constraints"
               name="constraints"
               autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               dir="auto"
               value={constraints}
               onChange={(e) => {
