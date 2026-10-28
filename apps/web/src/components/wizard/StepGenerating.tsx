@@ -48,6 +48,7 @@ import {
   ICON_PATHS,
   DATA_BOOLEAN_VALUES,
   PERCENT_SCALE,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -895,7 +896,7 @@ export const StepGenerating = memo(function StepGenerating({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                 description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
-                position="right"
+                position={DIRECTION.RIGHT}
                 modifier={MODIFIER_KEYS.CMD}
               >
                 <RippleButton
@@ -953,7 +954,7 @@ export const StepGenerating = memo(function StepGenerating({
               <KeyboardShortcutTooltip
                 shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
                 description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
-                position="left"
+                position={DIRECTION.LEFT}
                 modifier={MODIFIER_KEYS.ALT}
               >
                 <RippleButton
@@ -1035,7 +1036,7 @@ export const StepGenerating = memo(function StepGenerating({
             <KeyboardShortcutTooltip
               shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
               description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
-              position="left"
+              position={DIRECTION.LEFT}
               modifier={MODIFIER_KEYS.ALT}
             >
               <RippleButton
@@ -1106,7 +1107,7 @@ export const StepGenerating = memo(function StepGenerating({
               <KeyboardShortcutTooltip
                 shortcut={KEY_DISPLAY.ESC}
                 description={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_DESC}
-                position="top"
+                position={DIRECTION.TOP}
                 modifier={MODIFIER_KEYS.NONE}
               >
                 <RippleButton

@@ -42,6 +42,7 @@ import {
   UI_MESSAGES,
   UI_TIMEOUTS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -791,6 +792,14 @@ export const StepInfo = memo(function StepInfo({
               name="targetAudience"
               type="text"
               autoComplete="off"
+              // Mobile keyboard hygiene: target audience entries are often
+              // technical role tokens ("devops", "SRE", "frontend eng") that
+              // iOS/Android autocapitalize and Safari autocorrect rewrite
+              // ("devops" -> "DevOps", "SRE" -> "sore"). Matches the
+              // autoCapitalize/autoCorrect/spellCheck pattern on projectName.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               enterKeyHint={canProceed ? "go" : "next"}
               dir="auto"
               value={targetAudience}
@@ -854,6 +863,9 @@ export const StepInfo = memo(function StepInfo({
               id="constraints"
               name="constraints"
               autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               dir="auto"
               value={constraints}
               onChange={(e) => {
@@ -903,14 +915,14 @@ export const StepInfo = memo(function StepInfo({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                 description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-                position="left"
+                position={DIRECTION.LEFT}
               >
                 {nextButton}
               </KeyboardShortcutTooltip>
             ) : (
               <SmartTooltip
                 content={ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP}
-                position="left"
+                position={DIRECTION.LEFT}
                 delay={0}
               >
                 {nextButton}

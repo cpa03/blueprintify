@@ -28,7 +28,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, DIRECTION } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -480,7 +480,7 @@ const ToastItem = memo(
           >
             <SmartTooltip
               content={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-              position="left"
+              position={DIRECTION.LEFT}
               delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
             >
               <button
@@ -496,7 +496,7 @@ const ToastItem = memo(
         ) : (
           <SmartTooltip
             content={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-            position="left"
+            position={DIRECTION.LEFT}
             delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
           >
             <motion.button

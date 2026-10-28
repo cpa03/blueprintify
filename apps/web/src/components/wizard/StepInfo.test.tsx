@@ -417,6 +417,16 @@ describe("StepInfo", () => {
     expect(mockStore.setTargetAudience).toHaveBeenCalledWith("Developers");
   });
 
+  it("disables mobile autocapitalize/autocorrect/spellcheck on target audience", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    expect(input).toHaveAttribute("autocapitalize", "off");
+    expect(input).toHaveAttribute("autocorrect", "off");
+    expect(input).toHaveAttribute("spellcheck", "false");
+  });
+
   it("shows clear button when target audience has content", () => {
     mockStore.targetAudience = "Developers";
     render(<StepInfo />);
@@ -434,6 +444,16 @@ describe("StepInfo", () => {
     );
     fireEvent.change(textarea, { target: { value: "Must be fast" } });
     expect(mockStore.setConstraints).toHaveBeenCalledWith("Must be fast");
+  });
+
+  it("disables mobile autocapitalize/autocorrect/spellcheck on constraints", () => {
+    render(<StepInfo />);
+    const textarea = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL)
+    );
+    expect(textarea).toHaveAttribute("autocapitalize", "off");
+    expect(textarea).toHaveAttribute("autocorrect", "off");
+    expect(textarea).toHaveAttribute("spellcheck", "false");
   });
 
   it("shows clear button when constraints has content", () => {

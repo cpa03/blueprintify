@@ -5,6 +5,7 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  DIRECTION,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   SCROLL_PROGRESS_DEFAULTS,
@@ -506,7 +507,7 @@ function App(): JSX.Element {
                 <KeyboardShortcutTooltip
                   shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                   description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
-                  position="left"
+                  position={DIRECTION.LEFT}
                 >
                   <button
                     onClick={handleHideEditor}
@@ -529,7 +530,7 @@ function App(): JSX.Element {
                 <KeyboardShortcutTooltip
                   shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                   description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
-                  position="left"
+                  position={DIRECTION.LEFT}
                 >
                   <button
                     onClick={handleHideEditor}
@@ -610,7 +611,7 @@ function App(): JSX.Element {
             <KeyboardShortcutTooltip
               shortcut={KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY}
               description={KEYBOARD_SHORTCUTS.NEW_PROJECT.DESCRIPTION}
-              position="left"
+              position={DIRECTION.LEFT}
             >
               <button
                 onClick={handleNewProject}
