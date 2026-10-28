@@ -25,6 +25,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_REPEAT,
   ARIA_ATOMIC_VALUES,
+  ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
@@ -200,7 +201,10 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         aria-live={ARIA_LIVE_VALUES.POLITE}
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
-        <div className="flex items-center gap-1">
+        {/* Decorative progress dots — purely visual; the "Step X of Y" text
+            below conveys the same progress information to screen readers,
+            so announcing each dot would be redundant. */}
+        <div className="flex items-center gap-1" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
           {WIZARD_STEPS.map((step, index) => {
             const isCompleted = index < currentIndex;
             const isCurrent = index === currentIndex;
@@ -220,12 +224,16 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         <span className="text-sm text-dark-300">
           {EDITOR_EMPTY_STATE_LABELS.STEP_PREFIX} {currentIndex + 1} of {WIZARD_STEPS.length}
         </span>
+        {/* Percentage badge — decorative duplicate of the step count above;
+            aria-hidden prevents the live region from double-announcing
+            progress ("Step 2 of 5" then "40%") on every wizard transition. */}
         <motion.span
           key={Math.round(progress)}
           className="text-xs text-dark-500 tabular-nums"
           initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+          aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         >
           {Math.round(progress)}%
         </motion.span>
