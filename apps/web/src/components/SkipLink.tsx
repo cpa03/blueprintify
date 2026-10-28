@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
+import { DATA_BOOLEAN_VALUES, SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
 import {
   SKIP_LINK_ANIMATION,
   ACCESSIBILITY_LABELS_SKIP,
@@ -19,6 +19,9 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
       data-target={DOM_ELEMENT_IDS.MAIN_CONTENT}
       data-state={isFocused ? SKIP_LINK_STATE_VALUES.FOCUSED : SKIP_LINK_STATE_VALUES.IDLE}
       data-visible={isFocused}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4
