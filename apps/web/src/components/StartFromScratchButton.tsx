@@ -8,7 +8,7 @@
  * @module components/StartFromScratchButton
  */
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { DATA_BOOLEAN_VALUES, DIVIDER_BUTTON_STATE_VALUES } from "@blueprint/shared";
 import { LAYOUT } from "../config/styles";
 import { UI_CONTENT } from "../config/constants/content";
@@ -26,17 +26,31 @@ interface StartFromScratchButtonProps {
  */
 export function StartFromScratchButton({ onStart }: StartFromScratchButtonProps) {
   const prefersReducedMotion = useReducedMotion();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleClick = useCallback(() => {
     onStart();
   }, [onStart]);
 
+  const currentState = isFocused
+    ? DIVIDER_BUTTON_STATE_VALUES.FOCUSED
+    : isHovered
+      ? DIVIDER_BUTTON_STATE_VALUES.HOVERED
+      : DIVIDER_BUTTON_STATE_VALUES.IDLE;
+
   return (
     <button
       type="button"
       onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       aria-label={UI_CONTENT.TEMPLATES_DIVIDER}
-      data-state={DIVIDER_BUTTON_STATE_VALUES.IDLE}
+      data-state={currentState}
+      data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-focused={isFocused ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       data-reduced-motion={
         prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
       }

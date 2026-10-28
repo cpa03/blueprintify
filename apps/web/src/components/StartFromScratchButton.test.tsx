@@ -13,7 +13,31 @@ describe("StartFromScratchButton", () => {
     expect(button).toHaveAttribute("type", "button");
     expect(button).toHaveAttribute("aria-label", UI_CONTENT.TEMPLATES_DIVIDER);
     expect(button).toHaveAttribute("data-state", "idle");
+    expect(button).toHaveAttribute("data-hovered", "false");
+    expect(button).toHaveAttribute("data-focused", "false");
     expect(button).toHaveAttribute("data-reduced-motion");
+  });
+
+  it("updates state attributes on hover and focus", () => {
+    render(<StartFromScratchButton onStart={vi.fn()} />);
+
+    const button = screen.getByRole("button", { name: UI_CONTENT.TEMPLATES_DIVIDER });
+
+    fireEvent.mouseEnter(button);
+    expect(button).toHaveAttribute("data-state", "hovered");
+    expect(button).toHaveAttribute("data-hovered", "true");
+
+    fireEvent.mouseLeave(button);
+    expect(button).toHaveAttribute("data-state", "idle");
+    expect(button).toHaveAttribute("data-hovered", "false");
+
+    fireEvent.focus(button);
+    expect(button).toHaveAttribute("data-state", "focused");
+    expect(button).toHaveAttribute("data-focused", "true");
+
+    fireEvent.blur(button);
+    expect(button).toHaveAttribute("data-state", "idle");
+    expect(button).toHaveAttribute("data-focused", "false");
   });
 
   it("calls onStart when activated by click", () => {

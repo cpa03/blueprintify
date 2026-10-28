@@ -15,6 +15,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
+  ANIMATION,
   CELEBRATION_COLORS,
   CELEBRATION_TIMING,
   CELEBRATION_PARTICLE,
@@ -23,7 +24,13 @@ import {
   SPRING_CONFIG,
 } from "../config/constants";
 import { ANIMATION_SCALE, CELEBRATION_STATE_VALUES, ANIMATION_Y_OFFSET } from "@blueprint/shared";
-import { ARIA_LIVE_VALUES, ARIA_ROLES, FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
+import {
+  ANIMATION_DEFAULTS,
+  ARIA_LIVE_VALUES,
+  ARIA_ROLES,
+  FRAMER_TYPE,
+  RATIO_LIMITS,
+} from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import {
@@ -255,36 +262,54 @@ function GenerationCelebrationComponent({
         {showCheckmark && (
           <motion.div
             className="relative flex flex-col items-center justify-center"
-            initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
-            transition={{
-              type: FRAMER_TYPE.SPRING,
-              ...SPRING_CONFIG.DEFAULT,
-            }}
+            // Reduced motion (WCAG 2.3.3): scale/spring are decorative, so the
+            // confirmation only does a fast opacity fade (as in ValidationCheckmark).
+            initial={
+              prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: ANIMATION_SCALE.POP_IN }
+            }
+            animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+            exit={
+              prefersReducedMotion
+                ? { opacity: 0 }
+                : { opacity: 0, scale: ANIMATION_SCALE.STANDARD }
+            }
+            transition={
+              prefersReducedMotion
+                ? { duration: ANIMATION.QUICK_FADE }
+                : { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.DEFAULT }
+            }
+            data-reduced-motion={String(prefersReducedMotion)}
           >
-            <motion.div
-              className="absolute w-32 h-32 rounded-full border-4 border-accent-emerald/30"
-              initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
-              animate={{
-                scale: [0.5, 1.2, 1.5],
-                opacity: [0, 0.5, 0],
-              }}
-              transition={{
-                duration: CELEBRATION_ANIMATION.RIPPLE.DURATION_S,
-                ease: CELEBRATION_ANIMATION.RIPPLE.EASE,
-              }}
-            />
+            {/* Decorative ripple ring — omitted entirely under reduced motion (WCAG 2.3.3). */}
+            {!prefersReducedMotion && (
+              <motion.div
+                data-ripple
+                className="absolute w-32 h-32 rounded-full border-4 border-accent-emerald/30"
+                initial={{ scale: ANIMATION_SCALE.POP_IN, opacity: 0 }}
+                animate={{
+                  scale: [0.5, 1.2, 1.5],
+                  opacity: [0, 0.5, 0],
+                }}
+                transition={{
+                  duration: CELEBRATION_ANIMATION.RIPPLE.DURATION_S,
+                  ease: CELEBRATION_ANIMATION.RIPPLE.EASE,
+                }}
+              />
+            )}
 
             <motion.div
               className="w-24 h-24 rounded-full bg-accent-emerald/20 flex items-center justify-center"
-              initial={{ scale: 0 }}
+              initial={prefersReducedMotion ? { scale: 1 } : { scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{
-                type: FRAMER_TYPE.SPRING,
-                ...CELEBRATION_ANIMATION.CHECKMARK_CONTAINER,
-                delay: CELEBRATION_ANIMATION.CHECKMARK_DELAY_S,
-              }}
+              transition={
+                prefersReducedMotion
+                  ? ANIMATION_DEFAULTS.ZERO_DURATION
+                  : {
+                      type: FRAMER_TYPE.SPRING,
+                      ...CELEBRATION_ANIMATION.CHECKMARK_CONTAINER,
+                      delay: CELEBRATION_ANIMATION.CHECKMARK_DELAY_S,
+                    }
+              }
             >
               <svg
                 width="48"
@@ -299,12 +324,21 @@ function GenerationCelebrationComponent({
                   r={CIRCLE_GEOMETRY_LARGE.RADIUS}
                   stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_BOLD}
-                  initial={{ pathLength: 0, opacity: 0 }}
+                  // Stroke draw-on is decorative — render complete under reduced motion.
+                  initial={
+                    prefersReducedMotion
+                      ? { pathLength: 1, opacity: 1 }
+                      : { pathLength: 0, opacity: 0 }
+                  }
                   animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{
-                    duration: CIRCLE_REVEAL_DURATION_S,
-                    delay: CHECKMARK_PATH_DELAY_S / 2,
-                  }}
+                  transition={
+                    prefersReducedMotion
+                      ? ANIMATION_DEFAULTS.ZERO_DURATION
+                      : {
+                          duration: CIRCLE_REVEAL_DURATION_S,
+                          delay: CHECKMARK_PATH_DELAY_S / 2,
+                        }
+                  }
                 />
                 <motion.path
                   d={ICON_PATHS.CHECKMARK_LARGE}
@@ -312,18 +346,29 @@ function GenerationCelebrationComponent({
                   strokeWidth={SVG_ICON_DEFAULTS.STROKE_WIDTH_HEAVY}
                   strokeLinecap={SVG_ICON_DEFAULTS.STROKE_LINECAP_ROUND}
                   strokeLinejoin={SVG_ICON_DEFAULTS.STROKE_LINEJOIN_ROUND}
-                  initial={{ pathLength: 0 }}
+                  initial={prefersReducedMotion ? { pathLength: 1 } : { pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: CIRCLE_REVEAL_DURATION_S, delay: CHECKMARK_PATH_DELAY_S }}
+                  transition={
+                    prefersReducedMotion
+                      ? ANIMATION_DEFAULTS.ZERO_DURATION
+                      : { duration: CIRCLE_REVEAL_DURATION_S, delay: CHECKMARK_PATH_DELAY_S }
+                  }
                 />
               </svg>
             </motion.div>
 
             <motion.p
               className="mt-4 text-lg font-semibold text-accent-emerald"
-              initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }}
+              // Static under reduced motion: the wrapper's fade reveals it (no slide-up/delay).
+              initial={
+                prefersReducedMotion
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_STANDARD }
+              }
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: TEXT_DELAY_S }}
+              transition={
+                prefersReducedMotion ? ANIMATION_DEFAULTS.ZERO_DURATION : { delay: TEXT_DELAY_S }
+              }
             >
               {CELEBRATION_TEXT.COMPLETE}
             </motion.p>
