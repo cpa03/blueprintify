@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { DATA_BOOLEAN_VALUES, SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
+import { CSS_VALUES, DATA_BOOLEAN_VALUES, SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
 import {
   SKIP_LINK_ANIMATION,
   ACCESSIBILITY_LABELS_SKIP,
@@ -36,7 +36,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
                   motion-safe:transition-all motion-safe:duration-300 motion-safe:ease-out
                   motion-safe:hover:scale-102"
       style={{
-        willChange: shouldReduceMotion ? "auto" : "transform, opacity",
+        willChange: shouldReduceMotion ? CSS_VALUES.AUTO : "transform, opacity",
         zIndex: Z_INDEX.max,
       }}
     >
@@ -47,7 +47,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
           stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
           style={{
-            animation: shouldReduceMotion ? "none" : SKIP_LINK_ANIMATION.ARROW_BOUNCE,
+            animation: shouldReduceMotion ? CSS_VALUES.NONE : SKIP_LINK_ANIMATION.ARROW_BOUNCE,
           }}
         >
           <path
@@ -62,7 +62,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
       <span
         className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10"
         style={{
-          animation: shouldReduceMotion ? "none" : SKIP_LINK_ANIMATION.GLOW_PULSE,
+          animation: shouldReduceMotion ? CSS_VALUES.NONE : SKIP_LINK_ANIMATION.GLOW_PULSE,
         }}
       />
       <style>

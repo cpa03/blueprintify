@@ -25,6 +25,7 @@ import {
   SVG_ICON_DEFAULTS,
   ARIA_HIDDEN_VALUES,
   CIRCLE_GEOMETRY,
+  CSS_VALUES,
   PERCENT_SCALE,
 } from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
@@ -217,7 +218,7 @@ function CircularProgressComponent({
           strokeDasharray={circumference}
           style={
             shouldReduceMotion
-              ? { strokeDashoffset, transition: "none" }
+              ? { strokeDashoffset, transition: CSS_VALUES.NONE }
               : {
                   strokeDashoffset,
                   transitionProperty: SVG_TRANSITION.STROKE_PROPERTY,

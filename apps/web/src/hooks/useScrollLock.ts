@@ -25,6 +25,7 @@
  */
 
 import { useEffect, useRef } from "react";
+import { CSS_VALUES } from "@blueprint/shared";
 
 /**
  * Detects the width of the browser's vertical scrollbar.
@@ -114,14 +115,14 @@ export function useScrollLock({ isLocked }: UseScrollLockOptions): void {
       // Only compensate if there's an actual scrollbar width to account for,
       // and if the body isn't already overflow:hidden (which would mean the
       // scrollbar is already gone, so no compensation needed).
-      const isAlreadyHidden = document.body.style.overflow === "hidden";
+      const isAlreadyHidden = document.body.style.overflow === CSS_VALUES.HIDDEN;
 
       if (!isAlreadyHidden && scrollbarWidth > 0) {
         const currentPadding = parseFloat(document.body.style.paddingRight) || 0;
         document.body.style.paddingRight = `${currentPadding + scrollbarWidth}px`;
       }
 
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = CSS_VALUES.HIDDEN;
     } else {
       // Restore original styles
       if (originalStylesRef.current) {
