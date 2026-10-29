@@ -392,6 +392,14 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     role={ARIA_ROLES.SEARCHBOX}
                     autoComplete="off"
                     enterKeyHint="search"
+                    // Mobile keyboard hygiene: shortcut queries are short
+                    // technical tokens ("esc", "cmd", "home"). Without these,
+                    // iOS/Android autocapitalize each word and Safari
+                    // autocorrect rewrites tokens ("cmd" -> "Cmd"), returning
+                    // zero results for a valid query. Matches the
+                    // autoCapitalize/autoCorrect pattern on StepInfo inputs.
+                    autoCapitalize="off"
+                    autoCorrect="off"
                     spellCheck={false}
                   />
                   {/* Clear button */}
