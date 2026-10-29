@@ -37,6 +37,7 @@ import {
   REVIEW_STATE_VALUES,
   WIZARD_STEP_KEYS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { DOM_EVENTS } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
@@ -164,7 +165,7 @@ export const StepReview = memo(function StepReview({
               <KeyboardShortcutTooltip
                 shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
                 description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_INFO}
-                position="left"
+                position={DIRECTION.LEFT}
                 modifier={MODIFIER_KEYS.ALT}
               >
                 <button
@@ -246,7 +247,7 @@ export const StepReview = memo(function StepReview({
               <KeyboardShortcutTooltip
                 shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
                 description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_STACK}
-                position="left"
+                position={DIRECTION.LEFT}
                 modifier={MODIFIER_KEYS.ALT}
               >
                 <button
@@ -342,7 +343,7 @@ export const StepReview = memo(function StepReview({
                 <KeyboardShortcutTooltip
                   shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
                   description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_FEATURES}
-                  position="left"
+                  position={DIRECTION.LEFT}
                   modifier={MODIFIER_KEYS.ALT}
                 >
                   <button
@@ -476,7 +477,7 @@ export const StepReview = memo(function StepReview({
           <KeyboardShortcutTooltip
             shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
             description={WIZARD_REVIEW_DESCRIPTIONS.GO_BACK}
-            position="right"
+            position={DIRECTION.RIGHT}
             modifier={MODIFIER_KEYS.ALT}
           >
             <RippleButton
@@ -530,7 +531,7 @@ export const StepReview = memo(function StepReview({
                     ? WIZARD_REVIEW_DESCRIPTIONS.GENERATION_IN_PROGRESS
                     : ACCESSIBILITY_LABELS.REVIEW.GENERATE_DISABLED_TOOLTIP
                 }
-                position="left"
+                position={DIRECTION.LEFT}
                 delay={0}
               >
                 <RippleButton
@@ -585,7 +586,7 @@ export const StepReview = memo(function StepReview({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                 description={WIZARD_REVIEW_DESCRIPTIONS.GENERATE_BLUEPRINT}
-                position="left"
+                position={DIRECTION.LEFT}
               >
                 <RippleButton
                   onClick={startGeneration}

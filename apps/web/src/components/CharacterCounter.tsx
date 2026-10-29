@@ -9,6 +9,7 @@ import {
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
   CHAR_COUNTER_THRESHOLDS,
+  CSS_VALUES,
   RATIO_LIMITS,
   PERCENT_SCALE,
   SVG_ICON_DEFAULTS,
@@ -203,7 +204,7 @@ function CharacterCounterCompactComponent({
       data-reduced-motion={
         shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
       }
-      role="progressbar"
+      role={ARIA_ROLES.PROGRESSBAR}
       aria-label={compactCountLabel}
       aria-valuemin={0}
       aria-valuemax={max}
@@ -219,7 +220,7 @@ function CharacterCounterCompactComponent({
           }`}
           style={{
             width: `${Math.min(percentage, PERCENT_SCALE)}%`,
-            transition: shouldReduceMotion ? "none" : undefined,
+            transition: shouldReduceMotion ? CSS_VALUES.NONE : undefined,
           }}
         />
       </div>

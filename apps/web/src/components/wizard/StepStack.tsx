@@ -48,6 +48,7 @@ import {
   PERCENT_SCALE,
   SHORTCUT_DESCRIPTIONS,
   STYLE_ID_STRINGS,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
@@ -486,7 +487,7 @@ export const StepStack = memo(function StepStack({
         <KeyboardShortcutTooltip
           shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
           description={SHORTCUT_DESCRIPTIONS.GO_BACK}
-          position="right"
+          position={DIRECTION.RIGHT}
           modifier={MODIFIER_KEYS.ALT}
         >
           <RippleButton
@@ -519,7 +520,7 @@ export const StepStack = memo(function StepStack({
         <KeyboardShortcutTooltip
           shortcut={KEYBOARD_EVENT_KEYS.ENTER}
           description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-          position="left"
+          position={DIRECTION.LEFT}
         >
           <RippleButton
             onClick={handleNextClick}

@@ -17,7 +17,7 @@
  */
 
 import { memo, useState, useEffect, useCallback } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, DIRECTION } from "@blueprint/shared/config";
 import {
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
@@ -186,7 +186,7 @@ function HeaderComponent({
                 ? ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_ON
                 : ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_OFF
             }
-            position="bottom"
+            position={DIRECTION.BOTTOM}
           >
             <RippleButton
               onClick={toggleReducedMotion}
@@ -206,7 +206,7 @@ function HeaderComponent({
             <KeyboardShortcutTooltip
               shortcut={SHORTCUT_LABELS.SHORTCUTS_MODAL}
               description={SHORTCUT_DESCRIPTIONS.SHOW_KEYBOARD_SHORTCUTS}
-              position="bottom"
+              position={DIRECTION.BOTTOM}
               modifier={MODIFIER_KEYS.NONE}
             >
               <RippleButton

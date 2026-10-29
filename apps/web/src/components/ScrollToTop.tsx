@@ -50,7 +50,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { isEditableField } from "../lib/dom";
 import { ICON_PATHS, SVG_ICON_DEFAULTS } from "@blueprint/shared/config";
 
-type ScrollDirection = "top" | "bottom";
+type ScrollDirection = typeof DIRECTION.TOP | typeof DIRECTION.BOTTOM;
 
 /**
  * Props for the ScrollToPosition component
@@ -144,7 +144,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
     }
   }, []);
 
-  const isToTop = direction === "top";
+  const isToTop = direction === DIRECTION.TOP;
 
   const getScrollContainer = useCallback(() => {
     return scrollContainerRef?.current || window;
@@ -237,7 +237,7 @@ const ScrollToPosition = memo(function ScrollToPosition({
   const positionClass = isToTop
     ? "absolute bottom-4 right-4 z-20"
     : "absolute bottom-4 left-4 z-20";
-  const tooltipPosition = isToTop ? ("left" as const) : ("right" as const);
+  const tooltipPosition = isToTop ? DIRECTION.LEFT : DIRECTION.RIGHT;
 
   return (
     <AnimatePresence>

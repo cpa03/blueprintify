@@ -1,17 +1,18 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
+import { DATA_BOOLEAN_VALUES, SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
 import { SkipLink } from "./SkipLink";
 import { Z_INDEX } from "../config/theme";
 
 describe("SkipLink", () => {
-  it("renders a link with correct href, target attribute, and default idle state", () => {
+  it("renders a link with correct href, target attribute, default idle state, and data-reduced-motion", () => {
     render(<SkipLink />);
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "#main-content");
     expect(link).toHaveAttribute("data-target", "main-content");
     expect(link).toHaveAttribute("data-state", SKIP_LINK_STATE_VALUES.IDLE);
     expect(link).toHaveAttribute("data-visible", "false");
+    expect(link).toHaveAttribute("data-reduced-motion", DATA_BOOLEAN_VALUES.FALSE);
   });
 
   it("updates data-state and data-visible on focus and blur", () => {

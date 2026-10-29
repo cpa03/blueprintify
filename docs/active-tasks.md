@@ -2,6 +2,22 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ BugLover Audit — **Phase 1 Complete (Oct 29 2026)**
+- [x] bug React Suspense act() and framer-motion key warnings in StepTransition.test.tsx resolved.
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean (0 errors, 0 warnings), test suite passing across workspaces with clean stderr.
+
+## ✅ StorX & Palette — **StepTransition Micro-UX & React Suspense Act Fix (Oct 29 2026)**
+- [CONNECT] Connected `PROGRESS_STATE_VALUES` shared config export and `useReducedMotion` to `StepTransition.tsx` for `data-state` ("animating"/"idle") tracking.
+- [STRENGTHEN] Strengthened `StepTransition` accessibility and DOM state tracking with `data-state` ("animating"/"idle") and `data-reduced-motion` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `StepTransition` mode and progress state constants across `StepTransition.test.tsx` and `Wizard.tsx` using `ANIMATE_PRESENCE_MODES`, `DATA_BOOLEAN_VALUES`, and `PROGRESS_STATE_VALUES`.
+- [REMOVE] Removed un-wrapped async `act(...)` state updates and Framer Motion key warnings in `StepTransition.test.tsx`.
+
+## ✅ StorX & Palette — **SkipLink Micro-UX & Reduced Motion State Inspection (Oct 28 2026)**
+- [CONNECT] Connected `useReducedMotion` hook and `data-reduced-motion` DOM attribute to `SkipLink.tsx`.
+- [STRENGTHEN] Strengthened `SkipLink` accessibility and DOM state tracking with `data-reduced-motion` ("true"/"false") attribute for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated skip-link reduced motion state tracking across web components.
+- [REMOVE] Removed un-inspected reduced motion states in `SkipLink.test.tsx`.
+
 ## ✅ Palette — **ErrorFallback Recovery Focus Micro-UX (Oct 25 2026)**
 - [CONNECT] Connected `ErrorFallback.tsx` to a mount-time focus effect (`recoveryButtonRef` + `recoveryFocusDelayMs`) that hands focus to the primary "Try again" recovery action once it is on screen.
 - [STRENGTHEN] Strengthened `ErrorFallback` focus order (WCAG 2.4.3) by waiting for the staggered entrance cascade to paint the action row before focusing it, and by skipping the move when focus is no longer idle so an actively navigating user is never interrupted.

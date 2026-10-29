@@ -712,6 +712,28 @@ export const DOM_EVENTS = {
 } as const;
 
 /**
+ * Media Query Strings
+ * Centralized source of truth for `window.matchMedia(...)` query strings.
+ *
+ * Pairing contract: every `matchMedia(MEDIA_QUERIES.X)` subscription site and
+ * its `.matches` snapshot read MUST reference the same constant entry — a typo
+ * or rename on either side silently returns `matches === false` (the feature
+ * never matches, but nothing throws). The query string must stay byte-identical
+ * to the CSS `@media` feature name/value in `index.css` so JS and CSS always
+ * observe the same user preference.
+ * Flexy says: No bare "prefers-reduced-motion: reduce" / "prefers-contrast: more"
+ * strings in runtime source!
+ * Usage: import { MEDIA_QUERIES } from "@blueprint/shared/config";
+ *        const mq = window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION);
+ */
+export const MEDIA_QUERIES = {
+  /** User prefers reduced motion — animation/scroll gating across the app */
+  PREFERS_REDUCED_MOTION: "(prefers-reduced-motion: reduce)" as const,
+  /** User prefers more contrast — high-contrast accessibility preference */
+  PREFERS_CONTRAST_MORE: "(prefers-contrast: more)" as const,
+} as const;
+
+/**
  * ARIA Keyboard Shortcuts
  * Centralized source of truth for `aria-keyshortcuts` attribute values.
  * Derived from KEYBOARD_EVENT_KEYS so the WAI-ARIA key names always stay
@@ -811,15 +833,27 @@ export const DIRECTION = {
  * Centralized source of truth for commonly-used CSS property value strings
  * used in JavaScript style manipulations. Eliminates hardcoded CSS value
  * strings like "auto" in component logic.
- * Flexy says: No hardcoded CSS value strings like "auto" in component logic!
+ * Flexy says: No hardcoded CSS value strings like "auto" / "none" / "hidden"
+ * in component logic!
+ * Pairing contract: every `style.transition` / `style.animation` /
+ * `style.boxShadow` / `style.pointerEvents` / `style.overflow` /
+ * `style.willChange` / motion `width` write-or-compare site must read the
+ * same family member — a typo on either side silently changes rendered
+ * behavior with no type error (e.g. reduced-motion `transition: none` that
+ * becomes `"onoe"` still parses as an invalid value and the transition
+ * stays active).
  * Usage: import { CSS_VALUES } from "@blueprint/shared";
  *        textarea.style.height = CSS_VALUES.AUTO
+ *        style={{ transition: shouldReduceMotion ? CSS_VALUES.NONE : … }}
+ *        document.body.style.overflow = CSS_VALUES.HIDDEN
  */
 export const CSS_VALUES = {
-  /** CSS auto value — used for height, width, margin, etc. */
+  /** CSS auto value — used for height, width, margin, will-change, etc. */
   AUTO: "auto" as const,
-  /** CSS none value — used for transitions, animations, etc. */
+  /** CSS none value — used for transitions, animations, box-shadow, pointer-events, etc. */
   NONE: "none" as const,
+  /** CSS hidden value — used for overflow locking (scroll-lock body style) */
+  HIDDEN: "hidden" as const,
 } as const;
 
 /**
@@ -888,6 +922,27 @@ export const BANNER_STATE_VALUES = {
   ONLINE: "online" as const,
   /** Offline network state identifier */
   OFFLINE: "offline" as const,
+} as const;
+
+/**
+ * Tooltip Display State Values
+ * Centralized state tracking values for tooltip open/close visibility
+ * (e.g. SmartTooltip trigger container + floating panel).
+ * Pairing contract: every write of a tooltip `data-state` attribute and every
+ * read (CSS selector / test assertion) must use the same constant on both
+ * sides — a typo or rename on either side silently breaks styling/tests.
+ * Deliberately distinct from BANNER_STATE_VALUES (banner-scoped online/offline
+ * family); tooltip open/close is a separate domain even though the
+ * "visible"/"hidden" string values coincide.
+ * Flexy says: No hardcoded "visible"/"hidden" strings in tooltip components!
+ * Usage: import { TOOLTIP_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isVisible ? TOOLTIP_STATE_VALUES.VISIBLE : TOOLTIP_STATE_VALUES.HIDDEN}
+ */
+export const TOOLTIP_STATE_VALUES = {
+  /** Tooltip open / visible state identifier */
+  VISIBLE: "visible" as const,
+  /** Tooltip closed / hidden state identifier */
+  HIDDEN: "hidden" as const,
 } as const;
 
 /**

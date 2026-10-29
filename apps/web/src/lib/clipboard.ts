@@ -1,5 +1,5 @@
 import { EXPORT_CONFIG } from "../config/constants";
-import { ARIA_HIDDEN_VALUES } from "@blueprint/shared";
+import { ARIA_HIDDEN_VALUES, CSS_VALUES } from "@blueprint/shared";
 
 /**
  * Copies text to clipboard with fallback for older browsers.
@@ -27,7 +27,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     textarea.style.top = "0";
     textarea.style.left = `${EXPORT_CONFIG.COPY_TEXTAREA_OFFSET}px`;
     textarea.style.opacity = "0";
-    textarea.style.pointerEvents = "none";
+    textarea.style.pointerEvents = CSS_VALUES.NONE;
     document.body.appendChild(textarea);
     try {
       textarea.select();

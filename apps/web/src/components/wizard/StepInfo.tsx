@@ -42,6 +42,7 @@ import {
   UI_MESSAGES,
   UI_TIMEOUTS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -286,10 +287,13 @@ export const StepInfo = memo(function StepInfo({
     }
   };
 
-  // Enter-to-advance: honors enterKeyHint="next". While the form cannot be
-  // submitted yet (submit button disabled), Enter would otherwise do nothing,
-  // stranding keyboard/mobile users on the same field — so Enter advances to
-  // the next field instead. When submittable, Enter keeps default submit.
+  // Enter-to-advance: while the form cannot be submitted yet (submit button
+  // disabled), Enter would otherwise do nothing, stranding keyboard/mobile
+  // users on the same field — so Enter advances to the next field instead
+  // (enterKeyHint="next"). When submittable, Enter keeps default submit, so
+  // the soft-key hint flips to enterKeyHint="go" to match: a static "next"
+  // key that actually submits the form misleads mobile users about what the
+  // key will do.
   const handleProjectNameKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (e.key !== KEYBOARD_EVENT_KEYS.ENTER || canProceed) return;
@@ -492,7 +496,7 @@ export const StepInfo = memo(function StepInfo({
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
-              enterKeyHint="next"
+              enterKeyHint={canProceed ? "go" : "next"}
               dir="auto"
               value={projectName}
               onKeyDown={handleProjectNameKeyDown}
@@ -634,6 +638,13 @@ export const StepInfo = memo(function StepInfo({
               id="description"
               name="description"
               autoComplete="off"
+              // Prose field: sentence capitalization and spellcheck help users
+              // write a clear project description on mobile. This is the
+              // intentional opposite of the technical fields above (projectName,
+              // targetAudience, constraints), which disable these because they
+              // hold identifiers/tokens that autocorrect mangles.
+              autoCapitalize="sentences"
+              spellCheck={true}
               dir="auto"
               value={description}
               onChange={(e) => {
@@ -788,7 +799,15 @@ export const StepInfo = memo(function StepInfo({
               name="targetAudience"
               type="text"
               autoComplete="off"
-              enterKeyHint="next"
+              // Mobile keyboard hygiene: target audience entries are often
+              // technical role tokens ("devops", "SRE", "frontend eng") that
+              // iOS/Android autocapitalize and Safari autocorrect rewrite
+              // ("devops" -> "DevOps", "SRE" -> "sore"). Matches the
+              // autoCapitalize/autoCorrect/spellCheck pattern on projectName.
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint={canProceed ? "go" : "next"}
               dir="auto"
               value={targetAudience}
               onKeyDown={handleTargetAudienceKeyDown}
@@ -851,6 +870,9 @@ export const StepInfo = memo(function StepInfo({
               id="constraints"
               name="constraints"
               autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
               dir="auto"
               value={constraints}
               onChange={(e) => {
@@ -900,14 +922,14 @@ export const StepInfo = memo(function StepInfo({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                 description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-                position="left"
+                position={DIRECTION.LEFT}
               >
                 {nextButton}
               </KeyboardShortcutTooltip>
             ) : (
               <SmartTooltip
                 content={ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP}
-                position="left"
+                position={DIRECTION.LEFT}
                 delay={0}
               >
                 {nextButton}

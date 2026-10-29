@@ -417,6 +417,16 @@ describe("StepInfo", () => {
     expect(mockStore.setTargetAudience).toHaveBeenCalledWith("Developers");
   });
 
+  it("disables mobile autocapitalize/autocorrect/spellcheck on target audience", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    expect(input).toHaveAttribute("autocapitalize", "off");
+    expect(input).toHaveAttribute("autocorrect", "off");
+    expect(input).toHaveAttribute("spellcheck", "false");
+  });
+
   it("shows clear button when target audience has content", () => {
     mockStore.targetAudience = "Developers";
     render(<StepInfo />);
@@ -434,6 +444,16 @@ describe("StepInfo", () => {
     );
     fireEvent.change(textarea, { target: { value: "Must be fast" } });
     expect(mockStore.setConstraints).toHaveBeenCalledWith("Must be fast");
+  });
+
+  it("disables mobile autocapitalize/autocorrect/spellcheck on constraints", () => {
+    render(<StepInfo />);
+    const textarea = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL)
+    );
+    expect(textarea).toHaveAttribute("autocapitalize", "off");
+    expect(textarea).toHaveAttribute("autocorrect", "off");
+    expect(textarea).toHaveAttribute("spellcheck", "false");
   });
 
   it("shows clear button when constraints has content", () => {
@@ -815,6 +835,62 @@ describe("StepInfo", () => {
     );
     fireEvent.keyDown(input, { key: "Enter" });
     expect(description).not.toHaveFocus();
+  });
+
+  it('hints enterKeyHint="next" on project name while the form is not submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("enterkeyhint", "next");
+  });
+
+  it('flips project name enterKeyHint to "go" when the form becomes submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description =
+      "A valid project description that meets the minimum length requirement.";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    expect(input).toHaveAttribute("enterkeyhint", "go");
+  });
+
+  it('flips target audience enterKeyHint to "go" when the form becomes submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description =
+      "A valid project description that meets the minimum length requirement.";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    expect(input).toHaveAttribute("enterkeyhint", "go");
+  });
+
+  it('keeps target audience enterKeyHint="next" while the form is not submittable', () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    expect(input).toHaveAttribute("enterkeyhint", "next");
+  });
+
+  it("enables sentence capitalization and spellcheck on the description prose field", () => {
+    render(<StepInfo />);
+    const description = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL)
+    );
+    expect(description).toHaveAttribute("autocapitalize", "sentences");
+    expect(description).toHaveAttribute("spellcheck", "true");
+  });
+
+  it("disables autocapitalize and spellcheck on the constraints field", () => {
+    render(<StepInfo />);
+    const constraints = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL)
+    );
+    expect(constraints).toHaveAttribute("autocapitalize", "off");
+    expect(constraints).toHaveAttribute("spellcheck", "false");
   });
 
   // ======== Edge Cases ========

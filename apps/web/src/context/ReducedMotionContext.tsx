@@ -6,7 +6,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, MEDIA_QUERIES } from "@blueprint/shared/config";
 import { CONTEXT_HOOK_ERRORS, DATA_BOOLEAN_VALUES } from "@blueprint/shared/config";
 import { ACCESSIBILITY_EVENTS } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
@@ -40,7 +40,7 @@ function getInitialOverride(): boolean | null {
 }
 
 function subscribeToMediaQuery(callback: () => void): () => void {
-  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const mediaQuery = window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION);
 
   if (mediaQuery.addEventListener) {
     mediaQuery.addEventListener(DOM_EVENTS.CHANGE, callback);
@@ -53,7 +53,7 @@ function subscribeToMediaQuery(callback: () => void): () => void {
 
 function getMediaQuerySnapshot(): boolean {
   if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return window.matchMedia(MEDIA_QUERIES.PREFERS_REDUCED_MOTION).matches;
 }
 
 function getServerSnapshot(defaultValue: boolean): boolean {

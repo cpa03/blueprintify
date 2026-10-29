@@ -179,6 +179,7 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  TOOLTIP_STATE_VALUES,
   ARIA_ROLES,
   ARIA_LIVE_VALUES,
   ARIA_ATOMIC_VALUES,
@@ -189,6 +190,7 @@ import {
   DATA_BOOLEAN_VALUES,
   ARIA_BUSY_VALUES,
   DOM_EVENTS,
+  MEDIA_QUERIES,
   MOTION_VARIANT_STATES,
   ANIMATE_PRESENCE_MODES,
 } from "./config.js";
@@ -2262,6 +2264,22 @@ describe("BANNER_STATE_VALUES", () => {
 
   it("should have unique state values", () => {
     const values = Object.values(BANNER_STATE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("TOOLTIP_STATE_VALUES", () => {
+  it("should have VISIBLE and HIDDEN states", () => {
+    expect(TOOLTIP_STATE_VALUES.VISIBLE).toBe("visible");
+    expect(TOOLTIP_STATE_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(TOOLTIP_STATE_VALUES).length).toBe(2);
+  });
+
+  it("should have unique state values", () => {
+    const values = Object.values(TOOLTIP_STATE_VALUES);
     expect(new Set(values).size).toBe(values.length);
   });
 });
@@ -4593,8 +4611,12 @@ describe("CSS_VALUES", () => {
     expect(CSS_VALUES.NONE).toBe("none");
   });
 
-  it("should have 2 properties", () => {
-    expect(Object.keys(CSS_VALUES).length).toBe(2);
+  it("should have HIDDEN = 'hidden'", () => {
+    expect(CSS_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 3 properties", () => {
+    expect(Object.keys(CSS_VALUES).length).toBe(3);
   });
 
   it("should have all values as strings", () => {
@@ -4605,6 +4627,14 @@ describe("CSS_VALUES", () => {
   it("should have unique values", () => {
     const values = Object.values(CSS_VALUES);
     expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep NONE and HIDDEN as distinct CSS keywords", () => {
+    // Reduced-motion `transition: none` and scroll-lock `overflow: hidden`
+    // are different properties — collapsing them would break both contracts.
+    expect(CSS_VALUES.NONE).not.toBe(CSS_VALUES.HIDDEN);
+    expect(CSS_VALUES.NONE).not.toBe(CSS_VALUES.AUTO);
+    expect(CSS_VALUES.HIDDEN).not.toBe(CSS_VALUES.AUTO);
   });
 });
 
@@ -5712,5 +5742,27 @@ describe("ANIMATE_PRESENCE_MODES (Flexy Iteration 207)", () => {
     const values = Object.values(ANIMATE_PRESENCE_MODES);
     expect(new Set(values).size).toBe(values.length);
     expect(new Set(values)).toEqual(new Set(["wait", "sync", "popLayout"]));
+  });
+});
+
+describe("MEDIA_QUERIES (Flexy Iteration 208)", () => {
+  it("should have exact media query string values", () => {
+    expect(MEDIA_QUERIES.PREFERS_REDUCED_MOTION).toBe("(prefers-reduced-motion: reduce)");
+    expect(MEDIA_QUERIES.PREFERS_CONTRAST_MORE).toBe("(prefers-contrast: more)");
+  });
+
+  it("should have 2 unique media query strings", () => {
+    expect(Object.keys(MEDIA_QUERIES).length).toBe(2);
+    const values = Object.values(MEDIA_QUERIES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use parenthesized lowercase prefers-* media features", () => {
+    for (const value of Object.values(MEDIA_QUERIES)) {
+      expect(value.startsWith("(")).toBe(true);
+      expect(value.endsWith(")")).toBe(true);
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
   });
 });
