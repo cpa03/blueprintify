@@ -176,10 +176,16 @@ function GenerationCelebrationComponent({
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!isComplete) return;
+    if (!isComplete) {
+      // Reset state so cancelled timers cannot leave the celebration stuck
+      // rendering (particles/showCheckmark would defeat the null guard).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setParticles([]);
+      setShowCheckmark(false);
+      return;
+    }
 
     if (prefersReducedMotion) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowCheckmark(true);
       const timer = setTimeout(() => {
         setShowCheckmark(false);
