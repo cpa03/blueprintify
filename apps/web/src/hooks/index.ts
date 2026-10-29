@@ -26,3 +26,5 @@ export { useAutoScroll } from "./useAutoScroll";
 export { useScrollLock } from "./useScrollLock";
 export { useBeforeUnload } from "./useBeforeUnload";
 export { useHashScroll } from "./useHashScroll";
+export { usePasteTruncation } from "./usePasteTruncation";
+export type { PasteTruncationResult } from "./usePasteTruncation";
