@@ -73,6 +73,7 @@ import {
   SCROLL_INTO_VIEW_BLOCK,
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
+  DOM_ELEMENT_IDS,
 } from "../../config/constants";
 import { getScrollBehavior } from "../../utils/scroll";
 import { STEP_INFO_LABELS } from "../../config/constants/validation";
@@ -459,7 +460,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Project Name */}
         <div>
           <div className="flex justify-between items-center">
-            <label htmlFor="projectName" className="label flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME}
+              className="label flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
@@ -484,7 +488,7 @@ export const StepInfo = memo(function StepInfo({
           >
             <motion.input
               ref={projectNameInputRef}
-              id="projectName"
+              id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME}
               name="projectName"
               type="text"
               autoComplete="off"
@@ -525,10 +529,10 @@ export const StepInfo = memo(function StepInfo({
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
               aria-describedby={
                 projectNameErrorVisible
-                  ? "projectName-error"
+                  ? DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR
                   : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
                       projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
-                    ? "projectName-warning"
+                    ? DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING
                     : undefined
               }
             />
@@ -570,7 +574,7 @@ export const StepInfo = memo(function StepInfo({
             {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
                 <motion.p
-                  id="projectName-warning"
+                  id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING}
                   role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
@@ -585,7 +589,7 @@ export const StepInfo = memo(function StepInfo({
           <AnimatePresence>
             {projectNameErrorVisible && (
               <motion.p
-                id="projectName-error"
+                id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR}
                 role={ARIA_ROLES.ALERT}
                 initial={{
                   opacity: 0,
@@ -610,7 +614,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Description */}
         <div>
           <div className="flex justify-between items-center">
-            <label htmlFor="description" className="label flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION}
+              className="label flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
@@ -635,7 +642,7 @@ export const StepInfo = memo(function StepInfo({
           >
             <motion.textarea
               ref={descriptionRef}
-              id="description"
+              id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION}
               name="description"
               autoComplete="off"
               // Prose field: sentence capitalization and spellcheck help users
@@ -675,12 +682,12 @@ export const StepInfo = memo(function StepInfo({
               }
               transition={{ duration: ANIMATION.FAST }}
               {...(descriptionErrorVisible
-                ? { "aria-describedby": "description-error" }
+                ? { "aria-describedby": DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR }
                 : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
                     description.length < FORM_LIMITS.DESCRIPTION.MAX
-                  ? { "aria-describedby": "description-warning" }
+                  ? { "aria-describedby": DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING }
                   : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
-                    ? { "aria-describedby": "description-hint" }
+                    ? { "aria-describedby": DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT }
                     : {})}
             />
             {/* Clear button — appears when field has content */}
@@ -722,7 +729,7 @@ export const StepInfo = memo(function StepInfo({
               description.length < FORM_LIMITS.DESCRIPTION.MIN &&
               !descriptionErrorVisible && (
                 <motion.p
-                  id="description-hint"
+                  id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
@@ -739,7 +746,7 @@ export const StepInfo = memo(function StepInfo({
             {description.length >= DESCRIPTION_WARNING_THRESHOLD &&
               description.length < FORM_LIMITS.DESCRIPTION.MAX && (
                 <motion.p
-                  id="description-warning"
+                  id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING}
                   role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
@@ -754,7 +761,7 @@ export const StepInfo = memo(function StepInfo({
           <AnimatePresence>
             {descriptionErrorVisible && (
               <motion.p
-                id="description-error"
+                id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR}
                 role={ARIA_ROLES.ALERT}
                 initial={{
                   opacity: 0,
@@ -779,7 +786,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Target Audience (Optional) */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="targetAudience" className="label mb-0 flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE}
+              className="label mb-0 flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
               <span className="text-dark-500">{UI_CONTENT.WIZARD.STEP_INFO.OPTIONAL_LABEL}</span>
               <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
@@ -795,7 +805,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="relative">
             <motion.input
               ref={targetAudienceInputRef}
-              id="targetAudience"
+              id={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE}
               name="targetAudience"
               type="text"
               autoComplete="off"
@@ -852,7 +862,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Constraints (Optional) */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="constraints" className="label mb-0 flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS}
+              className="label mb-0 flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL}{" "}
               <span className="text-dark-500">{UI_CONTENT.WIZARD.STEP_INFO.OPTIONAL_LABEL}</span>
               <TypeIndicator isTyping={constraintsTyping.isTyping} />
@@ -867,7 +880,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="relative">
             <motion.textarea
               ref={constraintsRef}
-              id="constraints"
+              id={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS}
               name="constraints"
               autoComplete="off"
               autoCapitalize="off"

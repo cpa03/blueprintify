@@ -49,8 +49,8 @@ describe("ACCESSIBILITY_LABELS_SKIP", () => {
   });
 });
 
-describe("DOM_ELEMENT_IDS — Iteration 197", () => {
-  it("defines all 13 ARIA-relationship DOM element IDs", () => {
+describe("DOM_ELEMENT_IDS — Iterations 197 + 211", () => {
+  it("defines all 22 ARIA-relationship DOM element IDs", () => {
     expect(DOM_ELEMENT_IDS.MAIN_CONTENT).toBe("main-content");
     expect(DOM_ELEMENT_IDS.EDITOR_PANEL).toBe("editor-panel");
     expect(DOM_ELEMENT_IDS.CONFIRM_DIALOG_TITLE).toBe("confirm-dialog-title");
@@ -66,9 +66,21 @@ describe("DOM_ELEMENT_IDS — Iteration 197", () => {
     expect(DOM_ELEMENT_IDS.SELECTED_TECH_LABEL).toBe("selected-tech-label");
   });
 
+  it("defines the 9 StepInfo form-field IDs (Iteration 211)", () => {
+    expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME).toBe("projectName");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING).toBe("projectName-warning");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR).toBe("projectName-error");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION).toBe("description");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT).toBe("description-hint");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING).toBe("description-warning");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR).toBe("description-error");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE).toBe("targetAudience");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS).toBe("constraints");
+  });
+
   it("keeps every element ID unique so ARIA references never collide", () => {
     const values = Object.values(DOM_ELEMENT_IDS);
-    expect(values).toHaveLength(13);
-    expect(new Set(values).size).toBe(13);
+    expect(values).toHaveLength(22);
+    expect(new Set(values).size).toBe(22);
   });
 });
