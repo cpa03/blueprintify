@@ -2,9 +2,15 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
-## ✅ BugLover Audit — **Phase 1 Complete (Oct 28 2026)**
-- [x] bug Zero code or console bugs found across workspaces.
-- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean (0 errors, 0 warnings), test suite 2,981/2,981 passing across workspaces.
+## ✅ BugLover Audit — **Phase 1 Complete (Oct 29 2026)**
+- [x] bug React Suspense act() and framer-motion key warnings in StepTransition.test.tsx resolved.
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean (0 errors, 0 warnings), test suite passing across workspaces with clean stderr.
+
+## ✅ StorX & Palette — **StepTransition Micro-UX & React Suspense Act Fix (Oct 29 2026)**
+- [CONNECT] Connected `PROGRESS_STATE_VALUES` shared config export and `useReducedMotion` to `StepTransition.tsx` for `data-state` ("animating"/"idle") tracking.
+- [STRENGTHEN] Strengthened `StepTransition` accessibility and DOM state tracking with `data-state` ("animating"/"idle") and `data-reduced-motion` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `StepTransition` mode and progress state constants across `StepTransition.test.tsx` and `Wizard.tsx` using `ANIMATE_PRESENCE_MODES`, `DATA_BOOLEAN_VALUES`, and `PROGRESS_STATE_VALUES`.
+- [REMOVE] Removed un-wrapped async `act(...)` state updates and Framer Motion key warnings in `StepTransition.test.tsx`.
 
 ## ✅ StorX & Palette — **SkipLink Micro-UX & Reduced Motion State Inspection (Oct 28 2026)**
 - [CONNECT] Connected `useReducedMotion` hook and `data-reduced-motion` DOM attribute to `SkipLink.tsx`.
