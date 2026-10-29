@@ -160,4 +160,50 @@ describe("useFocusTrap", () => {
     // The hook's getFocusableElements runs each time via useCallback
     expect(() => result.current.focusFirst()).not.toThrow();
   });
+
+  it("should focus the main-content landmark when the trigger element is detached", () => {
+    const main = document.createElement("main");
+    main.id = "main-content";
+    main.tabIndex = -1;
+    document.body.appendChild(main);
+
+    const trigger = document.createElement("button");
+    trigger.textContent = "Open dialog";
+    document.body.appendChild(trigger);
+    trigger.focus();
+    expect(document.activeElement).toBe(trigger);
+
+    const { rerender } = renderHook(
+      ({ isActive }) => useFocusTrap({ isActive, autoFocus: false }),
+      { initialProps: { isActive: false } }
+    );
+
+    rerender({ isActive: true });
+    expect(trigger.isConnected).toBe(true);
+
+    trigger.remove();
+
+    rerender({ isActive: false });
+    expect(document.activeElement).toBe(main);
+
+    document.body.removeChild(main);
+  });
+
+  it("should still return focus to a connected trigger element when available", () => {
+    const trigger = document.createElement("button");
+    trigger.textContent = "Open dialog";
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    const { rerender } = renderHook(
+      ({ isActive }) => useFocusTrap({ isActive, autoFocus: false }),
+      { initialProps: { isActive: false } }
+    );
+
+    rerender({ isActive: true });
+    rerender({ isActive: false });
+
+    expect(document.activeElement).toBe(trigger);
+    document.body.removeChild(trigger);
+  });
 });
