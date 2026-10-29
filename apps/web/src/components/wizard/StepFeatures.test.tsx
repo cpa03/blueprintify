@@ -174,6 +174,13 @@ describe("StepFeatures", () => {
     expect(input).toHaveAttribute("enterkeyhint", "done");
   });
 
+  it("disables mobile autocapitalize/autocorrect on the feature input", () => {
+    render(<StepFeatures />);
+    const input = screen.getByLabelText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME);
+    expect(input).toHaveAttribute("autocapitalize", "off");
+    expect(input).toHaveAttribute("autocorrect", "off");
+  });
+
   it("shows feature count of 0 when no features added", () => {
     render(<StepFeatures />);
     expect(screen.getByText("0")).toBeInTheDocument();

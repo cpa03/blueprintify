@@ -235,6 +235,14 @@ export const StepFeatures = memo(function StepFeatures({
                 id={DOM_ELEMENT_IDS.FEATURE_INPUT}
                 type="text"
                 autoComplete="off"
+                // Mobile keyboard hygiene: feature names are short technical
+                // tokens ("auth", "SSO", "rate limiting"). Without these,
+                // iOS/Android autocapitalize each word and Safari autocorrect
+                // rewrites tokens ("auth" -> "author"), mangling the added
+                // feature. Matches the autoCapitalize/autoCorrect pattern on
+                // StepInfo's projectName/targetAudience inputs.
+                autoCapitalize="off"
+                autoCorrect="off"
                 enterKeyHint="done"
                 dir="auto"
                 value={newFeature}
