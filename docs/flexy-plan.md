@@ -4,6 +4,35 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 211: Centralize StepInfo Form-Field DOM Element ID Literals into DOM_ELEMENT_IDS
+
+**Problem**: 18 hardcoded DOM element ID string literals survived 210 iterations in a single file — `StepInfo.tsx` bypassed the `DOM_ELEMENT_IDS` family that Iteration 197 built specifically to prevent ARIA-relationship drift. The bypasses span 9 distinct IDs across three pairing contracts, every one of which fails silently if either side is renamed. (1) **id ↔ htmlFor label pairs** (4 IDs × 2 sites): `projectName`, `description`, `targetAudience`, `constraints` — each `<label htmlFor="…">` activates its matching `<input id="…">`/`<textarea id="…">`; a typo on either side silently breaks click-to-focus and the accessible name association with zero type errors. (2) **id ↔ aria-describedby live-region pairs** (5 IDs × 2 sites): `projectName-warning`, `projectName-error`, `description-hint`, `description-warning`, `description-error` — each validation live-region's `id` is referenced by its field's `aria-describedby` ternary/spread; a rename on either side silently stops screen readers from announcing the hint/warning/error while the visible message still renders. The `DOM_ELEMENT_IDS` docblock already names `htmlFor` and `aria-describedby` as pairing contracts the family must cover, and the Iteration 197 test asserts uniqueness "so ARIA references never collide" — yet StepInfo's 18 sites were never converted. Flexy says: no bare `id=`/`htmlFor=`/`aria-describedby=` string literals where `DOM_ELEMENT_IDS` exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | `DOM_ELEMENT_IDS` +9 entries (STEP_INFO_PROJECT_NAME, STEP_INFO_PROJECT_NAME_WARNING, STEP_INFO_PROJECT_NAME_ERROR, STEP_INFO_DESCRIPTION, STEP_INFO_DESCRIPTION_HINT, STEP_INFO_DESCRIPTION_WARNING, STEP_INFO_DESCRIPTION_ERROR, STEP_INFO_TARGET_AUDIENCE, STEP_INFO_CONSTRAINTS — count 13 → 22), each with a JSDoc note naming its pairing contract (label `htmlFor` vs `aria-describedby` live-region) |
+| `apps/web/src/config/constants/accessibility.test.ts` | Split Iteration 197 test into two: original 13-assertion test + NEW 9-assertion StepInfo test; uniqueness count 13 → 22 |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 4× `htmlFor="…"` → `DOM_ELEMENT_IDS.STEP_INFO_*`; 4× `id="…"` inputs/textareas → `DOM_ELEMENT_IDS.STEP_INFO_*`; 5× `aria-describedby` ternary/spread string literals → `DOM_ELEMENT_IDS.STEP_INFO_*_WARNING/ERROR/HINT`; 4× `id="…"` live-region paragraphs → `DOM_ELEMENT_IDS.STEP_INFO_*_WARNING/ERROR/HINT` (18 sites total) |
+| `docs/flexy-plan.md` | Iteration 211 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so `getByLabelText`/`toHaveAttribute` assertions stay green — Iteration 194/196/206/208 precedent); `data-testid="form-ready-announcer"` (test-only selector, no ARIA relationship); `name="projectName"`/`name="description"`/`name="targetAudience"`/`name="constraints"` form-field name attributes (single-write sites with no paired read — the form is fully controlled via React state and never uses native form submission, so a name/id mismatch has no observable effect — one-off precedent); `tab-${activeTab}` dynamic template IDs in Editor/EditorHeader/StepGenerating (`DOM_ELEMENT_IDS` docblock-excluded); `root`/`skeleton-loader`/`font-mono` in main.tsx (`index.html`-paired runtime IDs that cannot import TS constants — docblock-excluded); `editor-tabs` lone static id in EditorHeader (no ARIA-relationship pair — one-off precedent); SVG gradient paint-reference ids (`toolbar-export-spinner-grad`, `gen-lightning-grad` — paint refs, not ARIA relationships — Iteration 196 precedent); `lib/templates/react.ts` (generated template); `node_modules`/`dist`.
+
+## Verification (Iteration 211)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (10.19s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (354 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,393 web + 555 api + 1,037 shared = 2,985 tests passing** (+1 new web; web baseline 1,392 re-verified against clean `origin/main`)
+- ✅ Residual scan — 0 bare `id="…"` / `htmlFor="…"` / `"aria-describedby": "…"` string literals in StepInfo.tsx runtime source (excluding test-only `data-testid`)
+
+## PR (Iteration 211)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-211-stepinfo-dom-ids` | refactor(flexy): centralize StepInfo form-field DOM element ID literals into DOM_ELEMENT_IDS (Iteration 211) |
+
 ### ✅ Flexy Iteration 210: Centralize CSS `none`/`hidden`/`auto` Value Bypasses & Eliminate MODIFIER_KEYS Bypasses in platform.ts
 
 **Problem**: Two clusters survived 209 iterations with the same silent-failure shape — string literals whose read/write or type/value pairs drift without any type error. (1) **CSS value-string bypasses of `CSS_VALUES`**: 13 bare runtime sites bypassed the existing `CSS_VALUES` family whose own docblock says "No hardcoded CSS value strings like `auto` in component logic!" — 8× `"none"` (`Toast` transition ring + bar, `CharacterCounter` transition, `CircularProgress` transition, `SkipLink` animation ×2, `EditorHeader` boxShadow, `clipboard` pointerEvents), 2× `"hidden"` (`useScrollLock` overflow read + write — no `HIDDEN` key existed at all), and 2× `"auto"` (`SkipLink` willChange, `HeadingAnchor` motion width). Every reduced-motion ternary pairs a `"none"` write with a constant-backed animation config on the other branch; every scroll-lock read/write pair uses the same overflow keyword — a typo silently leaves transitions running or the body scrollable with no type error. (2) **`MODIFIER_KEYS` bypasses in `platform.ts`**: the sole remaining runtime owner of the four-value modifier enum inlined a *third* copy of `"cmd" | "ctrl" | "alt" | "none"` (twice — once with a reordered union), two bare defaults (`= "none"`, `= "cmd"`), and six bare comparisons (`=== "none"` ×2, `=== "alt"` ×2, `=== "ctrl"` ×2) — even though Iteration 209 just converted SmartTooltip's identical union to `(typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]`, and `keyboard.ts` still had 2× bare `MODIFIER: "none"`. Flexy says: no bare CSS `none`/`hidden`/`auto` style-value literals, and no inlined modifier unions/defaults/comparisons where `MODIFIER_KEYS` exists!

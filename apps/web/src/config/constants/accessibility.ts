@@ -172,6 +172,27 @@ export const DOM_ELEMENT_IDS = {
   ADDED_FEATURES_LABEL: "added-features-label",
   SUGGESTIONS_LABEL: "suggestions-label",
   SELECTED_TECH_LABEL: "selected-tech-label",
+  // StepInfo wizard form fields — each `id` is paired with its `<label
+  // htmlFor>` and/or `aria-describedby` live-region so the association can
+  // never drift apart (Iteration 211).
+  /** `projectName` text input; label uses `htmlFor`. */
+  STEP_INFO_PROJECT_NAME: "projectName",
+  /** Character-limit live-region for projectName; referenced by `aria-describedby`. */
+  STEP_INFO_PROJECT_NAME_WARNING: "projectName-warning",
+  /** Min-length error live-region for projectName; referenced by `aria-describedby`. */
+  STEP_INFO_PROJECT_NAME_ERROR: "projectName-error",
+  /** `description` textarea; label uses `htmlFor`. */
+  STEP_INFO_DESCRIPTION: "description",
+  /** Characters-needed hint live-region for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_HINT: "description-hint",
+  /** Character-limit live-region for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_WARNING: "description-warning",
+  /** Min-length error live-region for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_ERROR: "description-error",
+  /** `targetAudience` text input; label uses `htmlFor`. */
+  STEP_INFO_TARGET_AUDIENCE: "targetAudience",
+  /** `constraints` textarea; label uses `htmlFor`. */
+  STEP_INFO_CONSTRAINTS: "constraints",
 } as const;
 
 // ============================================================================
