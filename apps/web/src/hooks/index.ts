@@ -23,8 +23,6 @@ export { useDocumentTitle } from "./useDocumentTitle";
 export { useOnlineStatus } from "./useOnlineStatus";
 export type { OnlineStatus } from "./useOnlineStatus";
 export { useAutoScroll } from "./useAutoScroll";
-export { createPersistedStore } from "./usePersistedStore";
-export type { PersistedStoreConfig } from "./usePersistedStore";
 export { useScrollLock } from "./useScrollLock";
 export { useBeforeUnload } from "./useBeforeUnload";
 export { useHashScroll } from "./useHashScroll";
