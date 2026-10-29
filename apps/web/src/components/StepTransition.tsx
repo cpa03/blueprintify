@@ -22,7 +22,7 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
-import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
+import { ANIMATE_PRESENCE_MODES, PROGRESS_STATE_VALUES } from "@blueprint/shared/config";
 
 const AnimatePresence = lazy(() =>
   import("framer-motion").then((m) => ({ default: m.AnimatePresence }))
@@ -50,6 +50,9 @@ export function StepTransition({
     <div
       data-reduced-motion={
         shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-state={
+        shouldReduceMotion ? PROGRESS_STATE_VALUES.IDLE : PROGRESS_STATE_VALUES.ANIMATING
       }
       data-mode={mode}
       className="contents"
