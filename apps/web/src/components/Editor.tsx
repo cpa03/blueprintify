@@ -281,13 +281,18 @@ function EditorComponent(): JSX.Element {
     [activeTab, setBlueprintContent, setTasksContent, markSaved, toast]
   );
 
-  const previousContentRef = useRef(currentContent);
+  const previousBlueprintRef = useRef(blueprintContent);
+  const previousTasksRef = useRef(tasksContent);
   useEffect(() => {
-    if (currentContent !== previousContentRef.current) {
+    if (
+      blueprintContent !== previousBlueprintRef.current ||
+      tasksContent !== previousTasksRef.current
+    ) {
       markAsChanged();
-      previousContentRef.current = currentContent;
+      previousBlueprintRef.current = blueprintContent;
+      previousTasksRef.current = tasksContent;
     }
-  }, [currentContent, markAsChanged]);
+  }, [blueprintContent, tasksContent, markAsChanged]);
 
   const hasInitialized = useRef(false);
   useEffect(() => {
