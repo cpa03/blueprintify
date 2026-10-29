@@ -42,8 +42,12 @@ describe("StepTransition", () => {
     await act(async () => {
       render(
         <StepTransition mode={ANIMATE_PRESENCE_MODES.SYNC}>
-          <span key="child-1" data-testid="child-1">First</span>
-          <span key="child-2" data-testid="child-2">Second</span>
+          <span key="child-1" data-testid="child-1">
+            First
+          </span>
+          <span key="child-2" data-testid="child-2">
+            Second
+          </span>
         </StepTransition>
       );
     });
@@ -64,7 +68,10 @@ describe("StepTransition", () => {
     });
 
     expect(screen.getByTestId("child")).toBeInTheDocument();
-    expect(container!.firstElementChild).toHaveAttribute("data-mode", ANIMATE_PRESENCE_MODES.POP_LAYOUT);
+    expect(container!.firstElementChild).toHaveAttribute(
+      "data-mode",
+      ANIMATE_PRESENCE_MODES.POP_LAYOUT
+    );
   });
 
   it("sets data-reduced-motion and data-state attributes based on motion preference", async () => {
@@ -83,14 +90,8 @@ describe("StepTransition", () => {
       "data-reduced-motion",
       DATA_BOOLEAN_VALUES.TRUE
     );
-    expect(container!.firstElementChild).toHaveAttribute(
-      "data-state",
-      PROGRESS_STATE_VALUES.IDLE
-    );
-    expect(container!.firstElementChild).toHaveAttribute(
-      "data-mode",
-      ANIMATE_PRESENCE_MODES.WAIT
-    );
+    expect(container!.firstElementChild).toHaveAttribute("data-state", PROGRESS_STATE_VALUES.IDLE);
+    expect(container!.firstElementChild).toHaveAttribute("data-mode", ANIMATE_PRESENCE_MODES.WAIT);
   });
 
   it("sets data-state to animating when motion is not reduced", async () => {
@@ -122,9 +123,6 @@ describe("StepTransition", () => {
       "data-reduced-motion",
       DATA_BOOLEAN_VALUES.FALSE
     );
-    expect(container!.firstElementChild).toHaveAttribute(
-      "data-mode",
-      ANIMATE_PRESENCE_MODES.WAIT
-    );
+    expect(container!.firstElementChild).toHaveAttribute("data-mode", ANIMATE_PRESENCE_MODES.WAIT);
   });
 });

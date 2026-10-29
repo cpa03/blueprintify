@@ -51,9 +51,7 @@ export function StepTransition({
       data-reduced-motion={
         shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
       }
-      data-state={
-        shouldReduceMotion ? PROGRESS_STATE_VALUES.IDLE : PROGRESS_STATE_VALUES.ANIMATING
-      }
+      data-state={shouldReduceMotion ? PROGRESS_STATE_VALUES.IDLE : PROGRESS_STATE_VALUES.ANIMATING}
       data-mode={mode}
       className="contents"
     >
