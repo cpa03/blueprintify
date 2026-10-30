@@ -176,11 +176,13 @@ function OfflineBannerComponent(): JSX.Element | null {
     <>
       <div
         ref={containerRef}
-        role={isVisible ? ARIA_ROLES.STATUS : undefined}
-        aria-live={isVisible ? ARIA_LIVE_VALUES.POLITE : undefined}
-        aria-atomic={isVisible ? ARIA_ATOMIC_VALUES.TRUE : undefined}
+        role={shouldRender ? ARIA_ROLES.STATUS : undefined}
+        aria-live={shouldRender ? ARIA_LIVE_VALUES.POLITE : undefined}
+        aria-atomic={shouldRender ? ARIA_ATOMIC_VALUES.TRUE : undefined}
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-online-status={isOnline ? BANNER_STATE_VALUES.ONLINE : BANNER_STATE_VALUES.OFFLINE}
+        data-dismissed={isDismissed ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-exiting={isExiting ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-reduced-motion={
           shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
         }
