@@ -193,6 +193,9 @@ import {
   MEDIA_QUERIES,
   MOTION_VARIANT_STATES,
   ANIMATE_PRESENCE_MODES,
+  HTML_CONTROL_TYPES,
+  HTML_AUTOCOMPLETE_VALUES,
+  ENTER_KEY_HINTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5764,5 +5767,52 @@ describe("MEDIA_QUERIES (Flexy Iteration 208)", () => {
       expect(value).toBe(value.toLowerCase());
       expect(value.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("HTML_CONTROL_TYPES (Flexy Iteration 212)", () => {
+  it("should have exact control type values", () => {
+    expect(HTML_CONTROL_TYPES.BUTTON).toBe("button");
+    expect(HTML_CONTROL_TYPES.SUBMIT).toBe("submit");
+    expect(HTML_CONTROL_TYPES.TEXT).toBe("text");
+  });
+
+  it("should have 3 unique control type values", () => {
+    expect(Object.keys(HTML_CONTROL_TYPES).length).toBe(3);
+    const values = Object.values(HTML_CONTROL_TYPES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep BUTTON and SUBMIT distinct so neutral buttons never silently submit forms", () => {
+    expect(HTML_CONTROL_TYPES.BUTTON).not.toBe(HTML_CONTROL_TYPES.SUBMIT);
+  });
+});
+
+describe("HTML_AUTOCOMPLETE_VALUES (Flexy Iteration 212)", () => {
+  it("should have OFF value", () => {
+    expect(HTML_AUTOCOMPLETE_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_AUTOCOMPLETE_VALUES).length).toBe(1);
+  });
+});
+
+describe("ENTER_KEY_HINTS (Flexy Iteration 212)", () => {
+  it("should have exact enter key hint values", () => {
+    expect(ENTER_KEY_HINTS.SEARCH).toBe("search");
+    expect(ENTER_KEY_HINTS.NEXT).toBe("next");
+    expect(ENTER_KEY_HINTS.GO).toBe("go");
+    expect(ENTER_KEY_HINTS.DONE).toBe("done");
+  });
+
+  it("should have 4 unique hint values covering the full mobile Enter-hint set in use", () => {
+    expect(Object.keys(ENTER_KEY_HINTS).length).toBe(4);
+    const values = Object.values(ENTER_KEY_HINTS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep NEXT and GO distinct so the wizard canProceed flip stays observable", () => {
+    expect(ENTER_KEY_HINTS.NEXT).not.toBe(ENTER_KEY_HINTS.GO);
   });
 });

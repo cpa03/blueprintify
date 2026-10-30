@@ -46,6 +46,9 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
+  ENTER_KEY_HINTS,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_CONTROL_TYPES,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
   getPlatformShortcutLabel,
@@ -379,7 +382,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   </svg>
                   <input
                     ref={searchInputRef}
-                    type="text"
+                    type={HTML_CONTROL_TYPES.TEXT}
                     dir="auto"
                     value={searchQuery}
                     onChange={handleSearchChange}
@@ -390,8 +393,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                                transition-all duration-200"
                     aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
                     role={ARIA_ROLES.SEARCHBOX}
-                    autoComplete="off"
-                    enterKeyHint="search"
+                    autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
+                    enterKeyHint={ENTER_KEY_HINTS.SEARCH}
                     // Mobile keyboard hygiene: shortcut queries are short
                     // technical tokens ("esc", "cmd", "home"). Without these,
                     // iOS/Android autocapitalize each word and Safari
