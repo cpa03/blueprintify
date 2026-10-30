@@ -515,6 +515,12 @@ export const CONFIRM_DIALOG_HINTS = {
 export const COPY_BUTTON_LABELS = {
   COPY: "Copy to clipboard",
   COPIED: "Copied to clipboard",
+  /**
+   * Announced when the button is inactive because there is nothing to copy.
+   * Mirrors EDITOR_LABELS.BUTTONS.EXPORT_NO_CONTENT_ARIA so keyboard and
+   * screen-reader users learn WHY the control is unavailable (WCAG 1.3.1).
+   */
+  NO_CONTENT: "Copy to clipboard (no content to copy)",
   /** Visual display text shown inside the copy button */
   DISPLAY_COPY: "Copy",
   /** Visual display text shown after successful copy */

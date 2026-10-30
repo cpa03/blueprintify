@@ -165,7 +165,12 @@ function AnimatedCopyButtonComponent({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
-      disabled={!hasContent}
+      // aria-disabled (not native disabled) so the button stays in the tab
+      // order and screen readers can announce WHY it is unavailable (WCAG
+      // 2.4.3 / 4.1.2). Native `disabled` removes the control from the tab
+      // order and silently drops focus to <body> if it loses content while
+      // focused. Mirrors the Export button's pattern in EditorToolbar.
+      aria-disabled={!hasContent}
       aria-describedby={ariaDescribedby}
       className={clsx(
         "relative text-sm px-4 py-2 rounded-lg transition-all duration-300 overflow-hidden",
@@ -181,8 +186,20 @@ function AnimatedCopyButtonComponent({
         shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
       }
       data-has-content={hasContent ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
-      title={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
-      aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
+      title={
+        !hasContent
+          ? COPY_BUTTON_LABELS.NO_CONTENT
+          : isCopied
+            ? COPY_BUTTON_LABELS.COPIED
+            : COPY_BUTTON_LABELS.COPY
+      }
+      aria-label={
+        !hasContent
+          ? COPY_BUTTON_LABELS.NO_CONTENT
+          : isCopied
+            ? COPY_BUTTON_LABELS.COPIED
+            : COPY_BUTTON_LABELS.COPY
+      }
       animate={{
         scale: shouldReduceMotion ? 1 : isPressed ? 0.92 : 1,
       }}
