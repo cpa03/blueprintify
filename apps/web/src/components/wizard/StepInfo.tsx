@@ -81,6 +81,7 @@ import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { usePasteTruncation } from "../../hooks/usePasteTruncation";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
@@ -158,6 +159,12 @@ export const StepInfo = memo(function StepInfo({
     delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
+
+  // Browsers silently drop pasted content past maxLength. These paste-heavy
+  // textareas announce truncation via a shared polite live region below.
+  const descriptionPaste = usePasteTruncation(description, FORM_LIMITS.DESCRIPTION.MAX);
+  const constraintsPaste = usePasteTruncation(constraints, FORM_LIMITS.CONSTRAINTS.MAX);
+  const pasteAnnouncement = descriptionPaste.announcement || constraintsPaste.announcement;
 
   const hasAnyInput =
     projectName.length > 0 ||
@@ -654,6 +661,7 @@ export const StepInfo = memo(function StepInfo({
               spellCheck={true}
               dir="auto"
               value={description}
+              onPaste={descriptionPaste.handlePaste}
               onChange={(e) => {
                 descriptionTyping.handleTyping(e.target.value);
                 setDescription(e.target.value);
@@ -888,6 +896,7 @@ export const StepInfo = memo(function StepInfo({
               spellCheck={false}
               dir="auto"
               value={constraints}
+              onPaste={constraintsPaste.handlePaste}
               onChange={(e) => {
                 constraintsTyping.handleTyping(e.target.value);
                 setConstraints(e.target.value);
@@ -975,6 +984,18 @@ export const StepInfo = memo(function StepInfo({
         data-testid="form-ready-announcer"
       >
         {formReadyAnnouncement}
+      </div>
+      {/* Screen reader announcement for paste truncation — browsers silently
+          drop content past maxLength on paste, so without this the loss is
+          invisible to everyone. Polite: informative, not urgent. */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="paste-truncation-announcer"
+      >
+        {pasteAnnouncement}
       </div>
     </motion.div>
   );

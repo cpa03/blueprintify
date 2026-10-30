@@ -442,6 +442,8 @@ export const ACCESSIBILITY_LABELS = {
     NEXT_DISABLED_ARIA: "Next button is disabled. Fill in the project name and description first.",
     FORM_READY_ANNOUNCEMENT:
       "Form complete. The Next button is now enabled to continue to the next step.",
+    PASTE_TRUNCATED: (max: number) =>
+      `Pasted content was truncated to fit the ${max} character limit`,
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",
