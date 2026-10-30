@@ -17,7 +17,13 @@ import type { Mock } from "vitest";
 import { StepInfo } from "./StepInfo";
 import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
-import { UI_CONTENT, FORM_LIMITS, VALIDATION_MESSAGES, TIMEOUTS } from "../../config/constants";
+import {
+  UI_CONTENT,
+  FORM_LIMITS,
+  VALIDATION_MESSAGES,
+  TIMEOUTS,
+  CSS_CLASSES,
+} from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
@@ -262,10 +268,35 @@ describe("StepInfo", () => {
     expect(screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL)).toBeInTheDocument();
   });
 
-  it("renders the next button disabled initially", () => {
+  it("marks the next button aria-disabled (not natively disabled) when the form is incomplete", () => {
     render(<StepInfo />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
-    expect(nextButton).toBeDisabled();
+    expect(nextButton).toHaveAttribute("aria-disabled", "true");
+    // Native `disabled` would remove the button from the tab order and drop
+    // keyboard focus to <body> (WCAG 2.4.3) — see AnimatedCopyButton #3960.
+    expect(nextButton).not.toBeDisabled();
+  });
+
+  it("keeps the next button focusable when the form is incomplete", () => {
+    render(<StepInfo />);
+    const nextButton = screen
+      .getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON)
+      .closest("button") as HTMLButtonElement;
+    nextButton.focus();
+    expect(nextButton).toHaveFocus();
+  });
+
+  it("applies disabled visual styling while the form is incomplete", () => {
+    render(<StepInfo />);
+    const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
+    expect(nextButton?.className).toContain(CSS_CLASSES.DISABLED_STATE);
+  });
+
+  it("does not advance when the aria-disabled next button is activated", () => {
+    render(<StepInfo />);
+    const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
+    fireEvent.click(nextButton!);
+    expect(mockStore.nextStep).not.toHaveBeenCalled();
   });
 
   it("explains why the next button is disabled via aria-label", () => {
@@ -284,13 +315,14 @@ describe("StepInfo", () => {
     );
   });
 
-  it("omits the disabled-explanation aria-label when the form is valid", () => {
+  it("clears aria-disabled and the explanation when the form is valid", () => {
     mockStore.projectName = "My Project";
     mockStore.description = "A sufficiently long description";
     render(<StepInfo />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
-    expect(nextButton).not.toBeDisabled();
+    expect(nextButton).not.toHaveAttribute("aria-disabled", "true");
     expect(nextButton).not.toHaveAttribute("aria-label");
+    expect(nextButton?.className).not.toContain(CSS_CLASSES.DISABLED_STATE);
   });
 
   it("shows progress counter at 0/2 initially", () => {
@@ -466,29 +498,29 @@ describe("StepInfo", () => {
 
   // ======== Form Validation ========
 
-  it("disables next button when project name is too short", () => {
+  it("marks next button aria-disabled when project name is too short", () => {
     mockStore.projectName = ""; // Empty string is below FORM_LIMITS.PROJECT_NAME.MIN (1)
     mockStore.description = "Valid description that is long enough";
     render(<StepInfo />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
-    expect(nextButton).toBeDisabled();
+    expect(nextButton).toHaveAttribute("aria-disabled", "true");
   });
 
-  it("disables next button when description is too short", () => {
+  it("marks next button aria-disabled when description is too short", () => {
     mockStore.projectName = "Valid Project";
     mockStore.description = "Short"; // Below FORM_LIMITS.DESCRIPTION.MIN
     render(<StepInfo />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
-    expect(nextButton).toBeDisabled();
+    expect(nextButton).toHaveAttribute("aria-disabled", "true");
   });
 
-  it("enables next button when all required fields are valid", () => {
+  it("clears aria-disabled on next button when all required fields are valid", () => {
     mockStore.projectName = "My Project";
     mockStore.description =
       "A valid project description that meets the minimum length requirement.";
     render(<StepInfo />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
-    expect(nextButton).not.toBeDisabled();
+    expect(nextButton).not.toHaveAttribute("aria-disabled", "true");
   });
 
   it("updates progress when fields are filled", () => {

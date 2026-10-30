@@ -327,11 +327,20 @@ export const StepInfo = memo(function StepInfo({
   const nextButton = (
     <RippleButton
       type="submit"
-      disabled={!canProceed}
+      // aria-disabled (not native disabled) so the button stays in the tab
+      // order and screen readers can announce WHY it is unavailable (WCAG
+      // 2.4.3 / 4.1.2). Native `disabled` removes the control from the tab
+      // order and silently drops focus to <body>. Mirrors the copy button
+      // (AnimatedCopyButton) and the StepStack Next button — handleSubmit
+      // below already guards on canProceed and answers an early activation
+      // with shake + focus-the-invalid-field feedback instead of silence.
+      aria-disabled={!canProceed}
       aria-label={canProceed ? undefined : ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_ARIA}
-      whileHover={{ ...HOVER_SCALE.MICRO, y: ANIMATION_Y_OFFSET.HOVER_LIFT }}
-      whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
-      className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
+      whileHover={
+        canProceed ? { ...HOVER_SCALE.MICRO, y: ANIMATION_Y_OFFSET.HOVER_LIFT } : undefined
+      }
+      whileTap={canProceed ? { ...TAP_SCALE.MICRO, y: 0 } : undefined}
+      className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : CSS_CLASSES.DISABLED_STATE} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
       aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
     >
       {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
