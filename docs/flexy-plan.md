@@ -35,7 +35,7 @@ Deliberately skipped: test files (constants preserve the identical byte value so
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-214-html-text-direction` | refactor(flexy): centralize HTML dir text-direction attribute literals (Iteration 214) |
+| #3974 | `flexy/iteration-214-html-text-direction` | refactor(flexy): centralize HTML dir text-direction attribute literals (Iteration 214) |
 
 ### ✅ Flexy Iteration 213: Centralize WebKit-Extension `autoCapitalize` & `autoCorrect` Attribute Literals
 
