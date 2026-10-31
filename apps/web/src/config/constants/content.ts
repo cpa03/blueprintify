@@ -279,6 +279,10 @@ export const ACCESSIBILITY_LABELS = {
     COPY_FAILED_TITLE: "Copy failed",
     /** Screen reader announcement when copying a code block fails */
     COPY_FAILED_ANNOUNCEMENT: "Failed to copy code to clipboard",
+    /** Accessible name for the scrollable table region wrapper. The rows
+     *  contain no focusable elements, so the container itself is the tab
+     *  stop keyboard users land on to scroll an overflowing table. */
+    TABLE_REGION: "Scrollable table",
   },
   TOAST: {
     REGION: "Notifications",
