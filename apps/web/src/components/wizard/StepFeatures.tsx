@@ -32,6 +32,8 @@ import {
   ENTER_KEY_HINTS,
   FRAMER_TYPE,
   HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
   HTML_CONTROL_TYPES,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
@@ -244,8 +246,8 @@ export const StepFeatures = memo(function StepFeatures({
                 // rewrites tokens ("auth" -> "author"), mangling the added
                 // feature. Matches the autoCapitalize/autoCorrect pattern on
                 // StepInfo's projectName/targetAudience inputs.
-                autoCapitalize="off"
-                autoCorrect="off"
+                autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+                autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
                 enterKeyHint={ENTER_KEY_HINTS.DONE}
                 dir="auto"
                 value={newFeature}

@@ -1539,6 +1539,56 @@ export const HTML_AUTOCOMPLETE_VALUES = {
 } as const;
 
 /**
+ * HTML Autocapitalize Values
+ * Centralized source of truth for the `autoCapitalize` attribute on text
+ * inputs and textareas. The attribute participates in a silent-failure
+ * privacy/UX contract paired with `autoComplete`/`autoCorrect`/`spellCheck`:
+ *
+ * - **Technical fields** (project name, target audience, constraints,
+ *   feature search, shortcut search) set `OFF` to stop iOS/Android from
+ *   capitalizing the first letter of short technical tokens ("auth",
+ *   "SRE", "devops"). A typo'd `"off"` (e.g. `"of"`, `"Of"`) silently
+ *   re-enables autocapitalize — mangling the typed identifier with zero
+ *   type errors.
+ * - **Prose fields** (project description) set `SENTENCES` to keep natural
+ *   sentence capitalization on mobile — the intentional opposite of the
+ *   technical fields. A drift between the two branches changes how the
+ *   soft keyboard transforms user input with no type error.
+ *
+ * Flexy says: No hardcoded autoCapitalize="off"/"sentences" strings in components!
+ * Usage: import { HTML_AUTOCAPITALIZE_VALUES } from "@blueprint/shared";
+ *        <input autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF} />
+ *        <textarea autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.SENTENCES} />
+ */
+export const HTML_AUTOCAPITALIZE_VALUES = {
+  /** Autocapitalize disabled — technical identifier/token fields (pair: autoComplete OFF) */
+  OFF: "off" as const,
+  /** Sentence-case capitalization — prose fields (project description) */
+  SENTENCES: "sentences" as const,
+} as const;
+
+/**
+ * HTML Autocorrect Values
+ * Centralized source of truth for the `autoCorrect` attribute — a
+ * WebKit/Chromium (iOS Safari, Android WebView) text-input extension that
+ * controls the platform autocorrect engine. Pairs with the sensitive-field
+ * privacy contract: wizard inputs deliberately suppress autocorrect so
+ * Safari never rewrites short technical tokens ("cmd" → "Cmd",
+ * "auth" → "author", "SRE" → "sore"). A typo'd `"off"` (e.g. `"of"`,
+ * `"Of"`) silently re-enables autocorrect — a token-mangling UX regression
+ * with zero type errors. Prose fields (description) deliberately omit the
+ * attribute so the platform default (enabled) applies alongside
+ * `autoCapitalize={SENTENCES}`.
+ * Flexy says: No hardcoded autoCorrect="off" strings in components!
+ * Usage: import { HTML_AUTOCORRECT_VALUES } from "@blueprint/shared";
+ *        <input autoCorrect={HTML_AUTOCORRECT_VALUES.OFF} />
+ */
+export const HTML_AUTOCORRECT_VALUES = {
+  /** Platform autocorrect disabled (privacy/UX contract for technical token fields) */
+  OFF: "off" as const,
+} as const;
+
+/**
  * Enter Key Hint Values
  * Centralized source of truth for the `enterKeyHint` attribute — the mobile
  * soft-keyboard action hint shown on the Enter/key action key. Pairs with

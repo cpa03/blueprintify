@@ -35,6 +35,8 @@ import {
   ENTER_KEY_HINTS,
   FRAMER_TYPE,
   HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
   HTML_CONTROL_TYPES,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
@@ -516,8 +518,8 @@ export const StepInfo = memo(function StepInfo({
               // first letter and Safari autocorrect rewrites tokens
               // ("auth" -> "author"), mangling the typed name. Matches the
               // spellCheck={false} precedent in KeyboardShortcutsModal.
-              autoCapitalize="off"
-              autoCorrect="off"
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+              autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
               enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
               dir="auto"
@@ -669,7 +671,7 @@ export const StepInfo = memo(function StepInfo({
               // intentional opposite of the technical fields above (projectName,
               // targetAudience, constraints), which disable these because they
               // hold identifiers/tokens that autocorrect mangles.
-              autoCapitalize="sentences"
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.SENTENCES}
               spellCheck={true}
               dir="auto"
               value={description}
@@ -834,8 +836,8 @@ export const StepInfo = memo(function StepInfo({
               // iOS/Android autocapitalize and Safari autocorrect rewrite
               // ("devops" -> "DevOps", "SRE" -> "sore"). Matches the
               // autoCapitalize/autoCorrect/spellCheck pattern on projectName.
-              autoCapitalize="off"
-              autoCorrect="off"
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+              autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
               enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
               dir="auto"
@@ -903,8 +905,8 @@ export const StepInfo = memo(function StepInfo({
               id={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS}
               name="constraints"
               autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
-              autoCapitalize="off"
-              autoCorrect="off"
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+              autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
               dir="auto"
               value={constraints}
