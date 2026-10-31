@@ -209,6 +209,11 @@ function CharacterCounterCompactComponent({
       aria-valuemin={0}
       aria-valuemax={max}
       aria-valuenow={Math.min(current, max)}
+      // aria-valuetext (WAI-ARIA APG / WCAG 4.1.2): the bare aria-valuenow
+      // number alone ("42") is meaningless when announced out of context.
+      // Mirrors the PageScrollProgressBar pattern so screen readers announce
+      // "42 of 100 characters used" instead of a bare count on value changes.
+      aria-valuetext={compactCountLabel}
     >
       <div
         className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden"

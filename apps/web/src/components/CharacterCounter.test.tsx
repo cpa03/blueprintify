@@ -168,6 +168,22 @@ describe("CharacterCounterCompact", () => {
     expect(compactContainer).toHaveAttribute("data-at-limit", "true");
   });
 
+  it("exposes a human-readable aria-valuetext on the progressbar (WCAG 4.1.2)", () => {
+    render(<CharacterCounterCompact current={42} max={100} />);
+    const progressBar = screen.getByRole("progressbar");
+    expect(progressBar).toHaveAttribute("aria-valuenow", "42");
+    expect(progressBar).toHaveAttribute("aria-valuetext", "42 of 100 characters used");
+  });
+
+  it("keeps aria-valuetext in sync when the count changes", () => {
+    const { rerender } = render(<CharacterCounterCompact current={10} max={100} />);
+    const progressBar = screen.getByRole("progressbar");
+    expect(progressBar).toHaveAttribute("aria-valuetext", "10 of 100 characters used");
+
+    rerender(<CharacterCounterCompact current={50} max={100} />);
+    expect(progressBar).toHaveAttribute("aria-valuetext", "50 of 100 characters used");
+  });
+
   it("keeps compact pop animation enabled by default", () => {
     const { container } = render(<CharacterCounterCompact current={30} max={100} />);
     expect(container.firstElementChild).toHaveAttribute("data-reduced-motion", "false");
