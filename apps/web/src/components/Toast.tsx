@@ -8,7 +8,9 @@
  * Features:
  * - Auto-dismiss with configurable duration
  * - Visual progress ring showing remaining time
- * - Pause on hover for extended reading time
+ * - Pause on hover (mouse) and on press (touch/pen via pointer events) for
+ *   extended reading time — touch users cannot hover, so without press-pause
+ *   the countdown dismisses the toast mid-read (WCAG 2.2.1 Timing Adjustable)
  * - Smooth enter/exit animations via Framer Motion
  * - Accessible with ARIA live regions for screen readers
  *
@@ -168,6 +170,23 @@ const ToastItem = memo(
     ref
   ) {
     const [isHovered, setIsHovered] = useState(false);
+    // Pointer-press pause: touch/pen users cannot hover, so without this the
+    // countdown would dismiss the toast mid-read while their finger is on it
+    // (WCAG 2.2.1 Timing Adjustable). onPointerDown/Up/Cancel/Leave cover
+    // touch, pen, and mouse uniformly; mouse hover pause stays via isHovered.
+    const [isPointerDown, setIsPointerDown] = useState(false);
+    // Combined pause state used by both the dismiss timer and the visual
+    // pause affordances (pause badge, glow, hidden progress bar) so all
+    // input modalities get identical behavior and feedback.
+    const isPaused = isHovered || isPointerDown;
+    // Mirror of isPaused for use inside the rAF progress loop without putting
+    // isPaused in startDismissTimer's useCallback deps — a changing dep would
+    // retrigger the mount effect and restart the dismiss timer at the FULL
+    // duration, clobbering the remaining-time calculation on pause/resume.
+    const isPausedRef = useRef(isPaused);
+    useEffect(() => {
+      isPausedRef.current = isPaused;
+    }, [isPaused]);
     const [progress, setProgress] = useState(PERCENT_SCALE);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
@@ -219,7 +238,7 @@ const ToastItem = memo(
             const newProgress = Math.max(0, initialProgress * (1 - elapsed / remaining));
             setProgress(newProgress);
 
-            if (newProgress > 0 && !isHovered) {
+            if (newProgress > 0 && !isPausedRef.current) {
               rafRef.current = requestAnimationFrame(animateProgress);
             }
           };
@@ -255,7 +274,7 @@ const ToastItem = memo(
           onRemove(toast.id);
         }, remaining);
       },
-      [toast.id, onRemove, isHovered, clearToastTimeout, shouldReduceMotion]
+      [toast.id, onRemove, clearToastTimeout, shouldReduceMotion]
     );
 
     useEffect(() => {
@@ -267,7 +286,7 @@ const ToastItem = memo(
     }, [toast.id, toast.duration, startDismissTimer, clearToastTimeout]);
 
     useEffect(() => {
-      if (isHovered) {
+      if (isPaused) {
         clearToastTimeout();
         const elapsed = Date.now() - startTimeRef.current;
         remainingTimeRef.current = Math.max(0, durationRef.current - elapsed);
@@ -276,7 +295,7 @@ const ToastItem = memo(
           startDismissTimer(remainingTimeRef.current);
         }
       }
-    }, [isHovered, startDismissTimer, clearToastTimeout]);
+    }, [isPaused, startDismissTimer, clearToastTimeout]);
 
     const handleMouseEnter = () => {
       setIsHovered(true);
@@ -284,6 +303,14 @@ const ToastItem = memo(
 
     const handleMouseLeave = () => {
       setIsHovered(false);
+    };
+
+    const handlePointerDown = () => {
+      setIsPointerDown(true);
+    };
+
+    const handlePointerEnd = () => {
+      setIsPointerDown(false);
     };
 
     const defaultTransition = {
@@ -330,6 +357,10 @@ const ToastItem = memo(
         className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-70 max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+        onPointerLeave={handlePointerEnd}
         onFocus={handleMouseEnter}
         onBlur={handleMouseLeave}
         role={toastRole}
@@ -338,6 +369,8 @@ const ToastItem = memo(
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
         data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-pointer-down={isPointerDown ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-paused={isPaused ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-is-alert={isAlert ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-state={BANNER_STATE_VALUES.VISIBLE}
         data-progress={Math.round(progress)}
@@ -349,7 +382,7 @@ const ToastItem = memo(
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
           style={{
             width: `${progress}%`,
-            opacity: isHovered ? 0 : 0.3,
+            opacity: isPaused ? 0 : 0.3,
             // Match ProgressRing's noTransition behavior above (WCAG 2.3.3):
             // the width countdown is decorative motion, so snap instantly
             // when the user prefers reduced motion.
@@ -383,14 +416,14 @@ const ToastItem = memo(
         <div
           className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ease-out"
           style={{
-            opacity: isHovered ? 1 : 0,
+            opacity: isPaused ? 1 : 0,
             boxShadow: `inset 0 0 24px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} ${COLOR_MIX_OPACITY.SUBTLE}, transparent)`,
           }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
 
         {shouldReduceMotion ? (
-          isHovered && (
+          isPaused && (
             <div
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -408,7 +441,7 @@ const ToastItem = memo(
           )
         ) : (
           <AnimatePresence>
-            {isHovered && (
+            {isPaused && (
               <motion.div
                 initial={{
                   opacity: 0,
