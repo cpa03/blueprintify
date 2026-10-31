@@ -198,6 +198,7 @@ import {
   HTML_AUTOCAPITALIZE_VALUES,
   HTML_AUTOCORRECT_VALUES,
   ENTER_KEY_HINTS,
+  HTML_TEXT_DIRECTION,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5843,5 +5844,24 @@ describe("HTML_AUTOCORRECT_VALUES (Flexy Iteration 213)", () => {
 
   it("should have 1 entry", () => {
     expect(Object.keys(HTML_AUTOCORRECT_VALUES).length).toBe(1);
+  });
+});
+
+describe("HTML_TEXT_DIRECTION (Flexy Iteration 214)", () => {
+  it("should have exact text direction values", () => {
+    expect(HTML_TEXT_DIRECTION.LTR).toBe("ltr");
+    expect(HTML_TEXT_DIRECTION.RTL).toBe("rtl");
+    expect(HTML_TEXT_DIRECTION.AUTO).toBe("auto");
+  });
+
+  it("should have 3 unique values covering the full dir attribute enum", () => {
+    expect(Object.keys(HTML_TEXT_DIRECTION).length).toBe(3);
+    const values = Object.values(HTML_TEXT_DIRECTION);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep AUTO distinct from LTR/RTL so the i18n detection branch stays observable", () => {
+    expect(HTML_TEXT_DIRECTION.AUTO).not.toBe(HTML_TEXT_DIRECTION.LTR);
+    expect(HTML_TEXT_DIRECTION.AUTO).not.toBe(HTML_TEXT_DIRECTION.RTL);
   });
 });
