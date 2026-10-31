@@ -195,6 +195,8 @@ import {
   ANIMATE_PRESENCE_MODES,
   HTML_CONTROL_TYPES,
   HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
   ENTER_KEY_HINTS,
 } from "./config.js";
 
@@ -5814,5 +5816,32 @@ describe("ENTER_KEY_HINTS (Flexy Iteration 212)", () => {
 
   it("should keep NEXT and GO distinct so the wizard canProceed flip stays observable", () => {
     expect(ENTER_KEY_HINTS.NEXT).not.toBe(ENTER_KEY_HINTS.GO);
+  });
+});
+
+describe("HTML_AUTOCAPITALIZE_VALUES (Flexy Iteration 213)", () => {
+  it("should have exact autocapitalize values", () => {
+    expect(HTML_AUTOCAPITALIZE_VALUES.OFF).toBe("off");
+    expect(HTML_AUTOCAPITALIZE_VALUES.SENTENCES).toBe("sentences");
+  });
+
+  it("should have 2 unique autocapitalize values covering the technical/prose split", () => {
+    expect(Object.keys(HTML_AUTOCAPITALIZE_VALUES).length).toBe(2);
+    const values = Object.values(HTML_AUTOCAPITALIZE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep OFF and SENTENCES distinct so the technical/prose branch stays observable", () => {
+    expect(HTML_AUTOCAPITALIZE_VALUES.OFF).not.toBe(HTML_AUTOCAPITALIZE_VALUES.SENTENCES);
+  });
+});
+
+describe("HTML_AUTOCORRECT_VALUES (Flexy Iteration 213)", () => {
+  it("should have OFF value", () => {
+    expect(HTML_AUTOCORRECT_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_AUTOCORRECT_VALUES).length).toBe(1);
   });
 });

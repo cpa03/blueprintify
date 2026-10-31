@@ -48,6 +48,8 @@ import {
   ARIA_ROLES,
   ENTER_KEY_HINTS,
   HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
   HTML_CONTROL_TYPES,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
@@ -401,8 +403,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     // autocorrect rewrites tokens ("cmd" -> "Cmd"), returning
                     // zero results for a valid query. Matches the
                     // autoCapitalize/autoCorrect pattern on StepInfo inputs.
-                    autoCapitalize="off"
-                    autoCorrect="off"
+                    autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+                    autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
                     spellCheck={false}
                   />
                   {/* Clear button */}

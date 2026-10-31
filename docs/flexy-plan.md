@@ -4,6 +4,38 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 213: Centralize WebKit-Extension `autoCapitalize` & `autoCorrect` Attribute Literals
+
+**Problem**: 11 hardcoded WebKit-extension text-input attribute literals survived 212 iterations across 3 web runtime files, with no constant family anywhere — even though Iteration 212 built the entire `HTML_CONTROL_TYPES` / `HTML_AUTOCOMPLETE_VALUES` / `ENTER_KEY_HINTS` family for standard HTML form-control attributes, the `autoCapitalize`/`autoCorrect` attributes (explicitly flagged in Iteration 212's skipped list as the next WebKit-extension candidate) remained bare string literals. Each participates in a silent-failure privacy/UX pairing contract where a typo changes mobile soft-keyboard behavior with zero type errors. (1) **`autoCapitalize` attribute** — 6 bare sites (`"off"` ×5 in StepInfo ×3, StepFeatures ×1, KeyboardShortcutsModal ×1; `"sentences"` ×1 in StepInfo's description textarea). On iOS/Android a typo'd `"off"` (e.g. `"of"`, `"Of"`) silently re-enables autocapitalize, capitalizing the first letter of short technical tokens ("auth" → "Auth", "SRE" → "SRE", "devops" → "Devops") and mangling the typed identifier; the description textarea's `"sentences"` is the intentional opposite branch for prose, and a drift between the two branches changes how the soft keyboard transforms user input with no type error. (2) **`autoCorrect` attribute** — 5 bare `autoCorrect="off"` sites (StepInfo ×3, StepFeatures ×1, KeyboardShortcutsModal ×1) implementing the Safari/Android autocorrect suppression contract: without it, the platform rewrites short technical tokens ("cmd" → "Cmd", "auth" → "author", "SRE" → "sore", "devops" → "DevOps") — a token-mangling UX regression with zero type errors. Prose fields (description) deliberately omit the attribute so the platform default (enabled) applies alongside `autoCapitalize={SENTENCES}`. Flexy says: no bare `autoCapitalize="off"|"sentences"` / `autoCorrect="off"` string literals where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_AUTOCAPITALIZE_VALUES` (OFF, SENTENCES — technical/prose pairing-contract docblock); NEW `HTML_AUTOCORRECT_VALUES` (OFF — WebKit-extension privacy contract docblock), placed beside `HTML_AUTOCOMPLETE_VALUES` |
+| `packages/shared/src/index.ts` | Exported both new constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +5 tests: 3 `HTML_AUTOCAPITALIZE_VALUES` (exact values, entry count 2 + uniqueness, OFF≠SENTENCES technical/prose invariant), 2 `HTML_AUTOCORRECT_VALUES` (OFF value + entry count) |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 2 sites: `autoCapitalize="off"` → `HTML_AUTOCAPITALIZE_VALUES.OFF`; `autoCorrect="off"` → `HTML_AUTOCORRECT_VALUES.OFF` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 2 sites: `autoCapitalize="off"` → `HTML_AUTOCAPITALIZE_VALUES.OFF`; `autoCorrect="off"` → `HTML_AUTOCORRECT_VALUES.OFF` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 7 sites: 3× `autoCapitalize="off"` → `HTML_AUTOCAPITALIZE_VALUES.OFF` (projectName, targetAudience, constraints); 1× `autoCapitalize="sentences"` → `HTML_AUTOCAPITALIZE_VALUES.SENTENCES` (description); 3× `autoCorrect="off"` → `HTML_AUTOCORRECT_VALUES.OFF` (projectName, targetAudience, constraints) |
+| `docs/flexy-plan.md` | Iteration 213 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212 precedent); `spellCheck={false/true}` boolean JSX props (boolean, not string literals — Iteration 199/204 boolean precedent); `dir="auto"` HTML text-direction attributes (i18n attribute, not a WebKit text-input extension — Iteration 210 precedent); `inputMode` attributes (none exist in runtime source); CSS selector strings; JSDoc prose comments mentioning attribute values; `lib/templates/react.ts` (generated template); `node_modules`/`dist`.
+
+## Verification (Iteration 213)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new shared)
+- ✅ Residual scan — 0 bare `autoCapitalize="off"|"sentences"`, 0 bare `autoCorrect="off"` in runtime source (excluding tests, JSDoc prose & generated templates)
+
+## PR (Iteration 213)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-213-webkit-autocapitalize-autocorrect` | refactor(flexy): centralize WebKit-extension autoCapitalize & autoCorrect attribute literals (Iteration 213) |
+
 ### ✅ Flexy Iteration 212: Centralize HTML Control `type`, `autoComplete` & `enterKeyHint` Attribute Literals
 
 **Problem**: 27 hardcoded HTML form-control behavioral attribute literals survived 211 iterations across 6 web runtime files, with no constant family anywhere — even though Iterations 194–195 built the entire `ARIA_*_VALUES` family and Iteration 206 centralized DOM event names, the browser-interpreted `type`/`autoComplete`/`enterKeyHint` attributes on `<button>`/`<input>`/`<textarea>` remained bare string literals. Each participates in a silent-failure pairing contract where a typo changes runtime behavior with zero type errors. (1) **`type` attribute** — 17 bare sites (`type="button"` ×12 in Toast ×4, StepInfo ×5, StepFeatures ×2, StartFromScratchButton ×1; `type="submit"` ×1 in StepInfo's Next button; `type="text"` ×4 in StepInfo ×2, StepFeatures ×1, KeyboardShortcutsModal ×1). Per the HTML spec a `<button>` with no valid `type` defaults to `type="submit"` — so a typo'd `type="button"` (e.g. `"botton"`) silently converts a neutral Back/clear button into a form submitter inside the wizard's enclosing `<form>`, firing validation + submission with zero type errors; StepInfo's form pairs Next (`SUBMIT`) with 5 Back/secondary `BUTTON` actions in the same form, so drift on either side changes click behavior silently. (2) **`autoComplete` attribute** — 6 bare `autoComplete="off"` sites (StepInfo ×4, StepFeatures ×1, KeyboardShortcutsModal ×1) implementing the sensitive-field privacy contract: wizard inputs (project name, description, target audience, constraints, feature search) deliberately suppress browser autofill so previously-saved personal data never overwrites in-progress wizard state; a typo'd `"off"` (e.g. `"of"`) silently re-enables autofill — a privacy/UX regression with zero type errors. (3) **`enterKeyHint` attribute** — 4 bare value sites (KeyboardShortcutsModal `"search"`, StepFeatures `"done"`, StepInfo ×2 dynamic `canProceed ? "go" : "next"` pairs). The mobile soft-keyboard hint MUST match the action Enter will actually trigger; StepInfo flips NEXT↔GO dynamically with `canProceed` so both sides of the pair must stay byte-identical — a typo silently shows the wrong key icon to mobile users. Flexy says: no bare `type=`/`autoComplete=`/`enterKeyHint=` string literals in runtime source!
