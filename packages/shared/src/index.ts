@@ -279,6 +279,7 @@ export {
   HTML_AUTOCAPITALIZE_VALUES,
   HTML_AUTOCORRECT_VALUES,
   ENTER_KEY_HINTS,
+  HTML_TEXT_DIRECTION,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

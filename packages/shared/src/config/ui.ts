@@ -1612,3 +1612,30 @@ export const ENTER_KEY_HINTS = {
   /** Complete/commit action (final field, e.g. add-to-list) */
   DONE: "done" as const,
 } as const;
+
+/**
+ * HTML Text Direction Values
+ * Centralized source of truth for the `dir` attribute on HTML elements.
+ * The attribute participates in an i18n direction-detection contract:
+ *
+ * - **`AUTO`** tells the browser to detect text direction from the content
+ *   itself (first strong directional character). A typo'd `"auto"` (e.g.
+ *   `"ato"`, `"Aut0"`) is an invalid enumerated value — the browser falls
+ *   back to the inherited parent direction, silently rendering RTL text
+ *   (Arabic, Hebrew, Persian) in the wrong direction with zero type errors.
+ *   Used on user-generated content surfaces (wizard inputs, review summary,
+ *   search fields) so mixed-direction input renders correctly.
+ * - **`LTR`** / **`RTL`** force a fixed direction for known-locale content.
+ *
+ * Flexy says: No hardcoded dir="auto"/"ltr"/"rtl" strings in components!
+ * Usage: import { HTML_TEXT_DIRECTION } from "@blueprint/shared";
+ *        <p dir={HTML_TEXT_DIRECTION.AUTO}>{userContent}</p>
+ */
+export const HTML_TEXT_DIRECTION = {
+  /** Left-to-right text direction (default for Latin/CJK locales) */
+  LTR: "ltr" as const,
+  /** Right-to-left text direction (Arabic, Hebrew, Persian, Urdu) */
+  RTL: "rtl" as const,
+  /** Browser auto-detects direction from the text content (i18n contract) */
+  AUTO: "auto" as const,
+} as const;

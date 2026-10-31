@@ -51,6 +51,7 @@ import {
   HTML_AUTOCAPITALIZE_VALUES,
   HTML_AUTOCORRECT_VALUES,
   HTML_CONTROL_TYPES,
+  HTML_TEXT_DIRECTION,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
   getPlatformShortcutLabel,
@@ -385,7 +386,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   <input
                     ref={searchInputRef}
                     type={HTML_CONTROL_TYPES.TEXT}
-                    dir="auto"
+                    dir={HTML_TEXT_DIRECTION.AUTO}
                     value={searchQuery}
                     onChange={handleSearchChange}
                     placeholder={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH_PLACEHOLDER}

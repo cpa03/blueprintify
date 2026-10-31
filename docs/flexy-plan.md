@@ -4,6 +4,39 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 214: Centralize HTML `dir` Text-Direction Attribute Literals
+
+**Problem**: 11 hardcoded `dir="auto"` string literals survived 213 iterations across 4 web runtime files, with no constant family anywhere — even though Iterations 194–195 built the entire `ARIA_*_VALUES` family and Iterations 212–213 built the `HTML_CONTROL_TYPES`/`HTML_AUTOCOMPLETE_VALUES`/`HTML_AUTOCAPITALIZE_VALUES`/`HTML_AUTOCORRECT_VALUES`/`ENTER_KEY_HINTS` family for standard HTML form-control attributes, the `dir` attribute (explicitly flagged in Iterations 210 and 213's skipped lists as an i18n candidate) remained bare string literals. The `dir="auto"` value participates in an i18n direction-detection contract: it tells the browser to detect text direction from the content itself (first strong directional character). A typo'd `"auto"` (e.g. `"ato"`, `"Aut0"`) is an invalid enumerated value — the browser falls back to the inherited parent direction, silently rendering RTL text (Arabic, Hebrew, Persian) in the wrong direction with zero type errors. Breakdown: 1× `KeyboardShortcutsModal` (search input), 4× `StepInfo` (projectName, description, targetAudience, constraints), 1× `StepFeatures` (add-feature input), 5× `StepReview` (projectName, description, targetAudience, constraints display paragraphs + tech-stack summary). Every site renders user-generated content that may be mixed-direction, so `AUTO` is the correct value on all 11; a drift to a forced `LTR`/`RTL` would mangle RTL input. Flexy says: no bare `dir="auto"|"ltr"|"rtl"` string literals where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_TEXT_DIRECTION` (LTR, RTL, AUTO — full `dir` attribute enumerated-value set in use; i18n direction-detection pairing-contract docblock covering the typo→fallback-silently failure mode), placed beside `ENTER_KEY_HINTS` |
+| `packages/shared/src/index.ts` | Exported `HTML_TEXT_DIRECTION` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests: exact values (ltr/rtl/auto), entry count 3 + uniqueness, AUTO≠LTR/RTL invariant (i18n detection branch stays observable) |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 1× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (search input) |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 4× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (projectName, description, targetAudience, constraints) |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 1× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (add-feature input) |
+| `apps/web/src/components/wizard/StepReview.tsx` | 5× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (projectName, description, targetAudience, constraints paragraphs + tech-stack summary row) |
+| `docs/flexy-plan.md` | Iteration 214 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213 precedent); `lib/clipboard.ts` `setAttribute("readonly", "")` / `setAttribute("tabindex", "-1")` bare attribute-name/value literals in the legacy fallback block (setAttribute-argument cluster — candidate for a future DOM-attribute-name iteration); `accessibility.ts` CSS selector `[tabindex="-1"]` (CSS-selector category, Iteration 157/169/212 precedent); `StepGenerating.tsx` `getAttribute("tabindex")` / `removeAttribute("tabindex")` / `setAttribute("tabindex", priorTabIndex)` (setAttribute-argument cluster, same candidate); `lib/dom.ts` `closest("[contenteditable]")` (CSS-selector category); JSDoc prose comments mentioning `dir`; `lib/templates/*` (generated templates); `node_modules`/`dist`.
+
+## Verification (Iteration 214)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+3 new shared)
+- ✅ Residual scan — 0 bare `dir="auto"|"ltr"|"rtl"` in runtime source (excluding tests, JSDoc prose & generated templates)
+
+## PR (Iteration 214)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-214-html-text-direction` | refactor(flexy): centralize HTML dir text-direction attribute literals (Iteration 214) |
+
 ### ✅ Flexy Iteration 213: Centralize WebKit-Extension `autoCapitalize` & `autoCorrect` Attribute Literals
 
 **Problem**: 11 hardcoded WebKit-extension text-input attribute literals survived 212 iterations across 3 web runtime files, with no constant family anywhere — even though Iteration 212 built the entire `HTML_CONTROL_TYPES` / `HTML_AUTOCOMPLETE_VALUES` / `ENTER_KEY_HINTS` family for standard HTML form-control attributes, the `autoCapitalize`/`autoCorrect` attributes (explicitly flagged in Iteration 212's skipped list as the next WebKit-extension candidate) remained bare string literals. Each participates in a silent-failure privacy/UX pairing contract where a typo changes mobile soft-keyboard behavior with zero type errors. (1) **`autoCapitalize` attribute** — 6 bare sites (`"off"` ×5 in StepInfo ×3, StepFeatures ×1, KeyboardShortcutsModal ×1; `"sentences"` ×1 in StepInfo's description textarea). On iOS/Android a typo'd `"off"` (e.g. `"of"`, `"Of"`) silently re-enables autocapitalize, capitalizing the first letter of short technical tokens ("auth" → "Auth", "SRE" → "SRE", "devops" → "Devops") and mangling the typed identifier; the description textarea's `"sentences"` is the intentional opposite branch for prose, and a drift between the two branches changes how the soft keyboard transforms user input with no type error. (2) **`autoCorrect` attribute** — 5 bare `autoCorrect="off"` sites (StepInfo ×3, StepFeatures ×1, KeyboardShortcutsModal ×1) implementing the Safari/Android autocorrect suppression contract: without it, the platform rewrites short technical tokens ("cmd" → "Cmd", "auth" → "author", "SRE" → "sore", "devops" → "DevOps") — a token-mangling UX regression with zero type errors. Prose fields (description) deliberately omit the attribute so the platform default (enabled) applies alongside `autoCapitalize={SENTENCES}`. Flexy says: no bare `autoCapitalize="off"|"sentences"` / `autoCorrect="off"` string literals where a constant family exists!
