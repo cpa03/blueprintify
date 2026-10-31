@@ -35,6 +35,7 @@ import {
   HTML_AUTOCAPITALIZE_VALUES,
   HTML_AUTOCORRECT_VALUES,
   HTML_CONTROL_TYPES,
+  HTML_TEXT_DIRECTION,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
@@ -249,7 +250,7 @@ export const StepFeatures = memo(function StepFeatures({
                 autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
                 autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
                 enterKeyHint={ENTER_KEY_HINTS.DONE}
-                dir="auto"
+                dir={HTML_TEXT_DIRECTION.AUTO}
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
                 onKeyDown={handleKeyDown}

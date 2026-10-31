@@ -38,6 +38,7 @@ import {
   HTML_AUTOCAPITALIZE_VALUES,
   HTML_AUTOCORRECT_VALUES,
   HTML_CONTROL_TYPES,
+  HTML_TEXT_DIRECTION,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
@@ -522,7 +523,7 @@ export const StepInfo = memo(function StepInfo({
               autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
               enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
-              dir="auto"
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={projectName}
               onKeyDown={handleProjectNameKeyDown}
               onChange={(e) => {
@@ -673,7 +674,7 @@ export const StepInfo = memo(function StepInfo({
               // hold identifiers/tokens that autocorrect mangles.
               autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.SENTENCES}
               spellCheck={true}
-              dir="auto"
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={description}
               onPaste={descriptionPaste.handlePaste}
               onChange={(e) => {
@@ -840,7 +841,7 @@ export const StepInfo = memo(function StepInfo({
               autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
               enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
-              dir="auto"
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={targetAudience}
               onKeyDown={handleTargetAudienceKeyDown}
               onChange={(e) => {
@@ -908,7 +909,7 @@ export const StepInfo = memo(function StepInfo({
               autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
               autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
-              dir="auto"
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={constraints}
               onPaste={constraintsPaste.handlePaste}
               onChange={(e) => {
