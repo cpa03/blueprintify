@@ -71,6 +71,7 @@ import {
   TIME_UNITS,
   TOAST_TYPES,
   UI_TIMEOUTS,
+  ARIA_KEYSHORTCUTS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
@@ -694,6 +695,7 @@ function ToastContainerComponent(): JSX.Element {
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                        transition-all duration-200"
             aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
+            aria-keyshortcuts={ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL}
           >
             <span className="flex items-center gap-1.5">
               <Icon name="close" className="w-3.5 h-3.5" />
@@ -734,6 +736,7 @@ function ToastContainerComponent(): JSX.Element {
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                          transition-all duration-200"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
+              aria-keyshortcuts={ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL}
             >
               <span className="flex items-center gap-1.5">
                 <Icon name="close" className="w-3.5 h-3.5" />
