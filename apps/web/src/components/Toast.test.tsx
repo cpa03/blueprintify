@@ -141,6 +141,20 @@ describe("ToastContainer", () => {
     expect(screen.queryByText(/dismiss all/i)).not.toBeInTheDocument();
   });
 
+  it("exposes the Shift+Escape shortcut via aria-keyshortcuts on the dismiss all button", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
+    );
+
+    render(<ToastContainer />);
+
+    // getByText returns the inner span; the attribute lives on the wrapping button.
+    const dismissAllButton = screen.getByText(/dismiss all/i).closest("button");
+    expect(dismissAllButton).not.toBeNull();
+    expect(dismissAllButton).toHaveAttribute("aria-keyshortcuts", "Shift+Escape");
+  });
+
   it("renders toast with role='status', aria-live='polite', and state inspection attributes", () => {
     mockToasts.push({
       id: "toast-1",

@@ -746,6 +746,14 @@ export const ARIA_KEYSHORTCUTS = {
   /** Editor document tablist — ArrowLeft/ArrowRight cycle tabs, Home/End jump to first/last */
   EDITOR_TABS:
     `${KEYBOARD_EVENT_KEYS.ARROW_LEFT} ${KEYBOARD_EVENT_KEYS.ARROW_RIGHT} ${KEYBOARD_EVENT_KEYS.HOME} ${KEYBOARD_EVENT_KEYS.END}` as const,
+  /**
+   * Toast container "Dismiss all" button — Shift+Escape clears every visible
+   * toast at once. WAI-ARIA requires the full key name ("Escape"), not the
+   * abbreviated display label ("Shift+Esc") that SHORTCUT_LABELS.TOAST_DISMISS_ALL
+   * renders inside the visual <kbd> hint, so voice-control users can discover
+   * the shortcut by asking for "Shift+Escape" by name.
+   */
+  TOAST_DISMISS_ALL: `Shift+${KEYBOARD_EVENT_KEYS.ESCAPE}` as const,
 } as const;
 
 /**

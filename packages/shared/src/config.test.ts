@@ -4499,8 +4499,22 @@ describe("ARIA_KEYSHORTCUTS", () => {
     );
   });
 
-  it("should have 1 property", () => {
-    expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(1);
+  it("should have TOAST_DISMISS_ALL = 'Shift+Escape' using the full WAI-ARIA key name", () => {
+    expect(ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL).toBe("Shift+Escape");
+  });
+
+  it("should derive TOAST_DISMISS_ALL from KEYBOARD_EVENT_KEYS.ESCAPE", () => {
+    expect(ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL).toBe(`Shift+${KEYBOARD_EVENT_KEYS.ESCAPE}`);
+  });
+
+  it("should use full key name 'Escape' not the abbreviated display label 'Esc'", () => {
+    expect(ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL).not.toBe(
+      `Shift+${SHORTCUT_LABELS.TOAST_DISMISS_ALL.replace("Shift+", "")}`
+    );
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(2);
   });
 });
 
