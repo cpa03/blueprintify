@@ -32,7 +32,10 @@ import {
   ARIA_REQUIRED_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  ENTER_KEY_HINTS,
   FRAMER_TYPE,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_CONTROL_TYPES,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
@@ -326,7 +329,7 @@ export const StepInfo = memo(function StepInfo({
 
   const nextButton = (
     <RippleButton
-      type="submit"
+      type={HTML_CONTROL_TYPES.SUBMIT}
       // aria-disabled (not native disabled) so the button stays in the tab
       // order and screen readers can announce WHY it is unavailable (WCAG
       // 2.4.3 / 4.1.2). Native `disabled` removes the control from the tab
@@ -380,7 +383,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {hasAnyInput && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   onClick={handleClearForm}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -506,8 +509,8 @@ export const StepInfo = memo(function StepInfo({
               ref={projectNameInputRef}
               id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME}
               name="projectName"
-              type="text"
-              autoComplete="off"
+              type={HTML_CONTROL_TYPES.TEXT}
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
               // Mobile keyboard hygiene: project names are often technical
               // identifiers. Without these, iOS/Android autocapitalize the
               // first letter and Safari autocorrect rewrites tokens
@@ -516,7 +519,7 @@ export const StepInfo = memo(function StepInfo({
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
-              enterKeyHint={canProceed ? "go" : "next"}
+              enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
               dir="auto"
               value={projectName}
               onKeyDown={handleProjectNameKeyDown}
@@ -556,7 +559,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {projectName.length > 0 && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -660,7 +663,7 @@ export const StepInfo = memo(function StepInfo({
               ref={descriptionRef}
               id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION}
               name="description"
-              autoComplete="off"
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
               // Prose field: sentence capitalization and spellcheck help users
               // write a clear project description on mobile. This is the
               // intentional opposite of the technical fields above (projectName,
@@ -711,7 +714,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {description.length > 0 && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -824,8 +827,8 @@ export const StepInfo = memo(function StepInfo({
               ref={targetAudienceInputRef}
               id={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE}
               name="targetAudience"
-              type="text"
-              autoComplete="off"
+              type={HTML_CONTROL_TYPES.TEXT}
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
               // Mobile keyboard hygiene: target audience entries are often
               // technical role tokens ("devops", "SRE", "frontend eng") that
               // iOS/Android autocapitalize and Safari autocorrect rewrite
@@ -834,7 +837,7 @@ export const StepInfo = memo(function StepInfo({
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
-              enterKeyHint={canProceed ? "go" : "next"}
+              enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
               dir="auto"
               value={targetAudience}
               onKeyDown={handleTargetAudienceKeyDown}
@@ -856,7 +859,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {targetAudience && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -899,7 +902,7 @@ export const StepInfo = memo(function StepInfo({
               ref={constraintsRef}
               id={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS}
               name="constraints"
-              autoComplete="off"
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
@@ -922,7 +925,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {constraints && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}

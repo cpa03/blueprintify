@@ -62,6 +62,7 @@ import {
   BANNER_STATE_VALUES,
   CSS_VALUES,
   FRAMER_TYPE,
+  HTML_CONTROL_TYPES,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
   SHORTCUT_LABELS,
@@ -485,7 +486,7 @@ const ToastItem = memo(
               delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
             >
               <button
-                type="button"
+                type={HTML_CONTROL_TYPES.BUTTON}
                 onClick={() => onRemove(toast.id)}
                 className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
                 aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
@@ -501,7 +502,7 @@ const ToastItem = memo(
             delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
           >
             <motion.button
-              type="button"
+              type={HTML_CONTROL_TYPES.BUTTON}
               onClick={() => onRemove(toast.id)}
               className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
@@ -651,7 +652,7 @@ function ToastContainerComponent(): JSX.Element {
       {shouldReduceMotion ? (
         showDismissAll && (
           <button
-            type="button"
+            type={HTML_CONTROL_TYPES.BUTTON}
             onClick={handleClearAll}
             className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                        text-xs font-medium text-dark-400
@@ -681,7 +682,7 @@ function ToastContainerComponent(): JSX.Element {
         <AnimatePresence>
           {showDismissAll && (
             <motion.button
-              type="button"
+              type={HTML_CONTROL_TYPES.BUTTON}
               initial={{
                 opacity: 0,
                 y: ANIMATION_Y_OFFSET.RISE_SUBTLE,

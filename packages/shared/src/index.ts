@@ -274,6 +274,9 @@ export {
   DATA_BOOLEAN_VALUES,
   ARIA_BUSY_VALUES,
   DIVIDER_BUTTON_STATE_VALUES,
+  HTML_CONTROL_TYPES,
+  HTML_AUTOCOMPLETE_VALUES,
+  ENTER_KEY_HINTS,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

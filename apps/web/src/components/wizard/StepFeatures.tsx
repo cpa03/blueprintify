@@ -29,7 +29,10 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  ENTER_KEY_HINTS,
   FRAMER_TYPE,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_CONTROL_TYPES,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
@@ -233,8 +236,8 @@ export const StepFeatures = memo(function StepFeatures({
               <input
                 ref={featureInputRef}
                 id={DOM_ELEMENT_IDS.FEATURE_INPUT}
-                type="text"
-                autoComplete="off"
+                type={HTML_CONTROL_TYPES.TEXT}
+                autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
                 // Mobile keyboard hygiene: feature names are short technical
                 // tokens ("auth", "SSO", "rate limiting"). Without these,
                 // iOS/Android autocapitalize each word and Safari autocorrect
@@ -243,7 +246,7 @@ export const StepFeatures = memo(function StepFeatures({
                 // StepInfo's projectName/targetAudience inputs.
                 autoCapitalize="off"
                 autoCorrect="off"
-                enterKeyHint="done"
+                enterKeyHint={ENTER_KEY_HINTS.DONE}
                 dir="auto"
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
@@ -263,7 +266,7 @@ export const StepFeatures = memo(function StepFeatures({
               <AnimatePresence>
                 {newFeature && (
                   <motion.button
-                    type="button"
+                    type={HTML_CONTROL_TYPES.BUTTON}
                     initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -433,7 +436,7 @@ export const StepFeatures = memo(function StepFeatures({
                 {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
               </label>
               <motion.button
-                type="button"
+                type={HTML_CONTROL_TYPES.BUTTON}
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg || isAtMaxCount}
                 whileHover={

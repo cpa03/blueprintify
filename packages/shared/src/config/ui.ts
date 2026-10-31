@@ -1488,3 +1488,77 @@ export const DIVIDER_BUTTON_STATE_VALUES = {
   /** Focused state identifier */
   FOCUSED: "focused" as const,
 } as const;
+
+/**
+ * HTML Control Type Values
+ * Centralized source of truth for the `type` attribute on `<button>` and
+ * `<input>` elements. The attribute participates in two silent-failure
+ * pairing contracts:
+ *
+ * 1. **Button submit-behavior contract**: per the HTML spec a `<button>`
+ *    with no valid `type` defaults to `type="submit"` — so a typo'd
+ *    `type="button"` (e.g. `"botton"`) silently converts a neutral button
+ *    into a form submitter inside any enclosing `<form>`, firing
+ *    validation + submission with zero type errors. Wizard step forms
+ *    pair Next (`SUBMIT`) with Back/secondary actions (`BUTTON`) in the
+ *    same form; a drift on either side changes click behavior silently.
+ * 2. **Input keyboard/validation contract**: `<input type="text">` is the
+ *    HTML default; a typo changes the virtual keyboard layout, autofill
+ *    category, and constraint-validation behavior with no type error.
+ *
+ * Flexy says: No hardcoded type="button"/"submit"/"text" strings in components!
+ * Usage: import { HTML_CONTROL_TYPES } from "@blueprint/shared";
+ *        <button type={HTML_CONTROL_TYPES.BUTTON} onClick={onCancel} />
+ *        <input type={HTML_CONTROL_TYPES.TEXT} value={value} />
+ */
+export const HTML_CONTROL_TYPES = {
+  /** Neutral button — never submits an enclosing form (pair: SUBMIT) */
+  BUTTON: "button" as const,
+  /** Form-submitting button (pair: BUTTON) */
+  SUBMIT: "submit" as const,
+  /** Single-line text input (HTML default input type) */
+  TEXT: "text" as const,
+} as const;
+
+/**
+ * HTML Autocomplete Values
+ * Centralized source of truth for the `autoComplete` attribute on form
+ * controls. Pairs with the sensitive-field privacy contract: wizard inputs
+ * (project name, description, target audience, constraints, feature
+ * search) deliberately suppress browser autofill so previously-saved
+ * personal data never overwrites in-progress wizard state. A typo'd
+ * `"off"` (e.g. `"of"`, `"Of"`) silently re-enables browser autofill —
+ * a privacy/UX regression with zero type errors.
+ * Flexy says: No hardcoded autoComplete="off" strings in components!
+ * Usage: import { HTML_AUTOCOMPLETE_VALUES } from "@blueprint/shared";
+ *        <input autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF} />
+ */
+export const HTML_AUTOCOMPLETE_VALUES = {
+  /** Browser autofill disabled (privacy contract for sensitive wizard fields) */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * Enter Key Hint Values
+ * Centralized source of truth for the `enterKeyHint` attribute — the mobile
+ * soft-keyboard action hint shown on the Enter/key action key. Pairs with
+ * the Enter-behavior contract: the hint MUST match the action Enter will
+ * actually trigger (search field → SEARCH, multi-step form → NEXT until
+ * submittable then GO, feature add → DONE). A typo silently shows the
+ * wrong key icon to mobile users with zero type errors; the wizard form
+ * flips NEXT↔GO dynamically with `canProceed` so both sides of the pair
+ * must stay byte-identical.
+ * Flexy says: No hardcoded enterKeyHint="search"|"next"|"go"|"done" strings in components!
+ * Usage: import { ENTER_KEY_HINTS } from "@blueprint/shared";
+ *        <input enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT} />
+ */
+export const ENTER_KEY_HINTS = {
+  /** Search action (search inputs) */
+  SEARCH: "search" as const,
+  /** Advance to the next field (incomplete multi-step form) */
+  NEXT: "next" as const,
+  /** Submit/confirm action (submittable form) */
+  GO: "go" as const,
+  /** Complete/commit action (final field, e.g. add-to-list) */
+  DONE: "done" as const,
+} as const;

@@ -4,6 +4,40 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 212: Centralize HTML Control `type`, `autoComplete` & `enterKeyHint` Attribute Literals
+
+**Problem**: 27 hardcoded HTML form-control behavioral attribute literals survived 211 iterations across 6 web runtime files, with no constant family anywhere — even though Iterations 194–195 built the entire `ARIA_*_VALUES` family and Iteration 206 centralized DOM event names, the browser-interpreted `type`/`autoComplete`/`enterKeyHint` attributes on `<button>`/`<input>`/`<textarea>` remained bare string literals. Each participates in a silent-failure pairing contract where a typo changes runtime behavior with zero type errors. (1) **`type` attribute** — 17 bare sites (`type="button"` ×12 in Toast ×4, StepInfo ×5, StepFeatures ×2, StartFromScratchButton ×1; `type="submit"` ×1 in StepInfo's Next button; `type="text"` ×4 in StepInfo ×2, StepFeatures ×1, KeyboardShortcutsModal ×1). Per the HTML spec a `<button>` with no valid `type` defaults to `type="submit"` — so a typo'd `type="button"` (e.g. `"botton"`) silently converts a neutral Back/clear button into a form submitter inside the wizard's enclosing `<form>`, firing validation + submission with zero type errors; StepInfo's form pairs Next (`SUBMIT`) with 5 Back/secondary `BUTTON` actions in the same form, so drift on either side changes click behavior silently. (2) **`autoComplete` attribute** — 6 bare `autoComplete="off"` sites (StepInfo ×4, StepFeatures ×1, KeyboardShortcutsModal ×1) implementing the sensitive-field privacy contract: wizard inputs (project name, description, target audience, constraints, feature search) deliberately suppress browser autofill so previously-saved personal data never overwrites in-progress wizard state; a typo'd `"off"` (e.g. `"of"`) silently re-enables autofill — a privacy/UX regression with zero type errors. (3) **`enterKeyHint` attribute** — 4 bare value sites (KeyboardShortcutsModal `"search"`, StepFeatures `"done"`, StepInfo ×2 dynamic `canProceed ? "go" : "next"` pairs). The mobile soft-keyboard hint MUST match the action Enter will actually trigger; StepInfo flips NEXT↔GO dynamically with `canProceed` so both sides of the pair must stay byte-identical — a typo silently shows the wrong key icon to mobile users. Flexy says: no bare `type=`/`autoComplete=`/`enterKeyHint=` string literals in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_CONTROL_TYPES` (BUTTON, SUBMIT, TEXT — complete button/input type enum in use, pairing-contract docblock covering the HTML-spec submit-default and input keyboard/validation contracts); NEW `HTML_AUTOCOMPLETE_VALUES` (OFF — sensitive-field privacy contract docblock); NEW `ENTER_KEY_HINTS` (SEARCH, NEXT, GO, DONE — full mobile Enter-hint set in use, canProceed-flip pairing docblock) |
+| `packages/shared/src/index.ts` | Exported all 3 new constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +8 tests: 3 `HTML_CONTROL_TYPES` (exact values, entry count 3 + uniqueness, BUTTON≠SUBMIT invariant), 1 `HTML_AUTOCOMPLETE_VALUES` (OFF value + entry count), 3 `ENTER_KEY_HINTS` (exact values, entry count 4 + uniqueness, NEXT≠GO canProceed-flip invariant) |
+| `apps/web/src/components/Toast.tsx` | 4× `type="button"` → `HTML_CONTROL_TYPES.BUTTON` |
+| `apps/web/src/components/StartFromScratchButton.tsx` | 1× `type="button"` → `HTML_CONTROL_TYPES.BUTTON` |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 3 sites: `type="text"` → `HTML_CONTROL_TYPES.TEXT`; `autoComplete="off"` → `HTML_AUTOCOMPLETE_VALUES.OFF`; `enterKeyHint="search"` → `ENTER_KEY_HINTS.SEARCH` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 5 sites: `type="text"` → `HTML_CONTROL_TYPES.TEXT`; 2× `type="button"` → `HTML_CONTROL_TYPES.BUTTON`; `autoComplete="off"` → `HTML_AUTOCOMPLETE_VALUES.OFF`; `enterKeyHint="done"` → `ENTER_KEY_HINTS.DONE` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 15 sites: `type="submit"` → `HTML_CONTROL_TYPES.SUBMIT`; 5× `type="button"` → `HTML_CONTROL_TYPES.BUTTON`; 2× `type="text"` → `HTML_CONTROL_TYPES.TEXT`; 4× `autoComplete="off"` → `HTML_AUTOCOMPLETE_VALUES.OFF`; 2× `canProceed ? "go" : "next"` → `canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT` |
+| `docs/flexy-plan.md` | Iteration 212 entry |
+
+Deliberately skipped: test files (`RippleButton.test.tsx` `type="submit"` render prop, `StepInfo.test.tsx` `enterKeyHint="next"` description strings — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208 precedent); `spellCheck={false/true}` boolean JSX props (boolean, not string literals — Iteration 199/204 boolean precedent); `autoCapitalize="off"`/`autoCorrect="off"` WebKit-extension attributes (not standard HTML enumerated attributes — candidate for a future WebKit-extension iteration); JSDoc prose comments mentioning attribute values; CSS selector strings `input:not([type="hidden"])` in accessibility.ts focus-trap selectors and `link[rel="icon"][type="image/svg+xml"]` in storage.ts favicon selector (CSS-selector category, Iteration 157/169 precedent); DOMPurify `FORBID_TAGS` `"button"`/`"input"` tag names (tag names, not type values); `lib/templates/react.ts` (generated template); `node_modules`/`dist`.
+
+## Verification (Iteration 212)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (10.01s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,408 web + 555 api + 1,045 shared = 3,008 tests passing** (+8 new shared; web 1,408 baseline re-verified against clean `origin/main` at 37e3f9ab)
+- ✅ Residual scan — 0 bare `type="button"|"submit"|"text"`, 0 bare `autoComplete="off"`, 0 bare `enterKeyHint="search"|"next"|"go"|"done"` in runtime source (excluding tests, JSDoc prose, CSS selectors & generated templates)
+
+## PR (Iteration 212)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-212-html-control-attrs` | refactor(flexy): centralize HTML control type, autoComplete & enterKeyHint attribute literals (Iteration 212) |
+
 ### ✅ Flexy Iteration 211: Centralize StepInfo Form-Field DOM Element ID Literals into DOM_ELEMENT_IDS
 
 **Problem**: 18 hardcoded DOM element ID string literals survived 210 iterations in a single file — `StepInfo.tsx` bypassed the `DOM_ELEMENT_IDS` family that Iteration 197 built specifically to prevent ARIA-relationship drift. The bypasses span 9 distinct IDs across three pairing contracts, every one of which fails silently if either side is renamed. (1) **id ↔ htmlFor label pairs** (4 IDs × 2 sites): `projectName`, `description`, `targetAudience`, `constraints` — each `<label htmlFor="…">` activates its matching `<input id="…">`/`<textarea id="…">`; a typo on either side silently breaks click-to-focus and the accessible name association with zero type errors. (2) **id ↔ aria-describedby live-region pairs** (5 IDs × 2 sites): `projectName-warning`, `projectName-error`, `description-hint`, `description-warning`, `description-error` — each validation live-region's `id` is referenced by its field's `aria-describedby` ternary/spread; a rename on either side silently stops screen readers from announcing the hint/warning/error while the visible message still renders. The `DOM_ELEMENT_IDS` docblock already names `htmlFor` and `aria-describedby` as pairing contracts the family must cover, and the Iteration 197 test asserts uniqueness "so ARIA references never collide" — yet StepInfo's 18 sites were never converted. Flexy says: no bare `id=`/`htmlFor=`/`aria-describedby=` string literals where `DOM_ELEMENT_IDS` exists!
