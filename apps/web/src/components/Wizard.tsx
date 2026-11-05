@@ -42,6 +42,7 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  DATA_BOOLEAN_VALUES,
   KEYBOARD_EVENT_KEYS,
   UI_MESSAGES,
   WIZARD_STEP_KEYS,
@@ -243,7 +244,13 @@ function WizardComponent(): JSX.Element {
   const shadowOpacity = scrollShadowVisible ? undefined : 0;
 
   return (
-    <div className="relative flex h-full">
+    <div
+      className="relative flex h-full"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-current-step={currentStep}
+    >
       {/* Top scroll shadow — fades in when wizard content is scrolled down,
           providing a subtle spatial cue that content is hidden above. */}
       <div
