@@ -52,13 +52,13 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.0",
     "@types/jest-axe": "3.5.9",
     "@types/node": "26.6.6",
-    "@vitest/coverage-v8": "5.0.5",
-    "chrome-launcher": "1.2.2",
+    "@vitest/coverage-v8": "5.1.0",
+    "chrome-launcher": "1.2.3",
     "concurrently": "10.0.6",
-    "eslint": "10.13.0",
+    "eslint": "10.14.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
@@ -66,11 +66,11 @@
     "jest-axe": "11.0.0",
     "lighthouse": "13.6.0",
     "lint-staged": "17.6.0",
-    "playwright": "1.64.1",
+    "playwright": "1.65.0",
     "prettier": "3.9.10",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   },
   "overrides": {
     "dompurify": "3.4.17",
