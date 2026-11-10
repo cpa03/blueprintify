@@ -122,7 +122,13 @@ const TabButton = React.memo(function TabButton({
     <button
       role={ARIA_ROLES.TAB}
       aria-selected={isActive}
-      aria-controls={hasContent ? `${id}-panel` : undefined}
+      // Editor.tsx mounts only the ACTIVE tab's panel (a single swapped
+      // tabpanel), and only while content or generation is shown — the
+      // empty state replaces it otherwise. An aria-controls value whose
+      // ID is absent from the DOM leaves assistive tech with a broken
+      // tab→panel relationship (WCAG 4.1.2), so emit it only when that
+      // panel actually exists.
+      aria-controls={isActive && (hasContent || isGenerating) ? `${id}-panel` : undefined}
       id={`tab-${id}`}
       onClick={onClick}
       tabIndex={isActive ? 0 : -1}
