@@ -3097,6 +3097,7 @@ describe("SCROLL_THRESHOLD_DEFAULTS", () => {
     expect(SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX).toBeGreaterThan(0);
     expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX).toBeGreaterThan(0);
     expect(SCROLL_THRESHOLD_DEFAULTS.HAS_SCROLLED_PX).toBeGreaterThan(0);
+    expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_EDGE_TOLERANCE_PX).toBeGreaterThan(0);
   });
 
   it("should have all numeric values", () => {
@@ -3107,8 +3108,8 @@ describe("SCROLL_THRESHOLD_DEFAULTS", () => {
     });
   });
 
-  it("should have 3 entries", () => {
-    expect(Object.keys(SCROLL_THRESHOLD_DEFAULTS).length).toBe(3);
+  it("should have 4 entries", () => {
+    expect(Object.keys(SCROLL_THRESHOLD_DEFAULTS).length).toBe(4);
   });
 
   it("should have SCROLL_TO_TOP greater than HEADER_SHADOW", () => {
