@@ -4,6 +4,37 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 215: Centralize Scroll-Panel Edge-Tolerance Pixel Literals
+
+**Problem**: 8 hardcoded scroll-edge tolerance `<= 4` pixel literals survived 214 iterations across 2 web runtime files, even though the `SCROLL_THRESHOLD_DEFAULTS` family whose docblock says "No hardcoded scroll pixel values in component code!" already owned every other scroll trigger point (header shadow, scroll-to-top, has-scrolled). Breakdown: 1× `Wizard` (panel edge-shadow scroll handler), 3× `Editor` (preview scroll handler, CodeMirror scroll handler, CodeMirror initial-state snapshot) — each site computing the same edge pair: `scrollTop <= 4` for the top edge and `|scrollHeight - scrollTop - clientHeight| <= 4` for the bottom edge, feeding the top/bottom edge-shadow fade on the same scroll panel. The tolerance is a pairing contract: both shadows on a panel must resolve "at edge" at the same distance, and the Wizard panel must match the Editor panel — a drift on one site (e.g. one side changed to `8` while its twin stays `4`) silently desyncs the paired shadows (one fades earlier than the other) with zero type errors. Flexy says: no bare scroll-edge tolerance pixel literals where `SCROLL_THRESHOLD_DEFAULTS` exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | `SCROLL_THRESHOLD_DEFAULTS` +`SCROLL_EDGE_TOLERANCE_PX` (4 — top/bottom edge-shadow pairing-contract docblock covering the shadow-desync failure mode) |
+| `packages/shared/src/config.test.ts` | +1 value assertion (`> 0`); entry count 3 → 4 |
+| `apps/web/src/config/constants/ui.ts` | `SCROLL_THRESHOLDS` +`EDGE_TOLERANCE` (flat re-export of the shared source of truth) |
+| `apps/web/src/components/Wizard.tsx` | 2 sites: `isTop`/`isBottom` edge pair → `SCROLL_THRESHOLDS.EDGE_TOLERANCE` |
+| `apps/web/src/components/Editor.tsx` | 6 sites: preview handler pair, CodeMirror scroll handler pair, initial-state snapshot pair → `SCROLL_THRESHOLDS.EDGE_TOLERANCE` |
+| `docs/flexy-plan.md` | Iteration 215 entry |
+
+Deliberately skipped: test files (none assert the raw tolerance byte — Iteration 194/196/206/208/212/213 precedent); edge-shadow opacity ternaries (`scrollState.isTop ? 0 : 1` — identity `0`/`1`, Iteration 199/200 precedent); `useAutoScroll` `NEAR_BOTTOM_THRESHOLD_PX` (already `AUTO_SCROLL_DEFAULTS`); `CircularProgress` prop defaults `size = 40`/`size = 16` (component API defaults, not scroll domain); `useLastSaved` `updateInterval` (hook parameter, caller-supplied); JSDoc prose comments mentioning scroll; `node_modules`/`dist`.
+
+## Verification (Iteration 215)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (13.23s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,417 web + 555 api + 1,056 shared = 3,028 tests passing** (shared entry-count assertion 3 → 4)
+- ✅ Residual scan — 0 bare `scrollTop <= 4` / `clientHeight) <= 4` edge-tolerance literals in runtime source (excluding tests)
+
+## PR (Iteration 215)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-215-scroll-edge-tolerance` | refactor(flexy): centralize scroll-panel edge-tolerance pixel literals (Iteration 215) |
+
 ### ✅ Flexy Iteration 214: Centralize HTML `dir` Text-Direction Attribute Literals
 
 **Problem**: 11 hardcoded `dir="auto"` string literals survived 213 iterations across 4 web runtime files, with no constant family anywhere — even though Iterations 194–195 built the entire `ARIA_*_VALUES` family and Iterations 212–213 built the `HTML_CONTROL_TYPES`/`HTML_AUTOCOMPLETE_VALUES`/`HTML_AUTOCAPITALIZE_VALUES`/`HTML_AUTOCORRECT_VALUES`/`ENTER_KEY_HINTS` family for standard HTML form-control attributes, the `dir` attribute (explicitly flagged in Iterations 210 and 213's skipped lists as an i18n candidate) remained bare string literals. The `dir="auto"` value participates in an i18n direction-detection contract: it tells the browser to detect text direction from the content itself (first strong directional character). A typo'd `"auto"` (e.g. `"ato"`, `"Aut0"`) is an invalid enumerated value — the browser falls back to the inherited parent direction, silently rendering RTL text (Arabic, Hebrew, Persian) in the wrong direction with zero type errors. Breakdown: 1× `KeyboardShortcutsModal` (search input), 4× `StepInfo` (projectName, description, targetAudience, constraints), 1× `StepFeatures` (add-feature input), 5× `StepReview` (projectName, description, targetAudience, constraints display paragraphs + tech-stack summary). Every site renders user-generated content that may be mixed-direction, so `AUTO` is the correct value on all 11; a drift to a forced `LTR`/`RTL` would mangle RTL input. Flexy says: no bare `dir="auto"|"ltr"|"rtl"` string literals where a constant family exists!
