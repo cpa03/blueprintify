@@ -1647,3 +1647,66 @@ export const HTML_TEXT_DIRECTION = {
   /** Browser auto-detects direction from the text content (i18n contract) */
   AUTO: "auto" as const,
 } as const;
+
+/**
+ * DOM Attribute Names
+ * Centralized source of truth for the attribute-name strings passed to
+ * `getAttribute` / `setAttribute` / `removeAttribute` / `hasAttribute`.
+ *
+ * Pairing contract: a read must use the same name as its paired write. These
+ * DOM APIs accept any string, so a bare-literal typo silently no-ops instead of
+ * failing to compile — `getAttribute` returns `null`, `setAttribute` creates a
+ * *different* attribute, and `removeAttribute` removes nothing, all with zero
+ * type errors. Rename one side of a pair and the other keeps operating on the
+ * stale name forever.
+ *
+ * Four entries (ROLE, ARIA_LIVE, ARIA_ATOMIC, ARIA_HIDDEN) complete a
+ * partial-constant bypass left behind by Iteration 208: that iteration
+ * centralized each attribute's *value* (`ARIA_ROLES`, `ARIA_LIVE_VALUES`,
+ * `ARIA_ATOMIC_VALUES`, `ARIA_HIDDEN_VALUES`) while the attribute *name* in the
+ * very same `setAttribute(...)` call stayed a bare literal. Both sides are now
+ * constant-backed.
+ *
+ * Flexy says: No bare attribute-name strings in getAttribute/setAttribute/
+ * removeAttribute call sites!
+ * Usage: import { DOM_ATTRIBUTES } from "@blueprint/shared";
+ *        el.setAttribute(DOM_ATTRIBUTES.ARIA_HIDDEN, ARIA_HIDDEN_VALUES.TRUE);
+ *        return () => el.removeAttribute(DOM_ATTRIBUTES.TAB_INDEX);
+ */
+export const DOM_ATTRIBUTES = {
+  /** Favicon href — swapped and restored by useFaviconStatus's status pair */
+  HREF: "href" as const,
+  /** Tab-order membership — read/set/remove triple in the editor focus-restore path */
+  TAB_INDEX: "tabindex" as const,
+  /** Boolean read-only flag — legacy clipboard fallback's off-screen textarea */
+  READ_ONLY: "readonly" as const,
+  /** Assistive-technology visibility — value supplied by ARIA_HIDDEN_VALUES */
+  ARIA_HIDDEN: "aria-hidden" as const,
+  /** Semantic role — value supplied by ARIA_ROLES */
+  ROLE: "role" as const,
+  /** Live-region announcement politeness — value supplied by ARIA_LIVE_VALUES */
+  ARIA_LIVE: "aria-live" as const,
+  /** Live-region atomic announcement — value supplied by ARIA_ATOMIC_VALUES */
+  ARIA_ATOMIC: "aria-atomic" as const,
+} as const;
+
+/**
+ * `tabindex` Attribute Values
+ * Centralized source of truth for the string values written to the `tabindex`
+ * content attribute.
+ *
+ * Pairing contract: `NOT_FOCUSABLE` must stay in step with the numeric
+ * `element.tabIndex = -1` IDL property that expresses the same intent on the
+ * line above it. The content attribute is what legacy engines read, so a typo'd
+ * value (e.g. `"--1"`, `"-l"`) is parsed as invalid, the browser falls back to
+ * the default tab order, and the element stays focusable — focus can then land
+ * on an invisible off-screen node with zero type errors.
+ *
+ * Flexy says: No bare "-1" tabindex value strings in components!
+ * Usage: import { TAB_INDEX_VALUES } from "@blueprint/shared";
+ *        el.setAttribute(DOM_ATTRIBUTES.TAB_INDEX, TAB_INDEX_VALUES.NOT_FOCUSABLE);
+ */
+export const TAB_INDEX_VALUES = {
+  /** Leaves the sequential tab order while remaining programmatically focusable */
+  NOT_FOCUSABLE: "-1" as const,
+} as const;

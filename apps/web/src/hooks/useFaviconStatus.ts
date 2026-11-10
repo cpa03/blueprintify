@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useEditorStore } from "../store";
 import { FAVICON_CONFIG, GENERATION_MESSAGES } from "../config/constants";
+import { DOM_ATTRIBUTES } from "@blueprint/shared/config";
 
 /**
  * Generation states mirrored by the favicon. Deriving this inside the selector
@@ -43,23 +44,23 @@ export function useFaviconStatus(): void {
       document.head.appendChild(link);
       created = true;
     }
-    const originalHref = link.getAttribute("href") ?? FAVICON_CONFIG.DEFAULT_HREF;
+    const originalHref = link.getAttribute(DOM_ATTRIBUTES.HREF) ?? FAVICON_CONFIG.DEFAULT_HREF;
 
     if (status === "generating") {
-      link.setAttribute("href", FAVICON_CONFIG.LOADING_HREF);
+      link.setAttribute(DOM_ATTRIBUTES.HREF, FAVICON_CONFIG.LOADING_HREF);
     } else if (status === "complete") {
-      link.setAttribute("href", FAVICON_CONFIG.COMPLETE_HREF);
+      link.setAttribute(DOM_ATTRIBUTES.HREF, FAVICON_CONFIG.COMPLETE_HREF);
     } else if (created) {
-      link.setAttribute("href", FAVICON_CONFIG.DEFAULT_HREF);
+      link.setAttribute(DOM_ATTRIBUTES.HREF, FAVICON_CONFIG.DEFAULT_HREF);
     } else {
-      link.setAttribute("href", originalHref);
+      link.setAttribute(DOM_ATTRIBUTES.HREF, originalHref);
     }
 
     return () => {
       if (created) {
         link.remove();
       } else {
-        link.setAttribute("href", originalHref);
+        link.setAttribute(DOM_ATTRIBUTES.HREF, originalHref);
       }
     };
   }, [status]);
