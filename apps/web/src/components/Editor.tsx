@@ -61,6 +61,7 @@ import {
   DEBUG_MESSAGES,
   VIEW_MODE_SHORTCUT_KEYS,
   SCROLL_BEHAVIOR,
+  SCROLL_THRESHOLDS,
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
@@ -195,8 +196,10 @@ function EditorComponent(): JSX.Element {
   const handlePreviewScroll = useCallback(() => {
     const el = previewRef.current;
     if (!el || shouldReduceMotion) return;
-    const isTop = el.scrollTop <= 4;
-    const isBottom = Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <= 4;
+    const isTop = el.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
+    const isBottom =
+      Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <=
+      SCROLL_THRESHOLDS.EDGE_TOLERANCE;
     setPreviewScrollState((prev) => {
       if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
       return { isTop, isBottom };
@@ -328,9 +331,10 @@ function EditorComponent(): JSX.Element {
 
       const onScroll = () => {
         if (!scrollDom || shouldReduceMotion) return;
-        const isTop = scrollDom.scrollTop <= 4;
+        const isTop = scrollDom.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
         const isBottom =
-          Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <= 4;
+          Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <=
+          SCROLL_THRESHOLDS.EDGE_TOLERANCE;
         setEditorScrollState((prev) => {
           if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
           return { isTop, isBottom };
@@ -340,9 +344,10 @@ function EditorComponent(): JSX.Element {
       scrollDom.addEventListener(DOM_EVENTS.SCROLL, onScroll, { passive: true });
 
       // Set initial state
-      const isTop = scrollDom.scrollTop <= 4;
+      const isTop = scrollDom.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
       const isBottom =
-        Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <= 4;
+        Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <=
+        SCROLL_THRESHOLDS.EDGE_TOLERANCE;
       setEditorScrollState({ isTop, isBottom });
 
       scrollListenerCleanupRef.current = () => {
