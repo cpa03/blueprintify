@@ -33,7 +33,7 @@ Deliberately skipped: test files (none assert the raw tolerance byte — Iterati
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-215-scroll-edge-tolerance` | refactor(flexy): centralize scroll-panel edge-tolerance pixel literals (Iteration 215) |
+| #3986 | `flexy/iteration-215-scroll-edge-tolerance` | refactor(flexy): centralize scroll-panel edge-tolerance pixel literals (Iteration 215) |
 
 ### ✅ Flexy Iteration 214: Centralize HTML `dir` Text-Direction Attribute Literals
 
