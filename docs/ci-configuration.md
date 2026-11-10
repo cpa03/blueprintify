@@ -60,7 +60,7 @@ The repository relies on three quality/security gates. Their enforcement layers 
 | `npm audit` | ✅ `.husky/pre-push` (via `npm run check`) | ❌ 0 refs in all 5 workflows |
 | `npm run test:all` | ✅ `.husky/pre-push` (via `npm run check`) | ❌ 0 refs in all 5 workflows |
 
-### Permissions analysis (Sep 2026)
+### Permissions analysis (Sep 2026; root cause re-verified Nov 2026)
 
 | Workflow | `contents` | `pull-requests` | `issues` | `checks` | `actions` | `workflows` |
 |----------|-----------|----------------|----------|----------|-----------|-------------|
@@ -70,8 +70,48 @@ The repository relies on three quality/security gates. Their enforcement layers 
 | `iterate.yml` | write | write | write | — | write | — |
 | `on-pull.yml` | write | write | **no** | — | read | — |
 
-- `issues: write` **is present** in 4 of 5 workflows (absent only in `on-pull.yml`)
-- `workflows: write` is **absent in all 5** — this is the actual blocker for adding CI steps that modify workflow files
+- `issues: write` **is present** in 4 of 5 workflows (absent only in `on-pull.yml`) — this is DOC-001, and it is why Issue Manager Mode has run read-only for 162 consecutive cycles (`docs/findings.md`)
+- `workflows: write` is **absent in all 5** — but see below: adding it to a workflow is not the fix, and is not possible
+
+### Workflow files cannot be edited from inside a workflow (verified Nov 2026)
+
+The previously documented remediation ("grant `workflows: write` so a workflow can modify workflow files") is **not achievable**. `GITHUB_TOKEN` is denied write access to `.github/workflows/**` by platform design, and no `permissions:` block can grant it — `workflows` is not among the grantable keys (`actions`, `checks`, `contents`, `deployments`, `discussions`, `id-token`, `issues`, `models`, `packages`, `pages`, `pull-requests`, `repository-projects`, `security-events`, `statuses`).
+
+Live proof from a loop cycle: the one-line DOC-001 fix was committed after passing the full pre-push `npm run check` gate (typecheck, lint 0/0, secrets scan, audit, 3,028/3,028 tests), then the push was rejected server-side:
+
+```
+! [remote rejected] -> .github/workflows/on-pull.yml
+(refusing to allow a GitHub App to create or update workflow
+ `.github/workflows/on-pull.yml` without `workflows` permission)
+```
+
+Consequence: **DOC-001 cannot be self-healed by any loop cycle.** Fixing it means editing a workflow, which requires a credential the loop does not have and cannot grant itself. Steps 1–3 of Issue Manager Mode (normalize / dedupe / consolidate) therefore remain report-only until an out-of-band credential lands.
+
+**Actual fix path (requires a human):**
+
+1. Create a fine-grained PAT with `Contents: read/write` **and `Workflows: read/write`** on this repository, or a GitHub App installation token holding the Workflows permission.
+2. Store it as a repository secret whose name does **not** begin with `GITHUB`, e.g. `WORKFLOW_TOKEN`.
+3. Authenticate the whole job with it — passing the token to a later `git push` step alone is not enough, because `actions/checkout` bakes `GITHUB_TOKEN` into the remote credential:
+
+   ```yaml
+   - uses: actions/checkout@v7
+     with:
+       token: ${{ secrets.WORKFLOW_TOKEN }}
+   ```
+
+4. Apply the DOC-001 change itself — one line in `.github/workflows/on-pull.yml`:
+
+   ```yaml
+   permissions:
+     contents: write
+     pull-requests: write
+     issues: write          # add: unblocks Issue Manager label normalization/close
+     actions: read
+     repository-projects: write
+     id-token: write
+   ```
+
+Until steps 1–4 land, DOC-001 stays open and issue mutation stays blocked.
 
 ### #1084 / #1088 — `npm audit` + `scan:secrets` not enforced in CI
 

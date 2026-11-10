@@ -33,8 +33,8 @@ All previously tracked drift items resolved in the Sep 2026 consolidation pass:
 
 | ID | Area | Gap Description | Priority |
 |----|------|-----------------|----------|
-| **DOC-001** | CI Workflows | `on-pull.yml` still lacks `issues: write`; blocks Issue Manager automation | Medium |
-| **DOC-002** | CI Workflows | All 5 workflows lack `workflows: write`; blocks self-healing gatekeeper workflows | Medium |
+| **DOC-001** | CI Workflows | `on-pull.yml` lacks `issues: write`; blocks Issue Manager label normalization/close (162 consecutive cycles). **Not self-healable** — the loop cannot edit `.github/workflows/**`, so it cannot grant itself this permission (proof + fix path in `docs/ci-configuration.md`) | High |
+| **DOC-002** | CI Workflows | Workflow files cannot be edited by any loop cycle: `GITHUB_TOKEN` is denied `.github/workflows/**` by design and `workflows` is not a grantable `permissions:` key, so the former remediation ("add `workflows: write` to a workflow") was itself impossible. Real fix is an out-of-band fine-grained PAT / GitHub App token with Workflows scope passed to `actions/checkout` — see `docs/ci-configuration.md` | High |
 | **DOC-003** | API Docs | `docs/api-documentation.md` endpoint list verified sync: 14 paths / 15 operations (was tracked as incomplete vs. stale "32 endpoints" claim) | Low |
 | **DOC-004** | CHANGELOG | 1,086 lines of cycle logs; consider moving to archive | Low |
 
