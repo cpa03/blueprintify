@@ -178,7 +178,8 @@ describe("CircularProgress", () => {
     const { container } = render(<CircularProgress value={50} />);
     const progressCircle = container.querySelectorAll("circle")[1] as SVGElement;
     expect(progressCircle.style.transition).toBe("none");
-    expect(progressCircle.style.transitionProperty).toBe("");
+    // jsdom >= 31 expands the `transition` shorthand per CSSOM, so the longhand serializes as "none".
+    expect(progressCircle.style.transitionProperty).toBe("none");
   });
 });
 
