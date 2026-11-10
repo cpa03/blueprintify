@@ -713,6 +713,16 @@ export const SCROLL_THRESHOLD_DEFAULTS = {
   SCROLL_TO_TOP_PX: 400,
   /** Minimum scroll distance to consider page as scrolled (50px) */
   HAS_SCROLLED_PX: 50,
+  /**
+   * Pixel tolerance for "at the edge" detection on scroll containers (4px).
+   * Used by the top/bottom edge-shadow fade in Wizard and Editor scroll
+   * panels: `scrollTop <= TOLERANCE` for top, and
+   * `|scrollHeight - scrollTop - clientHeight| <= TOLERANCE` for bottom.
+   * Pairing contract: every edge-detection site must use the same tolerance —
+   * a drift on one side silently desyncs the paired top/bottom shadows on the
+   * same panel (one fades earlier than the other) with zero type errors.
+   */
+  SCROLL_EDGE_TOLERANCE_PX: 4,
 } as const;
 
 /**
