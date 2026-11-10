@@ -7,9 +7,22 @@
  *
  * @module test-setup
  */
+import { AsyncLocalStorage } from "node:async_hooks";
 import { TEST_SETUP_STRINGS } from "@blueprint/shared";
 import { setupTestConfig, MOCK_ENV } from "./test-utils";
 import { ERROR_MESSAGES } from "./config/constants";
+
+// workerd's AsyncLocalStorage.disable() hard-throws, but vitest 5.1+ calls it as a
+// Node-only perf optimization from its mock-factory runner. Swallowing it is safe:
+// disable() only stops ALS bookkeeping and never changes store behavior.
+const originalDisable = AsyncLocalStorage.prototype.disable;
+AsyncLocalStorage.prototype.disable = function disable(this: AsyncLocalStorage<unknown>) {
+  try {
+    return originalDisable.call(this);
+  } catch {
+    return this;
+  }
+};
 
 // Initialize environment config before all tests
 setupTestConfig(MOCK_ENV);
