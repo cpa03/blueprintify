@@ -10,7 +10,7 @@
  * @module components/EditorEmptyState
  */
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { useWizardStore } from "../store";
 import {
@@ -39,18 +39,35 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { MOTION_VARIANT_STATES } from "@blueprint/shared/config";
 
+interface EditorEmptyStateProps {
+  /**
+   * Optional callback that opens the keyboard shortcuts modal. When provided,
+   * the `?` "Keyboard shortcuts" badge becomes a real button so users can
+   * discover shortcuts by click as well as by pressing `?`.
+   */
+  onShowShortcuts?: () => void;
+}
+
 /**
  * Empty state display shown in the editor when no content has been generated.
  * Displays animated documents and wizard progress to encourage users to complete the wizard flow.
  *
+ * @param props - Component props
+ * @param props.onShowShortcuts - Optional callback to open the shortcuts modal
  * @returns The rendered empty state with animated elements and progress indicator
  *
  * @example
  * <EditorEmptyState />
+ * <EditorEmptyState onShowShortcuts={() => setShowShortcutsModal(true)} />
  */
 
-export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
+export const EditorEmptyState = memo(function EditorEmptyState({
+  onShowShortcuts,
+}: EditorEmptyStateProps): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
+  const handleShowShortcuts = useCallback(() => {
+    onShowShortcuts?.();
+  }, [onShowShortcuts]);
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
   const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * PERCENT_SCALE;
   const modifierKey = getModifierLabel();
@@ -266,22 +283,41 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
           sequentially rather than all at once, giving a more polished
           discovery moment that matches the app's staggered entrance pattern. */}
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-dark-500">
-        {shortcutItems.map((item, index) => (
-          <motion.span
-            key={item.key}
-            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_SUBTLE }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
+        {shortcutItems.map((item, index) => {
+          const badgeClass =
+            "flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50";
+          const badgeMotion = {
+            initial: { opacity: 0, y: ANIMATION_Y_OFFSET.DROP_SUBTLE },
+            animate: { opacity: 1, y: 0 },
+            transition: {
               delay: index * ANIMATION.STAGGER,
               duration: ANIMATION.SUBTLE_MOVE,
               ease: EASING.easeOut,
-            }}
-            data-shortcut-key={item.key}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50"
-          >
-            {item.content}
-          </motion.span>
-        ))}
+            },
+            "data-shortcut-key": item.key,
+          } as const;
+
+          if (item.key === "kb" && onShowShortcuts) {
+            return (
+              <motion.button
+                key={item.key}
+                type="button"
+                onClick={handleShowShortcuts}
+                {...badgeMotion}
+                aria-keyshortcuts={DISPLAY_SYMBOLS.QUESTION_MARK}
+                className={`${badgeClass} cursor-pointer text-dark-400 hover:text-dark-200 hover:border-dark-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 motion-safe:transition-colors motion-safe:duration-200`}
+              >
+                {item.content}
+              </motion.button>
+            );
+          }
+
+          return (
+            <motion.span key={item.key} {...badgeMotion} className={badgeClass}>
+              {item.content}
+            </motion.span>
+          );
+        })}
       </div>
     </motion.div>
   );

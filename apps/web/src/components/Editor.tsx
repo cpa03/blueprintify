@@ -179,7 +179,12 @@ function PreviewSkeleton(): JSX.Element {
  * <Editor />
  * ```
  */
-function EditorComponent(): JSX.Element {
+interface EditorProps {
+  /** Optional callback that opens the keyboard shortcuts modal (threaded to empty state). */
+  onShowShortcuts?: () => void;
+}
+
+function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>(VIEW_MODES.SPLIT);
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -569,7 +574,7 @@ function EditorComponent(): JSX.Element {
                 transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
                 className="h-full"
               >
-                <EditorEmptyState />
+                <EditorEmptyState onShowShortcuts={onShowShortcuts} />
               </motion.div>
             ) : (
               <motion.div

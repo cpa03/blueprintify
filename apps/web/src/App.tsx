@@ -585,7 +585,7 @@ function App(): JSX.Element {
                       </div>
                     }
                   >
-                    <Editor />
+                    <Editor onShowShortcuts={handleShowShortcuts} />
                   </Suspense>
                 </div>
               </div>
