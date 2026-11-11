@@ -122,6 +122,23 @@ describe("CharacterCounter", () => {
     expect(visual?.className).not.toContain("animate-pulse-scale");
     expect(visual?.className).not.toContain("shake-animation");
     expect(container.querySelector(".animate-warning-icon")).toBeNull();
+    window.localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
+  });
+
+  it("does not shake on initial mount when already at the limit (#3591)", () => {
+    const { container } = render(<CharacterCounter current={100} max={100} />);
+    const visual = container.querySelector("[aria-hidden]");
+    expect(visual?.className).not.toContain("shake-animation");
+  });
+
+  it("shakes when crossing into the limit after mount (#3591)", () => {
+    const { container, rerender } = render(<CharacterCounter current={99} max={100} />);
+    let visual = container.querySelector("[aria-hidden]");
+    expect(visual?.className).not.toContain("shake-animation");
+
+    rerender(<CharacterCounter current={100} max={100} />);
+    visual = container.querySelector("[aria-hidden]");
+    expect(visual?.className).toContain("shake-animation");
   });
 });
 
