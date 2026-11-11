@@ -35,7 +35,7 @@ Deliberately skipped: test files (`MarkdownRenderer.test.tsx:137` / `Header.test
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-217-anchor-target-rel` | refactor(flexy): centralize anchor target/rel hardening & aria-current JSX attribute-value literals (Iteration 217) |
+| #3994 | `flexy/iteration-217-anchor-target-rel` | refactor(flexy): centralize anchor target/rel hardening & aria-current JSX attribute-value literals (Iteration 217) |
 
 ### ✅ Flexy Iteration 216: Centralize DOM Attribute-Name Literals in get/setAttribute/removeAttribute
 
