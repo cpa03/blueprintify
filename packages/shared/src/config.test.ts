@@ -201,6 +201,9 @@ import {
   HTML_TEXT_DIRECTION,
   DOM_ATTRIBUTES,
   TAB_INDEX_VALUES,
+  ARIA_CURRENT_VALUES,
+  HTML_LINK_TARGETS,
+  HTML_LINK_RELS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5932,5 +5935,53 @@ describe("TAB_INDEX_VALUES (Flexy Iteration 216)", () => {
     expect(String(Number.parseInt(TAB_INDEX_VALUES.NOT_FOCUSABLE, 10))).toBe(
       TAB_INDEX_VALUES.NOT_FOCUSABLE
     );
+  });
+});
+
+describe("ARIA_CURRENT_VALUES (Flexy Iteration 217)", () => {
+  it("should have the exact step value", () => {
+    expect(ARIA_CURRENT_VALUES.STEP).toBe("step");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(ARIA_CURRENT_VALUES).length).toBe(1);
+  });
+
+  it("should be a lowercase single-word token so assistive tech recognizes the current item", () => {
+    expect(ARIA_CURRENT_VALUES.STEP).toBe(ARIA_CURRENT_VALUES.STEP.toLowerCase());
+    expect(ARIA_CURRENT_VALUES.STEP).not.toContain(" ");
+    expect(ARIA_CURRENT_VALUES.STEP.length).toBeGreaterThan(0);
+  });
+});
+
+describe("HTML_LINK_TARGETS (Flexy Iteration 217)", () => {
+  it("should have the exact blank browsing-context value", () => {
+    expect(HTML_LINK_TARGETS.BLANK).toBe("_blank");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_LINK_TARGETS).length).toBe(1);
+  });
+
+  it("should be an underscore-prefixed browsing-context name the browser resolves to a new tab", () => {
+    expect(HTML_LINK_TARGETS.BLANK.startsWith("_")).toBe(true);
+    expect(HTML_LINK_TARGETS.BLANK).toBe(HTML_LINK_TARGETS.BLANK.trim());
+  });
+});
+
+describe("HTML_LINK_RELS (Flexy Iteration 217)", () => {
+  it("should have the exact hardening token list", () => {
+    expect(HTML_LINK_RELS.NOOPENER_NOREFERRER).toBe("noopener noreferrer");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_LINK_RELS).length).toBe(1);
+  });
+
+  it("should contain both noopener and noreferrer tokens so every _blank site ships the full hardening pair", () => {
+    const tokens = HTML_LINK_RELS.NOOPENER_NOREFERRER.split(" ");
+    expect(tokens).toContain("noopener");
+    expect(tokens).toContain("noreferrer");
+    expect(new Set(tokens).size).toBe(tokens.length);
   });
 });

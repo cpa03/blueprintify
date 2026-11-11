@@ -282,6 +282,9 @@ export {
   HTML_TEXT_DIRECTION,
   DOM_ATTRIBUTES,
   TAB_INDEX_VALUES,
+  ARIA_CURRENT_VALUES,
+  HTML_LINK_TARGETS,
+  HTML_LINK_RELS,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

@@ -15,6 +15,8 @@ import {
   UI_TIMING,
   WIZARD_STEP_KEYS,
   DATA_BOOLEAN_VALUES,
+  HTML_LINK_TARGETS,
+  HTML_LINK_RELS,
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
@@ -660,8 +662,8 @@ function App(): JSX.Element {
             />{" "}
             <a
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={HTML_LINK_TARGETS.BLANK}
+              rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
               className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.CLOUDFLARE_WORKERS}
             >
@@ -674,8 +676,8 @@ function App(): JSX.Element {
             +{" "}
             <a
               href={EXTERNAL_URLS.REACT}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={HTML_LINK_TARGETS.BLANK}
+              rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
               className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.REACT}
             >
