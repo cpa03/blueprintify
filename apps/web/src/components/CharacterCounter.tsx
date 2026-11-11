@@ -62,15 +62,18 @@ function CharacterCounterComponent({
   const shouldReduceMotion = useReducedMotion();
 
   const [showLimitShake, setShowLimitShake] = useState(false);
-  const prevAtLimitRef = useRef(false);
+  // Initialize from isAtLimit so mounting already-at-limit never shakes (issue #3591).
+  const prevAtLimitRef = useRef(isAtLimit);
 
   useEffect(() => {
-    if (isAtLimit && !prevAtLimitRef.current) {
+    // Update the ref BEFORE any early return so edge transitions always stick.
+    const wasAtLimit = prevAtLimitRef.current;
+    prevAtLimitRef.current = isAtLimit;
+    if (isAtLimit && !wasAtLimit) {
       setShowLimitShake(true);
       const timer = setTimeout(() => setShowLimitShake(false), TIMEOUTS.SHAKE_ANIMATION);
       return () => clearTimeout(timer);
     }
-    prevAtLimitRef.current = isAtLimit;
   }, [isAtLimit]);
 
   const [showCelebrate, setShowCelebrate] = useState(false);
@@ -78,7 +81,9 @@ function CharacterCounterComponent({
   const prevBelowMinRef = useRef(belowMin);
 
   useEffect(() => {
-    if (!belowMin && prevBelowMinRef.current && min !== undefined) {
+    const wasBelowMin = prevBelowMinRef.current;
+    prevBelowMinRef.current = belowMin;
+    if (!belowMin && wasBelowMin && min !== undefined) {
       setShowCelebrate(true);
       setShowMinMetAnnouncement(true);
       const timer = setTimeout(() => {
@@ -87,7 +92,6 @@ function CharacterCounterComponent({
       }, TIMEOUTS.SHAKE_ANIMATION);
       return () => clearTimeout(timer);
     }
-    prevBelowMinRef.current = belowMin;
   }, [belowMin, min]);
 
   const shakeClass = !shouldReduceMotion && showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
