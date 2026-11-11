@@ -503,6 +503,7 @@ export const StepInfo = memo(function StepInfo({
               max={FORM_LIMITS.PROJECT_NAME.MAX}
               min={FORM_LIMITS.PROJECT_NAME.MIN}
               warningThreshold={FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_COUNTER}
             />
           </div>
           <div
@@ -549,14 +550,17 @@ export const StepInfo = memo(function StepInfo({
               }
               transition={{ duration: ANIMATION.FAST }}
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
-              aria-describedby={
+              aria-describedby={[
+                DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_COUNTER,
                 projectNameErrorVisible
                   ? DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR
                   : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
                       projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
                     ? DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING
-                    : undefined
-              }
+                    : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
@@ -657,6 +661,7 @@ export const StepInfo = memo(function StepInfo({
               max={FORM_LIMITS.DESCRIPTION.MAX}
               min={FORM_LIMITS.DESCRIPTION.MIN}
               warningThreshold={DESCRIPTION_WARNING_THRESHOLD}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_COUNTER}
             />
           </div>
           <div
@@ -704,14 +709,19 @@ export const StepInfo = memo(function StepInfo({
                 descriptionTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
               }
               transition={{ duration: ANIMATION.FAST }}
-              {...(descriptionErrorVisible
-                ? { "aria-describedby": DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR }
-                : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
-                    description.length < FORM_LIMITS.DESCRIPTION.MAX
-                  ? { "aria-describedby": DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING }
-                  : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
-                    ? { "aria-describedby": DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT }
-                    : {})}
+              aria-describedby={[
+                DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_COUNTER,
+                descriptionErrorVisible
+                  ? DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR
+                  : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
+                      description.length < FORM_LIMITS.DESCRIPTION.MAX
+                    ? DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING
+                    : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
+                      ? DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT
+                      : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
@@ -823,6 +833,7 @@ export const StepInfo = memo(function StepInfo({
               warningThreshold={Math.floor(
                 FORM_LIMITS.TARGET_AUDIENCE.MAX * RATIO_LIMITS.FORM_WARNING
               )}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE_COUNTER}
             />
           </div>
           <div className="relative">
@@ -852,6 +863,7 @@ export const StepInfo = memo(function StepInfo({
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER}
               className="input-field pr-10"
               maxLength={FORM_LIMITS.TARGET_AUDIENCE.MAX}
+              aria-describedby={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE_COUNTER}
               animate={
                 targetAudienceTyping.isTyping
                   ? { scale: ANIMATION_SCALE.TYPING_PULSE }
@@ -898,6 +910,7 @@ export const StepInfo = memo(function StepInfo({
               max={FORM_LIMITS.CONSTRAINTS.MAX}
               min={0}
               warningThreshold={Math.floor(FORM_LIMITS.CONSTRAINTS.MAX * RATIO_LIMITS.FORM_WARNING)}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS_COUNTER}
             />
           </div>
           <div className="relative">
@@ -920,6 +933,7 @@ export const StepInfo = memo(function StepInfo({
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
               className="textarea-field pr-10"
               maxLength={FORM_LIMITS.CONSTRAINTS.MAX}
+              aria-describedby={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS_COUNTER}
               animate={
                 constraintsTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
               }

@@ -222,7 +222,11 @@ export const StepFeatures = memo(function StepFeatures({
               {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
-              <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
+              <CharacterCounterCompact
+                current={newFeature.length}
+                max={FORM_LIMITS.FEATURE.MAX}
+                descriptionId={DOM_ELEMENT_IDS.FEATURE_INPUT_COUNTER}
+              />
               <span
                 id={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 className="text-xs text-dark-500 flex items-center gap-1"
@@ -261,7 +265,7 @@ export const StepFeatures = memo(function StepFeatures({
                 }
                 className={`input-field w-full pr-10 ${isAtMaxCount ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 opacity-60 cursor-not-allowed" : newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
-                aria-describedby={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
+                aria-describedby={`${DOM_ELEMENT_IDS.FEATURE_INPUT_COUNTER} ${DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}`}
                 maxLength={FORM_LIMITS.FEATURE.MAX}
                 readOnly={isAtMaxCount}
                 tabIndex={isAtMaxCount ? -1 : 0}

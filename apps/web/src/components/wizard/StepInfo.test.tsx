@@ -613,7 +613,32 @@ describe("StepInfo", () => {
     render(<StepInfo />);
     const textarea = screen.getByRole("textbox", { name: /Description/i });
     expect(textarea.className).toContain("border-yellow-500");
-    expect(textarea).toHaveAttribute("aria-describedby", "description-warning");
+    expect(textarea).toHaveAttribute("aria-describedby", "description-counter description-warning");
+  });
+
+  it("always associates the character-count description with form inputs (WCAG 1.3.1)", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A valid description long enough.";
+    mockStore.targetAudience = "developers";
+    mockStore.constraints = "use TypeScript";
+    render(<StepInfo />);
+
+    expect(screen.getByRole("textbox", { name: /Project Name/i })).toHaveAttribute(
+      "aria-describedby",
+      expect.stringContaining("projectName-counter")
+    );
+    expect(screen.getByRole("textbox", { name: /Description/i })).toHaveAttribute(
+      "aria-describedby",
+      expect.stringContaining("description-counter")
+    );
+    expect(screen.getByRole("textbox", { name: /Target Audience/i })).toHaveAttribute(
+      "aria-describedby",
+      "targetAudience-counter"
+    );
+    expect(screen.getByRole("textbox", { name: /Constraints/i })).toHaveAttribute(
+      "aria-describedby",
+      "constraints-counter"
+    );
   });
 
   it("keeps below-minimum description hint neutral instead of warning yellow", () => {

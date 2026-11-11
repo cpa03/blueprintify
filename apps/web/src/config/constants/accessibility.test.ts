@@ -50,7 +50,7 @@ describe("ACCESSIBILITY_LABELS_SKIP", () => {
 });
 
 describe("DOM_ELEMENT_IDS — Iterations 197 + 211", () => {
-  it("defines all 22 ARIA-relationship DOM element IDs", () => {
+  it("defines all 27 ARIA-relationship DOM element IDs", () => {
     expect(DOM_ELEMENT_IDS.MAIN_CONTENT).toBe("main-content");
     expect(DOM_ELEMENT_IDS.EDITOR_PANEL).toBe("editor-panel");
     expect(DOM_ELEMENT_IDS.CONFIRM_DIALOG_TITLE).toBe("confirm-dialog-title");
@@ -61,26 +61,31 @@ describe("DOM_ELEMENT_IDS — Iterations 197 + 211", () => {
     expect(DOM_ELEMENT_IDS.OFFLINE_BANNER_DESC).toBe("offline-banner-desc");
     expect(DOM_ELEMENT_IDS.FEATURE_INPUT).toBe("feature-input");
     expect(DOM_ELEMENT_IDS.FEATURE_INPUT_HINT).toBe("feature-input-hint");
+    expect(DOM_ELEMENT_IDS.FEATURE_INPUT_COUNTER).toBe("feature-input-counter");
     expect(DOM_ELEMENT_IDS.ADDED_FEATURES_LABEL).toBe("added-features-label");
     expect(DOM_ELEMENT_IDS.SUGGESTIONS_LABEL).toBe("suggestions-label");
     expect(DOM_ELEMENT_IDS.SELECTED_TECH_LABEL).toBe("selected-tech-label");
   });
 
-  it("defines the 9 StepInfo form-field IDs (Iteration 211)", () => {
+  it("defines the 14 StepInfo/feature form-field IDs (Iteration 211 + counter descriptions)", () => {
     expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME).toBe("projectName");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_COUNTER).toBe("projectName-counter");
     expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING).toBe("projectName-warning");
     expect(DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR).toBe("projectName-error");
     expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION).toBe("description");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_COUNTER).toBe("description-counter");
     expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT).toBe("description-hint");
     expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING).toBe("description-warning");
     expect(DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR).toBe("description-error");
     expect(DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE).toBe("targetAudience");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE_COUNTER).toBe("targetAudience-counter");
     expect(DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS).toBe("constraints");
+    expect(DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS_COUNTER).toBe("constraints-counter");
   });
 
   it("keeps every element ID unique so ARIA references never collide", () => {
     const values = Object.values(DOM_ELEMENT_IDS);
-    expect(values).toHaveLength(22);
-    expect(new Set(values).size).toBe(22);
+    expect(values).toHaveLength(27);
+    expect(new Set(values).size).toBe(27);
   });
 });
