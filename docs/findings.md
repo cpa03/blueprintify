@@ -12890,3 +12890,35 @@ left to owning team per no-functionality-reduction constraint.
 
 **Result**: 0 issue mutations (blocked) · 0 code PRs (workflow edit un-pushable) · repair patch prepared, locally verified, and documented above · baseline + coverage gates green.
 **Final state**: **blocked** — (1) Steps 1–3 need `issues: write`; (2) Step 4 patch needs `workflows: write`. This docs-only log PR is opened for human review.
+
+
+## Issue Manager ULW Loop — Repair Cycle (2026-11-11)
+
+**Phase 0 (entry decision)**: `gh pr list --state open` → `[]` **0 open PRs** → Step 0.2 → `gh issue list --state open` → **155 open issues** → **ISSUE MANAGER MODE** (Phases 1–3 STOPPED). Default branch `main` at `09508d35`, 0-behind `origin/main`, clean tree · `npm ci` 814 pkgs.
+
+**Action log (UTC)**:
+- `01:04` Phase 0 → 0 PRs / 155 issues → ISSUE MANAGER MODE
+- `01:05` Capability probe → REST repo permissions all-false (expected for GitHub App token) · GraphQL `hasIssuesEnabled=true` · `git push --dry-run` scratch branch ✅ contents write · live `gh issue edit 3615 --add-label P3` → GraphQL **403 addLabelsToLabelable** (labels re-verified `[]`, zero residue) → **issues write BLOCKED (164th consecutive)**
+- `01:06` Workflows write probe → branch with one-line comment on `.github/workflows/pr-gatekeeper.yml` → push **REJECTED** `without 'workflows' permission` · local branch cleaned · **workflows write BLOCKED** · non-workflow push + delete probe ✅
+- `01:07` Step 1 → `node scripts/normalize-issue-labels.mjs` dry-run → **141/155** need canonical category+priority (idempotent, OVERRIDES intact) → apply BLOCKED by issues write
+- `01:08` Steps 2–3 → full 155-issue inventory re-clustered (report-only; clusters below) · #3615 **code-resolved** (og:image → `blueprintify.pages.dev/favicon.svg` HTTP 200 re-verified; canonical/og:url intentionally held on branded domain per `docs/bugs.md`) · #955 scripts hardened (no `unsafe-inline` in script-src; style-src keeps `unsafe-inline` for critical CSS, locked by `security.test.ts`) · #973 prod `npm audit --omit=dev` **0 vulns**
+- `01:09` Step 4 selection → open P0 **none** · open P1 **#1082, #1014** → **#1082 code-resolved** (17/17 hooks have suites; named `useAutoSave.ts`/`usePersistedStore.ts`/`useKeyboardShortcuts.ts` do not exist) → repair target **#1014**
+- `01:13` Baseline gates → typecheck exit 0 · lint exit 0 (0 err/0 warn) · prettier exit 0 · scan:secrets ✅ 356 files · audit prod exit 0 (0 vulns) · build exit 0 (vite 16.10s) · build:api exit 0 (wrangler dry-run) · `npm run test:coverage` exit 0 = **3,028 tests** (web 1,417/92 + api 555/35 + shared 1,056/5); web coverage statements **83.92%** / branches **79.68%** / functions **84.90%** / lines **84.92%** ≥ floors 75/60/75/75
+- `01:14` #1014 AC re-verify → AC1 `playwright.config.ts` ✅ · AC2 **43/43** component files have sibling tests (0 untested), coverage ≥50% ✅ · AC3 CI test gate ❌ still requires `workflows:write` (same one-line patch as cycle 2026-11-10) · AC4 `docs/testing-procedures.md` ✅
+- `01:16` Step 4 → remaining work for #1014 is AC3-only and platform-blocked; no non-workflow code gap found → docs-only log PR on `agent/ulw-issue-manager-20261111`
+
+**Steps 1–3 BLOCKED — 164th consecutive block**: `issues: write` absent for `github-actions[bot]` GITHUB_TOKEN in `on-pull.yml`. 141/155 label normalizations staged in `scripts/normalize-issue-labels.mjs --apply` output. Duplicate/consolidation results REPORT-ONLY (0 issues closed, 0 labels changed, 0 comments posted).
+
+**Step 2 — duplicate groups (canonical ← duplicates)** *(carried, re-validated by title/label inventory; bodies not re-read)*: CORS **#890** ← #848, #930 · API-key auth **#847** · middleware tests **#852** ← #1053 · hook tests **#1082** ← #857 · component tests **#1014** ← #856 · OpenAI tests **#860** ← #911 · E2E **#872** ← #951, #1019, #1015 · ErrorBoundary **#874** ← #1052 · route validation **#858** ← #896, #909, #910, #1051 · npm-audit-in-CI **#851** ← #1084 · gatekeeper tests **#849** ← #953 · wrangler placeholders **#1165**. Kept distinct: #935 vs #936; #847 vs #891; #892 vs #1046.
+
+**Step 3 — consolidation clusters**: OCR **53** (#3554–#3608 range) → rep **#3593** (majority already `kilo-duplicate`) · test-coverage family **15+** → rep **#1014** · CI-hardening **~14** → rep **#849** · share-route security **~15** → rep **#890** · frontend polish **~7** → rep **#874**. Unlabeled new issues needing first-time labels when write returns: **#3615** (code-resolved → should close), **#3622** (idle-motion perf, still open, unlabeled).
+
+**Step 4 (Repair) — #1014 selected, AC3 PLATFORM-BLOCKED**: Same prepared patch as 2026-11-10 (`.github/workflows/pr-gatekeeper.yml` Final Integrity Check `npm run build && npm run typecheck` → `... && npm run test:coverage`), which also satisfies **#849**/#953. Local push probe this cycle re-confirmed rejection without `workflows: write`. **#1082** should be **closed as code-resolved** when issues write returns. **#3615** should be **closed as resolved** when issues write returns (og:image fixed; residual branded-domain refs intentional).
+
+**FAIL-SAFE (uncertainty, NOT acted on)**: (a) `issues: write` missing in `on-pull.yml` blocks Steps 1–3 and all closes/comments (164th); workflow runs over untrusted `pull_request` content — widening token scope declined as security-sensitive; (b) `workflows: write` required for #1014-AC3/#849/#953 and cannot be self-granted. Escalated as `docs/knowledge-review.md` DOC-001/DOC-002.
+
+**Skills used**: project script `normalize-issue-labels.mjs` (Step 1 dry-run → 141/155) · `ci-pipeline-update` (workflow write probe → platform-blocked, no YAML shipped) · `npm audit` / `scan:secrets` (dependency + secret baselines green).
+**Subagents used**: none this cycle (prior-cycle `quick` clustering subagent failed twice on Copilot token mismatch; clustering completed directly from inventory).
+
+**Result**: 0 issue mutations (blocked) · 0 code PRs (no non-blocked repair gap on selected P1) · 0 labels changed · baselines + coverage gates green · this docs-only log PR opened for human review.
+**Final state**: **blocked** — (1) Steps 1–3 need `issues: write`; (2) Step 4 AC3 needs `workflows: write`.
