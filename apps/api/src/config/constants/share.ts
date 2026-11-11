@@ -86,8 +86,11 @@ export const IMPORT_CONFIG = {
  */
 export const IMPORT_REGEX = {
   PROJECT_NAME: /^#[^#](.+)$/m,
-  BLUEPRINT_SECTION: /## Blueprint\s*\n\n?([\s\S]*?)(?=\n## |$)/,
-  TASKS_SECTION: /## Tasks\s*\n\n?([\s\S]*?)(?=\n## |$)/,
+  // Blueprint ends only at the following exported section (`## Tasks`) or EOF —
+  // never at an arbitrary internal H2 (e.g. `## Overview`) inside the blueprint
+  // body (issue #3580). Tasks is the final exported section, so capture to EOF.
+  BLUEPRINT_SECTION: /## Blueprint\s*\n\n?([\s\S]*?)(?=\n## Tasks\b|$)/,
+  TASKS_SECTION: /## Tasks\s*\n\n?([\s\S]*)$/,
 } as const;
 
 /**
