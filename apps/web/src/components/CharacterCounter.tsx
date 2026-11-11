@@ -23,6 +23,15 @@ interface CharacterCounterProps {
   min?: number;
   warningThreshold?: number;
   className?: string;
+  /**
+   * Optional id for a persistent screen-reader description of the current
+   * count. When set, a stable sr-only element with this id always renders
+   * "N of M characters used", so the associated input can reference it via
+   * `aria-describedby` and announce the count on focus (WCAG 1.3.1 / 4.1.2).
+   * Distinct from the threshold live region below, which stays silent during
+   * normal typing to avoid per-keystroke chatter.
+   */
+  descriptionId?: string;
 }
 
 function CharacterCounterComponent({
@@ -31,6 +40,7 @@ function CharacterCounterComponent({
   min,
   warningThreshold = Math.floor(max * RATIO_LIMITS.WARNING),
   className = "",
+  descriptionId,
 }: CharacterCounterProps) {
   const isAtLimit = current >= max;
   const isWarning = current >= warningThreshold && current < max;
@@ -146,6 +156,15 @@ function CharacterCounterComponent({
           </span>
         )}
       </span>
+      {/* Persistent count description for aria-describedby association —
+          always present (unlike the threshold live region below) so focusing
+          the linked input announces the current usage without waiting for a
+          warning/limit threshold. */}
+      {descriptionId && (
+        <span id={descriptionId} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+          {countLabel}
+        </span>
+      )}
       {/* Screen-reader-only announcement with descriptive label */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
@@ -168,6 +187,7 @@ function CharacterCounterCompactComponent({
   current,
   max,
   className = "",
+  descriptionId,
 }: Omit<CharacterCounterProps, "min" | "warningThreshold">) {
   const percentage = (current / max) * PERCENT_SCALE;
   const isWarning =
@@ -242,6 +262,13 @@ function CharacterCounterCompactComponent({
       >
         {current}/{max}
       </span>
+      {/* Persistent count description for aria-describedby association — mirrors
+          the main counter so the linked input announces usage on focus. */}
+      {descriptionId && (
+        <span id={descriptionId} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+          {compactCountLabel}
+        </span>
+      )}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role={ARIA_ROLES.STATUS}

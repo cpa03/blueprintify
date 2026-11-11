@@ -140,6 +140,29 @@ describe("CharacterCounter", () => {
     visual = container.querySelector("[aria-hidden]");
     expect(visual?.className).toContain("shake-animation");
   });
+
+  it("renders a persistent sr-only count description when descriptionId is provided", () => {
+    render(<CharacterCounter current={42} max={100} descriptionId="field-counter" />);
+    const description = document.getElementById("field-counter");
+    expect(description).not.toBeNull();
+    expect(description).toHaveClass("sr-only");
+    expect(description).toHaveTextContent("42 of 100 characters used");
+  });
+
+  it("keeps the description present during normal typing (not threshold-gated)", () => {
+    const { rerender } = render(
+      <CharacterCounter current={5} max={100} descriptionId="field-counter" />
+    );
+    expect(document.getElementById("field-counter")).toHaveTextContent("5 of 100 characters used");
+
+    rerender(<CharacterCounter current={6} max={100} descriptionId="field-counter" />);
+    expect(document.getElementById("field-counter")).toHaveTextContent("6 of 100 characters used");
+  });
+
+  it("omits the description element when descriptionId is not provided", () => {
+    const { container } = render(<CharacterCounter current={5} max={100} />);
+    expect(container.querySelector('[id$="-counter"]')).toBeNull();
+  });
 });
 
 describe("CharacterCounterCompact", () => {
@@ -214,5 +237,13 @@ describe("CharacterCounterCompact", () => {
     expect(container.querySelector(".animate-compact-counter-pop")).toBeNull();
     const fill = container.querySelector("div.rounded-full > div") as HTMLElement | null;
     expect(fill?.style.transition).toBe("none");
+  });
+
+  it("renders a persistent sr-only count description when descriptionId is provided", () => {
+    render(<CharacterCounterCompact current={42} max={100} descriptionId="feature-counter" />);
+    const description = document.getElementById("feature-counter");
+    expect(description).not.toBeNull();
+    expect(description).toHaveClass("sr-only");
+    expect(description).toHaveTextContent("42 of 100 characters used");
   });
 });
