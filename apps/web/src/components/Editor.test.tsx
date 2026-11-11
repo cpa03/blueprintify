@@ -6,12 +6,13 @@ import { Editor } from "./Editor";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { useEditorStore, useWizardStore } from "../store";
 import { ExportProvider } from "../context/ExportContext";
-import { exportAsZip } from "../lib/export";
+import { exportAsZip, copyToClipboard } from "../lib/export";
+import { EditorHeader } from "./editor/EditorHeader";
 import type { EditorStore } from "../store/editor";
 import type { WizardStore } from "../store/wizard";
 import type { TechStackItemType } from "@blueprint/shared/types";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
-import { EDITOR_TABS, SCROLL_BEHAVIOR } from "../config/constants";
+import { EDITOR_TABS, SCROLL_BEHAVIOR, TOAST_MESSAGES } from "../config/constants";
 
 // jsdom cannot compute real colors, so the color-contrast rule is always
 // "incomplete" there; disable it to focus on structural accessibility.
@@ -456,6 +457,49 @@ describe("Editor", () => {
         </ExportProvider>
       );
       expect(scrollToMock).toHaveBeenCalledWith({ top: 0, behavior: SCROLL_BEHAVIOR.AUTO });
+    });
+  });
+
+  describe("copy feedback", () => {
+    beforeEach(() => {
+      mockEditorStore.blueprintContent = "# Test Content";
+      mockEditorStore.tasksContent = "";
+      mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+    });
+
+    function getOnCopy(): () => Promise<void> {
+      const props = (EditorHeader as unknown as Mock).mock.calls.at(-1)?.[0] as {
+        onCopy: () => Promise<void>;
+      };
+      return props.onCopy;
+    }
+
+    it("shows a success toast when the clipboard write succeeds", async () => {
+      (copyToClipboard as Mock).mockResolvedValue(true);
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      await getOnCopy()();
+
+      expect(mockToast.success).toHaveBeenCalledWith(TOAST_MESSAGES.COPY_SUCCESS);
+      expect(mockToast.error).not.toHaveBeenCalled();
+    });
+
+    it("shows an error toast instead of failing silently when the clipboard write fails", async () => {
+      (copyToClipboard as Mock).mockResolvedValue(false);
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      await getOnCopy()();
+
+      expect(mockToast.error).toHaveBeenCalledWith(TOAST_MESSAGES.COPY_FAILURE);
+      expect(mockToast.success).not.toHaveBeenCalled();
     });
   });
 });

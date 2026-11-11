@@ -408,6 +408,8 @@ function EditorComponent(): JSX.Element {
       setCopied(activeTab);
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
       toast.success(TOAST_MESSAGES.COPY_SUCCESS);
+    } else {
+      toast.error(TOAST_MESSAGES.COPY_FAILURE);
     }
   }, [currentContent, activeTab, toast]);
 
