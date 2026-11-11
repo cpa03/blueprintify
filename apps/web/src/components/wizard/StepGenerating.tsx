@@ -34,6 +34,7 @@ import {
   CIRCLE_GEOMETRY,
   CIRCLE_GEOMETRY_LARGE,
   DISPLAY_SYMBOLS,
+  DOM_ATTRIBUTES,
   FRAMER_TYPE,
   GENERATION_ERROR_PREFIXES,
   KEYBOARD_EVENT_KEYS,
@@ -377,7 +378,7 @@ export const StepGenerating = memo(function StepGenerating({
       const focusTarget = tabButton ?? editorPanel;
 
       const priorTabIndex =
-        focusTarget === editorPanel ? editorPanel.getAttribute("tabindex") : null;
+        focusTarget === editorPanel ? editorPanel.getAttribute(DOM_ATTRIBUTES.TAB_INDEX) : null;
       if (focusTarget === editorPanel) {
         editorPanel.tabIndex = -1;
       }
@@ -390,9 +391,9 @@ export const StepGenerating = memo(function StepGenerating({
           editorContainer.classList.remove(CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT);
           if (focusTarget === editorPanel) {
             if (priorTabIndex === null) {
-              editorPanel.removeAttribute("tabindex");
+              editorPanel.removeAttribute(DOM_ATTRIBUTES.TAB_INDEX);
             } else {
-              editorPanel.setAttribute("tabindex", priorTabIndex);
+              editorPanel.setAttribute(DOM_ATTRIBUTES.TAB_INDEX, priorTabIndex);
             }
           }
         }, UI_TIMING.EDITOR_FOCUS_HIGHLIGHT_MS);

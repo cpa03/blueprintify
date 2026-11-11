@@ -288,4 +288,91 @@ Architecture details here
     };
     expect(data.data).toHaveProperty("projectName", IMPORT_CONFIG.DEFAULT_PROJECT_NAME);
   });
+
+  it("should preserve internal H2 headings inside the blueprint section (#3580)", async () => {
+    const markdownContent = `# My Project
+
+Exported: 2024-01-01
+
+## Blueprint
+
+Intro text
+
+## Overview
+
+Body of overview with details
+
+## Architecture
+
+More architecture details
+
+## Tasks
+
+- Task 1
+- Task 2
+`;
+
+    const res = await app.request(
+      "/",
+      {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
+        body: JSON.stringify({
+          data: markdownContent,
+          format: "markdown",
+        }),
+      },
+      MOCK_ENV
+    );
+
+    expect(res.status).toBe(HTTP_STATUS.OK);
+    const data = (await res.json()) as {
+      data: {
+        blueprint: string;
+        tasks: string;
+      };
+    };
+    expect(data.data.blueprint).toContain("Intro text");
+    expect(data.data.blueprint).toContain("## Overview");
+    expect(data.data.blueprint).toContain("Body of overview with details");
+    expect(data.data.blueprint).toContain("## Architecture");
+    expect(data.data.blueprint).toContain("More architecture details");
+    expect(data.data.blueprint).not.toContain("## Tasks");
+    expect(data.data.tasks).toContain("- Task 1");
+    expect(data.data.tasks).toContain("- Task 2");
+  });
+
+  it("should capture blueprint to EOF when no Tasks section exists (#3580)", async () => {
+    const markdownContent = `# Solo Project
+
+## Blueprint
+
+## Overview
+
+Only blueprint, no tasks section
+`;
+
+    const res = await app.request(
+      "/",
+      {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
+        body: JSON.stringify({
+          data: markdownContent,
+          format: "markdown",
+        }),
+      },
+      MOCK_ENV
+    );
+
+    expect(res.status).toBe(HTTP_STATUS.OK);
+    const data = (await res.json()) as {
+      data: {
+        blueprint: string;
+        tasks?: string;
+      };
+    };
+    expect(data.data.blueprint).toContain("## Overview");
+    expect(data.data.blueprint).toContain("Only blueprint, no tasks section");
+  });
 });

@@ -199,6 +199,8 @@ import {
   HTML_AUTOCORRECT_VALUES,
   ENTER_KEY_HINTS,
   HTML_TEXT_DIRECTION,
+  DOM_ATTRIBUTES,
+  TAB_INDEX_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5878,5 +5880,57 @@ describe("HTML_TEXT_DIRECTION (Flexy Iteration 214)", () => {
   it("should keep AUTO distinct from LTR/RTL so the i18n detection branch stays observable", () => {
     expect(HTML_TEXT_DIRECTION.AUTO).not.toBe(HTML_TEXT_DIRECTION.LTR);
     expect(HTML_TEXT_DIRECTION.AUTO).not.toBe(HTML_TEXT_DIRECTION.RTL);
+  });
+});
+
+describe("DOM_ATTRIBUTES (Flexy Iteration 216)", () => {
+  it("should have exact attribute name values", () => {
+    expect(DOM_ATTRIBUTES.HREF).toBe("href");
+    expect(DOM_ATTRIBUTES.TAB_INDEX).toBe("tabindex");
+    expect(DOM_ATTRIBUTES.READ_ONLY).toBe("readonly");
+    expect(DOM_ATTRIBUTES.ARIA_HIDDEN).toBe("aria-hidden");
+    expect(DOM_ATTRIBUTES.ROLE).toBe("role");
+    expect(DOM_ATTRIBUTES.ARIA_LIVE).toBe("aria-live");
+    expect(DOM_ATTRIBUTES.ARIA_ATOMIC).toBe("aria-atomic");
+  });
+
+  it("should have 7 unique attribute names", () => {
+    expect(Object.keys(DOM_ATTRIBUTES).length).toBe(7);
+    const values = Object.values(DOM_ATTRIBUTES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase attribute names so reads and writes serialize identically", () => {
+    for (const value of Object.values(DOM_ATTRIBUTES)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("should keep the four value-backed ARIA names distinct so each setAttribute pairs with its own value family", () => {
+    const valueBacked = [
+      DOM_ATTRIBUTES.ROLE,
+      DOM_ATTRIBUTES.ARIA_LIVE,
+      DOM_ATTRIBUTES.ARIA_ATOMIC,
+      DOM_ATTRIBUTES.ARIA_HIDDEN,
+    ];
+    expect(new Set(valueBacked).size).toBe(valueBacked.length);
+  });
+});
+
+describe("TAB_INDEX_VALUES (Flexy Iteration 216)", () => {
+  it("should have the exact not-focusable value", () => {
+    expect(TAB_INDEX_VALUES.NOT_FOCUSABLE).toBe("-1");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(TAB_INDEX_VALUES).length).toBe(1);
+  });
+
+  it("should be a signed integer string so the browser parses it instead of falling back to tab order 0", () => {
+    expect(Number.parseInt(TAB_INDEX_VALUES.NOT_FOCUSABLE, 10)).toBe(-1);
+    expect(String(Number.parseInt(TAB_INDEX_VALUES.NOT_FOCUSABLE, 10))).toBe(
+      TAB_INDEX_VALUES.NOT_FOCUSABLE
+    );
   });
 });

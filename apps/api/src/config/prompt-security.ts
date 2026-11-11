@@ -76,50 +76,55 @@ export const INJECTION_PATTERNS: readonly RegExp[] = [
 /**
  * Human-readable descriptions for each injection pattern category.
  * Used for observability logging when injection attempts are detected.
+ *
+ * NOTE: Patterns intentionally omit the global (`g`) flag. They are only ever
+ * consumed via `RegExp.prototype.test()`, which advances `lastIndex` on `/g`
+ * regexes and would otherwise cause alternating false negatives across calls
+ * on module-level shared instances (issue #3583).
  */
 const PATTERN_DESCRIPTIONS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
   {
-    pattern: /ignore\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+    pattern: /ignore\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/i,
     label: "instruction_override:ignore",
   },
   {
     pattern:
-      /forget\s+(all\s+)?(above\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+      /forget\s+(all\s+)?(above\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/i,
     label: "instruction_override:forget",
   },
   {
-    pattern: /disregard\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+    pattern: /disregard\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/i,
     label: "instruction_override:disregard",
   },
   {
     pattern:
-      /(print|output|reveal|display|show|repeat|echo|return)\s+(all\s+)?(your\s+|the\s+)?(previous\s+)?(system\s+)?(instructions|prompts?|directives?|commands?)/gi,
+      /(print|output|reveal|display|show|repeat|echo|return)\s+(all\s+)?(your\s+|the\s+)?(previous\s+)?(system\s+)?(instructions|prompts?|directives?|commands?)/i,
     label: "output_disclosure",
   },
   {
-    pattern: /show\s+me\s+(your\s+|the\s+)?(prompts?|instructions|directives?|system)/gi,
+    pattern: /show\s+me\s+(your\s+|the\s+)?(prompts?|instructions|directives?|system)/i,
     label: "output_disclosure:show_me",
   },
-  { pattern: /system\s+prompts?:/gi, label: "impersonation:system_prompt" },
-  { pattern: /you\s+(are\s+)?(now|will\s+now)\s+(an?\s+)?/gi, label: "impersonation:you_are_now" },
-  { pattern: /act\s+as\s+(an?\s+)?/gi, label: "impersonation:act_as" },
-  { pattern: /role[-\s]?play(\s+(as|that\s+you\s+are))?/gi, label: "impersonation:role_play" },
-  { pattern: /pretend\s+(you\s+are|to\s+be)\s+/gi, label: "impersonation:pretend" },
-  { pattern: /(do\s+anything\s+now|dan\s+jailbreak)/gi, label: "jailbreak:dan" },
-  { pattern: /you\s+(are\s+)?(free|released)\s+(from|of)/gi, label: "jailbreak:release" },
+  { pattern: /system\s+prompts?:/i, label: "impersonation:system_prompt" },
+  { pattern: /you\s+(are\s+)?(now|will\s+now)\s+(an?\s+)?/i, label: "impersonation:you_are_now" },
+  { pattern: /act\s+as\s+(an?\s+)?/i, label: "impersonation:act_as" },
+  { pattern: /role[-\s]?play(\s+(as|that\s+you\s+are))?/i, label: "impersonation:role_play" },
+  { pattern: /pretend\s+(you\s+are|to\s+be)\s+/i, label: "impersonation:pretend" },
+  { pattern: /(do\s+anything\s+now|dan\s+jailbreak)/i, label: "jailbreak:dan" },
+  { pattern: /you\s+(are\s+)?(free|released)\s+(from|of)/i, label: "jailbreak:release" },
   {
-    pattern: /no\s+(rules|restrictions|boundaries|limitations|filter(s|ing)?)/gi,
+    pattern: /no\s+(rules|restrictions|boundaries|limitations|filter(s|ing)?)/i,
     label: "jailbreak:no_restrictions",
   },
-  { pattern: /new\s+(instructions|prompts?|directives?):/gi, label: "instruction_override:new" },
+  { pattern: /new\s+(instructions|prompts?|directives?):/i, label: "instruction_override:new" },
   {
     pattern:
-      /over[-\s]?ride\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+      /over[-\s]?ride\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/i,
     label: "instruction_override:override",
   },
-  { pattern: /^[=\-_*]{3,}$/gm, label: "boundary:separator" },
+  { pattern: /^[=\-_*]{3,}$/m, label: "boundary:separator" },
   {
-    pattern: /\{\{\s*(system_prompt|instructions|prompt|config)\s*\}\}/gi,
+    pattern: /\{\{\s*(system_prompt|instructions|prompt|config)\s*\}\}/i,
     label: "template_injection",
   },
 ];
@@ -142,6 +147,9 @@ export function detectInjectionPatterns(input: string): string[] {
   if (!input) return [];
   const matches: string[] = [];
   for (const { pattern, label } of PATTERN_DESCRIPTIONS) {
+    // Defensive lastIndex reset: module-level regexes shared across requests
+    // must never retain match state between calls (issue #3583).
+    pattern.lastIndex = 0;
     if (pattern.test(input)) {
       matches.push(label);
     }

@@ -280,6 +280,8 @@ export {
   HTML_AUTOCORRECT_VALUES,
   ENTER_KEY_HINTS,
   HTML_TEXT_DIRECTION,
+  DOM_ATTRIBUTES,
+  TAB_INDEX_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";
