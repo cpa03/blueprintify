@@ -30,6 +30,8 @@ import {
   SHORTCUT_LABELS,
   SVG_ICON_DEFAULTS,
   DATA_BOOLEAN_VALUES,
+  HTML_LINK_TARGETS,
+  HTML_LINK_RELS,
 } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
@@ -240,8 +242,8 @@ function HeaderComponent({
               matching the navigation affordance of the external destination. */}
           <a
             href={EXTERNAL_URLS.GITHUB}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={HTML_LINK_TARGETS.BLANK}
+            rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
             className="btn-ghost flex items-center gap-2 group relative overflow-hidden
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                        focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"

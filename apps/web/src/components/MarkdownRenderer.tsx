@@ -31,6 +31,8 @@ import {
   ARIA_ROLES,
   FRAMER_TYPE,
   DATA_BOOLEAN_VALUES,
+  HTML_LINK_TARGETS,
+  HTML_LINK_RELS,
 } from "@blueprint/shared/config";
 import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -459,8 +461,8 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
           <a
             href={href}
             className={`${MARKDOWN.LINK} group inline-flex items-center gap-0.5`}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={HTML_LINK_TARGETS.BLANK}
+            rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
           >
             {children}
             <span className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>

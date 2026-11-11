@@ -1482,6 +1482,29 @@ export const ARIA_BUSY_VALUES = {
 } as const;
 
 /**
+ * `aria-current` Attribute Values
+ * Centralized source of truth for the `aria-current` content attribute — the
+ * "which item is current in this set" flag exposed to assistive tech.
+ *
+ * Pairing contract: the value must describe the navigation context it marks.
+ * A typo'd `"step"` (e.g. `"Stepp"`, `"stpe"`) is an invalid token — the
+ * attribute is dropped from the accessibility tree entirely, so screen readers
+ * stop announcing the active wizard step while the visible pill styling (driven
+ * by the same `isActive` ternary) stays correct, with zero type errors. The
+ * `undefined` branch of the same ternary must stay paired with the constant on
+ * the active branch: drift one side and the step indicator reports a current
+ * item that is not visually current (or vice versa).
+ *
+ * Flexy says: No bare "step" aria-current value strings in components!
+ * Usage: import { ARIA_CURRENT_VALUES } from "@blueprint/shared";
+ *        <button aria-current={isActive ? ARIA_CURRENT_VALUES.STEP : undefined}>
+ */
+export const ARIA_CURRENT_VALUES = {
+  /** Current step in a multi-step wizard / process navigation */
+  STEP: "step" as const,
+} as const;
+
+/**
  * Start From Scratch Divider Button State Values
  * Centralized state tracking values for start-from-scratch divider button (StartFromScratchButton).
  * Flexy says: No hardcoded "idle" strings in StartFromScratchButton!
@@ -1709,4 +1732,50 @@ export const DOM_ATTRIBUTES = {
 export const TAB_INDEX_VALUES = {
   /** Leaves the sequential tab order while remaining programmatically focusable */
   NOT_FOCUSABLE: "-1" as const,
+} as const;
+
+/**
+ * HTML Anchor `target` Attribute Values
+ * Centralized source of truth for the `target` content attribute on `<a>`
+ * elements that open a new browsing context.
+ *
+ * Pairing contract: every `_blank` target MUST ship alongside the hardening
+ * `rel` token list in `HTML_LINK_RELS.NOOPENER_NOREFERRER`. The two attributes
+ * are a security pair — a typo'd target (e.g. `"_blnak"`) silently falls back
+ * to same-tab navigation (no type error), while a bare `target="_blank"`
+ * without `noopener` hands the opened page a live `window.opener` reference
+ * (reverse tabnabbing: the new tab can navigate the original tab away) and
+ * leaks the referrer. Drift between paired sites means some external links are
+ * hardened and some are not, with zero type errors.
+ *
+ * Flexy says: No bare "_blank" target value strings in components!
+ * Usage: import { HTML_LINK_TARGETS, HTML_LINK_RELS } from "@blueprint/shared";
+ *        <a target={HTML_LINK_TARGETS.BLANK} rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}>
+ */
+export const HTML_LINK_TARGETS = {
+  /** Open in a new tab/window — requires HTML_LINK_RELS.NOOPENER_NOREFERRER */
+  BLANK: "_blank" as const,
+} as const;
+
+/**
+ * HTML Anchor `rel` Attribute Values (link hardening token list)
+ * Centralized source of truth for the space-separated `rel` token list applied
+ * to anchors that use `HTML_LINK_TARGETS.BLANK`.
+ *
+ * Security contract: `noopener` strips the new tab's `window.opener` handle
+ * (reverse-tabnabbing defense), `noreferrer` additionally suppresses the
+ * Referer header. A typo'd token (e.g. `"noopener "` with a mangled word, or
+ * dropping one half of the pair) is simply an unrecognized rel token — the
+ * browser silently applies no protection, the external page keeps its opener
+ * reference, and nothing fails to compile. The value must stay byte-identical
+ * across every `_blank` site (Header, App footer, Markdown-rendered user
+ * content) so user-generated links get the same hardening as first-party ones.
+ *
+ * Flexy says: No bare "noopener noreferrer" rel value strings in components!
+ * Usage: import { HTML_LINK_TARGETS, HTML_LINK_RELS } from "@blueprint/shared";
+ *        <a target={HTML_LINK_TARGETS.BLANK} rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}>
+ */
+export const HTML_LINK_RELS = {
+  /** Hardening tokens required whenever HTML_LINK_TARGETS.BLANK is used */
+  NOOPENER_NOREFERRER: "noopener noreferrer" as const,
 } as const;
