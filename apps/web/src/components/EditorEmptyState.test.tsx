@@ -79,6 +79,20 @@ vi.mock("framer-motion/m", () => ({
       return <h3 {...props}>{children}</h3>;
     }
   ),
+  button: vi.fn(
+    ({
+      children,
+      animate,
+      ...props
+    }: {
+      children?: ReactNode;
+      animate?: unknown;
+      [key: string]: unknown;
+    }) => {
+      capturedAnimateProps.push(animate);
+      return <button {...props}>{children}</button>;
+    }
+  ),
 }));
 
 const mockWizardStore: WizardStore = {
@@ -180,6 +194,28 @@ describe("EditorEmptyState", () => {
     expect(shortcutBadges[0]).toHaveAttribute("data-shortcut-key", "kb");
     expect(shortcutBadges[1]).toHaveAttribute("data-shortcut-key", "submit");
     expect(shortcutBadges[2]).toHaveAttribute("data-shortcut-key", "next");
+  });
+
+  it("renders the keyboard shortcuts badge as a non-interactive span without a callback", () => {
+    const { container } = render(<EditorEmptyState />);
+    const kbBadge = container.querySelector('[data-shortcut-key="kb"]');
+    expect(kbBadge).not.toBeNull();
+    expect(kbBadge?.tagName).not.toBe("BUTTON");
+  });
+
+  it("invokes onShowShortcuts when the keyboard shortcuts badge is clicked", () => {
+    const onShowShortcuts = vi.fn();
+    render(<EditorEmptyState onShowShortcuts={onShowShortcuts} />);
+    const button = screen.getByRole("button", { name: /keyboard shortcuts/i });
+    expect(button).toHaveAttribute("data-shortcut-key", "kb");
+    button.click();
+    expect(onShowShortcuts).toHaveBeenCalledTimes(1);
+  });
+
+  it("exposes the ? key on the shortcuts badge via aria-keyshortcuts when interactive", () => {
+    render(<EditorEmptyState onShowShortcuts={vi.fn()} />);
+    const button = screen.getByRole("button", { name: /keyboard shortcuts/i });
+    expect(button).toHaveAttribute("aria-keyshortcuts", "?");
   });
 
   it("renders without crashing when currentStep is the last step", () => {
