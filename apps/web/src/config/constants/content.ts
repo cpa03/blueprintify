@@ -206,6 +206,9 @@ export const CELEBRATION_TEXT = {
  */
 export const TOAST_MESSAGES = {
   COPY_SUCCESS: "Copied to clipboard",
+  // Announced via role="alert" when both clipboard paths fail — without it
+  // the editor Copy button fails silently (WCAG 4.1.3 Status Messages).
+  COPY_FAILURE: "Copy failed — try again",
   EXPORT_SUCCESS: "Project exported successfully!",
   EXPORT_FAILURE: EXPORT_ERROR_STRINGS.EXPORT_FAILED,
   NEW_PROJECT: "Started new project",
