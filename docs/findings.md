@@ -13006,3 +13006,36 @@ left to owning team per no-functionality-reduction constraint.
 
 **Result**: **1 PR merged** (#3995 `afb53ab`, branch deleted) · 0 issue mutations (blocked) · 0 labels changed · baselines green (3,060 tests) · Step 4 patch prepared+rejected (workflows write) · this docs-only log PR opened for human review.
 **Final state**: **blocked** — (1) Steps 1–3 need `issues: write`; (2) Step 4 AC3 needs `workflows: write`.
+
+## Issue Manager ULW Loop — PR Handler + Repair Cycle (2026-11-12 afternoon)
+
+**Phase 0 (entry decision)**: `gh pr list --state open` → **2 open PRs** (#3996 created 06:20:24Z, #3997 created 06:25:29Z) → **PR HANDLER MODE** (Phases 1–3 STOPPED). DEFAULT_BRANCH `main`. Run context: `on-pull.yml` `pull` workflow, event `schedule` (cron), token `github-actions[bot]`.
+
+**PR Handler action log (UTC)**:
+- `15:48` Phase 0 → sort by created → target **#3997** (06:25:29Z latest); env `npm ci` exit 0
+- `15:49` #3997 sync → merge-base == `origin/main` tip (`afb53ab`) **0-behind**, MERGEABLE, docs-only (+`CHANGELOG.md` +2, `docs/bugs.md` ±6, `docs/knowledge-review.md` ±8 = +9/−7, 0 deletions), 0 review threads (bot deploy comments only), no security-sensitive change; 4 checks green (Cloudflare Pages, Vercel, Vercel Preview Comments, Workers Builds) + 2 `action_required` workflow runs — **established repo norm** (verified #3993/#3994/#3995 merged in identical check state)
+- `15:53` #3997 gates → typecheck exit 0 · lint exit 0 (0 err/0 warn) · build exit 0 · `test:all` exit 0 = **3,060 tests** (web 1,430/92 + api 558/35 + shared 1,072/5)
+- `15:54` #3997 labels normalized (was 0 labels) → **docs + P3** per contract label mandate; `gh pr merge 3997 --admin --squash --delete-branch` → **MERGED** `7062f6fd`, branch deleted, linked issues 0
+- `15:55` #3996 sync → 1 commit `9acd2d26` on `afb53ab` base, 1 file `docs/findings.md` +40; merged `origin/main` in clean `ort` merge (+3 files from #3997, disjoint paths, 0 conflicts); gates typecheck/lint/build exit 0 (0 warnings); push green (pre-push hook re-ran full `npm run check`: scan:secrets 356 files, audit 0 vulns, 3,060 tests)
+- `15:56` #3996 first merge attempt → **BLOCKED** (repo rule: Cloudflare Pages in progress + active preview deployment required) → waited for new-commit checks
+- `16:00` #3996 checks all 4 green → `gh pr merge 3996 --admin --squash --delete-branch` → **MERGED** `3b9f0398`, branch deleted
+- `16:01` Phase 0 re-entry → **0 open PRs** · **150 open issues** → **ISSUE MANAGER MODE** (Phases 1–3 STOPPED)
+
+**Issue Manager action log (UTC)**:
+- `16:05` Step 1 write probe → `gh issue edit 3622 --add-label bug` → GraphQL **403 addLabelsToLabelable** ("Resource not accessible by integration") → **issues write BLOCKED (167th consecutive)**
+- `16:06` Step 1 dry-run → `node scripts/normalize-issue-labels.mjs` → **136/150 issues** need category/priority changes (idempotent, staged for `--apply` when write returns; `--apply` BLOCKED)
+- `16:07` Steps 2–3 re-validation (report-only) → all duplicate-group members re-verified **OPEN** (26 checked: #890←848,930 · #852←1053 · #1082←857 · #1014←856 · #860←911 · #872←951,1019,1015 · #874←1052 · #858←896,909,910,1051 · #851←1084 · #849←953 · #1165) · clusters unchanged: OCR **49** · test-coverage **18/18** · CI-hardening **14/14** · share-route **15/15** · frontend polish **7/7** · unlabeled exactly **{#3622,#846,#847,#848,#849,#850}** · issue total 150→150 (0 new, 0 closed) · note: `gh issue list --label X` server-side filter returns empty/wrong — client-side jq filtering authoritative
+- `16:08` Step 4 selection → open P0 **none** · labeled P1 **{#1082, #1014}** → **#1082 re-verified CODE-RESOLVED** (17/17 logic hooks in `apps/web/src/hooks/` have sibling `*.test.ts`; only exception `index.ts` barrel; `useAutoSave.ts`/`usePersistedStore.ts`/`useKeyboardShortcuts.ts` do not exist — actual `useAutoSaveToast.ts` has suite; `usePersistedStore` 0 residual repo-wide) → repair target **#1014**
+- `16:09` #1014 AC re-verify → AC1 ✅ `playwright.config.ts` exists · AC2 ✅ **45/45 testable components** have sibling tests (only `App.tsx`/`main.tsx` entrypoints lack; 46 `.test.tsx` + 17 hook suites) · AC3 ❌ `.github/workflows/pr-gatekeeper.yml:130` still `npm run build && npm run typecheck` (no workflow runs tests on PRs/main — verified main.yml/parallel.yml/iterate.yml/on-pull.yml) · AC4 ✅ `docs/testing-procedures.md`
+- `16:10` #1014 repair attempt → branch `agent/fix-1014-ac3-gatekeeper` from `origin/main` → patched Final Integrity Check → `... && npm run test:coverage` → YAML validated (`python3 yaml` + `js-yaml` OK) → commit `2525cbd8` → pre-push full `npm run check` green (3,060 tests) → push **REJECTED** `refusing to allow a GitHub App to create or update workflow .github/workflows/pr-gatekeeper.yml without workflows permission` · remote ref never created (`git ls-remote` empty) · local branch deleted → **workflows write BLOCKED (re-confirmed)**
+- `16:12` bonus re-verification → **#847 also CODE-RESOLVED** (`apps/api/src/middleware/auth.ts:137` "SECURITY FIX: Reject requests when API_KEY is not configured instead of bypassing auth"; issue's quoted `if (!validKey) { await next(); }` bypass no longer exists; 503 when unset) — add to close-when-write-returns list alongside #1082; label script maps it `+security,P1`
+
+**Steps 1–3 BLOCKED — 167th consecutive**: `issues: write` absent for `github-actions[bot]` GITHUB_TOKEN in `on-pull.yml` (permissions: contents/pull-requests/actions(read)/repository-projects/id-token only). Label normalizations staged in `scripts/normalize-issue-labels.mjs --apply` (136 issues) — ready the instant `issues: write` is granted. Duplicate/consolidation results above are REPORT-ONLY (0 issues closed, 0 labels changed, 0 comments posted).
+
+**FAIL-SAFE (uncertainty, NOT acted on)**: (a) `issues: write` missing blocks Steps 1–3 + all closes/comments including this cycle's required issue-comment progress report (167th) — workflow runs over untrusted `pull_request`/`schedule` content, widening token scope declined as security-sensitive; (b) `workflows: write` required for #1014-AC3/#849/#953 and cannot be self-granted. Both remain escalated as `docs/knowledge-review.md` DOC-001/DOC-002 (HUMAN ACTION REQUIRED).
+
+**Skills used**: `code-review-checklist` (PR #3997 + #3996 review: docs-only, no code paths touched, tests included+passing ✅, project standards ✅ → no findings) · `ci-pipeline-update` (procedure steps 1–5: pipeline analyzed ✅ · gap confirmed AC3 ❌ · YAML drafted+validated ✅ · push-to-branch ❌ platform-blocked, re-probed this cycle) · project script `normalize-issue-labels.mjs` (Step 1 dry-run, 136 staged).
+**Subagents used**: none this cycle (2-PR handler + issue inventory completed directly from `gh`/git output; no parallel tracks needed).
+
+**Result**: **2 PRs merged** (#3997 `7062f6fd`, #3996 `3b9f0398`, both branches deleted, labels normalized docs+P3) · 0 issue mutations (blocked) · baselines green (3,060 tests) · Step 4 patch prepared+rejected (workflows write) · #847 code-resolved discovered · this docs-only log PR opened for human review.
+**Final state**: **blocked** — (1) Steps 1–3 need `issues: write`; (2) Step 4 AC3 needs `workflows: write`.
