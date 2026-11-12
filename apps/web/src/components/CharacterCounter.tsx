@@ -189,7 +189,9 @@ function CharacterCounterCompactComponent({
   className = "",
   descriptionId,
 }: Omit<CharacterCounterProps, "min" | "warningThreshold">) {
-  const percentage = (current / max) * PERCENT_SCALE;
+  // Guard non-positive max: (current / max) would be NaN/Infinity and render
+  // an invalid `width: NaN%` style (issue #3591).
+  const percentage = max > 0 ? (current / max) * PERCENT_SCALE : 0;
   const isWarning =
     percentage >= CHAR_COUNTER_THRESHOLDS.WARNING_PERCENT &&
     percentage < CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT;
@@ -211,13 +213,15 @@ function CharacterCounterCompactComponent({
         : CHAR_COUNTER_STATE_VALUES.DEFAULT;
 
   // Mirrors the main counter's threshold-only announcement policy (see above).
+  // `isAtLimit` (not `remaining === 0`) so pasted over-limit text — where
+  // remaining is negative — announces "limit reached" instead of a negative
+  // remainder (issue #3591).
   const compactCountLabel = `${current} of ${max} character${max !== 1 ? "s" : ""} used`;
-  const compactAnnouncement =
-    remaining === 0
-      ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED}`
-      : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
-        ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)}`
-        : "";
+  const compactAnnouncement = isAtLimit
+    ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED}`
+    : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
+      ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)}`
+      : "";
 
   return (
     <div
