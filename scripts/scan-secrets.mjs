@@ -286,7 +286,7 @@ function main() {
 
   if (findings.length === 0) {
     console.log(`✅ Secrets scan passed — no secrets detected (${allFiles.length} files in ${elapsed}ms).`);
-    process.exit(0);
+    return;
   }
 
   console.error(`❌ Secrets scan detected ${findings.length} potential secret(s):\n`);
@@ -298,7 +298,10 @@ function main() {
       `   If it is a false positive, add the file path to ALLOWED_PATHS in scripts/scan-secrets.mjs.\n` +
       `   Scanned ${allFiles.length} files in ${elapsed}ms.`
   );
-  process.exit(1);
+  // Set the exit code instead of calling process.exit(): with piped stdout/stderr
+  // (CI log collectors) an immediate exit can truncate buffered output, hiding
+  // the findings report above. Natural exit flushes everything first.
+  process.exitCode = 1;
 }
 
 main();
