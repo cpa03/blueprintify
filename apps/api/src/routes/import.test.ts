@@ -13,7 +13,7 @@ import {
   CONTEXT_KEYS,
   AUTH_DEFAULTS,
 } from "@blueprint/shared";
-import { IMPORT_CONFIG } from "../config/constants";
+import { IMPORT_CONFIG, IMPORT_REGEX } from "../config/constants";
 import type { User } from "../types";
 import type { AppVariables } from "../types";
 
@@ -374,5 +374,37 @@ Only blueprint, no tasks section
     };
     expect(data.data.blueprint).toContain("## Overview");
     expect(data.data.blueprint).toContain("Only blueprint, no tasks section");
+  });
+});
+
+describe("IMPORT_REGEX.PROJECT_NAME (#3580)", () => {
+  const extract = (markdown: string): string | null => {
+    const match = IMPORT_REGEX.PROJECT_NAME.exec(markdown);
+    return match?.[1]?.trim() ?? null;
+  };
+
+  it("extracts a spaced H1 title", () => {
+    expect(extract("# My Project")).toBe("My Project");
+  });
+
+  it("does not consume the first title character when no space follows #", () => {
+    expect(extract("#My Project")).toBe("My Project");
+  });
+
+  it("matches a single-character title with and without a space", () => {
+    expect(extract("# A")).toBe("A");
+    expect(extract("#A")).toBe("A");
+  });
+
+  it("never matches H2 headings", () => {
+    expect(extract("## Blueprint")).toBeNull();
+  });
+
+  it("does not cross a newline to capture the next line as the title", () => {
+    expect(extract("#\n## Blueprint")).toBeNull();
+  });
+
+  it("does not match a bare hash", () => {
+    expect(extract("#")).toBeNull();
   });
 });

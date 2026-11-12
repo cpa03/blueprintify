@@ -85,7 +85,11 @@ export const IMPORT_CONFIG = {
  * Import regex patterns.
  */
 export const IMPORT_REGEX = {
-  PROJECT_NAME: /^#[^#](.+)$/m,
+  // Zero-width `#(?!#)` + `[ \t]*` (NOT `[^#]`/`\s*`): the old consuming `[^#]`
+  // ate the first title character when no space followed `#` (`#My App` →
+  // `y App`), and `\s*` could cross a newline and capture the next line
+  // (issue #3580).
+  PROJECT_NAME: /^#(?!#)[ \t]*(.+)$/m,
   // Blueprint ends only at the following exported section (`## Tasks`) or EOF —
   // never at an arbitrary internal H2 (e.g. `## Overview`) inside the blueprint
   // body (issue #3580). Tasks is the final exported section, so capture to EOF.
