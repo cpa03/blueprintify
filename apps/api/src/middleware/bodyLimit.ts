@@ -32,6 +32,12 @@ interface BodyLimitConfig {
 
 const DEFAULT_MAX_SIZE = BODY_SIZE_MAX.DEFAULT;
 
+/** Transfer-Encoding header (lowercase form used by Hono's header lookup). */
+const TRANSFER_ENCODING_HEADER = "transfer-encoding";
+
+/** Strict digits only — rejects negative ("−1"), signed ("+5") and malformed values. */
+const POSITIVE_LENGTH_PATTERN = /^\d+$/;
+
 /**
  * Creates a body size limit middleware for Hono applications.
  *
@@ -52,7 +58,9 @@ const DEFAULT_MAX_SIZE = BODY_SIZE_MAX.DEFAULT;
  *
  * @security
  * - Prevents DoS attacks via large request bodies
- * - Checks Content-Length header before body parsing
+ * - Trusts Content-Length only when it is strictly numeric and no
+ *   Transfer-Encoding is present; otherwise enforces the limit against the
+ *   actual consumed bytes (chunked / missing / forged headers cannot bypass)
  * - Returns standard 413 error for oversized payloads
  */
 export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
@@ -67,21 +75,61 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
       return;
     }
 
-    // Check Content-Length header
+    const payloadTooLarge = (actualSize: number) =>
+      c.json(
+        createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.BODY_TOO_LARGE(maxSize), {
+          code: ERROR_CODES.PAYLOAD_TOO_LARGE,
+          details: { maxSize, actualSize },
+        }),
+        HTTP_STATUS.PAYLOAD_TOO_LARGE
+      );
+
+    // Fast path: the declared length is trustworthy only when it is strictly
+    // numeric and the body is not chunked (a chunked framing makes any
+    // Content-Length advisory, per RFC 9112 §6.1).
     const contentLength = c.req.header(API_HEADERS.REQUEST.CONTENT_LENGTH);
+    const hasTransferEncoding = c.req.header(TRANSFER_ENCODING_HEADER) !== undefined;
+    const trustedLength =
+      contentLength !== undefined &&
+      !hasTransferEncoding &&
+      POSITIVE_LENGTH_PATTERN.test(contentLength);
 
-    if (contentLength) {
+    if (trustedLength) {
       const size = parseInt(contentLength, NUMBER_RADIX.DECIMAL);
-
-      if (!isNaN(size) && size > maxSize) {
-        return c.json(
-          createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.BODY_TOO_LARGE(maxSize), {
-            code: ERROR_CODES.PAYLOAD_TOO_LARGE,
-            details: { maxSize, actualSize: size },
-          }),
-          HTTP_STATUS.PAYLOAD_TOO_LARGE
-        );
+      if (size > maxSize) {
+        return payloadTooLarge(size);
       }
+      await next();
+      return;
+    }
+
+    // Enforcement path: header absent, chunked, or malformed/negative —
+    // count the real bytes before handing the body to downstream handlers.
+    // Mirrors hono's built-in body-limit stream handling.
+    const body = c.req.raw.body;
+    if (body) {
+      const reader = body.getReader();
+      const chunks: Uint8Array[] = [];
+      let size = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.length;
+        if (size > maxSize) {
+          return payloadTooLarge(size);
+        }
+        chunks.push(value);
+      }
+      const init: RequestInit & { duplex?: "half" } = {
+        body: new ReadableStream({
+          start(controller) {
+            for (const chunk of chunks) controller.enqueue(chunk);
+            controller.close();
+          },
+        }),
+        duplex: "half",
+      };
+      c.req.raw = new Request(c.req.raw, init);
     }
 
     await next();

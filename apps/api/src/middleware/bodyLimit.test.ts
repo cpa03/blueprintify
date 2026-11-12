@@ -133,6 +133,83 @@ describe("bodyLimit middleware", () => {
       expect(res.status).toBe(HTTP_STATUS.OK);
       expect(res.headers.get("x-custom")).toBe("middleware-passed");
     });
+
+    it("should reject oversized body when Content-Length header is missing (#3588)", async () => {
+      const app = new Hono();
+      app.use("*", bodyLimit({ maxSize: 100 }));
+      app.post("/", async (c) => c.json({ success: true }));
+
+      const res = await app.request("/", {
+        method: HTTP_METHODS.POST,
+        body: "x".repeat(200),
+        // No content-length header → actual bytes are counted
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.PAYLOAD_TOO_LARGE);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.error.code).toBe(ERROR_CODES.PAYLOAD_TOO_LARGE);
+      const details = data.error.details as Record<string, unknown>;
+      expect(details.maxSize).toBe(100);
+      expect(details.actualSize).toBeGreaterThanOrEqual(100);
+    });
+
+    it("should reject oversized body behind a forged negative Content-Length (#3588)", async () => {
+      const app = new Hono();
+      app.use("*", bodyLimit({ maxSize: 100 }));
+      app.post("/", async (c) => c.json({ success: true }));
+
+      const res = await app.request("/", {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "-1" },
+        body: "x".repeat(200),
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.PAYLOAD_TOO_LARGE);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.error.code).toBe(ERROR_CODES.PAYLOAD_TOO_LARGE);
+    });
+
+    it("should not trust Content-Length when Transfer-Encoding is present (#3588)", async () => {
+      const app = new Hono();
+      app.use("*", bodyLimit({ maxSize: 100 }));
+      app.post("/", async (c) => c.json({ success: true }));
+
+      // Declared length would pass the fast path — chunked framing makes it
+      // advisory, so the real bytes must be counted instead.
+      const res = await app.request("/", {
+        method: HTTP_METHODS.POST,
+        headers: {
+          [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "5",
+          "transfer-encoding": "chunked",
+        },
+        body: "x".repeat(200),
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.PAYLOAD_TOO_LARGE);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.error.code).toBe(ERROR_CODES.PAYLOAD_TOO_LARGE);
+    });
+
+    it("should keep the body readable downstream when the header is untrusted (#3588)", async () => {
+      const app = new Hono();
+      app.use("*", bodyLimit({ maxSize: 100 }));
+      app.post("/", async (c) => {
+        const body = await c.req.text();
+        return c.json({ success: true, length: body.length, content: body });
+      });
+
+      const res = await app.request("/", {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "not-a-number" },
+        body: "abc",
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.OK);
+      const data = (await res.json()) as { success: boolean; length: number; content: string };
+      expect(data.success).toBe(true);
+      expect(data.length).toBe(3);
+      expect(data.content).toBe("abc");
+    });
   });
 
   describe("bodyLimitConfigs", () => {
