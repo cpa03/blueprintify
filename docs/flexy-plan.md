@@ -34,7 +34,7 @@ Deliberately skipped: test files (`MarkdownRenderer.test.tsx:186` `toHaveAttribu
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-218-link-loading-media` | refactor(flexy): centralize HTML loading/decoding attribute values & link-element IDL property assignments (Iteration 218) |
+| #4004 | `flexy/iteration-218-link-loading-media` | refactor(flexy): centralize HTML loading/decoding attribute values & link-element IDL property assignments (Iteration 218) |
 
 ### ✅ Flexy Iteration 217: Centralize Anchor `target`/`rel` Hardening & `aria-current` JSX Attribute-Value Literals
 
