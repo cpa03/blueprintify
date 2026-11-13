@@ -82,7 +82,7 @@ The repository relies on three quality/security gates. Their enforcement layers 
 ### #849 / #953 — `test:all` not enforced in CI (gatekeeper can auto-merge failing-test PRs)
 
 - `pr-gatekeeper.yml` STAGE 1 Health Checks (L58–66) run only `typecheck` / `lint` / `build`; L131 Final Integrity runs `build && typecheck` — **no `test:all`**. A PR whose changes break tests can pass the gatekeeper.
-- **Local mitigation active:** `.husky/pre-push` runs `npm run check` which includes `test:all` (2,600+ tests passing on main).
+- **Local mitigation active:** `.husky/pre-push` runs `npm run check` which includes `test:all` (3,062 tests passing on main).
 - **Fix (deferred):** add `npm run test:all` to `pr-gatekeeper.yml` STAGE 1. **Push-blocked** on `workflows:write` (same as above).
 
 ### Required human action

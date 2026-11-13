@@ -1,5 +1,9 @@
 import { StrictMode } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import {
+  DOM_EVENTS,
+  HTML_LINK_ELEMENT_RELS,
+  HTML_LINK_MEDIA_VALUES,
+} from "@blueprint/shared/config";
 import { createRoot } from "react-dom/client";
 import { LazyMotion } from "framer-motion";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -100,11 +104,11 @@ function loadMonoFont(): void {
   if (document.getElementById("font-mono")) return;
   const link = document.createElement("link");
   link.id = "font-mono";
-  link.rel = "stylesheet";
+  link.rel = HTML_LINK_ELEMENT_RELS.STYLESHEET;
   link.href = MONO_FONT_HREF;
-  link.media = "print";
+  link.media = HTML_LINK_MEDIA_VALUES.PRINT;
   link.onload = (): void => {
-    link.media = "all";
+    link.media = HTML_LINK_MEDIA_VALUES.ALL;
   };
   document.head.appendChild(link);
 }
