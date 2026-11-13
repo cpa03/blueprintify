@@ -1779,3 +1779,134 @@ export const HTML_LINK_RELS = {
   /** Hardening tokens required whenever HTML_LINK_TARGETS.BLANK is used */
   NOOPENER_NOREFERRER: "noopener noreferrer" as const,
 } as const;
+
+/**
+ * HTML `loading` Attribute Values (image/frame deferred-loading hint)
+ * Centralized source of truth for the `loading` content attribute on `<img>`
+ * (and `<iframe>`/`<video>`) elements.
+ *
+ * Pairing contract: the browser parses `loading` as an enumerated attribute —
+ * a typo'd `"lazy"` (e.g. `"layz"`, `"Lazy"`) is an invalid value that the
+ * browser silently treats as `eager`, so every image on the page loads
+ * immediately with zero type errors (a bandwidth/UX regression that only shows
+ * up as worse LCP on slow connections). The inverse drift (`LAZY` → forced
+ * `EAGER`) defeats intentional deferred loading of user-generated markdown
+ * images. All `<img>` sites in the app must resolve to the same token so
+ * deferred-loading behavior never drifts per-site.
+ *
+ * Flexy says: No bare "lazy"/"eager" loading value strings in components!
+ * Usage: import { HTML_LOADING_VALUES } from "@blueprint/shared";
+ *        <img loading={HTML_LOADING_VALUES.LAZY} decoding={HTML_DECODING_VALUES.ASYNC}>
+ */
+export const HTML_LOADING_VALUES = {
+  /** Defer offscreen fetch until the browser's idle/load heuristic fires */
+  LAZY: "lazy" as const,
+  /** Fetch immediately regardless of viewport position */
+  EAGER: "eager" as const,
+} as const;
+
+/**
+ * HTML `loading`-sibling `decoding` Attribute Values (image decode hint)
+ * Centralized source of truth for the `decoding` content attribute on `<img>`
+ * elements.
+ *
+ * Pairing contract: `decoding` is an enumerated attribute — a typo'd `"async"`
+ * (e.g. `"asyc"`, `"Asyn"`) is invalid and the browser falls back to its
+ * default decode policy, silently decoding images synchronously on the main
+ * thread (input jank during markdown scroll) with zero type errors. The
+ * `ASYNC`/`SYNC` branches must stay distinct so the intentional non-blocking
+ * decode of user-generated images is observable and never silently becomes
+ * the blocking path.
+ *
+ * Flexy says: No bare "async"/"sync"/"auto" decoding value strings in components!
+ * Usage: import { HTML_DECODING_VALUES } from "@blueprint/shared";
+ *        <img loading={HTML_LOADING_VALUES.LAZY} decoding={HTML_DECODING_VALUES.ASYNC}>
+ */
+export const HTML_DECODING_VALUES = {
+  /** Decode off the main thread after the image is fetched (preferred) */
+  ASYNC: "async" as const,
+  /** Decode synchronously on the main thread before presenting */
+  SYNC: "sync" as const,
+  /** Let the browser choose (spec default when attribute is absent) */
+  AUTO: "auto" as const,
+} as const;
+
+/**
+ * HTML `<link>` Element `rel` IDL-Property Values
+ * Centralized source of truth for the `rel` relationship written to
+ * `HTMLLinkElement.rel` (IDL property assignment, not a JSX attribute).
+ *
+ * Pairing contract: `useFaviconStatus` creates its status-swap link with
+ * `link.rel = ICON` and the FAVICON_CONFIG.LINK_SELECTOR CSS selector
+ * (`link[rel="icon"][type="image/svg+xml"]`) must byte-match that write —
+ * a typo on either side means `querySelector` never re-finds the link the
+ * hook itself appended, so each status transition stacks a *new* duplicate
+ * `<link>` in `<head>` while the original keeps showing the stale favicon.
+ * `main.tsx`'s mono-font loader pairs `STYLESHEET` with the `href`/`media`
+ * write: a typo'd rel leaves the font CSS fetched-but-never-applied (the
+ * stylesheet is inert without the `stylesheet` relationship) with zero type
+ * errors. Drift between the favicon and stylesheet sites means one link
+ * element works and the other silently no-ops.
+ *
+ * Flexy says: No bare "icon"/"stylesheet" rel strings on link elements!
+ * Usage: import { HTML_LINK_ELEMENT_RELS } from "@blueprint/shared";
+ *        link.rel = HTML_LINK_ELEMENT_RELS.ICON;
+ *        link.rel = HTML_LINK_ELEMENT_RELS.STYLESHEET;
+ */
+export const HTML_LINK_ELEMENT_RELS = {
+  /** Favicon relationship — pairs with FAVICON_CONFIG.LINK_SELECTOR + HTML_LINK_ELEMENT_TYPES.SVG_XML */
+  ICON: "icon" as const,
+  /** CSS stylesheet relationship — required before link.href is applied */
+  STYLESHEET: "stylesheet" as const,
+} as const;
+
+/**
+ * HTML `<link>` Element `type` IDL-Property Values
+ * Centralized source of truth for the MIME `type` written to
+ * `HTMLLinkElement.type` (IDL property assignment).
+ *
+ * Pairing contract: `useFaviconStatus` writes `link.type = SVG_XML` so its
+ * link matches FAVICON_CONFIG.LINK_SELECTOR (`link[rel="icon"][type=
+ * "image/svg+xml"]`). A typo'd MIME (e.g. `"image/svg"`, `"image/svg+xml;
+ * charset=utf-8"`) breaks the selector match — the hook stacks duplicate
+ * links on every generation-status transition while the visible favicon
+ * never updates — and some browsers skip applying SVG favicons whose declared
+ * type does not match the served Content-Type. Must stay byte-identical to
+ * the selector fragment and to the file actually served.
+ *
+ * Flexy says: No bare "image/svg+xml" type strings on link elements!
+ * Usage: import { HTML_LINK_ELEMENT_TYPES } from "@blueprint/shared";
+ *        link.type = HTML_LINK_ELEMENT_TYPES.SVG_XML;
+ */
+export const HTML_LINK_ELEMENT_TYPES = {
+  /** SVG favicon MIME type — pairs with HTML_LINK_ELEMENT_RELS.ICON + FAVICON_CONFIG.LINK_SELECTOR */
+  SVG_XML: "image/svg+xml" as const,
+} as const;
+
+/**
+ * HTML `<link>` Element `media` IDL-Property Values (print→all font-swap pair)
+ * Centralized source of truth for the `media` query written to
+ * `HTMLLinkElement.media` (IDL property assignment).
+ *
+ * Pairing contract: `main.tsx`'s mono-font loader uses the non-blocking
+ * print-media pattern — attach the stylesheet with `media = PRINT` (the CSS
+ * downloads but does not apply during initial render), then flip to
+ * `media = ALL` inside `onload` so the font only affects layout once parsed.
+ * The two writes are a *pair*: a typo on the initial write (e.g. `"pritn"`)
+ * makes the browser treat the media query as unmatched and never fetch the
+ * font; a typo on the onload flip (e.g. `"a11"`) leaves the stylesheet stuck
+ * in print-only mode so the font never applies to screen (only to print
+ * previews). Either drift ships a silently broken webfont with zero type
+ * errors while the `<link>` element itself looks healthy in DevTools.
+ *
+ * Flexy says: No bare "print"/"all" media strings on link elements!
+ * Usage: import { HTML_LINK_MEDIA_VALUES } from "@blueprint/shared";
+ *        link.media = HTML_LINK_MEDIA_VALUES.PRINT;
+ *        link.onload = () => { link.media = HTML_LINK_MEDIA_VALUES.ALL; };
+ */
+export const HTML_LINK_MEDIA_VALUES = {
+  /** Initial non-blocking media query — stylesheet fetches but does not apply */
+  PRINT: "print" as const,
+  /** Post-load flip target — stylesheet applies to all media (screen included) */
+  ALL: "all" as const,
+} as const;

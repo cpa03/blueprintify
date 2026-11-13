@@ -204,6 +204,11 @@ import {
   ARIA_CURRENT_VALUES,
   HTML_LINK_TARGETS,
   HTML_LINK_RELS,
+  HTML_LOADING_VALUES,
+  HTML_DECODING_VALUES,
+  HTML_LINK_ELEMENT_RELS,
+  HTML_LINK_ELEMENT_TYPES,
+  HTML_LINK_MEDIA_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -5983,5 +5988,95 @@ describe("HTML_LINK_RELS (Flexy Iteration 217)", () => {
     expect(tokens).toContain("noopener");
     expect(tokens).toContain("noreferrer");
     expect(new Set(tokens).size).toBe(tokens.length);
+  });
+});
+
+describe("HTML_LOADING_VALUES (Flexy Iteration 218)", () => {
+  it("should have the exact lazy and eager values", () => {
+    expect(HTML_LOADING_VALUES.LAZY).toBe("lazy");
+    expect(HTML_LOADING_VALUES.EAGER).toBe("eager");
+  });
+
+  it("should have 2 unique entries", () => {
+    expect(Object.keys(HTML_LOADING_VALUES).length).toBe(2);
+    const values = Object.values(HTML_LOADING_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep LAZY and EAGER distinct so deferred-loading behavior stays observable", () => {
+    expect(HTML_LOADING_VALUES.LAZY).not.toBe(HTML_LOADING_VALUES.EAGER);
+    expect(HTML_LOADING_VALUES.LAZY).toBe(HTML_LOADING_VALUES.LAZY.toLowerCase());
+  });
+});
+
+describe("HTML_DECODING_VALUES (Flexy Iteration 218)", () => {
+  it("should have the exact async, sync, and auto values", () => {
+    expect(HTML_DECODING_VALUES.ASYNC).toBe("async");
+    expect(HTML_DECODING_VALUES.SYNC).toBe("sync");
+    expect(HTML_DECODING_VALUES.AUTO).toBe("auto");
+  });
+
+  it("should have 3 unique entries", () => {
+    expect(Object.keys(HTML_DECODING_VALUES).length).toBe(3);
+    const values = Object.values(HTML_DECODING_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep ASYNC and SYNC distinct so the non-blocking decode branch never collapses into the blocking path", () => {
+    expect(HTML_DECODING_VALUES.ASYNC).not.toBe(HTML_DECODING_VALUES.SYNC);
+    expect(HTML_DECODING_VALUES.ASYNC).toBe(HTML_DECODING_VALUES.ASYNC.toLowerCase());
+  });
+});
+
+describe("HTML_LINK_ELEMENT_RELS (Flexy Iteration 218)", () => {
+  it("should have the exact icon and stylesheet values", () => {
+    expect(HTML_LINK_ELEMENT_RELS.ICON).toBe("icon");
+    expect(HTML_LINK_ELEMENT_RELS.STYLESHEET).toBe("stylesheet");
+  });
+
+  it("should have 2 unique entries", () => {
+    expect(Object.keys(HTML_LINK_ELEMENT_RELS).length).toBe(2);
+    const values = Object.values(HTML_LINK_ELEMENT_RELS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep ICON byte-identical to the FAVICON_CONFIG.LINK_SELECTOR rel fragment so querySelector re-finds the hook-created link", () => {
+    expect(`link[rel="${HTML_LINK_ELEMENT_RELS.ICON}"]`).toContain('link[rel="icon"]');
+    expect(HTML_LINK_ELEMENT_RELS.ICON).toBe("icon");
+  });
+});
+
+describe("HTML_LINK_ELEMENT_TYPES (Flexy Iteration 218)", () => {
+  it("should have the exact SVG MIME value", () => {
+    expect(HTML_LINK_ELEMENT_TYPES.SVG_XML).toBe("image/svg+xml");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_LINK_ELEMENT_TYPES).length).toBe(1);
+  });
+
+  it("should keep SVG_XML byte-identical to the FAVICON_CONFIG.LINK_SELECTOR type fragment", () => {
+    expect(`[type="${HTML_LINK_ELEMENT_TYPES.SVG_XML}"]`).toContain('[type="image/svg+xml"]');
+    expect(HTML_LINK_ELEMENT_TYPES.SVG_XML).toContain("/");
+    expect(HTML_LINK_ELEMENT_TYPES.SVG_XML).toBe(HTML_LINK_ELEMENT_TYPES.SVG_XML.toLowerCase());
+  });
+});
+
+describe("HTML_LINK_MEDIA_VALUES (Flexy Iteration 218)", () => {
+  it("should have the exact print and all values", () => {
+    expect(HTML_LINK_MEDIA_VALUES.PRINT).toBe("print");
+    expect(HTML_LINK_MEDIA_VALUES.ALL).toBe("all");
+  });
+
+  it("should have 2 unique entries", () => {
+    expect(Object.keys(HTML_LINK_MEDIA_VALUES).length).toBe(2);
+    const values = Object.values(HTML_LINK_MEDIA_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep PRINT and ALL distinct so the print→all font-swap pair stays observable", () => {
+    expect(HTML_LINK_MEDIA_VALUES.PRINT).not.toBe(HTML_LINK_MEDIA_VALUES.ALL);
+    expect(HTML_LINK_MEDIA_VALUES.PRINT).toBe(HTML_LINK_MEDIA_VALUES.PRINT.toLowerCase());
+    expect(HTML_LINK_MEDIA_VALUES.ALL).toBe(HTML_LINK_MEDIA_VALUES.ALL.toLowerCase());
   });
 });
