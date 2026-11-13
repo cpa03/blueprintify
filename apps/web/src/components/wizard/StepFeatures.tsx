@@ -163,6 +163,10 @@ export const StepFeatures = memo(function StepFeatures({
   );
 
   const handleAddAllSuggestions = useCallback(() => {
+    // Re-activation guard: the button uses aria-disabled (not native
+    // `disabled`) to keep focus after activation (WCAG 2.4.3), so blocking
+    // double activation is this handler's job — see the button below.
+    if (showAllAddedMsg || isAtMaxCount) return;
     const suggestionsToAdd = suggestedNotAdded;
     if (suggestionsToAdd.length === 0) return;
 
@@ -180,7 +184,7 @@ export const StepFeatures = memo(function StepFeatures({
 
     setShowAllAddedMsg(true);
     setTimeout(() => setShowAllAddedMsg(false), TIMEOUTS.TOAST_NOTIFICATION);
-  }, [suggestedNotAdded, addFeature]);
+  }, [suggestedNotAdded, addFeature, showAllAddedMsg, isAtMaxCount]);
 
   return (
     <motion.div
@@ -445,7 +449,12 @@ export const StepFeatures = memo(function StepFeatures({
               <motion.button
                 type={HTML_CONTROL_TYPES.BUTTON}
                 onClick={handleAddAllSuggestions}
-                disabled={showAllAddedMsg || isAtMaxCount}
+                // aria-disabled (not native disabled): the native attribute
+                // drops focus to <body> the instant this button flips to
+                // "All added!" on activation, stranding keyboard users
+                // (WCAG 2.4.3). handleAddAllSuggestions guards re-activation
+                // instead. Mirrors the StepInfo Next / TemplateGrid pattern.
+                aria-disabled={showAllAddedMsg || isAtMaxCount}
                 whileHover={
                   shouldReduceMotion || showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE
                 }
