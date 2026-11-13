@@ -206,6 +206,9 @@ export const CELEBRATION_TEXT = {
  */
 export const TOAST_MESSAGES = {
   COPY_SUCCESS: "Copied to clipboard",
+  // Announced via role="alert" when both clipboard paths fail — without it
+  // the editor Copy button fails silently (WCAG 4.1.3 Status Messages).
+  COPY_FAILURE: "Copy failed — try again",
   EXPORT_SUCCESS: "Project exported successfully!",
   EXPORT_FAILURE: EXPORT_ERROR_STRINGS.EXPORT_FAILED,
   NEW_PROJECT: "Started new project",
@@ -279,6 +282,10 @@ export const ACCESSIBILITY_LABELS = {
     COPY_FAILED_TITLE: "Copy failed",
     /** Screen reader announcement when copying a code block fails */
     COPY_FAILED_ANNOUNCEMENT: "Failed to copy code to clipboard",
+    /** Accessible name for the scrollable table region wrapper. The rows
+     *  contain no focusable elements, so the container itself is the tab
+     *  stop keyboard users land on to scroll an overflowing table. */
+    TABLE_REGION: "Scrollable table",
   },
   TOAST: {
     REGION: "Notifications",
@@ -442,6 +449,8 @@ export const ACCESSIBILITY_LABELS = {
     NEXT_DISABLED_ARIA: "Next button is disabled. Fill in the project name and description first.",
     FORM_READY_ANNOUNCEMENT:
       "Form complete. The Next button is now enabled to continue to the next step.",
+    PASTE_TRUNCATED: (max: number) =>
+      `Pasted content was truncated to fit the ${max} character limit`,
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",
@@ -513,6 +522,12 @@ export const CONFIRM_DIALOG_HINTS = {
 export const COPY_BUTTON_LABELS = {
   COPY: "Copy to clipboard",
   COPIED: "Copied to clipboard",
+  /**
+   * Announced when the button is inactive because there is nothing to copy.
+   * Mirrors EDITOR_LABELS.BUTTONS.EXPORT_NO_CONTENT_ARIA so keyboard and
+   * screen-reader users learn WHY the control is unavailable (WCAG 1.3.1).
+   */
+  NO_CONTENT: "Copy to clipboard (no content to copy)",
   /** Visual display text shown inside the copy button */
   DISPLAY_COPY: "Copy",
   /** Visual display text shown after successful copy */

@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, type RefObject } from "react";
 import { DOM_EVENTS } from "@blueprint/shared/config";
 import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
 import { FOCUSABLE_SELECTOR_STRING } from "../config/constants";
+import { DOM_ELEMENT_IDS } from "../config/constants/accessibility";
 
 /**
  * @fileoverview Hook for trapping focus within a container element
@@ -131,6 +132,14 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
 
       if (returnElement && document.contains(returnElement)) {
         returnElement.focus();
+      } else {
+        // WCAG 2.4.3 Focus Order: the trigger element may have unmounted while
+        // the dialog was open (e.g. ConfirmDialog's destructive confirm resets
+        // stores, which unmounts the "New Project" FAB that opened it). Without
+        // a fallback, focus drops to <body> and keyboard/screen-reader users
+        // lose their place entirely. Fall back to the main landmark (which
+        // carries tabIndex={-1}) so focus lands in a sensible location.
+        document.getElementById(DOM_ELEMENT_IDS.MAIN_CONTENT)?.focus();
       }
     };
   }, [isActive, returnFocusTo]);

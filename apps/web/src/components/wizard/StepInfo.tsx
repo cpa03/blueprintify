@@ -32,7 +32,13 @@ import {
   ARIA_REQUIRED_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  ENTER_KEY_HINTS,
   FRAMER_TYPE,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
+  HTML_CONTROL_TYPES,
+  HTML_TEXT_DIRECTION,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
@@ -42,6 +48,7 @@ import {
   UI_MESSAGES,
   UI_TIMEOUTS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -72,6 +79,7 @@ import {
   SCROLL_INTO_VIEW_BLOCK,
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
+  DOM_ELEMENT_IDS,
 } from "../../config/constants";
 import { getScrollBehavior } from "../../utils/scroll";
 import { STEP_INFO_LABELS } from "../../config/constants/validation";
@@ -79,6 +87,7 @@ import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { usePasteTruncation } from "../../hooks/usePasteTruncation";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
@@ -156,6 +165,12 @@ export const StepInfo = memo(function StepInfo({
     delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
+
+  // Browsers silently drop pasted content past maxLength. These paste-heavy
+  // textareas announce truncation via a shared polite live region below.
+  const descriptionPaste = usePasteTruncation(description, FORM_LIMITS.DESCRIPTION.MAX);
+  const constraintsPaste = usePasteTruncation(constraints, FORM_LIMITS.CONSTRAINTS.MAX);
+  const pasteAnnouncement = descriptionPaste.announcement || constraintsPaste.announcement;
 
   const hasAnyInput =
     projectName.length > 0 ||
@@ -317,12 +332,21 @@ export const StepInfo = memo(function StepInfo({
 
   const nextButton = (
     <RippleButton
-      type="submit"
-      disabled={!canProceed}
+      type={HTML_CONTROL_TYPES.SUBMIT}
+      // aria-disabled (not native disabled) so the button stays in the tab
+      // order and screen readers can announce WHY it is unavailable (WCAG
+      // 2.4.3 / 4.1.2). Native `disabled` removes the control from the tab
+      // order and silently drops focus to <body>. Mirrors the copy button
+      // (AnimatedCopyButton) and the StepStack Next button — handleSubmit
+      // below already guards on canProceed and answers an early activation
+      // with shake + focus-the-invalid-field feedback instead of silence.
+      aria-disabled={!canProceed}
       aria-label={canProceed ? undefined : ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_ARIA}
-      whileHover={{ ...HOVER_SCALE.MICRO, y: ANIMATION_Y_OFFSET.HOVER_LIFT }}
-      whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
-      className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
+      whileHover={
+        canProceed ? { ...HOVER_SCALE.MICRO, y: ANIMATION_Y_OFFSET.HOVER_LIFT } : undefined
+      }
+      whileTap={canProceed ? { ...TAP_SCALE.MICRO, y: 0 } : undefined}
+      className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : CSS_CLASSES.DISABLED_STATE} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
       aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
     >
       {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
@@ -362,7 +386,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {hasAnyInput && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   onClick={handleClearForm}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.MODAL }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -458,7 +482,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Project Name */}
         <div>
           <div className="flex justify-between items-center">
-            <label htmlFor="projectName" className="label flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME}
+              className="label flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
@@ -476,6 +503,7 @@ export const StepInfo = memo(function StepInfo({
               max={FORM_LIMITS.PROJECT_NAME.MAX}
               min={FORM_LIMITS.PROJECT_NAME.MIN}
               warningThreshold={FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_COUNTER}
             />
           </div>
           <div
@@ -483,20 +511,20 @@ export const StepInfo = memo(function StepInfo({
           >
             <motion.input
               ref={projectNameInputRef}
-              id="projectName"
+              id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME}
               name="projectName"
-              type="text"
-              autoComplete="off"
+              type={HTML_CONTROL_TYPES.TEXT}
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
               // Mobile keyboard hygiene: project names are often technical
               // identifiers. Without these, iOS/Android autocapitalize the
               // first letter and Safari autocorrect rewrites tokens
               // ("auth" -> "author"), mangling the typed name. Matches the
               // spellCheck={false} precedent in KeyboardShortcutsModal.
-              autoCapitalize="off"
-              autoCorrect="off"
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+              autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
               spellCheck={false}
-              enterKeyHint={canProceed ? "go" : "next"}
-              dir="auto"
+              enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={projectName}
               onKeyDown={handleProjectNameKeyDown}
               onChange={(e) => {
@@ -522,20 +550,23 @@ export const StepInfo = memo(function StepInfo({
               }
               transition={{ duration: ANIMATION.FAST }}
               aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
-              aria-describedby={
+              aria-describedby={[
+                DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_COUNTER,
                 projectNameErrorVisible
-                  ? "projectName-error"
+                  ? DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR
                   : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
                       projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
-                    ? "projectName-warning"
-                    : undefined
-              }
+                    ? DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING
+                    : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
               {projectName.length > 0 && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -569,7 +600,7 @@ export const StepInfo = memo(function StepInfo({
             {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
                 <motion.p
-                  id="projectName-warning"
+                  id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_WARNING}
                   role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
@@ -584,7 +615,7 @@ export const StepInfo = memo(function StepInfo({
           <AnimatePresence>
             {projectNameErrorVisible && (
               <motion.p
-                id="projectName-error"
+                id={DOM_ELEMENT_IDS.STEP_INFO_PROJECT_NAME_ERROR}
                 role={ARIA_ROLES.ALERT}
                 initial={{
                   opacity: 0,
@@ -609,7 +640,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Description */}
         <div>
           <div className="flex justify-between items-center">
-            <label htmlFor="description" className="label flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION}
+              className="label flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                 *
@@ -627,6 +661,7 @@ export const StepInfo = memo(function StepInfo({
               max={FORM_LIMITS.DESCRIPTION.MAX}
               min={FORM_LIMITS.DESCRIPTION.MIN}
               warningThreshold={DESCRIPTION_WARNING_THRESHOLD}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_COUNTER}
             />
           </div>
           <div
@@ -634,11 +669,19 @@ export const StepInfo = memo(function StepInfo({
           >
             <motion.textarea
               ref={descriptionRef}
-              id="description"
+              id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION}
               name="description"
-              autoComplete="off"
-              dir="auto"
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
+              // Prose field: sentence capitalization and spellcheck help users
+              // write a clear project description on mobile. This is the
+              // intentional opposite of the technical fields above (projectName,
+              // targetAudience, constraints), which disable these because they
+              // hold identifiers/tokens that autocorrect mangles.
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.SENTENCES}
+              spellCheck={true}
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={description}
+              onPaste={descriptionPaste.handlePaste}
               onChange={(e) => {
                 descriptionTyping.handleTyping(e.target.value);
                 setDescription(e.target.value);
@@ -666,20 +709,25 @@ export const StepInfo = memo(function StepInfo({
                 descriptionTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
               }
               transition={{ duration: ANIMATION.FAST }}
-              {...(descriptionErrorVisible
-                ? { "aria-describedby": "description-error" }
-                : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
-                    description.length < FORM_LIMITS.DESCRIPTION.MAX
-                  ? { "aria-describedby": "description-warning" }
-                  : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
-                    ? { "aria-describedby": "description-hint" }
-                    : {})}
+              aria-describedby={[
+                DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_COUNTER,
+                descriptionErrorVisible
+                  ? DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR
+                  : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
+                      description.length < FORM_LIMITS.DESCRIPTION.MAX
+                    ? DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING
+                    : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
+                      ? DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT
+                      : null,
+              ]
+                .filter(Boolean)
+                .join(" ")}
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
               {description.length > 0 && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -714,7 +762,7 @@ export const StepInfo = memo(function StepInfo({
               description.length < FORM_LIMITS.DESCRIPTION.MIN &&
               !descriptionErrorVisible && (
                 <motion.p
-                  id="description-hint"
+                  id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_HINT}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
@@ -731,7 +779,7 @@ export const StepInfo = memo(function StepInfo({
             {description.length >= DESCRIPTION_WARNING_THRESHOLD &&
               description.length < FORM_LIMITS.DESCRIPTION.MAX && (
                 <motion.p
-                  id="description-warning"
+                  id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_WARNING}
                   role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.RISE_TINY }}
                   animate={{ opacity: 1, y: 0 }}
@@ -746,7 +794,7 @@ export const StepInfo = memo(function StepInfo({
           <AnimatePresence>
             {descriptionErrorVisible && (
               <motion.p
-                id="description-error"
+                id={DOM_ELEMENT_IDS.STEP_INFO_DESCRIPTION_ERROR}
                 role={ARIA_ROLES.ALERT}
                 initial={{
                   opacity: 0,
@@ -771,7 +819,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Target Audience (Optional) */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="targetAudience" className="label mb-0 flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE}
+              className="label mb-0 flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
               <span className="text-dark-500">{UI_CONTENT.WIZARD.STEP_INFO.OPTIONAL_LABEL}</span>
               <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
@@ -782,17 +833,26 @@ export const StepInfo = memo(function StepInfo({
               warningThreshold={Math.floor(
                 FORM_LIMITS.TARGET_AUDIENCE.MAX * RATIO_LIMITS.FORM_WARNING
               )}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE_COUNTER}
             />
           </div>
           <div className="relative">
             <motion.input
               ref={targetAudienceInputRef}
-              id="targetAudience"
+              id={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE}
               name="targetAudience"
-              type="text"
-              autoComplete="off"
-              enterKeyHint={canProceed ? "go" : "next"}
-              dir="auto"
+              type={HTML_CONTROL_TYPES.TEXT}
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
+              // Mobile keyboard hygiene: target audience entries are often
+              // technical role tokens ("devops", "SRE", "frontend eng") that
+              // iOS/Android autocapitalize and Safari autocorrect rewrite
+              // ("devops" -> "DevOps", "SRE" -> "sore"). Matches the
+              // autoCapitalize/autoCorrect/spellCheck pattern on projectName.
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+              autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
+              spellCheck={false}
+              enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT}
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={targetAudience}
               onKeyDown={handleTargetAudienceKeyDown}
               onChange={(e) => {
@@ -803,6 +863,7 @@ export const StepInfo = memo(function StepInfo({
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER}
               className="input-field pr-10"
               maxLength={FORM_LIMITS.TARGET_AUDIENCE.MAX}
+              aria-describedby={DOM_ELEMENT_IDS.STEP_INFO_TARGET_AUDIENCE_COUNTER}
               animate={
                 targetAudienceTyping.isTyping
                   ? { scale: ANIMATION_SCALE.TYPING_PULSE }
@@ -813,7 +874,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {targetAudience && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -836,7 +897,10 @@ export const StepInfo = memo(function StepInfo({
         {/* Constraints (Optional) */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="constraints" className="label mb-0 flex items-center gap-2">
+            <label
+              htmlFor={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS}
+              className="label mb-0 flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL}{" "}
               <span className="text-dark-500">{UI_CONTENT.WIZARD.STEP_INFO.OPTIONAL_LABEL}</span>
               <TypeIndicator isTyping={constraintsTyping.isTyping} />
@@ -846,16 +910,21 @@ export const StepInfo = memo(function StepInfo({
               max={FORM_LIMITS.CONSTRAINTS.MAX}
               min={0}
               warningThreshold={Math.floor(FORM_LIMITS.CONSTRAINTS.MAX * RATIO_LIMITS.FORM_WARNING)}
+              descriptionId={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS_COUNTER}
             />
           </div>
           <div className="relative">
             <motion.textarea
               ref={constraintsRef}
-              id="constraints"
+              id={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS}
               name="constraints"
-              autoComplete="off"
-              dir="auto"
+              autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
+              autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+              autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
+              spellCheck={false}
+              dir={HTML_TEXT_DIRECTION.AUTO}
               value={constraints}
+              onPaste={constraintsPaste.handlePaste}
               onChange={(e) => {
                 constraintsTyping.handleTyping(e.target.value);
                 setConstraints(e.target.value);
@@ -864,6 +933,7 @@ export const StepInfo = memo(function StepInfo({
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
               className="textarea-field pr-10"
               maxLength={FORM_LIMITS.CONSTRAINTS.MAX}
+              aria-describedby={DOM_ELEMENT_IDS.STEP_INFO_CONSTRAINTS_COUNTER}
               animate={
                 constraintsTyping.isTyping ? { scale: ANIMATION_SCALE.TYPING_PULSE } : { scale: 1 }
               }
@@ -872,7 +942,7 @@ export const StepInfo = memo(function StepInfo({
             <AnimatePresence>
               {constraints && (
                 <motion.button
-                  type="button"
+                  type={HTML_CONTROL_TYPES.BUTTON}
                   initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -903,14 +973,14 @@ export const StepInfo = memo(function StepInfo({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                 description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-                position="left"
+                position={DIRECTION.LEFT}
               >
                 {nextButton}
               </KeyboardShortcutTooltip>
             ) : (
               <SmartTooltip
                 content={ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP}
-                position="left"
+                position={DIRECTION.LEFT}
                 delay={0}
               >
                 {nextButton}
@@ -943,6 +1013,18 @@ export const StepInfo = memo(function StepInfo({
         data-testid="form-ready-announcer"
       >
         {formReadyAnnouncement}
+      </div>
+      {/* Screen reader announcement for paste truncation — browsers silently
+          drop content past maxLength on paste, so without this the loss is
+          invisible to everyone. Polite: informative, not urgent. */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="paste-truncation-announcer"
+      >
+        {pasteAnnouncement}
       </div>
     </motion.div>
   );

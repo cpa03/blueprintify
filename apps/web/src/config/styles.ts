@@ -87,8 +87,10 @@ export const MARKDOWN = {
   /** Blockquote */
   BLOCKQUOTE:
     "border-l-4 border-purple-500 pl-4 py-2 my-4 bg-dark-800/50 rounded-r-md italic text-dark-300",
-  /** Table container */
-  TABLE_CONTAINER: "overflow-x-auto my-4",
+  /** Table container — scrollable, so it doubles as a keyboard-focusable
+   *  region and needs a visible (inset) focus ring for it (WCAG 2.1.1) */
+  TABLE_CONTAINER:
+    "overflow-x-auto my-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500/50",
   /** Table */
   TABLE: "min-w-full border-collapse border border-dark-700 rounded-lg overflow-hidden",
   /** Table head */

@@ -22,7 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, DIRECTION } from "@blueprint/shared/config";
 import {
   ANIMATION_ENTRANCE_DELAYS_MS,
   ARIA_ATOMIC_VALUES,
@@ -33,6 +33,7 @@ import {
   WIZARD_STEP_KEYS,
   DATA_BOOLEAN_VALUES,
   PERCENT_SCALE,
+  ARIA_CURRENT_VALUES,
 } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { NUMBER_RADIX } from "@blueprint/shared";
@@ -175,7 +176,7 @@ function StepIndicatorComponent(): JSX.Element {
           progressPercentage,
           STEPS.length - 1 - effectiveIndex
         )}
-        position="left"
+        position={DIRECTION.LEFT}
       >
         <div className="relative group animate-fade-in shrink-0">
           <CircularProgress
@@ -266,7 +267,7 @@ function StepIndicatorComponent(): JSX.Element {
               }
               aria-describedby={!isClickable ? `${step.key}-locked-hint` : undefined}
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
-              aria-current={isActive ? "step" : undefined}
+              aria-current={isActive ? ARIA_CURRENT_VALUES.STEP : undefined}
               className={`
                 flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full transition-all duration-300
                 outline-none animate-fade-in shrink-0

@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { DOM_EVENTS } from "@blueprint/shared/config";
 import { createRoot } from "react-dom/client";
+import { LazyMotion } from "framer-motion";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
@@ -32,6 +33,30 @@ if (!rootElement) {
   throw new Error(DEBUG_MESSAGES.ROOT_ELEMENT_NOT_FOUND);
 }
 
+/**
+ * `framer-motion/m` components require domAnimation features via LazyMotion;
+ * without them `initial` applies but `animate` never runs (modals stuck at
+ * opacity 0 — #3616). Dynamic import keeps the runtime off the critical path.
+ */
+const loadMotionFeatures = (): Promise<typeof import("framer-motion").domAnimation> =>
+  import("framer-motion").then((mod) => mod.domAnimation);
+
+function scheduleMotionFeatures(): void {
+  if (typeof window === "undefined") return;
+  const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number })
+    .requestIdleCallback;
+  const load = (): void => {
+    void loadMotionFeatures();
+  };
+  if (typeof idle === "function") {
+    idle.call(window, load);
+  } else {
+    window.setTimeout(load, UI_TIMEOUTS.MONO_FONT_IDLE_FALLBACK_MS);
+  }
+}
+
+scheduleMotionFeatures();
+
 const fadeOutAndRemoveSkeletonLoader = () => {
   const skeleton = document.getElementById("skeleton-loader");
   if (skeleton) {
@@ -52,9 +77,11 @@ function Root(): JSX.Element {
       <ErrorBoundary>
         <ReducedMotionProvider>
           <ExportProvider>
-            <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
-              <App />
-            </MotionConfigWrapper>
+            <LazyMotion features={loadMotionFeatures}>
+              <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
+                <App />
+              </MotionConfigWrapper>
+            </LazyMotion>
           </ExportProvider>
         </ReducedMotionProvider>
       </ErrorBoundary>

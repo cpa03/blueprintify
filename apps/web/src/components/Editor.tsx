@@ -61,6 +61,7 @@ import {
   DEBUG_MESSAGES,
   VIEW_MODE_SHORTCUT_KEYS,
   SCROLL_BEHAVIOR,
+  SCROLL_THRESHOLDS,
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
@@ -178,7 +179,12 @@ function PreviewSkeleton(): JSX.Element {
  * <Editor />
  * ```
  */
-function EditorComponent(): JSX.Element {
+interface EditorProps {
+  /** Optional callback that opens the keyboard shortcuts modal (threaded to empty state). */
+  onShowShortcuts?: () => void;
+}
+
+function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>(VIEW_MODES.SPLIT);
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -195,8 +201,10 @@ function EditorComponent(): JSX.Element {
   const handlePreviewScroll = useCallback(() => {
     const el = previewRef.current;
     if (!el || shouldReduceMotion) return;
-    const isTop = el.scrollTop <= 4;
-    const isBottom = Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <= 4;
+    const isTop = el.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
+    const isBottom =
+      Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <=
+      SCROLL_THRESHOLDS.EDGE_TOLERANCE;
     setPreviewScrollState((prev) => {
       if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
       return { isTop, isBottom };
@@ -281,13 +289,18 @@ function EditorComponent(): JSX.Element {
     [activeTab, setBlueprintContent, setTasksContent, markSaved, toast]
   );
 
-  const previousContentRef = useRef(currentContent);
+  const previousBlueprintRef = useRef(blueprintContent);
+  const previousTasksRef = useRef(tasksContent);
   useEffect(() => {
-    if (currentContent !== previousContentRef.current) {
+    if (
+      blueprintContent !== previousBlueprintRef.current ||
+      tasksContent !== previousTasksRef.current
+    ) {
       markAsChanged();
-      previousContentRef.current = currentContent;
+      previousBlueprintRef.current = blueprintContent;
+      previousTasksRef.current = tasksContent;
     }
-  }, [currentContent, markAsChanged]);
+  }, [blueprintContent, tasksContent, markAsChanged]);
 
   const hasInitialized = useRef(false);
   useEffect(() => {
@@ -323,9 +336,10 @@ function EditorComponent(): JSX.Element {
 
       const onScroll = () => {
         if (!scrollDom || shouldReduceMotion) return;
-        const isTop = scrollDom.scrollTop <= 4;
+        const isTop = scrollDom.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
         const isBottom =
-          Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <= 4;
+          Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <=
+          SCROLL_THRESHOLDS.EDGE_TOLERANCE;
         setEditorScrollState((prev) => {
           if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
           return { isTop, isBottom };
@@ -335,9 +349,10 @@ function EditorComponent(): JSX.Element {
       scrollDom.addEventListener(DOM_EVENTS.SCROLL, onScroll, { passive: true });
 
       // Set initial state
-      const isTop = scrollDom.scrollTop <= 4;
+      const isTop = scrollDom.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
       const isBottom =
-        Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <= 4;
+        Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <=
+        SCROLL_THRESHOLDS.EDGE_TOLERANCE;
       setEditorScrollState({ isTop, isBottom });
 
       scrollListenerCleanupRef.current = () => {
@@ -398,6 +413,8 @@ function EditorComponent(): JSX.Element {
       setCopied(activeTab);
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
       toast.success(TOAST_MESSAGES.COPY_SUCCESS);
+    } else {
+      toast.error(TOAST_MESSAGES.COPY_FAILURE);
     }
   }, [currentContent, activeTab, toast]);
 
@@ -557,7 +574,7 @@ function EditorComponent(): JSX.Element {
                 transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
                 className="h-full"
               >
-                <EditorEmptyState />
+                <EditorEmptyState onShowShortcuts={onShowShortcuts} />
               </motion.div>
             ) : (
               <motion.div

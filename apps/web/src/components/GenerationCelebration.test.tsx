@@ -165,6 +165,19 @@ describe("GenerationCelebration", () => {
     expect(onComplete).not.toHaveBeenCalled();
   });
 
+  it("stops rendering the celebration when completion toggles off mid-animation", () => {
+    const onComplete = vi.fn();
+    const { rerender } = render(
+      <GenerationCelebration isComplete={true} onComplete={onComplete} />
+    );
+
+    expect(screen.getByRole("status")).toBeInTheDocument();
+
+    rerender(<GenerationCelebration isComplete={false} onComplete={onComplete} />);
+
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
   it("shows the completion checkmark without the decorative ripple under reduced motion", () => {
     vi.mocked(useReducedMotion).mockReturnValue(true);
     render(<GenerationCelebration isComplete={true} />);

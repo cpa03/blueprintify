@@ -86,10 +86,25 @@ describe("AnimatedCopyButton", () => {
     expect(defaultProps.onCopy).toHaveBeenCalledTimes(1);
   });
 
-  it("is disabled when hasContent is false", () => {
+  it("is aria-disabled when hasContent is false", () => {
     render(<AnimatedCopyButton {...defaultProps} hasContent={false} />);
 
-    expect(screen.getByRole("button")).toBeDisabled();
+    expect(screen.getByRole("button")).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("is not natively disabled so it remains focusable when empty (WCAG 2.4.3)", () => {
+    render(<AnimatedCopyButton {...defaultProps} hasContent={false} />);
+
+    const button = screen.getByRole("button");
+    expect(button).not.toHaveAttribute("disabled");
+    button.focus();
+    expect(button).toHaveFocus();
+  });
+
+  it("has aria-disabled false when hasContent is true", () => {
+    render(<AnimatedCopyButton {...defaultProps} hasContent={true} />);
+
+    expect(screen.getByRole("button")).toHaveAttribute("aria-disabled", "false");
   });
 
   it("applies the disabled visual state when hasContent is false", () => {
@@ -106,7 +121,7 @@ describe("AnimatedCopyButton", () => {
     expect(button.className).not.toContain(CSS_CLASSES.DISABLED_BUTTON_STATE);
   });
 
-  it("does not call onCopy when disabled", () => {
+  it("does not call onCopy when aria-disabled", () => {
     render(<AnimatedCopyButton {...defaultProps} hasContent={false} />);
 
     fireEvent.click(screen.getByRole("button"));
@@ -118,6 +133,14 @@ describe("AnimatedCopyButton", () => {
     render(<AnimatedCopyButton {...defaultProps} />);
 
     expect(screen.getByRole("button")).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.COPY);
+  });
+
+  it("has descriptive aria-label and title explaining why it is unavailable when empty", () => {
+    render(<AnimatedCopyButton {...defaultProps} hasContent={false} />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.NO_CONTENT);
+    expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.NO_CONTENT);
   });
 
   it("has aria-label 'Copied to clipboard' when copied", () => {
@@ -139,7 +162,9 @@ describe("AnimatedCopyButton", () => {
     rerender(<AnimatedCopyButton {...defaultProps} isCopied={true} hasContent={false} />);
     expect(button).toHaveAttribute("data-state", COPY_STATE_VALUES.COPIED);
     expect(button).toHaveAttribute("data-has-content", "false");
-    expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.COPIED);
+    // When empty, the title explains WHY the button is unavailable (no content
+    // to copy) rather than announcing a stale "Copied" state.
+    expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.NO_CONTENT);
   });
 
   it("sets data-reduced-motion to true when reduced motion is enabled", () => {

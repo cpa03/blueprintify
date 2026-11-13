@@ -9,7 +9,11 @@
  */
 
 import { useCallback, useState } from "react";
-import { DATA_BOOLEAN_VALUES, DIVIDER_BUTTON_STATE_VALUES } from "@blueprint/shared";
+import {
+  DATA_BOOLEAN_VALUES,
+  DIVIDER_BUTTON_STATE_VALUES,
+  HTML_CONTROL_TYPES,
+} from "@blueprint/shared";
 import { LAYOUT } from "../config/styles";
 import { UI_CONTENT } from "../config/constants/content";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -41,7 +45,7 @@ export function StartFromScratchButton({ onStart }: StartFromScratchButtonProps)
 
   return (
     <button
-      type="button"
+      type={HTML_CONTROL_TYPES.BUTTON}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

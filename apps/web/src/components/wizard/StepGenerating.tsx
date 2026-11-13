@@ -34,6 +34,7 @@ import {
   CIRCLE_GEOMETRY,
   CIRCLE_GEOMETRY_LARGE,
   DISPLAY_SYMBOLS,
+  DOM_ATTRIBUTES,
   FRAMER_TYPE,
   GENERATION_ERROR_PREFIXES,
   KEYBOARD_EVENT_KEYS,
@@ -48,6 +49,7 @@ import {
   ICON_PATHS,
   DATA_BOOLEAN_VALUES,
   PERCENT_SCALE,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -376,7 +378,7 @@ export const StepGenerating = memo(function StepGenerating({
       const focusTarget = tabButton ?? editorPanel;
 
       const priorTabIndex =
-        focusTarget === editorPanel ? editorPanel.getAttribute("tabindex") : null;
+        focusTarget === editorPanel ? editorPanel.getAttribute(DOM_ATTRIBUTES.TAB_INDEX) : null;
       if (focusTarget === editorPanel) {
         editorPanel.tabIndex = -1;
       }
@@ -389,9 +391,9 @@ export const StepGenerating = memo(function StepGenerating({
           editorContainer.classList.remove(CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT);
           if (focusTarget === editorPanel) {
             if (priorTabIndex === null) {
-              editorPanel.removeAttribute("tabindex");
+              editorPanel.removeAttribute(DOM_ATTRIBUTES.TAB_INDEX);
             } else {
-              editorPanel.setAttribute("tabindex", priorTabIndex);
+              editorPanel.setAttribute(DOM_ATTRIBUTES.TAB_INDEX, priorTabIndex);
             }
           }
         }, UI_TIMING.EDITOR_FOCUS_HIGHLIGHT_MS);
@@ -895,7 +897,7 @@ export const StepGenerating = memo(function StepGenerating({
               <KeyboardShortcutTooltip
                 shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                 description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
-                position="right"
+                position={DIRECTION.RIGHT}
                 modifier={MODIFIER_KEYS.CMD}
               >
                 <RippleButton
@@ -953,7 +955,7 @@ export const StepGenerating = memo(function StepGenerating({
               <KeyboardShortcutTooltip
                 shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
                 description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
-                position="left"
+                position={DIRECTION.LEFT}
                 modifier={MODIFIER_KEYS.ALT}
               >
                 <RippleButton
@@ -1035,7 +1037,7 @@ export const StepGenerating = memo(function StepGenerating({
             <KeyboardShortcutTooltip
               shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
               description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
-              position="left"
+              position={DIRECTION.LEFT}
               modifier={MODIFIER_KEYS.ALT}
             >
               <RippleButton
@@ -1106,7 +1108,7 @@ export const StepGenerating = memo(function StepGenerating({
               <KeyboardShortcutTooltip
                 shortcut={KEY_DISPLAY.ESC}
                 description={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_DESC}
-                position="top"
+                position={DIRECTION.TOP}
                 modifier={MODIFIER_KEYS.NONE}
               >
                 <RippleButton

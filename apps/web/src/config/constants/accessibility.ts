@@ -169,9 +169,39 @@ export const DOM_ELEMENT_IDS = {
   OFFLINE_BANNER_DESC: "offline-banner-desc",
   FEATURE_INPUT: "feature-input",
   FEATURE_INPUT_HINT: "feature-input-hint",
+  FEATURE_INPUT_COUNTER: "feature-input-counter",
   ADDED_FEATURES_LABEL: "added-features-label",
   SUGGESTIONS_LABEL: "suggestions-label",
   SELECTED_TECH_LABEL: "selected-tech-label",
+  // StepInfo wizard form fields — each `id` is paired with its `<label
+  // htmlFor>` and/or `aria-describedby` live-region so the association can
+  // never drift apart (Iteration 211).
+  /** `projectName` text input; label uses `htmlFor`. */
+  STEP_INFO_PROJECT_NAME: "projectName",
+  /** Persistent character-count description for projectName; referenced by `aria-describedby`. */
+  STEP_INFO_PROJECT_NAME_COUNTER: "projectName-counter",
+  /** Character-limit live-region for projectName; referenced by `aria-describedby`. */
+  STEP_INFO_PROJECT_NAME_WARNING: "projectName-warning",
+  /** Min-length error live-region for projectName; referenced by `aria-describedby`. */
+  STEP_INFO_PROJECT_NAME_ERROR: "projectName-error",
+  /** `description` textarea; label uses `htmlFor`. */
+  STEP_INFO_DESCRIPTION: "description",
+  /** Persistent character-count description for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_COUNTER: "description-counter",
+  /** Characters-needed hint live-region for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_HINT: "description-hint",
+  /** Character-limit live-region for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_WARNING: "description-warning",
+  /** Min-length error live-region for description; referenced by `aria-describedby`. */
+  STEP_INFO_DESCRIPTION_ERROR: "description-error",
+  /** `targetAudience` text input; label uses `htmlFor`. */
+  STEP_INFO_TARGET_AUDIENCE: "targetAudience",
+  /** Persistent character-count description for targetAudience; referenced by `aria-describedby`. */
+  STEP_INFO_TARGET_AUDIENCE_COUNTER: "targetAudience-counter",
+  /** `constraints` textarea; label uses `htmlFor`. */
+  STEP_INFO_CONSTRAINTS: "constraints",
+  /** Persistent character-count description for constraints; referenced by `aria-describedby`. */
+  STEP_INFO_CONSTRAINTS_COUNTER: "constraints-counter",
 } as const;
 
 // ============================================================================

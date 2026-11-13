@@ -42,6 +42,7 @@ import {
   ARIA_ROLES,
   BANNER_STATE_VALUES,
   COPY_STATE_VALUES,
+  CSS_VALUES,
   FRAMER_TYPE,
   TIME_UNITS,
   TOOLTIP_LABELS,
@@ -218,7 +219,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         animate={{
           opacity: isVisible ? 1 : 0,
           scale: isVisible ? 1 : 0.7,
-          width: isVisible ? "auto" : 0,
+          width: isVisible ? CSS_VALUES.AUTO : 0,
         }}
         transition={
           shouldReduceMotion

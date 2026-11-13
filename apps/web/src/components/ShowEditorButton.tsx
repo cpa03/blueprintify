@@ -31,6 +31,7 @@ import {
   UI_TIMEOUTS,
   UI_TIMING,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -122,7 +123,7 @@ function ShowEditorButtonComponent({
     <KeyboardShortcutTooltip
       shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
       description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
-      position="left"
+      position={DIRECTION.LEFT}
     >
       <div
         className={`group ${prefersReducedMotion ? "" : "animate-slide-up "}will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95${showArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}

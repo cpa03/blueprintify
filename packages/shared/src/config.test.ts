@@ -179,6 +179,7 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  TOOLTIP_STATE_VALUES,
   ARIA_ROLES,
   ARIA_LIVE_VALUES,
   ARIA_ATOMIC_VALUES,
@@ -192,6 +193,17 @@ import {
   MEDIA_QUERIES,
   MOTION_VARIANT_STATES,
   ANIMATE_PRESENCE_MODES,
+  HTML_CONTROL_TYPES,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
+  ENTER_KEY_HINTS,
+  HTML_TEXT_DIRECTION,
+  DOM_ATTRIBUTES,
+  TAB_INDEX_VALUES,
+  ARIA_CURRENT_VALUES,
+  HTML_LINK_TARGETS,
+  HTML_LINK_RELS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2267,6 +2279,22 @@ describe("BANNER_STATE_VALUES", () => {
   });
 });
 
+describe("TOOLTIP_STATE_VALUES", () => {
+  it("should have VISIBLE and HIDDEN states", () => {
+    expect(TOOLTIP_STATE_VALUES.VISIBLE).toBe("visible");
+    expect(TOOLTIP_STATE_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(TOOLTIP_STATE_VALUES).length).toBe(2);
+  });
+
+  it("should have unique state values", () => {
+    const values = Object.values(TOOLTIP_STATE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
 describe("EXPORT_ERROR_STRINGS", () => {
   it("should have zip folder failed message", () => {
     expect(EXPORT_ERROR_STRINGS.ZIP_FOLDER_FAILED).toContain("Failed to create .docs folder");
@@ -3074,6 +3102,7 @@ describe("SCROLL_THRESHOLD_DEFAULTS", () => {
     expect(SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX).toBeGreaterThan(0);
     expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX).toBeGreaterThan(0);
     expect(SCROLL_THRESHOLD_DEFAULTS.HAS_SCROLLED_PX).toBeGreaterThan(0);
+    expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_EDGE_TOLERANCE_PX).toBeGreaterThan(0);
   });
 
   it("should have all numeric values", () => {
@@ -3084,8 +3113,8 @@ describe("SCROLL_THRESHOLD_DEFAULTS", () => {
     });
   });
 
-  it("should have 3 entries", () => {
-    expect(Object.keys(SCROLL_THRESHOLD_DEFAULTS).length).toBe(3);
+  it("should have 4 entries", () => {
+    expect(Object.keys(SCROLL_THRESHOLD_DEFAULTS).length).toBe(4);
   });
 
   it("should have SCROLL_TO_TOP greater than HEADER_SHADOW", () => {
@@ -4476,8 +4505,22 @@ describe("ARIA_KEYSHORTCUTS", () => {
     );
   });
 
-  it("should have 1 property", () => {
-    expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(1);
+  it("should have TOAST_DISMISS_ALL = 'Shift+Escape' using the full WAI-ARIA key name", () => {
+    expect(ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL).toBe("Shift+Escape");
+  });
+
+  it("should derive TOAST_DISMISS_ALL from KEYBOARD_EVENT_KEYS.ESCAPE", () => {
+    expect(ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL).toBe(`Shift+${KEYBOARD_EVENT_KEYS.ESCAPE}`);
+  });
+
+  it("should use full key name 'Escape' not the abbreviated display label 'Esc'", () => {
+    expect(ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL).not.toBe(
+      `Shift+${SHORTCUT_LABELS.TOAST_DISMISS_ALL.replace("Shift+", "")}`
+    );
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(2);
   });
 });
 
@@ -4594,8 +4637,12 @@ describe("CSS_VALUES", () => {
     expect(CSS_VALUES.NONE).toBe("none");
   });
 
-  it("should have 2 properties", () => {
-    expect(Object.keys(CSS_VALUES).length).toBe(2);
+  it("should have HIDDEN = 'hidden'", () => {
+    expect(CSS_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 3 properties", () => {
+    expect(Object.keys(CSS_VALUES).length).toBe(3);
   });
 
   it("should have all values as strings", () => {
@@ -4606,6 +4653,14 @@ describe("CSS_VALUES", () => {
   it("should have unique values", () => {
     const values = Object.values(CSS_VALUES);
     expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep NONE and HIDDEN as distinct CSS keywords", () => {
+    // Reduced-motion `transition: none` and scroll-lock `overflow: hidden`
+    // are different properties — collapsing them would break both contracts.
+    expect(CSS_VALUES.NONE).not.toBe(CSS_VALUES.HIDDEN);
+    expect(CSS_VALUES.NONE).not.toBe(CSS_VALUES.AUTO);
+    expect(CSS_VALUES.HIDDEN).not.toBe(CSS_VALUES.AUTO);
   });
 });
 
@@ -5735,5 +5790,198 @@ describe("MEDIA_QUERIES (Flexy Iteration 208)", () => {
       expect(value).toBe(value.toLowerCase());
       expect(value.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("HTML_CONTROL_TYPES (Flexy Iteration 212)", () => {
+  it("should have exact control type values", () => {
+    expect(HTML_CONTROL_TYPES.BUTTON).toBe("button");
+    expect(HTML_CONTROL_TYPES.SUBMIT).toBe("submit");
+    expect(HTML_CONTROL_TYPES.TEXT).toBe("text");
+  });
+
+  it("should have 3 unique control type values", () => {
+    expect(Object.keys(HTML_CONTROL_TYPES).length).toBe(3);
+    const values = Object.values(HTML_CONTROL_TYPES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep BUTTON and SUBMIT distinct so neutral buttons never silently submit forms", () => {
+    expect(HTML_CONTROL_TYPES.BUTTON).not.toBe(HTML_CONTROL_TYPES.SUBMIT);
+  });
+});
+
+describe("HTML_AUTOCOMPLETE_VALUES (Flexy Iteration 212)", () => {
+  it("should have OFF value", () => {
+    expect(HTML_AUTOCOMPLETE_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_AUTOCOMPLETE_VALUES).length).toBe(1);
+  });
+});
+
+describe("ENTER_KEY_HINTS (Flexy Iteration 212)", () => {
+  it("should have exact enter key hint values", () => {
+    expect(ENTER_KEY_HINTS.SEARCH).toBe("search");
+    expect(ENTER_KEY_HINTS.NEXT).toBe("next");
+    expect(ENTER_KEY_HINTS.GO).toBe("go");
+    expect(ENTER_KEY_HINTS.DONE).toBe("done");
+  });
+
+  it("should have 4 unique hint values covering the full mobile Enter-hint set in use", () => {
+    expect(Object.keys(ENTER_KEY_HINTS).length).toBe(4);
+    const values = Object.values(ENTER_KEY_HINTS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep NEXT and GO distinct so the wizard canProceed flip stays observable", () => {
+    expect(ENTER_KEY_HINTS.NEXT).not.toBe(ENTER_KEY_HINTS.GO);
+  });
+});
+
+describe("HTML_AUTOCAPITALIZE_VALUES (Flexy Iteration 213)", () => {
+  it("should have exact autocapitalize values", () => {
+    expect(HTML_AUTOCAPITALIZE_VALUES.OFF).toBe("off");
+    expect(HTML_AUTOCAPITALIZE_VALUES.SENTENCES).toBe("sentences");
+  });
+
+  it("should have 2 unique autocapitalize values covering the technical/prose split", () => {
+    expect(Object.keys(HTML_AUTOCAPITALIZE_VALUES).length).toBe(2);
+    const values = Object.values(HTML_AUTOCAPITALIZE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep OFF and SENTENCES distinct so the technical/prose branch stays observable", () => {
+    expect(HTML_AUTOCAPITALIZE_VALUES.OFF).not.toBe(HTML_AUTOCAPITALIZE_VALUES.SENTENCES);
+  });
+});
+
+describe("HTML_AUTOCORRECT_VALUES (Flexy Iteration 213)", () => {
+  it("should have OFF value", () => {
+    expect(HTML_AUTOCORRECT_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_AUTOCORRECT_VALUES).length).toBe(1);
+  });
+});
+
+describe("HTML_TEXT_DIRECTION (Flexy Iteration 214)", () => {
+  it("should have exact text direction values", () => {
+    expect(HTML_TEXT_DIRECTION.LTR).toBe("ltr");
+    expect(HTML_TEXT_DIRECTION.RTL).toBe("rtl");
+    expect(HTML_TEXT_DIRECTION.AUTO).toBe("auto");
+  });
+
+  it("should have 3 unique values covering the full dir attribute enum", () => {
+    expect(Object.keys(HTML_TEXT_DIRECTION).length).toBe(3);
+    const values = Object.values(HTML_TEXT_DIRECTION);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep AUTO distinct from LTR/RTL so the i18n detection branch stays observable", () => {
+    expect(HTML_TEXT_DIRECTION.AUTO).not.toBe(HTML_TEXT_DIRECTION.LTR);
+    expect(HTML_TEXT_DIRECTION.AUTO).not.toBe(HTML_TEXT_DIRECTION.RTL);
+  });
+});
+
+describe("DOM_ATTRIBUTES (Flexy Iteration 216)", () => {
+  it("should have exact attribute name values", () => {
+    expect(DOM_ATTRIBUTES.HREF).toBe("href");
+    expect(DOM_ATTRIBUTES.TAB_INDEX).toBe("tabindex");
+    expect(DOM_ATTRIBUTES.READ_ONLY).toBe("readonly");
+    expect(DOM_ATTRIBUTES.ARIA_HIDDEN).toBe("aria-hidden");
+    expect(DOM_ATTRIBUTES.ROLE).toBe("role");
+    expect(DOM_ATTRIBUTES.ARIA_LIVE).toBe("aria-live");
+    expect(DOM_ATTRIBUTES.ARIA_ATOMIC).toBe("aria-atomic");
+  });
+
+  it("should have 7 unique attribute names", () => {
+    expect(Object.keys(DOM_ATTRIBUTES).length).toBe(7);
+    const values = Object.values(DOM_ATTRIBUTES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase attribute names so reads and writes serialize identically", () => {
+    for (const value of Object.values(DOM_ATTRIBUTES)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("should keep the four value-backed ARIA names distinct so each setAttribute pairs with its own value family", () => {
+    const valueBacked = [
+      DOM_ATTRIBUTES.ROLE,
+      DOM_ATTRIBUTES.ARIA_LIVE,
+      DOM_ATTRIBUTES.ARIA_ATOMIC,
+      DOM_ATTRIBUTES.ARIA_HIDDEN,
+    ];
+    expect(new Set(valueBacked).size).toBe(valueBacked.length);
+  });
+});
+
+describe("TAB_INDEX_VALUES (Flexy Iteration 216)", () => {
+  it("should have the exact not-focusable value", () => {
+    expect(TAB_INDEX_VALUES.NOT_FOCUSABLE).toBe("-1");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(TAB_INDEX_VALUES).length).toBe(1);
+  });
+
+  it("should be a signed integer string so the browser parses it instead of falling back to tab order 0", () => {
+    expect(Number.parseInt(TAB_INDEX_VALUES.NOT_FOCUSABLE, 10)).toBe(-1);
+    expect(String(Number.parseInt(TAB_INDEX_VALUES.NOT_FOCUSABLE, 10))).toBe(
+      TAB_INDEX_VALUES.NOT_FOCUSABLE
+    );
+  });
+});
+
+describe("ARIA_CURRENT_VALUES (Flexy Iteration 217)", () => {
+  it("should have the exact step value", () => {
+    expect(ARIA_CURRENT_VALUES.STEP).toBe("step");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(ARIA_CURRENT_VALUES).length).toBe(1);
+  });
+
+  it("should be a lowercase single-word token so assistive tech recognizes the current item", () => {
+    expect(ARIA_CURRENT_VALUES.STEP).toBe(ARIA_CURRENT_VALUES.STEP.toLowerCase());
+    expect(ARIA_CURRENT_VALUES.STEP).not.toContain(" ");
+    expect(ARIA_CURRENT_VALUES.STEP.length).toBeGreaterThan(0);
+  });
+});
+
+describe("HTML_LINK_TARGETS (Flexy Iteration 217)", () => {
+  it("should have the exact blank browsing-context value", () => {
+    expect(HTML_LINK_TARGETS.BLANK).toBe("_blank");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_LINK_TARGETS).length).toBe(1);
+  });
+
+  it("should be an underscore-prefixed browsing-context name the browser resolves to a new tab", () => {
+    expect(HTML_LINK_TARGETS.BLANK.startsWith("_")).toBe(true);
+    expect(HTML_LINK_TARGETS.BLANK).toBe(HTML_LINK_TARGETS.BLANK.trim());
+  });
+});
+
+describe("HTML_LINK_RELS (Flexy Iteration 217)", () => {
+  it("should have the exact hardening token list", () => {
+    expect(HTML_LINK_RELS.NOOPENER_NOREFERRER).toBe("noopener noreferrer");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(HTML_LINK_RELS).length).toBe(1);
+  });
+
+  it("should contain both noopener and noreferrer tokens so every _blank site ships the full hardening pair", () => {
+    const tokens = HTML_LINK_RELS.NOOPENER_NOREFERRER.split(" ");
+    expect(tokens).toContain("noopener");
+    expect(tokens).toContain("noreferrer");
+    expect(new Set(tokens).size).toBe(tokens.length);
   });
 });

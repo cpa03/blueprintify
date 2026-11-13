@@ -2,7 +2,9 @@
  * Keyboard Shortcut Configuration Constants
  * Source of truth for keyboard shortcut definitions
  * Flexy says: No hardcoded category strings in components!
+ * Flexy says: No bare "none" modifier strings where MODIFIER_KEYS exists!
  */
+import { MODIFIER_KEYS } from "@blueprint/shared";
 
 /**
  * Re-export shared shortcut descriptions for use in KeyboardShortcutTooltip components.
@@ -69,12 +71,12 @@ export const KEYBOARD_SHORTCUTS = {
   },
   SCROLL_TO_TOP: {
     KEY: "Home",
-    MODIFIER: "none",
+    MODIFIER: MODIFIER_KEYS.NONE,
     DESCRIPTION: "Scroll to top of content",
   },
   SCROLL_TO_BOTTOM: {
     KEY: "End",
-    MODIFIER: "none",
+    MODIFIER: MODIFIER_KEYS.NONE,
     DESCRIPTION: "Scroll to bottom of content",
   },
   VIEW_MODE_EDIT: {

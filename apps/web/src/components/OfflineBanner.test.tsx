@@ -34,7 +34,24 @@ describe("OfflineBanner", () => {
     const banner = banners.find((b) => b.getAttribute("aria-live") === "polite");
     expect(banner).toHaveAttribute("data-state", "visible");
     expect(banner).toHaveAttribute("data-online-status", "offline");
+    expect(banner).toHaveAttribute("data-dismissed", "false");
+    expect(banner).toHaveAttribute("data-exiting", "false");
     expect(banner).toHaveAttribute("data-reduced-motion", "false");
+  });
+
+  it("updates data-dismissed and data-exiting attributes when dismiss button is clicked", () => {
+    mockOnlineStatus.mockReturnValue(false);
+    render(<OfflineBanner />);
+
+    const dismissButton = screen.getByRole("button", {
+      name: ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS,
+    });
+    fireEvent.click(dismissButton);
+
+    const banners = screen.getAllByRole("status");
+    const banner = banners.find((b) => b.getAttribute("aria-live") === "polite");
+    expect(banner).toHaveAttribute("data-dismissed", "true");
+    expect(banner).toHaveAttribute("data-exiting", "true");
   });
 
   it("hides the banner when dismiss button is clicked", async () => {

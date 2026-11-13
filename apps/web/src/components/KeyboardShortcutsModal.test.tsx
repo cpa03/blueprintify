@@ -39,6 +39,14 @@ describe("KeyboardShortcutsModal", () => {
     ).toBeInTheDocument();
   });
 
+  it("disables mobile autocapitalize/autocorrect on the search input", () => {
+    render(<KeyboardShortcutsModal {...defaultProps} />);
+
+    const search = screen.getByRole("searchbox");
+    expect(search).toHaveAttribute("autocapitalize", "off");
+    expect(search).toHaveAttribute("autocorrect", "off");
+  });
+
   it("updates data-has-query and data-results-count attributes when filtering", () => {
     render(<KeyboardShortcutsModal {...defaultProps} />);
 

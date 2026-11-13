@@ -46,6 +46,12 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
+  ENTER_KEY_HINTS,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
+  HTML_CONTROL_TYPES,
+  HTML_TEXT_DIRECTION,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
   getPlatformShortcutLabel,
@@ -379,8 +385,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   </svg>
                   <input
                     ref={searchInputRef}
-                    type="text"
-                    dir="auto"
+                    type={HTML_CONTROL_TYPES.TEXT}
+                    dir={HTML_TEXT_DIRECTION.AUTO}
                     value={searchQuery}
                     onChange={handleSearchChange}
                     placeholder={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH_PLACEHOLDER}
@@ -390,8 +396,16 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                                transition-all duration-200"
                     aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
                     role={ARIA_ROLES.SEARCHBOX}
-                    autoComplete="off"
-                    enterKeyHint="search"
+                    autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
+                    enterKeyHint={ENTER_KEY_HINTS.SEARCH}
+                    // Mobile keyboard hygiene: shortcut queries are short
+                    // technical tokens ("esc", "cmd", "home"). Without these,
+                    // iOS/Android autocapitalize each word and Safari
+                    // autocorrect rewrites tokens ("cmd" -> "Cmd"), returning
+                    // zero results for a valid query. Matches the
+                    // autoCapitalize/autoCorrect pattern on StepInfo inputs.
+                    autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+                    autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
                     spellCheck={false}
                   />
                   {/* Clear button */}

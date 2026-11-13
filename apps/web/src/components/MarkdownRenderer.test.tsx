@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vite
 import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { ensureDOMPurifyLoaded } from "../lib/security";
+import { ACCESSIBILITY_LABELS } from "../config/constants";
 
 beforeAll(async () => {
   await ensureDOMPurifyLoaded();
@@ -220,6 +221,25 @@ describe("MarkdownRenderer", () => {
       );
       expect(screen.getByText("Header 1")).toBeInTheDocument();
       expect(screen.getByText("Cell 1")).toBeInTheDocument();
+    });
+
+    it("exposes the horizontal scroll container as a keyboard-focusable labeled region", () => {
+      render(
+        <MarkdownRenderer
+          content={`
+| Header 1 | Header 2 |
+| -------- | -------- |
+| Cell 1   | Cell 2   |
+`}
+        />
+      );
+      const region = screen.getByRole("region", {
+        name: ACCESSIBILITY_LABELS.MARKDOWN.TABLE_REGION,
+      });
+      expect(region).toHaveAttribute("tabindex", "0");
+      expect(region).toHaveClass("overflow-x-auto");
+      expect(region.className).toContain("focus-visible:ring-2");
+      expect(region).toContainElement(screen.getByText("Header 1"));
     });
   });
 

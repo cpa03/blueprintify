@@ -4,6 +4,309 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 217: Centralize Anchor `target`/`rel` Hardening & `aria-current` JSX Attribute-Value Literals
+
+**Problem**: 9 hardcoded JSX attribute-value literals survived 216 iterations across 4 web runtime files, with no constant family anywhere — and Iteration 216's skipped list explicitly flagged JSX attribute *values* (its `aria-current` example) as the next candidate. Breakdown: 4× `target="_blank"` + 4× `rel="noopener noreferrer"` hardening pairs (`App` footer ×2 external links, `Header` GitHub link, `MarkdownRenderer` — the last one renders *user-generated* markdown links, so the pair guards untrusted hrefs), plus 1× `aria-current={isActive ? "step" : undefined}` (`StepIndicator`). The `target`/`rel` pair is a security contract: `noopener` strips the new tab's `window.opener` handle (reverse-tabnabbing defense) and `noreferrer` suppresses the Referer header, but both are plain tokens the browser silently ignores when misspelled — drop or typo the `rel` on any one site and that link ships unprotected with zero type errors, while the identical sibling links stay hardened (silent per-site drift; MarkdownRenderer's user-content links are the highest-risk leg). The `aria-current` value participates in an AT/visual pairing contract driven by the same `isActive` ternary: a typo'd `"step"` is an invalid token dropped from the accessibility tree, so screen readers stop announcing the active wizard step while the visible pill styling stays correct — and drift between the constant and `undefined` branches reports a current item that is not visually current (or vice versa). Flexy says: no bare `target="_blank"` / `rel="noopener noreferrer"` / `aria-current="step"` string literals where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_LINK_TARGETS` (BLANK `"_blank"` — target/rel reverse-tabnabbing pairing-contract docblock); NEW `HTML_LINK_RELS` (NOOPENER_NOREFERRER `"noopener noreferrer"` — silent-drop security contract + byte-identity across Header/App/MarkdownRenderer sites), placed after `TAB_INDEX_VALUES`; NEW `ARIA_CURRENT_VALUES` (STEP `"step"` — AT/visual ternary pairing-contract docblock), placed after `ARIA_BUSY_VALUES` |
+| `packages/shared/src/index.ts` | Exported all 3 new constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +9 tests: 3 `ARIA_CURRENT_VALUES` (exact value, entry count 1, lowercase single-word token), 3 `HTML_LINK_TARGETS` (exact `_blank`, entry count 1, underscore-prefixed trimmed browsing-context name), 3 `HTML_LINK_RELS` (exact token list, entry count 1, contains both `noopener` + `noreferrer` with unique tokens) |
+| `apps/web/src/App.tsx` | 2× pairs: `target="_blank"` / `rel="noopener noreferrer"` → `HTML_LINK_TARGETS.BLANK` / `HTML_LINK_RELS.NOOPENER_NOREFERRER` (Cloudflare Workers + React footer links) |
+| `apps/web/src/components/Header.tsx` | 1× pair → `HTML_LINK_TARGETS.BLANK` / `HTML_LINK_RELS.NOOPENER_NOREFERRER` (GitHub repo link) |
+| `apps/web/src/components/MarkdownRenderer.tsx` | 1× pair → `HTML_LINK_TARGETS.BLANK` / `HTML_LINK_RELS.NOOPENER_NOREFERRER` (user-generated markdown links) |
+| `apps/web/src/components/StepIndicator.tsx` | 1× `aria-current={isActive ? "step" : undefined}` → `isActive ? ARIA_CURRENT_VALUES.STEP : undefined` |
+| `docs/flexy-plan.md` | Iteration 217 entry |
+
+Deliberately skipped: test files (`MarkdownRenderer.test.tsx:137` / `Header.test.tsx:99` `toHaveAttribute("rel", "noopener noreferrer")` — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213 precedent); `storage.ts` `LINK_SELECTOR: 'link[rel="icon"][type="image/svg+xml"]'` and `lib/templates/static.ts` `rel="stylesheet"` (CSS-selector / generated-template categories, Iteration 157/169/212 precedent); `useFaviconStatus` `link.rel = "icon"` / `link.type = "image/svg+xml"` and `main.tsx` `link.rel = "stylesheet"` IDL *property* assignments (not JSX attribute values — Iteration 216 precedent); `SkipLink` `data-target={DOM_ELEMENT_IDS.MAIN_CONTENT}` (data attribute carrying an element ID, not a browsing-context target); `target={` / dynamic targets (none exist); other `rel=` values (only `stylesheet`/`icon` remain, both skipped above); JSDoc prose mentioning `target`/`rel`; `node_modules`/`dist`.
+
+## Verification (Iteration 217)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+9 new shared)
+- ✅ Residual scan — 0 bare `target="_blank"`, 0 bare `rel="noopener noreferrer"`, 0 bare `aria-current … "step"` in runtime source (excluding tests, JSDoc prose, CSS selectors & generated templates)
+
+## PR (Iteration 217)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3994 | `flexy/iteration-217-anchor-target-rel` | refactor(flexy): centralize anchor target/rel hardening & aria-current JSX attribute-value literals (Iteration 217) |
+
+### ✅ Flexy Iteration 216: Centralize DOM Attribute-Name Literals in get/setAttribute/removeAttribute
+
+**Problem**: 16 hardcoded attribute-name/value literals survived 215 iterations across 4 web runtime files, with no `DOM_ATTRIBUTES` constant anywhere — even though Iteration 208 built the `MEDIA_QUERIES` family and constant-ized the *values* of the very same `setAttribute(...)` calls, the attribute *name* argument stayed a bare string literal in every case. Breakdown: 6× `useFaviconStatus` (`"href"` ×1 `getAttribute` + ×5 `setAttribute`), 3× `useFocusOnStepChange` (`"role"`, `"aria-live"`, `"aria-atomic"` — each already paired with a constant value `ARIA_ROLES.STATUS` / `ARIA_LIVE_VALUES.POLITE` / `ARIA_ATOMIC_VALUES.TRUE`, making them partial-constant bypasses), 3× `StepGenerating` (`"tabindex"` across a `getAttribute`/`removeAttribute`/`setAttribute` triple in the editor focus-restore path), 3× `clipboard` (`"aria-hidden"` + `"readonly"` + `"tabindex"` in the legacy off-screen fallback). The DOM attribute APIs accept **any** string, so a typo does not fail to compile — it silently no-ops: `getAttribute` returns `null`, `setAttribute` creates a *different* attribute, and `removeAttribute` removes nothing, all with zero type errors. (1) **Favicon `href` pair** — the read on line 46 must use the same name as all 5 writes and the restore-on-unmount write; rename one side and the original favicon is never restored (the browser tab keeps the spinner/checkmark forever) while nothing throws. (2) **`tabindex` triple** — `StepGenerating` snapshots `getAttribute("tabindex")` and later `setAttribute`/`removeAttribute`s it to restore the panel's tab order; drift on any leg leaves the editor panel permanently focusable or permanently unfocusable with no type error. (3) **ARIA trio** — Iteration 208's partial-constant bypass: the value side was centralized but `"role"`/`"aria-live"`/`"aria-atomic"` names were not, so a typo'd name would attach the live region to a nonexistent attribute and screen readers would stop announcing step changes while the visible UI stayed correct. (4) **`clipboard` trio** — the off-screen textarea must be `aria-hidden`, `readonly` *and* `tabindex="-1"` simultaneously; any name typo re-exposes the hidden node to focus/AT. Plus 1 bare `"-1"` `tabindex` *value* in `clipboard`, whose parse contract pairs with the numeric `tabIndex = -1` IDL write on the line above — an invalid value (`"--1"`, `"-l"`) makes the browser fall back to default tab order, leaving the invisible textarea focusable. Flexy says: no bare attribute-name strings in get/setAttribute/removeAttribute call sites, and no bare `tabindex` value strings, where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DOM_ATTRIBUTES` (HREF, TAB_INDEX, READ_ONLY, ARIA_HIDDEN, ROLE, ARIA_LIVE, ARIA_ATOMIC — 7 entries, pairing-contract docblock covering the read/write no-op failure mode + the Iteration 208 partial-constant bypass); NEW `TAB_INDEX_VALUES` (NOT_FOCUSABLE `"-1"` — IDL/attribute parse-contract docblock), placed after `HTML_TEXT_DIRECTION` |
+| `packages/shared/src/index.ts` | Exported both new constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +7 tests: 4 `DOM_ATTRIBUTES` (7 exact values, entry count 7 + uniqueness, lowercase serialization invariant, 4 value-backed ARIA names pairwise-distinct), 3 `TAB_INDEX_VALUES` (exact `-1`, entry count 1, signed-integer-string parse invariant) |
+| `apps/web/src/hooks/useFaviconStatus.ts` | 6 sites: 1× `getAttribute("href")` + 5× `setAttribute("href", …)` → `DOM_ATTRIBUTES.HREF` |
+| `apps/web/src/hooks/useFocusOnStepChange.ts` | 3 sites: `setAttribute("role"/"aria-live"/"aria-atomic", CONSTANT)` → `setAttribute(DOM_ATTRIBUTES.ROLE/ARIA_LIVE/ARIA_ATOMIC, CONSTANT)` (completes Iteration 208's value-side constants) |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 3 sites: `getAttribute`/`removeAttribute`/`setAttribute("tabindex")` → `DOM_ATTRIBUTES.TAB_INDEX` |
+| `apps/web/src/lib/clipboard.ts` | 3 sites: `setAttribute("aria-hidden"/"readonly"/"tabindex", …)` → `DOM_ATTRIBUTES.ARIA_HIDDEN`/`READ_ONLY`/`TAB_INDEX`; `"-1"` → `TAB_INDEX_VALUES.NOT_FOCUSABLE` |
+| `docs/flexy-plan.md` | Iteration 216 entry |
+
+Deliberately skipped: test files (`useFaviconStatus.test.ts` `getAttribute("href")` reads, `useFocusOnStepChange.test.ts` `[aria-live="polite"]` selectors, `PageScrollProgressBar.test.tsx`/`EditorToolbar.test.tsx` `toHaveAttribute("tabindex", …)` — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213 precedent); `clipboard.ts` `setAttribute("readonly", "")` empty presence value (boolean attribute — presence is what matters, no parse contract, and no typo surface beyond the now-constant name — identity-value precedent, Iteration 199/200); `clipboard.ts` `textarea.readOnly = true` / `textarea.tabIndex = -1` and `StepGenerating` `editorPanel.tabIndex = -1` IDL *property* assignments (numeric/boolean property domain, not attribute-string arguments — Iteration 199/200/210 precedent); `useFaviconStatus` `link.rel = "icon"` / `link.type = "image/svg+xml"` and `main.tsx` `link.rel = "stylesheet"` (IDL property assignments, not `setAttribute` arguments); JSX attribute names (`role=`, `aria-*=`, `data-*=` — JSX requires literal prop names, Iteration 206 `on*` precedent); JSX `aria-current={isActive ? "step" : undefined}` (JSX attribute *value*, single site — candidate for a future JSX-attribute-value iteration); CSS selector strings `[tabindex="-1"]` (`accessibility.ts`), `[contenteditable]` (`lib/dom.ts`), `[id$="-panel"]`/`.cm-scroller`/`[data-editor-toggle]` (CSS-selector category, Iteration 157/169/212 precedent); `lib/templates/*` (generated templates); JSDoc prose mentioning attribute names; `node_modules`/`dist`.
+
+## Verification (Iteration 216)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (9.33s) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,417 web + 555 api + 1,063 shared = 3,035 tests passing** (+7 new shared; web 1,417 baseline unchanged)
+- ✅ Residual scan — 0 bare attribute-name literals in any `(set|get|remove|has)Attribute(...)` call, and 0 bare `tabindex` value literals, in runtime source (excluding tests, JSX prop names, CSS selectors & generated templates)
+
+## PR (Iteration 216)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-216-dom-attribute-names` | refactor(flexy): centralize DOM attribute-name literals in get/setAttribute/removeAttribute (Iteration 216) |
+
+### ✅ Flexy Iteration 215: Centralize Scroll-Panel Edge-Tolerance Pixel Literals
+
+**Problem**: 8 hardcoded scroll-edge tolerance `<= 4` pixel literals survived 214 iterations across 2 web runtime files, even though the `SCROLL_THRESHOLD_DEFAULTS` family whose docblock says "No hardcoded scroll pixel values in component code!" already owned every other scroll trigger point (header shadow, scroll-to-top, has-scrolled). Breakdown: 1× `Wizard` (panel edge-shadow scroll handler), 3× `Editor` (preview scroll handler, CodeMirror scroll handler, CodeMirror initial-state snapshot) — each site computing the same edge pair: `scrollTop <= 4` for the top edge and `|scrollHeight - scrollTop - clientHeight| <= 4` for the bottom edge, feeding the top/bottom edge-shadow fade on the same scroll panel. The tolerance is a pairing contract: both shadows on a panel must resolve "at edge" at the same distance, and the Wizard panel must match the Editor panel — a drift on one site (e.g. one side changed to `8` while its twin stays `4`) silently desyncs the paired shadows (one fades earlier than the other) with zero type errors. Flexy says: no bare scroll-edge tolerance pixel literals where `SCROLL_THRESHOLD_DEFAULTS` exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | `SCROLL_THRESHOLD_DEFAULTS` +`SCROLL_EDGE_TOLERANCE_PX` (4 — top/bottom edge-shadow pairing-contract docblock covering the shadow-desync failure mode) |
+| `packages/shared/src/config.test.ts` | +1 value assertion (`> 0`); entry count 3 → 4 |
+| `apps/web/src/config/constants/ui.ts` | `SCROLL_THRESHOLDS` +`EDGE_TOLERANCE` (flat re-export of the shared source of truth) |
+| `apps/web/src/components/Wizard.tsx` | 2 sites: `isTop`/`isBottom` edge pair → `SCROLL_THRESHOLDS.EDGE_TOLERANCE` |
+| `apps/web/src/components/Editor.tsx` | 6 sites: preview handler pair, CodeMirror scroll handler pair, initial-state snapshot pair → `SCROLL_THRESHOLDS.EDGE_TOLERANCE` |
+| `docs/flexy-plan.md` | Iteration 215 entry |
+
+Deliberately skipped: test files (none assert the raw tolerance byte — Iteration 194/196/206/208/212/213 precedent); edge-shadow opacity ternaries (`scrollState.isTop ? 0 : 1` — identity `0`/`1`, Iteration 199/200 precedent); `useAutoScroll` `NEAR_BOTTOM_THRESHOLD_PX` (already `AUTO_SCROLL_DEFAULTS`); `CircularProgress` prop defaults `size = 40`/`size = 16` (component API defaults, not scroll domain); `useLastSaved` `updateInterval` (hook parameter, caller-supplied); JSDoc prose comments mentioning scroll; `node_modules`/`dist`.
+
+## Verification (Iteration 215)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (13.23s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,417 web + 555 api + 1,056 shared = 3,028 tests passing** (shared entry-count assertion 3 → 4)
+- ✅ Residual scan — 0 bare `scrollTop <= 4` / `clientHeight) <= 4` edge-tolerance literals in runtime source (excluding tests)
+
+## PR (Iteration 215)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3986 | `flexy/iteration-215-scroll-edge-tolerance` | refactor(flexy): centralize scroll-panel edge-tolerance pixel literals (Iteration 215) |
+
+### ✅ Flexy Iteration 214: Centralize HTML `dir` Text-Direction Attribute Literals
+
+**Problem**: 11 hardcoded `dir="auto"` string literals survived 213 iterations across 4 web runtime files, with no constant family anywhere — even though Iterations 194–195 built the entire `ARIA_*_VALUES` family and Iterations 212–213 built the `HTML_CONTROL_TYPES`/`HTML_AUTOCOMPLETE_VALUES`/`HTML_AUTOCAPITALIZE_VALUES`/`HTML_AUTOCORRECT_VALUES`/`ENTER_KEY_HINTS` family for standard HTML form-control attributes, the `dir` attribute (explicitly flagged in Iterations 210 and 213's skipped lists as an i18n candidate) remained bare string literals. The `dir="auto"` value participates in an i18n direction-detection contract: it tells the browser to detect text direction from the content itself (first strong directional character). A typo'd `"auto"` (e.g. `"ato"`, `"Aut0"`) is an invalid enumerated value — the browser falls back to the inherited parent direction, silently rendering RTL text (Arabic, Hebrew, Persian) in the wrong direction with zero type errors. Breakdown: 1× `KeyboardShortcutsModal` (search input), 4× `StepInfo` (projectName, description, targetAudience, constraints), 1× `StepFeatures` (add-feature input), 5× `StepReview` (projectName, description, targetAudience, constraints display paragraphs + tech-stack summary). Every site renders user-generated content that may be mixed-direction, so `AUTO` is the correct value on all 11; a drift to a forced `LTR`/`RTL` would mangle RTL input. Flexy says: no bare `dir="auto"|"ltr"|"rtl"` string literals where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_TEXT_DIRECTION` (LTR, RTL, AUTO — full `dir` attribute enumerated-value set in use; i18n direction-detection pairing-contract docblock covering the typo→fallback-silently failure mode), placed beside `ENTER_KEY_HINTS` |
+| `packages/shared/src/index.ts` | Exported `HTML_TEXT_DIRECTION` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests: exact values (ltr/rtl/auto), entry count 3 + uniqueness, AUTO≠LTR/RTL invariant (i18n detection branch stays observable) |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 1× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (search input) |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 4× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (projectName, description, targetAudience, constraints) |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 1× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (add-feature input) |
+| `apps/web/src/components/wizard/StepReview.tsx` | 5× `dir="auto"` → `HTML_TEXT_DIRECTION.AUTO` (projectName, description, targetAudience, constraints paragraphs + tech-stack summary row) |
+| `docs/flexy-plan.md` | Iteration 214 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213 precedent); `lib/clipboard.ts` `setAttribute("readonly", "")` / `setAttribute("tabindex", "-1")` bare attribute-name/value literals in the legacy fallback block (setAttribute-argument cluster — candidate for a future DOM-attribute-name iteration); `accessibility.ts` CSS selector `[tabindex="-1"]` (CSS-selector category, Iteration 157/169/212 precedent); `StepGenerating.tsx` `getAttribute("tabindex")` / `removeAttribute("tabindex")` / `setAttribute("tabindex", priorTabIndex)` (setAttribute-argument cluster, same candidate); `lib/dom.ts` `closest("[contenteditable]")` (CSS-selector category); JSDoc prose comments mentioning `dir`; `lib/templates/*` (generated templates); `node_modules`/`dist`.
+
+## Verification (Iteration 214)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+3 new shared)
+- ✅ Residual scan — 0 bare `dir="auto"|"ltr"|"rtl"` in runtime source (excluding tests, JSDoc prose & generated templates)
+
+## PR (Iteration 214)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3974 | `flexy/iteration-214-html-text-direction` | refactor(flexy): centralize HTML dir text-direction attribute literals (Iteration 214) |
+
+### ✅ Flexy Iteration 213: Centralize WebKit-Extension `autoCapitalize` & `autoCorrect` Attribute Literals
+
+**Problem**: 11 hardcoded WebKit-extension text-input attribute literals survived 212 iterations across 3 web runtime files, with no constant family anywhere — even though Iteration 212 built the entire `HTML_CONTROL_TYPES` / `HTML_AUTOCOMPLETE_VALUES` / `ENTER_KEY_HINTS` family for standard HTML form-control attributes, the `autoCapitalize`/`autoCorrect` attributes (explicitly flagged in Iteration 212's skipped list as the next WebKit-extension candidate) remained bare string literals. Each participates in a silent-failure privacy/UX pairing contract where a typo changes mobile soft-keyboard behavior with zero type errors. (1) **`autoCapitalize` attribute** — 6 bare sites (`"off"` ×5 in StepInfo ×3, StepFeatures ×1, KeyboardShortcutsModal ×1; `"sentences"` ×1 in StepInfo's description textarea). On iOS/Android a typo'd `"off"` (e.g. `"of"`, `"Of"`) silently re-enables autocapitalize, capitalizing the first letter of short technical tokens ("auth" → "Auth", "SRE" → "SRE", "devops" → "Devops") and mangling the typed identifier; the description textarea's `"sentences"` is the intentional opposite branch for prose, and a drift between the two branches changes how the soft keyboard transforms user input with no type error. (2) **`autoCorrect` attribute** — 5 bare `autoCorrect="off"` sites (StepInfo ×3, StepFeatures ×1, KeyboardShortcutsModal ×1) implementing the Safari/Android autocorrect suppression contract: without it, the platform rewrites short technical tokens ("cmd" → "Cmd", "auth" → "author", "SRE" → "sore", "devops" → "DevOps") — a token-mangling UX regression with zero type errors. Prose fields (description) deliberately omit the attribute so the platform default (enabled) applies alongside `autoCapitalize={SENTENCES}`. Flexy says: no bare `autoCapitalize="off"|"sentences"` / `autoCorrect="off"` string literals where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_AUTOCAPITALIZE_VALUES` (OFF, SENTENCES — technical/prose pairing-contract docblock); NEW `HTML_AUTOCORRECT_VALUES` (OFF — WebKit-extension privacy contract docblock), placed beside `HTML_AUTOCOMPLETE_VALUES` |
+| `packages/shared/src/index.ts` | Exported both new constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +5 tests: 3 `HTML_AUTOCAPITALIZE_VALUES` (exact values, entry count 2 + uniqueness, OFF≠SENTENCES technical/prose invariant), 2 `HTML_AUTOCORRECT_VALUES` (OFF value + entry count) |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 2 sites: `autoCapitalize="off"` → `HTML_AUTOCAPITALIZE_VALUES.OFF`; `autoCorrect="off"` → `HTML_AUTOCORRECT_VALUES.OFF` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 2 sites: `autoCapitalize="off"` → `HTML_AUTOCAPITALIZE_VALUES.OFF`; `autoCorrect="off"` → `HTML_AUTOCORRECT_VALUES.OFF` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 7 sites: 3× `autoCapitalize="off"` → `HTML_AUTOCAPITALIZE_VALUES.OFF` (projectName, targetAudience, constraints); 1× `autoCapitalize="sentences"` → `HTML_AUTOCAPITALIZE_VALUES.SENTENCES` (description); 3× `autoCorrect="off"` → `HTML_AUTOCORRECT_VALUES.OFF` (projectName, targetAudience, constraints) |
+| `docs/flexy-plan.md` | Iteration 213 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212 precedent); `spellCheck={false/true}` boolean JSX props (boolean, not string literals — Iteration 199/204 boolean precedent); `dir="auto"` HTML text-direction attributes (i18n attribute, not a WebKit text-input extension — Iteration 210 precedent); `inputMode` attributes (none exist in runtime source); CSS selector strings; JSDoc prose comments mentioning attribute values; `lib/templates/react.ts` (generated template); `node_modules`/`dist`.
+
+## Verification (Iteration 213)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new shared)
+- ✅ Residual scan — 0 bare `autoCapitalize="off"|"sentences"`, 0 bare `autoCorrect="off"` in runtime source (excluding tests, JSDoc prose & generated templates)
+
+## PR (Iteration 213)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3971 | `flexy/iteration-213-webkit-autocapitalize-autocorrect` | refactor(flexy): centralize WebKit-extension autoCapitalize & autoCorrect attribute literals (Iteration 213) |
+
+### ✅ Flexy Iteration 212: Centralize HTML Control `type`, `autoComplete` & `enterKeyHint` Attribute Literals
+
+**Problem**: 27 hardcoded HTML form-control behavioral attribute literals survived 211 iterations across 6 web runtime files, with no constant family anywhere — even though Iterations 194–195 built the entire `ARIA_*_VALUES` family and Iteration 206 centralized DOM event names, the browser-interpreted `type`/`autoComplete`/`enterKeyHint` attributes on `<button>`/`<input>`/`<textarea>` remained bare string literals. Each participates in a silent-failure pairing contract where a typo changes runtime behavior with zero type errors. (1) **`type` attribute** — 17 bare sites (`type="button"` ×12 in Toast ×4, StepInfo ×5, StepFeatures ×2, StartFromScratchButton ×1; `type="submit"` ×1 in StepInfo's Next button; `type="text"` ×4 in StepInfo ×2, StepFeatures ×1, KeyboardShortcutsModal ×1). Per the HTML spec a `<button>` with no valid `type` defaults to `type="submit"` — so a typo'd `type="button"` (e.g. `"botton"`) silently converts a neutral Back/clear button into a form submitter inside the wizard's enclosing `<form>`, firing validation + submission with zero type errors; StepInfo's form pairs Next (`SUBMIT`) with 5 Back/secondary `BUTTON` actions in the same form, so drift on either side changes click behavior silently. (2) **`autoComplete` attribute** — 6 bare `autoComplete="off"` sites (StepInfo ×4, StepFeatures ×1, KeyboardShortcutsModal ×1) implementing the sensitive-field privacy contract: wizard inputs (project name, description, target audience, constraints, feature search) deliberately suppress browser autofill so previously-saved personal data never overwrites in-progress wizard state; a typo'd `"off"` (e.g. `"of"`) silently re-enables autofill — a privacy/UX regression with zero type errors. (3) **`enterKeyHint` attribute** — 4 bare value sites (KeyboardShortcutsModal `"search"`, StepFeatures `"done"`, StepInfo ×2 dynamic `canProceed ? "go" : "next"` pairs). The mobile soft-keyboard hint MUST match the action Enter will actually trigger; StepInfo flips NEXT↔GO dynamically with `canProceed` so both sides of the pair must stay byte-identical — a typo silently shows the wrong key icon to mobile users. Flexy says: no bare `type=`/`autoComplete=`/`enterKeyHint=` string literals in runtime source!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `HTML_CONTROL_TYPES` (BUTTON, SUBMIT, TEXT — complete button/input type enum in use, pairing-contract docblock covering the HTML-spec submit-default and input keyboard/validation contracts); NEW `HTML_AUTOCOMPLETE_VALUES` (OFF — sensitive-field privacy contract docblock); NEW `ENTER_KEY_HINTS` (SEARCH, NEXT, GO, DONE — full mobile Enter-hint set in use, canProceed-flip pairing docblock) |
+| `packages/shared/src/index.ts` | Exported all 3 new constants on the root barrel (config barrel picks them up via `export *`) |
+| `packages/shared/src/config.test.ts` | +8 tests: 3 `HTML_CONTROL_TYPES` (exact values, entry count 3 + uniqueness, BUTTON≠SUBMIT invariant), 1 `HTML_AUTOCOMPLETE_VALUES` (OFF value + entry count), 3 `ENTER_KEY_HINTS` (exact values, entry count 4 + uniqueness, NEXT≠GO canProceed-flip invariant) |
+| `apps/web/src/components/Toast.tsx` | 4× `type="button"` → `HTML_CONTROL_TYPES.BUTTON` |
+| `apps/web/src/components/StartFromScratchButton.tsx` | 1× `type="button"` → `HTML_CONTROL_TYPES.BUTTON` |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | 3 sites: `type="text"` → `HTML_CONTROL_TYPES.TEXT`; `autoComplete="off"` → `HTML_AUTOCOMPLETE_VALUES.OFF`; `enterKeyHint="search"` → `ENTER_KEY_HINTS.SEARCH` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 5 sites: `type="text"` → `HTML_CONTROL_TYPES.TEXT`; 2× `type="button"` → `HTML_CONTROL_TYPES.BUTTON`; `autoComplete="off"` → `HTML_AUTOCOMPLETE_VALUES.OFF`; `enterKeyHint="done"` → `ENTER_KEY_HINTS.DONE` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 15 sites: `type="submit"` → `HTML_CONTROL_TYPES.SUBMIT`; 5× `type="button"` → `HTML_CONTROL_TYPES.BUTTON`; 2× `type="text"` → `HTML_CONTROL_TYPES.TEXT`; 4× `autoComplete="off"` → `HTML_AUTOCOMPLETE_VALUES.OFF`; 2× `canProceed ? "go" : "next"` → `canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT` |
+| `docs/flexy-plan.md` | Iteration 212 entry |
+
+Deliberately skipped: test files (`RippleButton.test.tsx` `type="submit"` render prop, `StepInfo.test.tsx` `enterKeyHint="next"` description strings — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208 precedent); `spellCheck={false/true}` boolean JSX props (boolean, not string literals — Iteration 199/204 boolean precedent); `autoCapitalize="off"`/`autoCorrect="off"` WebKit-extension attributes (not standard HTML enumerated attributes — candidate for a future WebKit-extension iteration); JSDoc prose comments mentioning attribute values; CSS selector strings `input:not([type="hidden"])` in accessibility.ts focus-trap selectors and `link[rel="icon"][type="image/svg+xml"]` in storage.ts favicon selector (CSS-selector category, Iteration 157/169 precedent); DOMPurify `FORBID_TAGS` `"button"`/`"input"` tag names (tag names, not type values); `lib/templates/react.ts` (generated template); `node_modules`/`dist`.
+
+## Verification (Iteration 212)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (10.01s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,408 web + 555 api + 1,045 shared = 3,008 tests passing** (+8 new shared; web 1,408 baseline re-verified against clean `origin/main` at 37e3f9ab)
+- ✅ Residual scan — 0 bare `type="button"|"submit"|"text"`, 0 bare `autoComplete="off"`, 0 bare `enterKeyHint="search"|"next"|"go"|"done"` in runtime source (excluding tests, JSDoc prose, CSS selectors & generated templates)
+
+## PR (Iteration 212)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-212-html-control-attrs` | refactor(flexy): centralize HTML control type, autoComplete & enterKeyHint attribute literals (Iteration 212) |
+
+### ✅ Flexy Iteration 211: Centralize StepInfo Form-Field DOM Element ID Literals into DOM_ELEMENT_IDS
+
+**Problem**: 18 hardcoded DOM element ID string literals survived 210 iterations in a single file — `StepInfo.tsx` bypassed the `DOM_ELEMENT_IDS` family that Iteration 197 built specifically to prevent ARIA-relationship drift. The bypasses span 9 distinct IDs across three pairing contracts, every one of which fails silently if either side is renamed. (1) **id ↔ htmlFor label pairs** (4 IDs × 2 sites): `projectName`, `description`, `targetAudience`, `constraints` — each `<label htmlFor="…">` activates its matching `<input id="…">`/`<textarea id="…">`; a typo on either side silently breaks click-to-focus and the accessible name association with zero type errors. (2) **id ↔ aria-describedby live-region pairs** (5 IDs × 2 sites): `projectName-warning`, `projectName-error`, `description-hint`, `description-warning`, `description-error` — each validation live-region's `id` is referenced by its field's `aria-describedby` ternary/spread; a rename on either side silently stops screen readers from announcing the hint/warning/error while the visible message still renders. The `DOM_ELEMENT_IDS` docblock already names `htmlFor` and `aria-describedby` as pairing contracts the family must cover, and the Iteration 197 test asserts uniqueness "so ARIA references never collide" — yet StepInfo's 18 sites were never converted. Flexy says: no bare `id=`/`htmlFor=`/`aria-describedby=` string literals where `DOM_ELEMENT_IDS` exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | `DOM_ELEMENT_IDS` +9 entries (STEP_INFO_PROJECT_NAME, STEP_INFO_PROJECT_NAME_WARNING, STEP_INFO_PROJECT_NAME_ERROR, STEP_INFO_DESCRIPTION, STEP_INFO_DESCRIPTION_HINT, STEP_INFO_DESCRIPTION_WARNING, STEP_INFO_DESCRIPTION_ERROR, STEP_INFO_TARGET_AUDIENCE, STEP_INFO_CONSTRAINTS — count 13 → 22), each with a JSDoc note naming its pairing contract (label `htmlFor` vs `aria-describedby` live-region) |
+| `apps/web/src/config/constants/accessibility.test.ts` | Split Iteration 197 test into two: original 13-assertion test + NEW 9-assertion StepInfo test; uniqueness count 13 → 22 |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 4× `htmlFor="…"` → `DOM_ELEMENT_IDS.STEP_INFO_*`; 4× `id="…"` inputs/textareas → `DOM_ELEMENT_IDS.STEP_INFO_*`; 5× `aria-describedby` ternary/spread string literals → `DOM_ELEMENT_IDS.STEP_INFO_*_WARNING/ERROR/HINT`; 4× `id="…"` live-region paragraphs → `DOM_ELEMENT_IDS.STEP_INFO_*_WARNING/ERROR/HINT` (18 sites total) |
+| `docs/flexy-plan.md` | Iteration 211 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so `getByLabelText`/`toHaveAttribute` assertions stay green — Iteration 194/196/206/208 precedent); `data-testid="form-ready-announcer"` (test-only selector, no ARIA relationship); `name="projectName"`/`name="description"`/`name="targetAudience"`/`name="constraints"` form-field name attributes (single-write sites with no paired read — the form is fully controlled via React state and never uses native form submission, so a name/id mismatch has no observable effect — one-off precedent); `tab-${activeTab}` dynamic template IDs in Editor/EditorHeader/StepGenerating (`DOM_ELEMENT_IDS` docblock-excluded); `root`/`skeleton-loader`/`font-mono` in main.tsx (`index.html`-paired runtime IDs that cannot import TS constants — docblock-excluded); `editor-tabs` lone static id in EditorHeader (no ARIA-relationship pair — one-off precedent); SVG gradient paint-reference ids (`toolbar-export-spinner-grad`, `gen-lightning-grad` — paint refs, not ARIA relationships — Iteration 196 precedent); `lib/templates/react.ts` (generated template); `node_modules`/`dist`.
+
+## Verification (Iteration 211)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (10.19s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (354 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,393 web + 555 api + 1,037 shared = 2,985 tests passing** (+1 new web; web baseline 1,392 re-verified against clean `origin/main`)
+- ✅ Residual scan — 0 bare `id="…"` / `htmlFor="…"` / `"aria-describedby": "…"` string literals in StepInfo.tsx runtime source (excluding test-only `data-testid`)
+
+## PR (Iteration 211)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3956 | `flexy/iteration-211-stepinfo-dom-ids` | refactor(flexy): centralize StepInfo form-field DOM element ID literals into DOM_ELEMENT_IDS (Iteration 211) |
+
+### ✅ Flexy Iteration 210: Centralize CSS `none`/`hidden`/`auto` Value Bypasses & Eliminate MODIFIER_KEYS Bypasses in platform.ts
+
+**Problem**: Two clusters survived 209 iterations with the same silent-failure shape — string literals whose read/write or type/value pairs drift without any type error. (1) **CSS value-string bypasses of `CSS_VALUES`**: 13 bare runtime sites bypassed the existing `CSS_VALUES` family whose own docblock says "No hardcoded CSS value strings like `auto` in component logic!" — 8× `"none"` (`Toast` transition ring + bar, `CharacterCounter` transition, `CircularProgress` transition, `SkipLink` animation ×2, `EditorHeader` boxShadow, `clipboard` pointerEvents), 2× `"hidden"` (`useScrollLock` overflow read + write — no `HIDDEN` key existed at all), and 2× `"auto"` (`SkipLink` willChange, `HeadingAnchor` motion width). Every reduced-motion ternary pairs a `"none"` write with a constant-backed animation config on the other branch; every scroll-lock read/write pair uses the same overflow keyword — a typo silently leaves transitions running or the body scrollable with no type error. (2) **`MODIFIER_KEYS` bypasses in `platform.ts`**: the sole remaining runtime owner of the four-value modifier enum inlined a *third* copy of `"cmd" | "ctrl" | "alt" | "none"` (twice — once with a reordered union), two bare defaults (`= "none"`, `= "cmd"`), and six bare comparisons (`=== "none"` ×2, `=== "alt"` ×2, `=== "ctrl"` ×2) — even though Iteration 209 just converted SmartTooltip's identical union to `(typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]`, and `keyboard.ts` still had 2× bare `MODIFIER: "none"`. Flexy says: no bare CSS `none`/`hidden`/`auto` style-value literals, and no inlined modifier unions/defaults/comparisons where `MODIFIER_KEYS` exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | `CSS_VALUES` +`HIDDEN` (`"hidden"` — overflow locking), docblock extended with full pairing contract (transition/animation/boxShadow/pointerEvents/overflow/willChange/width) + usage examples (count 2 → 3) |
+| `packages/shared/src/config.test.ts` | +2 tests (1,035 → 1,037): exact `HIDDEN` value, entry count 3, NONE/HIDDEN/AUTO pairwise-distinct invariant |
+| `apps/web/src/components/Toast.tsx` | 2× `transition: … ? "none" : …` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/CharacterCounter.tsx` | 1× reduced-motion `transition: "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/CircularProgress.tsx` | 1× reduced-motion `transition: "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/SkipLink.tsx` | 2× `animation: … ? "none" : …` + 1× `willChange: … ? "auto" : …` → `CSS_VALUES.NONE` / `CSS_VALUES.AUTO` |
+| `apps/web/src/components/editor/EditorHeader.tsx` | 1× `boxShadow: "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/components/HeadingAnchor.tsx` | 1× motion `width: … ? "auto" : 0` → `CSS_VALUES.AUTO` |
+| `apps/web/src/lib/clipboard.ts` | 1× `pointerEvents = "none"` → `CSS_VALUES.NONE` |
+| `apps/web/src/hooks/useScrollLock.ts` | 2× `overflow === "hidden"` / `= "hidden"` → `CSS_VALUES.HIDDEN` |
+| `apps/web/src/lib/platform.ts` | NEW exported `ShortcutModifier = (typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]`; 2× inlined unions → `ShortcutModifier`; 2× defaults → `MODIFIER_KEYS.NONE` / `MODIFIER_KEYS.CMD`; 6× comparisons → `MODIFIER_KEYS.NONE/ALT/CTRL` |
+| `apps/web/src/config/constants/keyboard.ts` | 2× `MODIFIER: "none"` → `MODIFIER_KEYS.NONE` |
+| `docs/flexy-plan.md` | Iteration 210 entry |
+
+Deliberately skipped: test files (`toBe("hidden")` / `overflow` assertions — constants preserve the identical byte value — Iteration 194/196/206/208 precedent); `dir="auto"` HTML text-direction attributes ×11 (i18n attribute, not a CSS style manipulation — JSX-attribute precedent); `clipboard` `position="fixed"` / `top="0"` / `opacity="0"` (one-off off-screen positioning + identity `0` — Iteration 199/200 precedent); `keyboard.ts` compound `MODIFIER: "ctrl/cmd"` / `"ctrl/cmd+shift"` display labels (not members of `MODIFIER_KEYS`); `platform.ts` human-readable labels (`"Ctrl"`/`"Alt"`/`"Meta"`/`"Control"`/`"⌘"`/`"⌥"` — display strings, not modifier identifiers); `security.ts` CSP `'none'` sources (CSP-directive category); SVG `fill`/`stroke` `"none"` (already `SVG_ICON_DEFAULTS.FILL_NONE`/`STROKE_NONE`); JSDoc prose examples; `lib/templates/*` (generated); `node_modules`/`dist`.
+
+## Verification (Iteration 210)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (11.55s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,399 web + 555 api + 1,037 shared = 2,991 tests passing** (+2 new shared)
+- ✅ Residual scan — 0 bare `transition/animation/boxShadow/pointerEvents: "none"` style literals, 0 bare `overflow … "hidden"`, 0 bare `willChange/width … "auto"` in runtime source, 0 inlined `"cmd" | "ctrl" | "alt" | "none"` unions, 0 bare `modifier === "none"|"alt"|"ctrl"` comparisons, 0 bare `MODIFIER: "none"` (excluding tests, JSDoc prose, CSP/`dir` attributes & generated templates)
+
+## PR (Iteration 210)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3945 | `flexy/iteration-210-css-none-modifier-bypasses` | refactor(flexy): centralize CSS none/hidden/auto value bypasses & eliminate MODIFIER_KEYS bypasses in platform.ts (Iteration 210) |
+
+### ✅ Flexy Iteration 209: Centralize Tooltip data-state Values & Eliminate DIRECTION/MODIFIER Bypasses
+
+**Problem**: Three clusters survived 208 iterations with the same silent-failure shape — string literals whose read/write or prop/value pairs drift without any type error. (1) **Tooltip `data-state`**: SmartTooltip was the lone runtime bypass of the 18-family `*_STATE_VALUES` system — `data-state={isVisible ? "visible" : "hidden"}` on the trigger container and a static `data-state="visible"` on the floating panel, while every sibling component already used a named state family. A typo on either side silently breaks CSS selectors and test assertions (Iteration 207 explicitly flagged this as a future DOM-state candidate). (2) **`DIRECTION` position bypasses**: 34 bare `position="left"|"right"|"top"|"bottom"` JSX prop call sites across 15 files fed SmartTooltip / KeyboardShortcutTooltip / InfoTooltip, plus TypeIndicator's inlined `position?: "left" | "right"` type + `position = "right"` default + `position === "left"` comparison, plus ScrollToTop's `type ScrollDirection = "top" | "bottom"`, `direction === "top"`, and `tooltipPosition = isToTop ? ("left" as const) : ("right" as const)` — all bypassing the existing `DIRECTION` family whose own docblock says "No hardcoded top/bottom/left/right direction strings!" (3) **`MODIFIER_KEYS` type bypass**: KeyboardShortcutTooltip's `modifier?: "cmd" | "ctrl" | "alt" | "none"` inlined a third copy of the four-value enum that `MODIFIER_KEYS` already owns (call sites already pass `MODIFIER_KEYS.*`). Flexy says: no bare tooltip state strings, no bare direction/position literals, and no inlined modifier unions where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `TOOLTIP_STATE_VALUES` (VISIBLE `"visible"`, HIDDEN `"hidden"` — pairing-contract docblock; deliberately distinct from banner-scoped `BANNER_STATE_VALUES` even though string values coincide), placed beside `BANNER_STATE_VALUES` |
+| `packages/shared/src/index.ts` | Exported `TOOLTIP_STATE_VALUES` on the root barrel (config barrel picks it up via `export *`) |
+| `packages/shared/src/config.test.ts` | +3 tests (1,032 → 1,035): exact values, entry count 2 + uniqueness |
+| `apps/web/src/components/SmartTooltip.tsx` | 2 `data-state` sites → `TOOLTIP_STATE_VALUES.*`; `modifier?: "cmd" \| "ctrl" \| "alt" \| "none"` → `(typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS]` |
+| `apps/web/src/components/TypeIndicator.tsx` | `position?: "left" \| "right"` → `typeof DIRECTION.LEFT \| typeof DIRECTION.RIGHT`; default → `DIRECTION.RIGHT`; comparison → `DIRECTION.LEFT` |
+| `apps/web/src/components/ScrollToTop.tsx` | `type ScrollDirection = "top" \| "bottom"` → `typeof DIRECTION.TOP \| typeof DIRECTION.BOTTOM`; `direction === "top"` → `DIRECTION.TOP`; `tooltipPosition` pair → `DIRECTION.LEFT` / `DIRECTION.RIGHT` |
+| `apps/web/src/App.tsx` | 3× `position="left"` → `DIRECTION.LEFT` |
+| `components/OfflineBanner.tsx` / `StepIndicator.tsx` / `ShowEditorButton.tsx` / `ConfirmDialog.tsx` | 1× `position="left"` each → `DIRECTION.LEFT` |
+| `components/Toast.tsx` / `Header.tsx` | 2× each → `DIRECTION.LEFT` / `DIRECTION.BOTTOM` |
+| `components/editor/EditorHeader.tsx` | 2× `position="bottom"` → `DIRECTION.BOTTOM` |
+| `components/editor/EditorToolbar.tsx` | 4× `position="bottom"` → `DIRECTION.BOTTOM` |
+| `components/wizard/StepInfo.tsx` / `StepFeatures.tsx` / `StepStack.tsx` | 2× each → `DIRECTION.LEFT` / `DIRECTION.RIGHT` |
+| `components/wizard/StepGenerating.tsx` | 3× left/right + 1× `position="top"` → `DIRECTION.*` |
+| `components/wizard/StepReview.tsx` | 6× left/right → `DIRECTION.*` |
+| `docs/flexy-plan.md` | Iteration 209 entry |
+
+Deliberately skipped: test files (`toHaveAttribute("data-state", "visible")`, `position="left"` render props, `[data-position='left']` selectors — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208 precedent); `ValidationCheckmark` `size?: "inline" | "input"` (separate size-variant family, not direction/state — candidate for a future size iteration); `ScrollToTop` / `TypeIndicator` JSDoc prose (`@default "right"`, example prose); `lib/templates/react.ts` (generated template); CSS `[data-state=…]` selectors if any (none in `index.css`); `node_modules`/`dist`.
+
+## Verification (Iteration 209)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` (15.87s) + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean (356 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,397 web + 555 api + 1,035 shared = 2,987 tests passing** (+3 new shared)
+- ✅ Residual scan — 0 bare `data-state` `"visible"`/`"hidden"` literals, 0 bare `position="left|right|top|bottom"` props, 0 bare `=== "top"|"bottom"|"left"|"right"` comparisons, 0 inlined `"cmd" | "ctrl" | "alt" | "none"` unions, 0 `("left" as const)` pairs in runtime source (excluding tests, config definition docs, JSDoc prose & generated templates)
+
+## PR (Iteration 209)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #3938 | `flexy/iteration-209-data-state-tooltip` | refactor(flexy): centralize tooltip data-state values & eliminate DIRECTION/MODIFIER bypasses (Iteration 209) |
+
 ### ✅ Flexy Iteration 208: Centralize matchMedia Query Strings & Eliminate ARIA Role/Live Bypasses
 
 **Problem**: Two clusters survived 207 iterations with the same silent-failure shape — string literals whose read/write pairs drift without any type error. (1) **matchMedia query strings**: 7 bare runtime `window.matchMedia("…")` call sites with no `MEDIA_QUERIES` constant anywhere — `"(prefers-reduced-motion: reduce)"` ×5 (`ReducedMotionContext` ×2, `useReducedMotion` ×2, `utils/scroll` ×1) and `"(prefers-contrast: more)"` ×2 (`useReducedMotion` ×2). Every subscription site pairs with a `.matches` snapshot read using the same bare literal, and the string must stay byte-identical to the CSS `@media` feature in `index.css` — a typo or rename on any side silently returns `matches === false` (the preference never matches, nothing throws, animations stay on for reduced-motion users). `DOM_EVENTS` covered event names but media-query strings had no constant. (2) **ARIA role/aria-live bypasses**: 6 runtime sites bypassed the existing `ARIA_ROLES` / `ARIA_LIVE_VALUES` families built in Iterations 194–195 — `role="progressbar"` (`CharacterCounter`), `role={ariaLabel ? "img" : undefined}` (`Icon`), `role={isVisible ? "status" : undefined}` + `aria-live={isVisible ? "polite" : undefined}` (`OfflineBanner`), and `setAttribute("role", "status")` + `setAttribute("aria-live", "polite")` (`useFocusOnStepChange` — whose very next line already used `ARIA_ATOMIC_VALUES.TRUE`, a partial-constant bypass in the same three-line block). Flexy says: no bare media-query strings, and no role/aria-live literals where a constant family already exists!

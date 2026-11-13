@@ -18,6 +18,7 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  DIRECTION,
   LOADING_DOTS_COUNT,
   TYPING_STATE_VALUES,
   DATA_BOOLEAN_VALUES,
@@ -38,7 +39,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface TypeIndicatorProps {
   isTyping: boolean;
-  position?: "left" | "right";
+  position?: typeof DIRECTION.LEFT | typeof DIRECTION.RIGHT;
   className?: string;
 }
 
@@ -58,12 +59,12 @@ interface TypeIndicatorProps {
  *
  * @example
  * // With custom position
- * <TypeIndicator isTyping={true} position="left" />
+ * <TypeIndicator isTyping={true} position={DIRECTION.LEFT} />
  */
 
 export const TypeIndicator = memo(function TypeIndicator({
   isTyping,
-  position = "right",
+  position = DIRECTION.RIGHT,
   className = "",
 }: TypeIndicatorProps) {
   const shouldReduceMotion = useReducedMotion();
@@ -95,7 +96,7 @@ export const TypeIndicator = memo(function TypeIndicator({
               ease: ANIMATION_TIMING.easing.easeOut,
             }}
             className={`inline-flex items-center gap-1 ${
-              position === "left" ? "mr-2" : "ml-2"
+              position === DIRECTION.LEFT ? "mr-2" : "ml-2"
             } ${className}`}
             // Decorative dots — announcement lives in the persistent region above.
             aria-hidden={ARIA_HIDDEN_VALUES.TRUE}

@@ -41,10 +41,12 @@ import {
   ARIA_KEYSHORTCUTS,
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
+  CSS_VALUES,
   EDITOR_FILENAMES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
@@ -138,7 +140,7 @@ const TabButton = React.memo(function TabButton({
           animate={
             isGenerating
               ? { boxShadow: [...HEADER_ANIMATION.TAB_GLOW.BOX_SHADOWS] }
-              : { boxShadow: "none" }
+              : { boxShadow: CSS_VALUES.NONE }
           }
           transition={
             isGenerating
@@ -569,7 +571,7 @@ function EditorHeaderComponent({
           <KeyboardShortcutTooltip
             shortcut={KEYBOARD_EVENT_KEYS.ARROW_LEFT}
             description={EDITOR_LABELS.TAB_NAVIGATION.PREVIOUS}
-            position="bottom"
+            position={DIRECTION.BOTTOM}
             modifier={MODIFIER_KEYS.NONE}
           >
             <TabButton
@@ -587,7 +589,7 @@ function EditorHeaderComponent({
           <KeyboardShortcutTooltip
             shortcut={KEYBOARD_EVENT_KEYS.ARROW_RIGHT}
             description={EDITOR_LABELS.TAB_NAVIGATION.NEXT}
-            position="bottom"
+            position={DIRECTION.BOTTOM}
             modifier={MODIFIER_KEYS.NONE}
           >
             <TabButton

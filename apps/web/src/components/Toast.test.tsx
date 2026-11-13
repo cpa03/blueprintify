@@ -141,6 +141,20 @@ describe("ToastContainer", () => {
     expect(screen.queryByText(/dismiss all/i)).not.toBeInTheDocument();
   });
 
+  it("exposes the Shift+Escape shortcut via aria-keyshortcuts on the dismiss all button", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
+    );
+
+    render(<ToastContainer />);
+
+    // getByText returns the inner span; the attribute lives on the wrapping button.
+    const dismissAllButton = screen.getByText(/dismiss all/i).closest("button");
+    expect(dismissAllButton).not.toBeNull();
+    expect(dismissAllButton).toHaveAttribute("aria-keyshortcuts", "Shift+Escape");
+  });
+
   it("renders toast with role='status', aria-live='polite', and state inspection attributes", () => {
     mockToasts.push({
       id: "toast-1",
@@ -353,5 +367,111 @@ describe("ToastContainer", () => {
       vi.advanceTimersByTime(duration);
     });
     expect(toastStatus).toHaveAttribute("data-progress", "0");
+  });
+
+  it("pauses auto-dismiss while pointer is held down and resumes on release", () => {
+    vi.useFakeTimers();
+
+    const duration = 3000;
+    mockToasts.push({
+      id: "toast-1",
+      message: "Touch pause toast",
+      type: TOAST_TYPES.INFO,
+      duration,
+    });
+
+    render(<ToastContainer />);
+
+    const toastStatus = screen
+      .getAllByRole("status")
+      .find((el) => el.getAttribute("aria-live") === "polite");
+    expect(toastStatus).toHaveAttribute("data-paused", "false");
+    expect(toastStatus).toHaveAttribute("data-pointer-down", "false");
+
+    fireEvent.pointerDown(toastStatus!);
+    expect(toastStatus).toHaveAttribute("data-paused", "true");
+    expect(toastStatus).toHaveAttribute("data-pointer-down", "true");
+
+    act(() => {
+      vi.advanceTimersByTime(duration + 1000);
+    });
+    expect(mockRemoveToast).not.toHaveBeenCalled();
+
+    fireEvent.pointerUp(toastStatus!);
+    expect(toastStatus).toHaveAttribute("data-paused", "false");
+    expect(toastStatus).toHaveAttribute("data-pointer-down", "false");
+
+    act(() => {
+      vi.advanceTimersByTime(duration + 1000);
+    });
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-1");
+  });
+
+  it("resumes with remaining time (not full duration) after pointer release", () => {
+    vi.useFakeTimers();
+
+    const duration = 5000;
+    mockToasts.push({
+      id: "toast-1",
+      message: "Remaining time toast",
+      type: TOAST_TYPES.SUCCESS,
+      duration,
+    });
+
+    render(<ToastContainer />);
+
+    const toastStatus = screen
+      .getAllByRole("status")
+      .find((el) => el.getAttribute("aria-live") === "polite");
+
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(mockRemoveToast).not.toHaveBeenCalled();
+
+    fireEvent.pointerDown(toastStatus!);
+    act(() => {
+      vi.advanceTimersByTime(duration + 1000);
+    });
+    expect(mockRemoveToast).not.toHaveBeenCalled();
+
+    fireEvent.pointerUp(toastStatus!);
+    act(() => {
+      vi.advanceTimersByTime(2900);
+    });
+    expect(mockRemoveToast).not.toHaveBeenCalled();
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-1");
+  });
+
+  it("resumes on pointercancel so a browser scroll takeover does not strand the toast paused", () => {
+    vi.useFakeTimers();
+
+    mockToasts.push({
+      id: "toast-1",
+      message: "Pointercancel toast",
+      type: TOAST_TYPES.INFO,
+      duration: 1000,
+    });
+
+    render(<ToastContainer />);
+
+    const toastStatus = screen
+      .getAllByRole("status")
+      .find((el) => el.getAttribute("aria-live") === "polite");
+
+    fireEvent.pointerDown(toastStatus!);
+    expect(toastStatus).toHaveAttribute("data-paused", "true");
+
+    fireEvent.pointerCancel(toastStatus!);
+    expect(toastStatus).toHaveAttribute("data-paused", "false");
+
+    act(() => {
+      vi.advanceTimersByTime(1100);
+    });
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-1");
   });
 });

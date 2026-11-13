@@ -8,6 +8,8 @@ import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
 import { EDITOR_TABS, ACCESSIBILITY_LABELS } from "../config/constants";
 import { WIZARD_STEP_KEYS, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 // jsdom cannot compute real colors, so the color-contrast rule is always
 // "incomplete" there; disable it to focus on structural accessibility.
@@ -22,6 +24,10 @@ const { mockSuspendingStepChunk } = vi.hoisted(() => ({
 
 const { stepInfoRenderCount } = vi.hoisted(() => ({
   stepInfoRenderCount: { value: 0 },
+}));
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
 }));
 
 vi.mock("../store", () => ({
@@ -135,6 +141,7 @@ const mockEditorStore: EditorStore = {
 describe("Wizard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useReducedMotion).mockReturnValue(false);
     (useWizardStore as unknown as Mock).mockImplementation(
       (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
@@ -147,6 +154,20 @@ describe("Wizard", () => {
     render(<Wizard />);
     expect(await screen.findByTestId("step-info")).toBeInTheDocument();
     expect(screen.queryByTestId("step-stack")).not.toBeInTheDocument();
+  });
+
+  it("exposes data-reduced-motion and data-current-step DOM inspection attributes", () => {
+    const { container } = render(<Wizard />);
+    const wizardWrapper = container.firstChild as HTMLElement;
+    expect(wizardWrapper).toHaveAttribute("data-reduced-motion", DATA_BOOLEAN_VALUES.FALSE);
+    expect(wizardWrapper).toHaveAttribute("data-current-step", WIZARD_STEP_KEYS.INFO);
+  });
+
+  it("reflects reduced motion preference on data-reduced-motion DOM attribute", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(<Wizard />);
+    const wizardWrapper = container.firstChild as HTMLElement;
+    expect(wizardWrapper).toHaveAttribute("data-reduced-motion", DATA_BOOLEAN_VALUES.TRUE);
   });
 
   it("announces loading via a status live region while a step chunk is suspended", async () => {

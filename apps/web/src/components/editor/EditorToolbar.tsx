@@ -47,6 +47,7 @@ import {
   VIEW_MODE_INDICATOR_POSITION,
   VIEW_MODE_LABELS,
   VIEW_MODES as SHARED_VIEW_MODES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -185,7 +186,7 @@ function EditorToolbarComponent({
                 </kbd>
               </div>
             }
-            position="bottom"
+            position={DIRECTION.BOTTOM}
             delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
           >
             <button
@@ -278,7 +279,7 @@ function EditorToolbarComponent({
             </kbd>
           </div>
         }
-        position="bottom"
+        position={DIRECTION.BOTTOM}
         delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <AnimatedCopyButton
@@ -306,7 +307,7 @@ function EditorToolbarComponent({
             </kbd>
           </div>
         }
-        position="bottom"
+        position={DIRECTION.BOTTOM}
         delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <button
@@ -475,7 +476,7 @@ function EditorToolbarComponent({
             </kbd>
           </div>
         }
-        position="bottom"
+        position={DIRECTION.BOTTOM}
         delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <button

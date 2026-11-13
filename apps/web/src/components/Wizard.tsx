@@ -35,6 +35,7 @@ import {
   CELEBRATION_TEXT,
   ACCESSIBILITY_LABELS,
   CSS_CLASSES,
+  SCROLL_THRESHOLDS,
 } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import {
@@ -42,6 +43,7 @@ import {
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
+  DATA_BOOLEAN_VALUES,
   KEYBOARD_EVENT_KEYS,
   UI_MESSAGES,
   WIZARD_STEP_KEYS,
@@ -96,8 +98,10 @@ function WizardComponent(): JSX.Element {
   const handleScroll = useCallback(() => {
     const el = containerRef.current;
     if (!el || shouldReduceMotion) return;
-    const isTop = el.scrollTop <= 4;
-    const isBottom = Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <= 4;
+    const isTop = el.scrollTop <= SCROLL_THRESHOLDS.EDGE_TOLERANCE;
+    const isBottom =
+      Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <=
+      SCROLL_THRESHOLDS.EDGE_TOLERANCE;
     setScrollState((prev) => {
       if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
       return { isTop, isBottom };
@@ -243,7 +247,13 @@ function WizardComponent(): JSX.Element {
   const shadowOpacity = scrollShadowVisible ? undefined : 0;
 
   return (
-    <div className="relative flex h-full">
+    <div
+      className="relative flex h-full"
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-current-step={currentStep}
+    >
       {/* Top scroll shadow — fades in when wizard content is scrolled down,
           providing a subtle spatial cue that content is hidden above. */}
       <div

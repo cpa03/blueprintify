@@ -95,7 +95,8 @@ describe("PreviewEmptyState", () => {
         onSwitchTab={vi.fn()}
       />
     );
-    expect(screen.getByRole("button", { name: /switch to tasks tab/i })).toBeInTheDocument();
+    // WCAG 2.5.3: accessible name must match the visible filename label.
+    expect(screen.getByRole("button", { name: /switch to task\.md tab/i })).toBeInTheDocument();
   });
 
   it("calls onSwitchTab when switch button is clicked", () => {
@@ -107,7 +108,7 @@ describe("PreviewEmptyState", () => {
         onSwitchTab={onSwitchTab}
       />
     );
-    fireEvent.click(screen.getByRole("button", { name: /switch to tasks tab/i }));
+    fireEvent.click(screen.getByRole("button", { name: /switch to task\.md tab/i }));
     expect(onSwitchTab).toHaveBeenCalledTimes(1);
   });
 
@@ -120,7 +121,9 @@ describe("PreviewEmptyState", () => {
         onSwitchTab={vi.fn()}
       />
     );
-    expect(screen.queryByRole("button", { name: /switch to tasks tab/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /switch to task\.md tab/i })
+    ).not.toBeInTheDocument();
   });
 
   it("shows wizard completion hint when no sibling content and not generating", () => {
@@ -144,7 +147,9 @@ describe("PreviewEmptyState", () => {
         onSwitchTab={onSwitchTab}
       />
     );
-    expect(screen.getByRole("button", { name: /switch to blueprint tab/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /switch to blueprint\.md tab/i })
+    ).toBeInTheDocument();
   });
 
   it("renders correct filenames for each tab", () => {

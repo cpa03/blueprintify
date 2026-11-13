@@ -29,12 +29,19 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  ENTER_KEY_HINTS,
   FRAMER_TYPE,
+  HTML_AUTOCOMPLETE_VALUES,
+  HTML_AUTOCAPITALIZE_VALUES,
+  HTML_AUTOCORRECT_VALUES,
+  HTML_CONTROL_TYPES,
+  HTML_TEXT_DIRECTION,
   ICON_PATHS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   SHORTCUT_DESCRIPTIONS,
   DATA_BOOLEAN_VALUES,
+  DIRECTION,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -215,7 +222,11 @@ export const StepFeatures = memo(function StepFeatures({
               {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
-              <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
+              <CharacterCounterCompact
+                current={newFeature.length}
+                max={FORM_LIMITS.FEATURE.MAX}
+                descriptionId={DOM_ELEMENT_IDS.FEATURE_INPUT_COUNTER}
+              />
               <span
                 id={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
                 className="text-xs text-dark-500 flex items-center gap-1"
@@ -232,10 +243,18 @@ export const StepFeatures = memo(function StepFeatures({
               <input
                 ref={featureInputRef}
                 id={DOM_ELEMENT_IDS.FEATURE_INPUT}
-                type="text"
-                autoComplete="off"
-                enterKeyHint="done"
-                dir="auto"
+                type={HTML_CONTROL_TYPES.TEXT}
+                autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF}
+                // Mobile keyboard hygiene: feature names are short technical
+                // tokens ("auth", "SSO", "rate limiting"). Without these,
+                // iOS/Android autocapitalize each word and Safari autocorrect
+                // rewrites tokens ("auth" -> "author"), mangling the added
+                // feature. Matches the autoCapitalize/autoCorrect pattern on
+                // StepInfo's projectName/targetAudience inputs.
+                autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
+                autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
+                enterKeyHint={ENTER_KEY_HINTS.DONE}
+                dir={HTML_TEXT_DIRECTION.AUTO}
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
                 onKeyDown={handleKeyDown}
@@ -246,7 +265,7 @@ export const StepFeatures = memo(function StepFeatures({
                 }
                 className={`input-field w-full pr-10 ${isAtMaxCount ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 opacity-60 cursor-not-allowed" : newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
-                aria-describedby={DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}
+                aria-describedby={`${DOM_ELEMENT_IDS.FEATURE_INPUT_COUNTER} ${DOM_ELEMENT_IDS.FEATURE_INPUT_HINT}`}
                 maxLength={FORM_LIMITS.FEATURE.MAX}
                 readOnly={isAtMaxCount}
                 tabIndex={isAtMaxCount ? -1 : 0}
@@ -254,7 +273,7 @@ export const StepFeatures = memo(function StepFeatures({
               <AnimatePresence>
                 {newFeature && (
                   <motion.button
-                    type="button"
+                    type={HTML_CONTROL_TYPES.BUTTON}
                     initial={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: ANIMATION_SCALE.STANDARD }}
@@ -424,7 +443,7 @@ export const StepFeatures = memo(function StepFeatures({
                 {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
               </label>
               <motion.button
-                type="button"
+                type={HTML_CONTROL_TYPES.BUTTON}
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg || isAtMaxCount}
                 whileHover={
@@ -654,7 +673,7 @@ export const StepFeatures = memo(function StepFeatures({
         <KeyboardShortcutTooltip
           shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
           description={SHORTCUT_DESCRIPTIONS.GO_BACK}
-          position="right"
+          position={DIRECTION.RIGHT}
           modifier={MODIFIER_KEYS.ALT}
         >
           <RippleButton
@@ -687,7 +706,7 @@ export const StepFeatures = memo(function StepFeatures({
         <KeyboardShortcutTooltip
           shortcut={KEYBOARD_EVENT_KEYS.ENTER}
           description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-          position="left"
+          position={DIRECTION.LEFT}
         >
           <RippleButton
             onClick={nextStep}

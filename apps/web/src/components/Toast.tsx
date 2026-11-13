@@ -8,7 +8,9 @@
  * Features:
  * - Auto-dismiss with configurable duration
  * - Visual progress ring showing remaining time
- * - Pause on hover for extended reading time
+ * - Pause on hover (mouse) and on press (touch/pen via pointer events) for
+ *   extended reading time — touch users cannot hover, so without press-pause
+ *   the countdown dismisses the toast mid-read (WCAG 2.2.1 Timing Adjustable)
  * - Smooth enter/exit animations via Framer Motion
  * - Accessible with ARIA live regions for screen readers
  *
@@ -28,7 +30,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
-import { DOM_EVENTS } from "@blueprint/shared/config";
+import { DOM_EVENTS, DIRECTION } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import {
@@ -60,13 +62,16 @@ import {
   ARIA_MODAL_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
+  CSS_VALUES,
   FRAMER_TYPE,
+  HTML_CONTROL_TYPES,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
   SHORTCUT_LABELS,
   TIME_UNITS,
   TOAST_TYPES,
   UI_TIMEOUTS,
+  ARIA_KEYSHORTCUTS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
@@ -145,7 +150,7 @@ const ProgressRing = memo(function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         style={{
-          transition: noTransition ? "none" : TOAST_SPRING.PROGRESS_RING_TRANSITION,
+          transition: noTransition ? CSS_VALUES.NONE : TOAST_SPRING.PROGRESS_RING_TRANSITION,
         }}
       />
     </svg>
@@ -166,6 +171,23 @@ const ToastItem = memo(
     ref
   ) {
     const [isHovered, setIsHovered] = useState(false);
+    // Pointer-press pause: touch/pen users cannot hover, so without this the
+    // countdown would dismiss the toast mid-read while their finger is on it
+    // (WCAG 2.2.1 Timing Adjustable). onPointerDown/Up/Cancel/Leave cover
+    // touch, pen, and mouse uniformly; mouse hover pause stays via isHovered.
+    const [isPointerDown, setIsPointerDown] = useState(false);
+    // Combined pause state used by both the dismiss timer and the visual
+    // pause affordances (pause badge, glow, hidden progress bar) so all
+    // input modalities get identical behavior and feedback.
+    const isPaused = isHovered || isPointerDown;
+    // Mirror of isPaused for use inside the rAF progress loop without putting
+    // isPaused in startDismissTimer's useCallback deps — a changing dep would
+    // retrigger the mount effect and restart the dismiss timer at the FULL
+    // duration, clobbering the remaining-time calculation on pause/resume.
+    const isPausedRef = useRef(isPaused);
+    useEffect(() => {
+      isPausedRef.current = isPaused;
+    }, [isPaused]);
     const [progress, setProgress] = useState(PERCENT_SCALE);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
@@ -217,7 +239,7 @@ const ToastItem = memo(
             const newProgress = Math.max(0, initialProgress * (1 - elapsed / remaining));
             setProgress(newProgress);
 
-            if (newProgress > 0 && !isHovered) {
+            if (newProgress > 0 && !isPausedRef.current) {
               rafRef.current = requestAnimationFrame(animateProgress);
             }
           };
@@ -253,7 +275,7 @@ const ToastItem = memo(
           onRemove(toast.id);
         }, remaining);
       },
-      [toast.id, onRemove, isHovered, clearToastTimeout, shouldReduceMotion]
+      [toast.id, onRemove, clearToastTimeout, shouldReduceMotion]
     );
 
     useEffect(() => {
@@ -265,7 +287,7 @@ const ToastItem = memo(
     }, [toast.id, toast.duration, startDismissTimer, clearToastTimeout]);
 
     useEffect(() => {
-      if (isHovered) {
+      if (isPaused) {
         clearToastTimeout();
         const elapsed = Date.now() - startTimeRef.current;
         remainingTimeRef.current = Math.max(0, durationRef.current - elapsed);
@@ -274,7 +296,7 @@ const ToastItem = memo(
           startDismissTimer(remainingTimeRef.current);
         }
       }
-    }, [isHovered, startDismissTimer, clearToastTimeout]);
+    }, [isPaused, startDismissTimer, clearToastTimeout]);
 
     const handleMouseEnter = () => {
       setIsHovered(true);
@@ -282,6 +304,14 @@ const ToastItem = memo(
 
     const handleMouseLeave = () => {
       setIsHovered(false);
+    };
+
+    const handlePointerDown = () => {
+      setIsPointerDown(true);
+    };
+
+    const handlePointerEnd = () => {
+      setIsPointerDown(false);
     };
 
     const defaultTransition = {
@@ -328,6 +358,10 @@ const ToastItem = memo(
         className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-70 max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+        onPointerLeave={handlePointerEnd}
         onFocus={handleMouseEnter}
         onBlur={handleMouseLeave}
         role={toastRole}
@@ -336,6 +370,8 @@ const ToastItem = memo(
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
         data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-pointer-down={isPointerDown ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-paused={isPaused ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-is-alert={isAlert ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-state={BANNER_STATE_VALUES.VISIBLE}
         data-progress={Math.round(progress)}
@@ -347,11 +383,11 @@ const ToastItem = memo(
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
           style={{
             width: `${progress}%`,
-            opacity: isHovered ? 0 : 0.3,
+            opacity: isPaused ? 0 : 0.3,
             // Match ProgressRing's noTransition behavior above (WCAG 2.3.3):
             // the width countdown is decorative motion, so snap instantly
             // when the user prefers reduced motion.
-            transition: shouldReduceMotion ? "none" : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
+            transition: shouldReduceMotion ? CSS_VALUES.NONE : TOAST_SPRING.PROGRESS_BAR_TRANSITION,
           }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
@@ -381,14 +417,14 @@ const ToastItem = memo(
         <div
           className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ease-out"
           style={{
-            opacity: isHovered ? 1 : 0,
+            opacity: isPaused ? 1 : 0,
             boxShadow: `inset 0 0 24px 0 color-mix(in srgb, ${SVG_ICON_DEFAULTS.STROKE_CURRENT} ${COLOR_MIX_OPACITY.SUBTLE}, transparent)`,
           }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
 
         {shouldReduceMotion ? (
-          isHovered && (
+          isPaused && (
             <div
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
@@ -406,7 +442,7 @@ const ToastItem = memo(
           )
         ) : (
           <AnimatePresence>
-            {isHovered && (
+            {isPaused && (
               <motion.div
                 initial={{
                   opacity: 0,
@@ -480,11 +516,11 @@ const ToastItem = memo(
           >
             <SmartTooltip
               content={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-              position="left"
+              position={DIRECTION.LEFT}
               delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
             >
               <button
-                type="button"
+                type={HTML_CONTROL_TYPES.BUTTON}
                 onClick={() => onRemove(toast.id)}
                 className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
                 aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
@@ -496,11 +532,11 @@ const ToastItem = memo(
         ) : (
           <SmartTooltip
             content={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-            position="left"
+            position={DIRECTION.LEFT}
             delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
           >
             <motion.button
-              type="button"
+              type={HTML_CONTROL_TYPES.BUTTON}
               onClick={() => onRemove(toast.id)}
               className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
@@ -650,7 +686,7 @@ function ToastContainerComponent(): JSX.Element {
       {shouldReduceMotion ? (
         showDismissAll && (
           <button
-            type="button"
+            type={HTML_CONTROL_TYPES.BUTTON}
             onClick={handleClearAll}
             className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                        text-xs font-medium text-dark-400
@@ -659,6 +695,7 @@ function ToastContainerComponent(): JSX.Element {
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                        transition-all duration-200"
             aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
+            aria-keyshortcuts={ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL}
           >
             <span className="flex items-center gap-1.5">
               <Icon name="close" className="w-3.5 h-3.5" />
@@ -680,7 +717,7 @@ function ToastContainerComponent(): JSX.Element {
         <AnimatePresence>
           {showDismissAll && (
             <motion.button
-              type="button"
+              type={HTML_CONTROL_TYPES.BUTTON}
               initial={{
                 opacity: 0,
                 y: ANIMATION_Y_OFFSET.RISE_SUBTLE,
@@ -699,6 +736,7 @@ function ToastContainerComponent(): JSX.Element {
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                          transition-all duration-200"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
+              aria-keyshortcuts={ARIA_KEYSHORTCUTS.TOAST_DISMISS_ALL}
             >
               <span className="flex items-center gap-1.5">
                 <Icon name="close" className="w-3.5 h-3.5" />

@@ -3,7 +3,13 @@
  *
  * Flexy says: No duplicated navigator.platform checks across components!
  * Single source of truth for platform-specific logic.
+ * Flexy says: No inlined "cmd" | "ctrl" | "alt" | "none" unions where
+ * MODIFIER_KEYS already owns the four-value enum!
  */
+import { MODIFIER_KEYS } from "@blueprint/shared";
+
+/** Derived modifier union — single source is MODIFIER_KEYS, never an inlined literal union. */
+export type ShortcutModifier = (typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS];
 
 /**
  * Detect if the current browser is running on macOS.
@@ -115,18 +121,27 @@ function getAriaModifier(): string {
  */
 export function getAriaShortcutKey(
   key: string,
-  modifier: "cmd" | "ctrl" | "alt" | "none" = "none"
+  modifier: ShortcutModifier = MODIFIER_KEYS.NONE
 ): string {
-  if (modifier === "none") return key;
-  const prefix = modifier === "alt" ? "Alt" : modifier === "ctrl" ? "Control" : getAriaModifier();
+  if (modifier === MODIFIER_KEYS.NONE) return key;
+  const prefix =
+    modifier === MODIFIER_KEYS.ALT
+      ? "Alt"
+      : modifier === MODIFIER_KEYS.CTRL
+        ? "Control"
+        : getAriaModifier();
   return `${prefix}+${key}`;
 }
 export function formatShortcut(
   shortcut: string,
-  modifier: "cmd" | "alt" | "ctrl" | "none" = "cmd"
+  modifier: ShortcutModifier = MODIFIER_KEYS.CMD
 ): string {
-  if (modifier === "none") return shortcut;
+  if (modifier === MODIFIER_KEYS.NONE) return shortcut;
   const prefix =
-    modifier === "alt" ? getAltKeyLabel() : modifier === "ctrl" ? "Ctrl" : getModifierLabel();
+    modifier === MODIFIER_KEYS.ALT
+      ? getAltKeyLabel()
+      : modifier === MODIFIER_KEYS.CTRL
+        ? "Ctrl"
+        : getModifierLabel();
   return `${prefix} + ${shortcut.toUpperCase()}`;
 }

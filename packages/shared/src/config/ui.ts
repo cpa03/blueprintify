@@ -746,6 +746,14 @@ export const ARIA_KEYSHORTCUTS = {
   /** Editor document tablist — ArrowLeft/ArrowRight cycle tabs, Home/End jump to first/last */
   EDITOR_TABS:
     `${KEYBOARD_EVENT_KEYS.ARROW_LEFT} ${KEYBOARD_EVENT_KEYS.ARROW_RIGHT} ${KEYBOARD_EVENT_KEYS.HOME} ${KEYBOARD_EVENT_KEYS.END}` as const,
+  /**
+   * Toast container "Dismiss all" button — Shift+Escape clears every visible
+   * toast at once. WAI-ARIA requires the full key name ("Escape"), not the
+   * abbreviated display label ("Shift+Esc") that SHORTCUT_LABELS.TOAST_DISMISS_ALL
+   * renders inside the visual <kbd> hint, so voice-control users can discover
+   * the shortcut by asking for "Shift+Escape" by name.
+   */
+  TOAST_DISMISS_ALL: `Shift+${KEYBOARD_EVENT_KEYS.ESCAPE}` as const,
 } as const;
 
 /**
@@ -833,15 +841,27 @@ export const DIRECTION = {
  * Centralized source of truth for commonly-used CSS property value strings
  * used in JavaScript style manipulations. Eliminates hardcoded CSS value
  * strings like "auto" in component logic.
- * Flexy says: No hardcoded CSS value strings like "auto" in component logic!
+ * Flexy says: No hardcoded CSS value strings like "auto" / "none" / "hidden"
+ * in component logic!
+ * Pairing contract: every `style.transition` / `style.animation` /
+ * `style.boxShadow` / `style.pointerEvents` / `style.overflow` /
+ * `style.willChange` / motion `width` write-or-compare site must read the
+ * same family member — a typo on either side silently changes rendered
+ * behavior with no type error (e.g. reduced-motion `transition: none` that
+ * becomes `"onoe"` still parses as an invalid value and the transition
+ * stays active).
  * Usage: import { CSS_VALUES } from "@blueprint/shared";
  *        textarea.style.height = CSS_VALUES.AUTO
+ *        style={{ transition: shouldReduceMotion ? CSS_VALUES.NONE : … }}
+ *        document.body.style.overflow = CSS_VALUES.HIDDEN
  */
 export const CSS_VALUES = {
-  /** CSS auto value — used for height, width, margin, etc. */
+  /** CSS auto value — used for height, width, margin, will-change, etc. */
   AUTO: "auto" as const,
-  /** CSS none value — used for transitions, animations, etc. */
+  /** CSS none value — used for transitions, animations, box-shadow, pointer-events, etc. */
   NONE: "none" as const,
+  /** CSS hidden value — used for overflow locking (scroll-lock body style) */
+  HIDDEN: "hidden" as const,
 } as const;
 
 /**
@@ -910,6 +930,27 @@ export const BANNER_STATE_VALUES = {
   ONLINE: "online" as const,
   /** Offline network state identifier */
   OFFLINE: "offline" as const,
+} as const;
+
+/**
+ * Tooltip Display State Values
+ * Centralized state tracking values for tooltip open/close visibility
+ * (e.g. SmartTooltip trigger container + floating panel).
+ * Pairing contract: every write of a tooltip `data-state` attribute and every
+ * read (CSS selector / test assertion) must use the same constant on both
+ * sides — a typo or rename on either side silently breaks styling/tests.
+ * Deliberately distinct from BANNER_STATE_VALUES (banner-scoped online/offline
+ * family); tooltip open/close is a separate domain even though the
+ * "visible"/"hidden" string values coincide.
+ * Flexy says: No hardcoded "visible"/"hidden" strings in tooltip components!
+ * Usage: import { TOOLTIP_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isVisible ? TOOLTIP_STATE_VALUES.VISIBLE : TOOLTIP_STATE_VALUES.HIDDEN}
+ */
+export const TOOLTIP_STATE_VALUES = {
+  /** Tooltip open / visible state identifier */
+  VISIBLE: "visible" as const,
+  /** Tooltip closed / hidden state identifier */
+  HIDDEN: "hidden" as const,
 } as const;
 
 /**
@@ -1441,6 +1482,29 @@ export const ARIA_BUSY_VALUES = {
 } as const;
 
 /**
+ * `aria-current` Attribute Values
+ * Centralized source of truth for the `aria-current` content attribute — the
+ * "which item is current in this set" flag exposed to assistive tech.
+ *
+ * Pairing contract: the value must describe the navigation context it marks.
+ * A typo'd `"step"` (e.g. `"Stepp"`, `"stpe"`) is an invalid token — the
+ * attribute is dropped from the accessibility tree entirely, so screen readers
+ * stop announcing the active wizard step while the visible pill styling (driven
+ * by the same `isActive` ternary) stays correct, with zero type errors. The
+ * `undefined` branch of the same ternary must stay paired with the constant on
+ * the active branch: drift one side and the step indicator reports a current
+ * item that is not visually current (or vice versa).
+ *
+ * Flexy says: No bare "step" aria-current value strings in components!
+ * Usage: import { ARIA_CURRENT_VALUES } from "@blueprint/shared";
+ *        <button aria-current={isActive ? ARIA_CURRENT_VALUES.STEP : undefined}>
+ */
+export const ARIA_CURRENT_VALUES = {
+  /** Current step in a multi-step wizard / process navigation */
+  STEP: "step" as const,
+} as const;
+
+/**
  * Start From Scratch Divider Button State Values
  * Centralized state tracking values for start-from-scratch divider button (StartFromScratchButton).
  * Flexy says: No hardcoded "idle" strings in StartFromScratchButton!
@@ -1454,4 +1518,264 @@ export const DIVIDER_BUTTON_STATE_VALUES = {
   HOVERED: "hovered" as const,
   /** Focused state identifier */
   FOCUSED: "focused" as const,
+} as const;
+
+/**
+ * HTML Control Type Values
+ * Centralized source of truth for the `type` attribute on `<button>` and
+ * `<input>` elements. The attribute participates in two silent-failure
+ * pairing contracts:
+ *
+ * 1. **Button submit-behavior contract**: per the HTML spec a `<button>`
+ *    with no valid `type` defaults to `type="submit"` — so a typo'd
+ *    `type="button"` (e.g. `"botton"`) silently converts a neutral button
+ *    into a form submitter inside any enclosing `<form>`, firing
+ *    validation + submission with zero type errors. Wizard step forms
+ *    pair Next (`SUBMIT`) with Back/secondary actions (`BUTTON`) in the
+ *    same form; a drift on either side changes click behavior silently.
+ * 2. **Input keyboard/validation contract**: `<input type="text">` is the
+ *    HTML default; a typo changes the virtual keyboard layout, autofill
+ *    category, and constraint-validation behavior with no type error.
+ *
+ * Flexy says: No hardcoded type="button"/"submit"/"text" strings in components!
+ * Usage: import { HTML_CONTROL_TYPES } from "@blueprint/shared";
+ *        <button type={HTML_CONTROL_TYPES.BUTTON} onClick={onCancel} />
+ *        <input type={HTML_CONTROL_TYPES.TEXT} value={value} />
+ */
+export const HTML_CONTROL_TYPES = {
+  /** Neutral button — never submits an enclosing form (pair: SUBMIT) */
+  BUTTON: "button" as const,
+  /** Form-submitting button (pair: BUTTON) */
+  SUBMIT: "submit" as const,
+  /** Single-line text input (HTML default input type) */
+  TEXT: "text" as const,
+} as const;
+
+/**
+ * HTML Autocomplete Values
+ * Centralized source of truth for the `autoComplete` attribute on form
+ * controls. Pairs with the sensitive-field privacy contract: wizard inputs
+ * (project name, description, target audience, constraints, feature
+ * search) deliberately suppress browser autofill so previously-saved
+ * personal data never overwrites in-progress wizard state. A typo'd
+ * `"off"` (e.g. `"of"`, `"Of"`) silently re-enables browser autofill —
+ * a privacy/UX regression with zero type errors.
+ * Flexy says: No hardcoded autoComplete="off" strings in components!
+ * Usage: import { HTML_AUTOCOMPLETE_VALUES } from "@blueprint/shared";
+ *        <input autoComplete={HTML_AUTOCOMPLETE_VALUES.OFF} />
+ */
+export const HTML_AUTOCOMPLETE_VALUES = {
+  /** Browser autofill disabled (privacy contract for sensitive wizard fields) */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * HTML Autocapitalize Values
+ * Centralized source of truth for the `autoCapitalize` attribute on text
+ * inputs and textareas. The attribute participates in a silent-failure
+ * privacy/UX contract paired with `autoComplete`/`autoCorrect`/`spellCheck`:
+ *
+ * - **Technical fields** (project name, target audience, constraints,
+ *   feature search, shortcut search) set `OFF` to stop iOS/Android from
+ *   capitalizing the first letter of short technical tokens ("auth",
+ *   "SRE", "devops"). A typo'd `"off"` (e.g. `"of"`, `"Of"`) silently
+ *   re-enables autocapitalize — mangling the typed identifier with zero
+ *   type errors.
+ * - **Prose fields** (project description) set `SENTENCES` to keep natural
+ *   sentence capitalization on mobile — the intentional opposite of the
+ *   technical fields. A drift between the two branches changes how the
+ *   soft keyboard transforms user input with no type error.
+ *
+ * Flexy says: No hardcoded autoCapitalize="off"/"sentences" strings in components!
+ * Usage: import { HTML_AUTOCAPITALIZE_VALUES } from "@blueprint/shared";
+ *        <input autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF} />
+ *        <textarea autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.SENTENCES} />
+ */
+export const HTML_AUTOCAPITALIZE_VALUES = {
+  /** Autocapitalize disabled — technical identifier/token fields (pair: autoComplete OFF) */
+  OFF: "off" as const,
+  /** Sentence-case capitalization — prose fields (project description) */
+  SENTENCES: "sentences" as const,
+} as const;
+
+/**
+ * HTML Autocorrect Values
+ * Centralized source of truth for the `autoCorrect` attribute — a
+ * WebKit/Chromium (iOS Safari, Android WebView) text-input extension that
+ * controls the platform autocorrect engine. Pairs with the sensitive-field
+ * privacy contract: wizard inputs deliberately suppress autocorrect so
+ * Safari never rewrites short technical tokens ("cmd" → "Cmd",
+ * "auth" → "author", "SRE" → "sore"). A typo'd `"off"` (e.g. `"of"`,
+ * `"Of"`) silently re-enables autocorrect — a token-mangling UX regression
+ * with zero type errors. Prose fields (description) deliberately omit the
+ * attribute so the platform default (enabled) applies alongside
+ * `autoCapitalize={SENTENCES}`.
+ * Flexy says: No hardcoded autoCorrect="off" strings in components!
+ * Usage: import { HTML_AUTOCORRECT_VALUES } from "@blueprint/shared";
+ *        <input autoCorrect={HTML_AUTOCORRECT_VALUES.OFF} />
+ */
+export const HTML_AUTOCORRECT_VALUES = {
+  /** Platform autocorrect disabled (privacy/UX contract for technical token fields) */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * Enter Key Hint Values
+ * Centralized source of truth for the `enterKeyHint` attribute — the mobile
+ * soft-keyboard action hint shown on the Enter/key action key. Pairs with
+ * the Enter-behavior contract: the hint MUST match the action Enter will
+ * actually trigger (search field → SEARCH, multi-step form → NEXT until
+ * submittable then GO, feature add → DONE). A typo silently shows the
+ * wrong key icon to mobile users with zero type errors; the wizard form
+ * flips NEXT↔GO dynamically with `canProceed` so both sides of the pair
+ * must stay byte-identical.
+ * Flexy says: No hardcoded enterKeyHint="search"|"next"|"go"|"done" strings in components!
+ * Usage: import { ENTER_KEY_HINTS } from "@blueprint/shared";
+ *        <input enterKeyHint={canProceed ? ENTER_KEY_HINTS.GO : ENTER_KEY_HINTS.NEXT} />
+ */
+export const ENTER_KEY_HINTS = {
+  /** Search action (search inputs) */
+  SEARCH: "search" as const,
+  /** Advance to the next field (incomplete multi-step form) */
+  NEXT: "next" as const,
+  /** Submit/confirm action (submittable form) */
+  GO: "go" as const,
+  /** Complete/commit action (final field, e.g. add-to-list) */
+  DONE: "done" as const,
+} as const;
+
+/**
+ * HTML Text Direction Values
+ * Centralized source of truth for the `dir` attribute on HTML elements.
+ * The attribute participates in an i18n direction-detection contract:
+ *
+ * - **`AUTO`** tells the browser to detect text direction from the content
+ *   itself (first strong directional character). A typo'd `"auto"` (e.g.
+ *   `"ato"`, `"Aut0"`) is an invalid enumerated value — the browser falls
+ *   back to the inherited parent direction, silently rendering RTL text
+ *   (Arabic, Hebrew, Persian) in the wrong direction with zero type errors.
+ *   Used on user-generated content surfaces (wizard inputs, review summary,
+ *   search fields) so mixed-direction input renders correctly.
+ * - **`LTR`** / **`RTL`** force a fixed direction for known-locale content.
+ *
+ * Flexy says: No hardcoded dir="auto"/"ltr"/"rtl" strings in components!
+ * Usage: import { HTML_TEXT_DIRECTION } from "@blueprint/shared";
+ *        <p dir={HTML_TEXT_DIRECTION.AUTO}>{userContent}</p>
+ */
+export const HTML_TEXT_DIRECTION = {
+  /** Left-to-right text direction (default for Latin/CJK locales) */
+  LTR: "ltr" as const,
+  /** Right-to-left text direction (Arabic, Hebrew, Persian, Urdu) */
+  RTL: "rtl" as const,
+  /** Browser auto-detects direction from the text content (i18n contract) */
+  AUTO: "auto" as const,
+} as const;
+
+/**
+ * DOM Attribute Names
+ * Centralized source of truth for the attribute-name strings passed to
+ * `getAttribute` / `setAttribute` / `removeAttribute` / `hasAttribute`.
+ *
+ * Pairing contract: a read must use the same name as its paired write. These
+ * DOM APIs accept any string, so a bare-literal typo silently no-ops instead of
+ * failing to compile — `getAttribute` returns `null`, `setAttribute` creates a
+ * *different* attribute, and `removeAttribute` removes nothing, all with zero
+ * type errors. Rename one side of a pair and the other keeps operating on the
+ * stale name forever.
+ *
+ * Four entries (ROLE, ARIA_LIVE, ARIA_ATOMIC, ARIA_HIDDEN) complete a
+ * partial-constant bypass left behind by Iteration 208: that iteration
+ * centralized each attribute's *value* (`ARIA_ROLES`, `ARIA_LIVE_VALUES`,
+ * `ARIA_ATOMIC_VALUES`, `ARIA_HIDDEN_VALUES`) while the attribute *name* in the
+ * very same `setAttribute(...)` call stayed a bare literal. Both sides are now
+ * constant-backed.
+ *
+ * Flexy says: No bare attribute-name strings in getAttribute/setAttribute/
+ * removeAttribute call sites!
+ * Usage: import { DOM_ATTRIBUTES } from "@blueprint/shared";
+ *        el.setAttribute(DOM_ATTRIBUTES.ARIA_HIDDEN, ARIA_HIDDEN_VALUES.TRUE);
+ *        return () => el.removeAttribute(DOM_ATTRIBUTES.TAB_INDEX);
+ */
+export const DOM_ATTRIBUTES = {
+  /** Favicon href — swapped and restored by useFaviconStatus's status pair */
+  HREF: "href" as const,
+  /** Tab-order membership — read/set/remove triple in the editor focus-restore path */
+  TAB_INDEX: "tabindex" as const,
+  /** Boolean read-only flag — legacy clipboard fallback's off-screen textarea */
+  READ_ONLY: "readonly" as const,
+  /** Assistive-technology visibility — value supplied by ARIA_HIDDEN_VALUES */
+  ARIA_HIDDEN: "aria-hidden" as const,
+  /** Semantic role — value supplied by ARIA_ROLES */
+  ROLE: "role" as const,
+  /** Live-region announcement politeness — value supplied by ARIA_LIVE_VALUES */
+  ARIA_LIVE: "aria-live" as const,
+  /** Live-region atomic announcement — value supplied by ARIA_ATOMIC_VALUES */
+  ARIA_ATOMIC: "aria-atomic" as const,
+} as const;
+
+/**
+ * `tabindex` Attribute Values
+ * Centralized source of truth for the string values written to the `tabindex`
+ * content attribute.
+ *
+ * Pairing contract: `NOT_FOCUSABLE` must stay in step with the numeric
+ * `element.tabIndex = -1` IDL property that expresses the same intent on the
+ * line above it. The content attribute is what legacy engines read, so a typo'd
+ * value (e.g. `"--1"`, `"-l"`) is parsed as invalid, the browser falls back to
+ * the default tab order, and the element stays focusable — focus can then land
+ * on an invisible off-screen node with zero type errors.
+ *
+ * Flexy says: No bare "-1" tabindex value strings in components!
+ * Usage: import { TAB_INDEX_VALUES } from "@blueprint/shared";
+ *        el.setAttribute(DOM_ATTRIBUTES.TAB_INDEX, TAB_INDEX_VALUES.NOT_FOCUSABLE);
+ */
+export const TAB_INDEX_VALUES = {
+  /** Leaves the sequential tab order while remaining programmatically focusable */
+  NOT_FOCUSABLE: "-1" as const,
+} as const;
+
+/**
+ * HTML Anchor `target` Attribute Values
+ * Centralized source of truth for the `target` content attribute on `<a>`
+ * elements that open a new browsing context.
+ *
+ * Pairing contract: every `_blank` target MUST ship alongside the hardening
+ * `rel` token list in `HTML_LINK_RELS.NOOPENER_NOREFERRER`. The two attributes
+ * are a security pair — a typo'd target (e.g. `"_blnak"`) silently falls back
+ * to same-tab navigation (no type error), while a bare `target="_blank"`
+ * without `noopener` hands the opened page a live `window.opener` reference
+ * (reverse tabnabbing: the new tab can navigate the original tab away) and
+ * leaks the referrer. Drift between paired sites means some external links are
+ * hardened and some are not, with zero type errors.
+ *
+ * Flexy says: No bare "_blank" target value strings in components!
+ * Usage: import { HTML_LINK_TARGETS, HTML_LINK_RELS } from "@blueprint/shared";
+ *        <a target={HTML_LINK_TARGETS.BLANK} rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}>
+ */
+export const HTML_LINK_TARGETS = {
+  /** Open in a new tab/window — requires HTML_LINK_RELS.NOOPENER_NOREFERRER */
+  BLANK: "_blank" as const,
+} as const;
+
+/**
+ * HTML Anchor `rel` Attribute Values (link hardening token list)
+ * Centralized source of truth for the space-separated `rel` token list applied
+ * to anchors that use `HTML_LINK_TARGETS.BLANK`.
+ *
+ * Security contract: `noopener` strips the new tab's `window.opener` handle
+ * (reverse-tabnabbing defense), `noreferrer` additionally suppresses the
+ * Referer header. A typo'd token (e.g. `"noopener "` with a mangled word, or
+ * dropping one half of the pair) is simply an unrecognized rel token — the
+ * browser silently applies no protection, the external page keeps its opener
+ * reference, and nothing fails to compile. The value must stay byte-identical
+ * across every `_blank` site (Header, App footer, Markdown-rendered user
+ * content) so user-generated links get the same hardening as first-party ones.
+ *
+ * Flexy says: No bare "noopener noreferrer" rel value strings in components!
+ * Usage: import { HTML_LINK_TARGETS, HTML_LINK_RELS } from "@blueprint/shared";
+ *        <a target={HTML_LINK_TARGETS.BLANK} rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}>
+ */
+export const HTML_LINK_RELS = {
+  /** Hardening tokens required whenever HTML_LINK_TARGETS.BLANK is used */
+  NOOPENER_NOREFERRER: "noopener noreferrer" as const,
 } as const;

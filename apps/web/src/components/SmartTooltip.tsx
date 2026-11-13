@@ -19,6 +19,7 @@ import {
   MODIFIER_KEYS,
   ARIA_HIDDEN_VALUES,
   DATA_BOOLEAN_VALUES,
+  TOOLTIP_STATE_VALUES,
 } from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
@@ -298,7 +299,7 @@ function SmartTooltipComponent({
     <div
       ref={triggerRef}
       className="relative inline-flex"
-      data-state={isVisible ? "visible" : "hidden"}
+      data-state={isVisible ? TOOLTIP_STATE_VALUES.VISIBLE : TOOLTIP_STATE_VALUES.HIDDEN}
       data-position={computedPosition}
       data-reduced-motion={
         prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
@@ -316,7 +317,7 @@ function SmartTooltipComponent({
           ref={tooltipRef}
           id={tooltipId}
           role={ARIA_ROLES.TOOLTIP}
-          data-state="visible"
+          data-state={TOOLTIP_STATE_VALUES.VISIBLE}
           data-position={computedPosition}
           data-reduced-motion={
             prefersReducedMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
@@ -347,7 +348,7 @@ interface KeyboardShortcutTooltipProps {
   shortcut: string;
   description?: string;
   position?: Position;
-  modifier?: "cmd" | "ctrl" | "alt" | "none";
+  modifier?: (typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS];
 }
 
 /**

@@ -9,6 +9,7 @@ import {
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
   CHAR_COUNTER_THRESHOLDS,
+  CSS_VALUES,
   RATIO_LIMITS,
   PERCENT_SCALE,
   SVG_ICON_DEFAULTS,
@@ -22,6 +23,15 @@ interface CharacterCounterProps {
   min?: number;
   warningThreshold?: number;
   className?: string;
+  /**
+   * Optional id for a persistent screen-reader description of the current
+   * count. When set, a stable sr-only element with this id always renders
+   * "N of M characters used", so the associated input can reference it via
+   * `aria-describedby` and announce the count on focus (WCAG 1.3.1 / 4.1.2).
+   * Distinct from the threshold live region below, which stays silent during
+   * normal typing to avoid per-keystroke chatter.
+   */
+  descriptionId?: string;
 }
 
 function CharacterCounterComponent({
@@ -30,6 +40,7 @@ function CharacterCounterComponent({
   min,
   warningThreshold = Math.floor(max * RATIO_LIMITS.WARNING),
   className = "",
+  descriptionId,
 }: CharacterCounterProps) {
   const isAtLimit = current >= max;
   const isWarning = current >= warningThreshold && current < max;
@@ -61,15 +72,18 @@ function CharacterCounterComponent({
   const shouldReduceMotion = useReducedMotion();
 
   const [showLimitShake, setShowLimitShake] = useState(false);
-  const prevAtLimitRef = useRef(false);
+  // Initialize from isAtLimit so mounting already-at-limit never shakes (issue #3591).
+  const prevAtLimitRef = useRef(isAtLimit);
 
   useEffect(() => {
-    if (isAtLimit && !prevAtLimitRef.current) {
+    // Update the ref BEFORE any early return so edge transitions always stick.
+    const wasAtLimit = prevAtLimitRef.current;
+    prevAtLimitRef.current = isAtLimit;
+    if (isAtLimit && !wasAtLimit) {
       setShowLimitShake(true);
       const timer = setTimeout(() => setShowLimitShake(false), TIMEOUTS.SHAKE_ANIMATION);
       return () => clearTimeout(timer);
     }
-    prevAtLimitRef.current = isAtLimit;
   }, [isAtLimit]);
 
   const [showCelebrate, setShowCelebrate] = useState(false);
@@ -77,7 +91,9 @@ function CharacterCounterComponent({
   const prevBelowMinRef = useRef(belowMin);
 
   useEffect(() => {
-    if (!belowMin && prevBelowMinRef.current && min !== undefined) {
+    const wasBelowMin = prevBelowMinRef.current;
+    prevBelowMinRef.current = belowMin;
+    if (!belowMin && wasBelowMin && min !== undefined) {
       setShowCelebrate(true);
       setShowMinMetAnnouncement(true);
       const timer = setTimeout(() => {
@@ -86,7 +102,6 @@ function CharacterCounterComponent({
       }, TIMEOUTS.SHAKE_ANIMATION);
       return () => clearTimeout(timer);
     }
-    prevBelowMinRef.current = belowMin;
   }, [belowMin, min]);
 
   const shakeClass = !shouldReduceMotion && showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
@@ -141,6 +156,15 @@ function CharacterCounterComponent({
           </span>
         )}
       </span>
+      {/* Persistent count description for aria-describedby association —
+          always present (unlike the threshold live region below) so focusing
+          the linked input announces the current usage without waiting for a
+          warning/limit threshold. */}
+      {descriptionId && (
+        <span id={descriptionId} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+          {countLabel}
+        </span>
+      )}
       {/* Screen-reader-only announcement with descriptive label */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
@@ -163,6 +187,7 @@ function CharacterCounterCompactComponent({
   current,
   max,
   className = "",
+  descriptionId,
 }: Omit<CharacterCounterProps, "min" | "warningThreshold">) {
   const percentage = (current / max) * PERCENT_SCALE;
   const isWarning =
@@ -208,6 +233,11 @@ function CharacterCounterCompactComponent({
       aria-valuemin={0}
       aria-valuemax={max}
       aria-valuenow={Math.min(current, max)}
+      // aria-valuetext (WAI-ARIA APG / WCAG 4.1.2): the bare aria-valuenow
+      // number alone ("42") is meaningless when announced out of context.
+      // Mirrors the PageScrollProgressBar pattern so screen readers announce
+      // "42 of 100 characters used" instead of a bare count on value changes.
+      aria-valuetext={compactCountLabel}
     >
       <div
         className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden"
@@ -219,7 +249,7 @@ function CharacterCounterCompactComponent({
           }`}
           style={{
             width: `${Math.min(percentage, PERCENT_SCALE)}%`,
-            transition: shouldReduceMotion ? "none" : undefined,
+            transition: shouldReduceMotion ? CSS_VALUES.NONE : undefined,
           }}
         />
       </div>
@@ -232,6 +262,13 @@ function CharacterCounterCompactComponent({
       >
         {current}/{max}
       </span>
+      {/* Persistent count description for aria-describedby association — mirrors
+          the main counter so the linked input announces usage on focus. */}
+      {descriptionId && (
+        <span id={descriptionId} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+          {compactCountLabel}
+        </span>
+      )}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role={ARIA_ROLES.STATUS}
