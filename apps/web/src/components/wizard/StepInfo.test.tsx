@@ -950,6 +950,41 @@ describe("StepInfo", () => {
     expect(constraints).toHaveAttribute("spellcheck", "false");
   });
 
+  // ======== Paste Truncation ========
+
+  it("announces truncation when a project name paste exceeds the maxLength", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => "a".repeat(FORM_LIMITS.PROJECT_NAME.MAX + 10) },
+    });
+    expect(screen.getByTestId("paste-truncation-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.PASTE_TRUNCATED(FORM_LIMITS.PROJECT_NAME.MAX)
+    );
+  });
+
+  it("announces truncation when a target audience paste exceeds the maxLength", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => "a".repeat(FORM_LIMITS.TARGET_AUDIENCE.MAX + 10) },
+    });
+    expect(screen.getByTestId("paste-truncation-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.PASTE_TRUNCATED(FORM_LIMITS.TARGET_AUDIENCE.MAX)
+    );
+  });
+
+  it("stays silent when a project name paste fits within the maxLength", () => {
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => "a".repeat(FORM_LIMITS.PROJECT_NAME.MAX) },
+    });
+    expect(screen.getByTestId("paste-truncation-announcer")).toBeEmptyDOMElement();
+  });
+
   // ======== Edge Cases ========
 
   it("handles empty state gracefully", () => {

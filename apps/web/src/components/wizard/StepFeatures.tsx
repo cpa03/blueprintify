@@ -25,6 +25,7 @@
 import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
@@ -49,6 +50,7 @@ import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_OPACITY, ANIMATION_Y_OFFSET } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { usePasteTruncation } from "../../hooks/usePasteTruncation";
 import {
   SUGGESTED_FEATURES,
   FORM_LIMITS,
@@ -63,6 +65,7 @@ import {
   SCALE_PULSE,
   CSS_CLASSES,
   DOM_ELEMENT_IDS,
+  FOCUS_ANNOUNCER,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
@@ -99,6 +102,7 @@ export const StepFeatures = memo(function StepFeatures({
   const nextStep = useWizardStore((s) => s.nextStep);
   const prevStep = useWizardStore((s) => s.prevStep);
   const modifierKey = getModifierLabel();
+  const featurePaste = usePasteTruncation(newFeature, FORM_LIMITS.FEATURE.MAX);
 
   const isAtMaxCount = features.length >= FORM_LIMITS.FEATURE.MAX_COUNT;
 
@@ -260,6 +264,7 @@ export const StepFeatures = memo(function StepFeatures({
                 enterKeyHint={ENTER_KEY_HINTS.DONE}
                 dir={HTML_TEXT_DIRECTION.AUTO}
                 value={newFeature}
+                onPaste={featurePaste.handlePaste}
                 onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
                 onKeyDown={handleKeyDown}
                 placeholder={
@@ -744,6 +749,15 @@ export const StepFeatures = memo(function StepFeatures({
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>
+      </div>
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="paste-truncation-announcer"
+      >
+        {featurePaste.announcement}
       </div>
     </motion.div>
   );

@@ -542,6 +542,28 @@ describe("StepFeatures", () => {
     expect(mockStore.addFeature).toHaveBeenCalledTimes(SUGGESTED_FEATURES.length);
   });
 
+  // ======== Paste Truncation ========
+
+  it("announces truncation when a feature paste exceeds the maxLength", () => {
+    render(<StepFeatures />);
+    const input = screen.getByLabelText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME);
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => "a".repeat(FORM_LIMITS.FEATURE.MAX + 10) },
+    });
+    expect(screen.getByTestId("paste-truncation-announcer")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.PASTE_TRUNCATED(FORM_LIMITS.FEATURE.MAX)
+    );
+  });
+
+  it("stays silent when a feature paste fits within the maxLength", () => {
+    render(<StepFeatures />);
+    const input = screen.getByLabelText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME);
+    fireEvent.paste(input, {
+      clipboardData: { getData: () => "a".repeat(FORM_LIMITS.FEATURE.MAX) },
+    });
+    expect(screen.getByTestId("paste-truncation-announcer")).toBeEmptyDOMElement();
+  });
+
   // ======== Character Limit ========
 
   it("enforces maximum feature length", () => {
@@ -599,12 +621,12 @@ describe("StepFeatures", () => {
     ).toBeInTheDocument();
 
     // Status live region carries the richer actionable message via sr-only text
-    const statusRegion = screen.getByRole("status");
     const srAnnouncement = screen.getByText(
       ACCESSIBILITY_LABELS.WIZARD_FEATURES.MAX_FEATURES_REACHED_ARIA
     );
     expect(srAnnouncement).toHaveClass("sr-only");
-    expect(statusRegion).toContainElement(srAnnouncement);
+    const statusRegion = srAnnouncement.closest('[role="status"]');
+    expect(statusRegion).not.toBeNull();
   });
 
   it("does not announce the max-count message when below the limit", () => {
