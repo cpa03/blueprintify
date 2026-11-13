@@ -515,6 +515,33 @@ describe("StepFeatures", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("keeps the 'Add all' button in the tab order after activation (aria-disabled, WCAG 2.4.3)", () => {
+    mockStore.features = [];
+    render(<StepFeatures />);
+    const addAllButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS
+    );
+    addAllButton.focus();
+    fireEvent.click(addAllButton);
+
+    expect(addAllButton).toHaveAttribute("aria-disabled", "true");
+    expect(addAllButton).not.toBeDisabled();
+    expect(addAllButton).toHaveFocus();
+  });
+
+  it("blocks re-activation of 'Add all' while the confirmation is showing", () => {
+    mockStore.features = [];
+    render(<StepFeatures />);
+    const addAllButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS
+    );
+    fireEvent.click(addAllButton);
+    expect(mockStore.addFeature).toHaveBeenCalledTimes(SUGGESTED_FEATURES.length);
+
+    fireEvent.click(addAllButton);
+    expect(mockStore.addFeature).toHaveBeenCalledTimes(SUGGESTED_FEATURES.length);
+  });
+
   // ======== Character Limit ========
 
   it("enforces maximum feature length", () => {
