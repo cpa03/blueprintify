@@ -167,10 +167,16 @@ export const StepInfo = memo(function StepInfo({
   });
 
   // Browsers silently drop pasted content past maxLength. These paste-heavy
-  // textareas announce truncation via a shared polite live region below.
+  // fields announce truncation via a shared polite live region below.
+  const projectNamePaste = usePasteTruncation(projectName, FORM_LIMITS.PROJECT_NAME.MAX);
   const descriptionPaste = usePasteTruncation(description, FORM_LIMITS.DESCRIPTION.MAX);
   const constraintsPaste = usePasteTruncation(constraints, FORM_LIMITS.CONSTRAINTS.MAX);
-  const pasteAnnouncement = descriptionPaste.announcement || constraintsPaste.announcement;
+  const targetAudiencePaste = usePasteTruncation(targetAudience, FORM_LIMITS.TARGET_AUDIENCE.MAX);
+  const pasteAnnouncement =
+    projectNamePaste.announcement ||
+    descriptionPaste.announcement ||
+    constraintsPaste.announcement ||
+    targetAudiencePaste.announcement;
 
   const hasAnyInput =
     projectName.length > 0 ||
@@ -527,6 +533,7 @@ export const StepInfo = memo(function StepInfo({
               dir={HTML_TEXT_DIRECTION.AUTO}
               value={projectName}
               onKeyDown={handleProjectNameKeyDown}
+              onPaste={projectNamePaste.handlePaste}
               onChange={(e) => {
                 projectNameTyping.handleTyping(e.target.value);
                 setProjectName(e.target.value);
@@ -855,6 +862,7 @@ export const StepInfo = memo(function StepInfo({
               dir={HTML_TEXT_DIRECTION.AUTO}
               value={targetAudience}
               onKeyDown={handleTargetAudienceKeyDown}
+              onPaste={targetAudiencePaste.handlePaste}
               onChange={(e) => {
                 targetAudienceTyping.handleTyping(e.target.value);
                 setTargetAudience(e.target.value);
