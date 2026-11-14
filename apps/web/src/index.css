@@ -1617,6 +1617,15 @@
   pointer-events: none;
 }
 
+/* Static variant for placeholders that never resolve into content
+   (e.g. the deferred-wizard landing block). A perpetual shimmer on a
+   static page falsely implies loading and burns main-thread frames
+   (#3622: 6 idle loops removed by this modifier). */
+.skeleton-block--static::after {
+  animation: none;
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skeleton-block {
     background: color-mix(in srgb, var(--color-dark-600) 60%, transparent);
