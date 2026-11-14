@@ -155,6 +155,88 @@ describe("ToastContainer", () => {
     expect(dismissAllButton).toHaveAttribute("aria-keyshortcuts", "Shift+Escape");
   });
 
+  it("hands focus to the next toast's dismiss button when the focused toast is dismissed", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "First toast", type: TOAST_TYPES.SUCCESS },
+      { id: "toast-2", message: "Second toast", type: TOAST_TYPES.INFO }
+    );
+
+    render(<ToastContainer />);
+
+    const firstDismiss = document.querySelector('[data-toast-dismiss="toast-1"]');
+    expect(firstDismiss).not.toBeNull();
+    (firstDismiss as HTMLButtonElement).focus();
+    expect(document.activeElement).toBe(firstDismiss);
+
+    fireEvent.click(firstDismiss!);
+
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-1");
+    expect(document.activeElement).toBe(document.querySelector('[data-toast-dismiss="toast-2"]'));
+  });
+
+  it("parks focus on the toast region when the last focused toast is dismissed", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Only toast",
+      type: TOAST_TYPES.WARNING,
+    });
+
+    render(<ToastContainer />);
+
+    const dismiss = document.querySelector('[data-toast-dismiss="toast-1"]');
+    expect(dismiss).not.toBeNull();
+    (dismiss as HTMLButtonElement).focus();
+    expect(document.activeElement).toBe(dismiss);
+
+    fireEvent.click(dismiss!);
+
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-1");
+    expect(document.activeElement).toBe(screen.getByRole("region"));
+  });
+
+  it("parks focus on the toast region when dismiss all is activated from within it", () => {
+    mockToasts.push(
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
+    );
+
+    render(<ToastContainer />);
+
+    const dismissAllButton = screen.getByText(/dismiss all/i).closest("button");
+    expect(dismissAllButton).not.toBeNull();
+    dismissAllButton!.focus();
+    expect(document.activeElement).toBe(dismissAllButton);
+
+    fireEvent.click(dismissAllButton!);
+
+    expect(mockClearAll).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(screen.getByRole("region"));
+  });
+
+  it("leaves focus untouched when a toast is dismissed while focus is outside the region", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Background toast",
+      type: TOAST_TYPES.INFO,
+    });
+
+    render(
+      <>
+        <button type="button">outside</button>
+        <ToastContainer />
+      </>
+    );
+
+    const outsideButton = screen.getByRole("button", { name: "outside" });
+    outsideButton.focus();
+    expect(document.activeElement).toBe(outsideButton);
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(mockRemoveToast).toHaveBeenCalledWith("toast-1");
+    expect(document.activeElement).toBe(outsideButton);
+  });
+
   it("renders toast with role='status', aria-live='polite', and state inspection attributes", () => {
     mockToasts.push({
       id: "toast-1",
