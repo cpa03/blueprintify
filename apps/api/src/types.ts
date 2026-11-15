@@ -244,7 +244,7 @@ export type TasksContext = ValidatedContext<typeof TaskGenerationRequestSchema>;
  * Provides typed access to validated export parameters
  * including project name, blueprint, tasks, and format.
  */
-export type ExportContext = ValidatedContext<typeof ExportRequestSchema>;
+type ExportContext = ValidatedContext<typeof ExportRequestSchema>;
 
 /**
  * Context type for import requests.

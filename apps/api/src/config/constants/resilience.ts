@@ -8,7 +8,6 @@
 
 import {
   RETRY_CONFIG as SHARED_RETRY_CONFIG,
-  RETRYABLE_STATUS_CODES,
   HTTP_STATUS as SHARED_HTTP_STATUS,
   TIME_UNITS,
 } from "@blueprint/shared";
@@ -18,8 +17,6 @@ import { getEnvConfig } from "./env";
  * Retry configuration from shared package.
  */
 export const RETRY_CONFIG = SHARED_RETRY_CONFIG;
-
-export { RETRYABLE_STATUS_CODES };
 
 /**
  * Retry logic constants for rate limiting and server errors.
