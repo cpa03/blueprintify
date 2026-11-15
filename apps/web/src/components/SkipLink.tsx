@@ -13,6 +13,11 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
   const [isFocused, setIsFocused] = useState(false);
 
+  // The link is sr-only until focused, yet its inline animations keep ticking
+  // while hidden — decorative loops nobody can see (issue #3622). Gate them on
+  // visibility so they greet keyboard users when shown and cost nothing idle.
+  const shouldAnimate = isFocused && !shouldReduceMotion;
+
   return (
     <a
       href={`#${DOM_ELEMENT_IDS.MAIN_CONTENT}`}
@@ -47,7 +52,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
           stroke={SVG_ICON_DEFAULTS.STROKE_CURRENT}
           viewBox={SVG_ICON_DEFAULTS.VIEW_BOX}
           style={{
-            animation: shouldReduceMotion ? CSS_VALUES.NONE : SKIP_LINK_ANIMATION.ARROW_BOUNCE,
+            animation: shouldAnimate ? SKIP_LINK_ANIMATION.ARROW_BOUNCE : CSS_VALUES.NONE,
           }}
         >
           <path
@@ -62,7 +67,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
       <span
         className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10"
         style={{
-          animation: shouldReduceMotion ? CSS_VALUES.NONE : SKIP_LINK_ANIMATION.GLOW_PULSE,
+          animation: shouldAnimate ? SKIP_LINK_ANIMATION.GLOW_PULSE : CSS_VALUES.NONE,
         }}
       />
       <style>
