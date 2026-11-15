@@ -265,5 +265,3 @@ function CircularProgressCompactComponent({
 }
 
 export const CircularProgressCompact = memo(CircularProgressCompactComponent);
-
-export default CircularProgress;

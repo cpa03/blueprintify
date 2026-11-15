@@ -6,9 +6,7 @@
 import { ENV } from "../env";
 import {
   ROUTE_PATHS,
-  RETRYABLE_STATUS_CODES,
   SSE_CONFIG,
-  HTTP_STATUS,
   ERROR_STRINGS,
   API_ERROR_MESSAGES as SHARED_API_ERROR_MESSAGES,
   GENERATION_MESSAGES as SHARED_GENERATION_MESSAGES,
@@ -16,7 +14,7 @@ import {
   EXTERNAL_REFERENCE_URLS,
 } from "@blueprint/shared/config";
 
-export { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
+export { SSE_CONFIG };
 
 /** API endpoints for the Blueprintify backend */
 export const API_ENDPOINTS = {

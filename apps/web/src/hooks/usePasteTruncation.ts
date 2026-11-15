@@ -90,5 +90,3 @@ export function usePasteTruncation(currentValue: string, maxLength: number): Pas
 
   return { announcement, handlePaste };
 }
-
-export default usePasteTruncation;

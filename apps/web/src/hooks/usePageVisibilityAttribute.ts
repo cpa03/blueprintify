@@ -35,5 +35,3 @@ export function usePageVisibilityAttribute(): void {
     };
   }, []);
 }
-
-export default usePageVisibilityAttribute;
