@@ -51,9 +51,9 @@ const BODY_SIZE_LIMITS = {
 } as const;
 
 /** Bytes per kilobyte (from shared single source of truth) */
-export const KB = BYTE_CONVERSION.KB;
+const KB = BYTE_CONVERSION.KB;
 /** Bytes per megabyte (from shared single source of truth) */
-export const MB = BYTE_CONVERSION.MB;
+const MB = BYTE_CONVERSION.MB;
 
 /** Pre-computed body size limits */
 export const BODY_SIZE_MAX = {

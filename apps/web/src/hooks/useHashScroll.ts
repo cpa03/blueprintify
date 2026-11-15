@@ -104,5 +104,3 @@ export function useHashScroll(enabled: boolean, refreshKey?: string): void {
     };
   }, [enabled, refreshKey]);
 }
-
-export default useHashScroll;

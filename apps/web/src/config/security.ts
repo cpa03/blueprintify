@@ -21,7 +21,7 @@ import {
 // DOMPurify Configuration
 // ============================================================================
 
-export const DOMPURIFY_CONFIG = {
+const DOMPURIFY_CONFIG = {
   ALLOWED_TAGS: [...SANITIZE_ALLOWED_TAGS] as string[],
   ALLOWED_ATTR: [...SANITIZE_ALLOWED_ATTR] as string[],
   ALLOW_DATA_ATTR: false,
@@ -58,7 +58,7 @@ export const DOMPURIFY_CONFIG = {
  * - CSS-based attacks (expression, behavior, binding)
  * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
  */
-export const XSS_PATTERNS = [
+const XSS_PATTERNS = [
   /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i,
   /javascript:/i,
   /on\w+\s*=/i,
@@ -94,7 +94,7 @@ export const XSS_PATTERNS = [
  * CodeMirror-specific dangerous patterns for markdown sanitization.
  * Additional patterns checked during markdown rendering.
  */
-export const CODEMIRROR_XSS_PATTERNS = [
+const CODEMIRROR_XSS_PATTERNS = [
   /data:text\/html/i,
   /vbscript:/i,
   /@import\s+url/i,
@@ -108,7 +108,7 @@ export const CODEMIRROR_XSS_PATTERNS = [
  * Suspicious JSON key names to check during JSON validation.
  * Used for prototype pollution and injection detection.
  */
-export const SUSPICIOUS_JSON_KEYS = [
+const SUSPICIOUS_JSON_KEYS = [
   "__proto__",
   "constructor",
   "prototype",
