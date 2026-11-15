@@ -5725,10 +5725,11 @@ describe("DOM_EVENTS (Flexy Iteration 206)", () => {
     expect(DOM_EVENTS.ERROR).toBe("error");
     expect(DOM_EVENTS.ANIMATION_END).toBe("animationend");
     expect(DOM_EVENTS.HASH_CHANGE).toBe("hashchange");
+    expect(DOM_EVENTS.VISIBILITY_CHANGE).toBe("visibilitychange");
   });
 
-  it("should have 14 unique event names", () => {
-    expect(Object.keys(DOM_EVENTS).length).toBe(14);
+  it("should have 15 unique event names", () => {
+    expect(Object.keys(DOM_EVENTS).length).toBe(15);
     const values = Object.values(DOM_EVENTS);
     expect(new Set(values).size).toBe(values.length);
   });
@@ -5900,10 +5901,11 @@ describe("DOM_ATTRIBUTES (Flexy Iteration 216)", () => {
     expect(DOM_ATTRIBUTES.ROLE).toBe("role");
     expect(DOM_ATTRIBUTES.ARIA_LIVE).toBe("aria-live");
     expect(DOM_ATTRIBUTES.ARIA_ATOMIC).toBe("aria-atomic");
+    expect(DOM_ATTRIBUTES.PAGE_HIDDEN).toBe("data-page-hidden");
   });
 
-  it("should have 7 unique attribute names", () => {
-    expect(Object.keys(DOM_ATTRIBUTES).length).toBe(7);
+  it("should have 8 unique attribute names", () => {
+    expect(Object.keys(DOM_ATTRIBUTES).length).toBe(8);
     const values = Object.values(DOM_ATTRIBUTES);
     expect(new Set(values).size).toBe(values.length);
   });

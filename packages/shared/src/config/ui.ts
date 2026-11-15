@@ -709,6 +709,8 @@ export const DOM_EVENTS = {
   ANIMATION_END: "animationend" as const,
   /** Hash-change event — URL fragment deep-link resolution (#section) */
   HASH_CHANGE: "hashchange" as const,
+  /** Visibility-change event — pause decorative loops while the tab is hidden (#3622) */
+  VISIBILITY_CHANGE: "visibilitychange" as const,
 } as const;
 
 /**
@@ -1711,6 +1713,9 @@ export const DOM_ATTRIBUTES = {
   ARIA_LIVE: "aria-live" as const,
   /** Live-region atomic announcement — value supplied by ARIA_ATOMIC_VALUES */
   ARIA_ATOMIC: "aria-atomic" as const,
+  /** Page-visibility flag on <html> — value supplied by DATA_BOOLEAN_VALUES; CSS
+   *  pauses decorative animation loops while it reads "true" (issue #3622) */
+  PAGE_HIDDEN: "data-page-hidden" as const,
 } as const;
 
 /**
