@@ -38,6 +38,7 @@ import {
   ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   CIRCLE_GEOMETRY,
+  DATA_ATTRIBUTE_NAMES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
@@ -150,7 +151,7 @@ function EditorToolbarComponent({
     if (nextMode) {
       setViewMode(nextMode);
       const nextButton = document.querySelector<HTMLButtonElement>(
-        `[data-view-mode="${nextMode}"]`
+        `[${DATA_ATTRIBUTE_NAMES.VIEW_MODE}="${nextMode}"]`
       );
       nextButton?.focus();
     }

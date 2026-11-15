@@ -15,6 +15,7 @@ import {
   UI_TIMING,
   WIZARD_STEP_KEYS,
   DATA_BOOLEAN_VALUES,
+  DATA_ATTRIBUTE_NAMES,
   HTML_LINK_TARGETS,
   HTML_LINK_RELS,
 } from "@blueprint/shared/config";
@@ -220,7 +221,7 @@ function App(): JSX.Element {
     // focus the toggle button so keyboard/screen-reader users don't
     // lose their place in the document (WCAG 2.4.3 Focus Order).
     requestAnimationFrame(() => {
-      document.querySelector<HTMLButtonElement>("[data-editor-toggle]")?.focus();
+      document.querySelector<HTMLButtonElement>(`[${DATA_ATTRIBUTE_NAMES.EDITOR_TOGGLE}]`)?.focus();
     });
   }, []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);

@@ -4,6 +4,41 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 220: Centralize CSS-Selector Attribute-Name Fragments
+
+**Problem**: Bare attribute-name fragments inside runtime CSS selector strings (`querySelector`/`closest`/`getAttribute`) survived 219 iterations across 6 web runtime files, with no constant family anywhere — and Iterations 157/169/212/214/216/217/218/219 repeatedly deferred the CSS-selector category while consuming adjacent categories (JSX attribute values, createElement tags, IDL property assignments). Breakdown: 4× `Toast.tsx` (focus-restore `closest`+`getAttribute` on `data-toast-id`, clear-all `querySelectorAll`+`getAttribute` on `data-toast-dismiss`, Escape-guard `querySelector` on `role`+`aria-modal`), 1× `EditorToolbar.tsx` (keyboard-nav focus on `data-view-mode`), 2× `StepGenerating.tsx` (auto-focus on `data-autofocus` complete/error), 1× `App.tsx` (focus restore on `data-editor-toggle` after editor unmount), 1× `dom.ts` (jsdom `closest` fallback on `contenteditable`), 7× `accessibility.ts` `FOCUSABLE_SELECTORS` (bare `disabled`×5, `href`, `type="hidden"`, `tabindex`×2, `"-1"`, `contenteditable`, `aria-hidden`×7 names — values already constant-backed by Iteration 208/216). Each participates in a silent-failure pairing contract: `querySelector`/`closest` return `null` on a typo'd attribute name (never throw), so a single character drift silently disables focus restore after toast dismiss, clear-all focus hand-off, keyboard-nav view-mode focus, generation complete/error autofocus, editor-toggle focus restore, Escape modal guard, focus-trap eligibility (a typo'd `disabled` or `type="hidden"` either drops real controls from the trap or leaves hidden inputs focusable), and the jsdom `isEditableField` fallback — all with zero type errors while JSX write sites stay correct. Flexy says: no bare attribute-name fragments inside CSS selector strings where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Extended `DOM_ATTRIBUTES` with ARIA_MODAL, CONTENTEDITABLE, DISABLED, TYPE (+4 → 12 entries, Iteration 220 selector-names distinctness test); NEW `DATA_ATTRIBUTE_NAMES` (TOAST_ID, TOAST_DISMISS, VIEW_MODE, AUTOFOCUS, EDITOR_TOGGLE — 5 entries, JSX-literal/byte-identity pairing-contract docblock); extended `HTML_CONTROL_TYPES` with HIDDEN (+1 → 4 entries, focus-trap eligibility docblock) |
+| `packages/shared/src/index.ts` | Exported `DATA_ATTRIBUTE_NAMES` on the root barrel |
+| `packages/shared/src/config.test.ts` | Updated `HTML_CONTROL_TYPES` (4 values + HIDDEN distinctness), updated `DOM_ATTRIBUTES` (12 values + Iteration 220 selector-names test), NEW `DATA_ATTRIBUTE_NAMES` describe (exact 5 values, count + uniqueness, lowercase hyphenated data-* invariant, presence-selector validity, TOAST_ID≠TOAST_DISMISS) |
+| `apps/web/src/config/constants/accessibility.ts` | Rewrote all 7 `FOCUSABLE_SELECTORS` fragments with `DOM_ATTRIBUTES`/`HTML_CONTROL_TYPES`/`TAB_INDEX_VALUES` (byte-identical output; pairing-contract docblock) |
+| `apps/web/src/components/Toast.tsx` | 4 sites: `closest("[data-toast-id]")`+`getAttribute("data-toast-id")` → `DATA_ATTRIBUTE_NAMES.TOAST_ID`; `querySelectorAll("[data-toast-dismiss]")`+`dataset.toastDismiss` → `DATA_ATTRIBUTE_NAMES.TOAST_DISMISS` via `getAttribute`; Escape guard `[role=…][aria-modal=…]` → `DOM_ATTRIBUTES.ROLE`/`DOM_ATTRIBUTES.ARIA_MODAL` |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | 1 site: `[data-view-mode="…"]` → `DATA_ATTRIBUTE_NAMES.VIEW_MODE` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 2 sites: `[data-autofocus="…"]` complete/error → `DATA_ATTRIBUTE_NAMES.AUTOFOCUS` |
+| `apps/web/src/App.tsx` | 1 site: `[data-editor-toggle]` → `DATA_ATTRIBUTE_NAMES.EDITOR_TOGGLE` |
+| `apps/web/src/lib/dom.ts` | 1 site: `closest("[contenteditable]")` → `DOM_ATTRIBUTES.CONTENTEDITABLE` |
+| `docs/flexy-plan.md` | Iteration 220 entry |
+
+Deliberately skipped: test files (`Toast.test.tsx`/`RippleButton.test.tsx`/`CharacterCounter.test.tsx`/etc. construct fixture selectors — Iteration 194/196/206/208/212/213/217/218/219 precedent); JSX `data-*` prop names (`data-toast-id={…}`/`data-view-mode={…}`/`data-autofocus={…}`/`data-editor-toggle={…}` — React requires literal prop keys; `DATA_ATTRIBUTE_NAMES` docblock + tests pin byte-identity so the write side cannot drift from the constant); `FAVICON_CONFIG.LINK_SELECTOR` CSS selector (already a constant; Iteration 219's LINK byte-identity test covers its tag fragment); `[id$="-panel"]` ID-suffix selector (dynamic template ID pattern, not an attribute-name family — `DOM_ELEMENT_IDS` docblock already excludes dynamic IDs); `.cm-scroller` CodeMirror internal class (third-party contract); `closest("button")` simple tag selector (no pairing contract beyond the type system); `SANITIZE_*_TAG_NAMES` DOMPurify policy lists; JSDoc prose mentioning selectors; `node_modules`/`dist`.
+
+## Verification (Iteration 220)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new shared DATA_ATTRIBUTE_NAMES, updated DOM_ATTRIBUTES/HTML_CONTROL_TYPES)
+- ✅ Residual scan — 0 bare `data-*` attribute-name fragments in runtime `querySelector`/`closest`/`getAttribute` sites (excluding tests, JSX prop names & generated templates); 0 bare `disabled`/`href`/`type="hidden"`/`tabindex`/`contenteditable`/`aria-hidden` attribute-name fragments in `FOCUSABLE_SELECTORS`
+
+## PR (Iteration 220)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-220-css-selector-attr-names` | refactor(flexy): centralize CSS-selector attribute-name fragments (Iteration 220) |
+
 ### ✅ Flexy Iteration 219: Centralize `document.createElement` Tag-Name Literals
 
 **Problem**: 8 hardcoded `document.createElement` tag-name literals survived 218 iterations across 8 web runtime files, with no constant family anywhere — and Iteration 218's skipped list explicitly deferred the createElement category as the next candidate while it consumed the IDL-property assignment category (`link.rel`/`link.type`/`link.media`). Breakdown: 1× `export.ts` (`"a"` download anchor), 1× `clipboard.ts` (`"textarea"` legacy copy fallback), 2× `useFaviconStatus` + `main.tsx` (`"link"` ×2 — favicon status-swap link and mono-font stylesheet loader, both already pairing-contracted on the IDL side by Iteration 218), 2× `StepStack` + `OfflineBanner` (`"style"` ×2 keyframe injection), 2× `useFocusOnStepChange` + `useScrollLock` (`"div"` ×2 — ARIA live region and scrollbar-width probe). Each participates in a silent-failure pairing contract: `createElement` accepts any string and returns an element either way, so a typo does not throw — it constructs an unknown element whose specialized IDL surface is missing. (1) **`"a"`** — without a real `HTMLAnchorElement`, `download` + `click()` never triggers the file save (export appears to run, no download lands). (2) **`"textarea"`** — without a real `HTMLTextAreaElement`, the value/selection APIs the clipboard fallback relies on do not engage — legacy copy silently no-ops. (3) **`"link"`** — without a real `HTMLLinkElement`, the Iteration 218 `rel`/`type`/`href`/`media` IDL writes are inert — favicon swaps stack no-ops and the mono-font print→all loader never fetches. (4) **`"style"`** — without a real `HTMLStyleElement`, assigning `textContent` does not inject CSSOM — keyframe animations never run while the component looks healthy. (5) **`"div"`** — generic container, but required so `className`/ARIA pairing and `offsetWidth` measurement behave as the live-region and scrollbar-probe sites expect. Flexy says: no bare tag-name string literals in `document.createElement` where a constant family exists!
@@ -23,7 +58,7 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 | `apps/web/src/components/OfflineBanner.tsx` | 1 site: `document.createElement("style")` → `DOM_ELEMENT_TAGS.STYLE` (banner keyframes) |
 | `docs/flexy-plan.md` | Iteration 219 entry |
 
-Deliberately skipped: test files (`dom.test.ts` / hook tests / component tests construct fixture elements — Iteration 194/196/206/208/212/213/217/218 precedent); `React.createElement` call sites in tests only (`slug.test.ts`, `LazyCodeMirror.test.tsx`, `EditorToolbar.test.tsx`); `lib/templates/*` (generated templates embedding their own DOM/React construction); `SANITIZE_FORBIDDEN_TAG_NAMES` / `SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES` (DOMPurify policy lists, not createElement arguments); `FAVICON_CONFIG.LINK_SELECTOR` CSS selector (CSS-selector category — the new LINK constant's test pins byte-identity to its tag fragment); `index.html`-paired runtime IDs; JSDoc prose mentioning createElement; `node_modules`/`dist`.
+Deliberately skipped: test files (`dom.test.ts` / hook tests / component tests construct fixture elements — Iteration 194/196/206/208/212/213/217/218 precedent); `React.createElement` call sites in tests only (`slug.test.ts`, `LazyCodeMirror.test.tsx`, `EditorToolbar.test.tsx`); `lib/templates/*` (generated templates embedding their own DOM/React construction); `SANITIZE_FORBIDDEN_TAG_NAMES` / `SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES` (DOMPurify policy lists, not createElement arguments); `FAVICON_CONFIG.LINK_SELECTOR` CSS selector (CSS-selector category — consumed by Iteration 220's attribute-name fragments; the LINK constant's test pins byte-identity to its tag fragment); `index.html`-paired runtime IDs; JSDoc prose mentioning createElement; `node_modules`/`dist`.
 
 ## Verification (Iteration 219)
 

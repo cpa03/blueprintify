@@ -5,7 +5,12 @@
  * Flexy says: No hardcoded accessibility values - everything configurable!
  */
 
-import { ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
+import {
+  ARIA_HIDDEN_VALUES,
+  DOM_ATTRIBUTES,
+  HTML_CONTROL_TYPES,
+  TAB_INDEX_VALUES,
+} from "@blueprint/shared/config";
 
 // ============================================================================
 // CSS Class Combinations
@@ -113,15 +118,21 @@ export const AUTOFOCUS_VALUES = {
 // Focus Management
 // ============================================================================
 
-/** Focusable element selectors for accessibility */
+/**
+ * Focusable element selectors for accessibility.
+ * Attribute-name fragments use DOM_ATTRIBUTES / HTML_CONTROL_TYPES /
+ * TAB_INDEX_VALUES so a typo in any selector can never silently drop a
+ * control from (or leave a hidden control in) the focus-trap candidate set
+ * (Iteration 220).
+ */
 const FOCUSABLE_SELECTORS = [
-  `button:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
-  `a[href]:not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
-  `input:not([disabled]):not([type="hidden"]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
-  `select:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
-  `textarea:not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
-  `[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
-  `[contenteditable]:not([aria-hidden="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `button:not([${DOM_ATTRIBUTES.DISABLED}]):not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `a[${DOM_ATTRIBUTES.HREF}]:not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `input:not([${DOM_ATTRIBUTES.DISABLED}]):not([${DOM_ATTRIBUTES.TYPE}="${HTML_CONTROL_TYPES.HIDDEN}"]):not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `select:not([${DOM_ATTRIBUTES.DISABLED}]):not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `textarea:not([${DOM_ATTRIBUTES.DISABLED}]):not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `[${DOM_ATTRIBUTES.TAB_INDEX}]:not([${DOM_ATTRIBUTES.TAB_INDEX}="${TAB_INDEX_VALUES.NOT_FOCUSABLE}"]):not([${DOM_ATTRIBUTES.DISABLED}]):not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
+  `[${DOM_ATTRIBUTES.CONTENTEDITABLE}]:not([${DOM_ATTRIBUTES.ARIA_HIDDEN}="${ARIA_HIDDEN_VALUES.TRUE}"])`,
 ] as const;
 
 /** Combined selector string for querySelector usage */

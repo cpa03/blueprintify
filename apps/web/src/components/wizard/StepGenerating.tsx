@@ -33,6 +33,7 @@ import {
   ARIA_ROLES,
   CIRCLE_GEOMETRY,
   CIRCLE_GEOMETRY_LARGE,
+  DATA_ATTRIBUTE_NAMES,
   DISPLAY_SYMBOLS,
   DOM_ATTRIBUTES,
   FRAMER_TYPE,
@@ -300,7 +301,7 @@ export const StepGenerating = memo(function StepGenerating({
       // Small delay to let the spring animation settle before focusing
       requestAnimationFrame(() => {
         const btn = document.querySelector<HTMLButtonElement>(
-          `[data-autofocus="${AUTOFOCUS_VALUES.COMPLETE}"]`
+          `[${DATA_ATTRIBUTE_NAMES.AUTOFOCUS}="${AUTOFOCUS_VALUES.COMPLETE}"]`
         );
         btn?.focus();
       });
@@ -314,7 +315,7 @@ export const StepGenerating = memo(function StepGenerating({
     if (isError && !wasError.current) {
       requestAnimationFrame(() => {
         const btn = document.querySelector<HTMLButtonElement>(
-          `[data-autofocus="${AUTOFOCUS_VALUES.ERROR}"]`
+          `[${DATA_ATTRIBUTE_NAMES.AUTOFOCUS}="${AUTOFOCUS_VALUES.ERROR}"]`
         );
         btn?.focus();
       });

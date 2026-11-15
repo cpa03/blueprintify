@@ -2,6 +2,8 @@
  * DOM interaction helpers.
  */
 
+import { DOM_ATTRIBUTES } from "@blueprint/shared/config";
+
 /**
  * Returns true when a keyboard event target is a text-editing surface whose
  * typed characters must never be hijacked by global keyboard shortcuts.
@@ -25,5 +27,8 @@ export function isEditableField(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) {
     return false;
   }
-  return target.isContentEditable === true || target.closest("[contenteditable]") !== null;
+  return (
+    target.isContentEditable === true ||
+    target.closest(`[${DOM_ATTRIBUTES.CONTENTEDITABLE}]`) !== null
+  );
 }

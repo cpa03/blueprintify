@@ -1551,6 +1551,8 @@ export const HTML_CONTROL_TYPES = {
   SUBMIT: "submit" as const,
   /** Single-line text input (HTML default input type) */
   TEXT: "text" as const,
+  /** Hidden input — excluded from FOCUSABLE_SELECTORS tab-order eligibility (Iteration 220) */
+  HIDDEN: "hidden" as const,
 } as const;
 
 /**
@@ -1693,10 +1695,12 @@ export const HTML_TEXT_DIRECTION = {
  * constant-backed.
  *
  * Flexy says: No bare attribute-name strings in getAttribute/setAttribute/
- * removeAttribute call sites!
+ * removeAttribute call sites, and no bare attribute-name fragments inside
+ * CSS selector strings (querySelector/closest/matches — Iteration 220)!
  * Usage: import { DOM_ATTRIBUTES } from "@blueprint/shared";
  *        el.setAttribute(DOM_ATTRIBUTES.ARIA_HIDDEN, ARIA_HIDDEN_VALUES.TRUE);
  *        return () => el.removeAttribute(DOM_ATTRIBUTES.TAB_INDEX);
+ *        document.querySelector(`[${DOM_ATTRIBUTES.ARIA_MODAL}="true"]`);
  */
 export const DOM_ATTRIBUTES = {
   /** Favicon href — swapped and restored by useFaviconStatus's status pair */
@@ -1716,6 +1720,49 @@ export const DOM_ATTRIBUTES = {
   /** Page-visibility flag on <html> — value supplied by DATA_BOOLEAN_VALUES; CSS
    *  pauses decorative animation loops while it reads "true" (issue #3622) */
   PAGE_HIDDEN: "data-page-hidden" as const,
+  /** Modal-dialog flag — value supplied by ARIA_MODAL_VALUES; Toast Escape
+   *  guard queries role+aria-modal so Escape stays with the open modal */
+  ARIA_MODAL: "aria-modal" as const,
+  /** Editable-region flag — FOCUSABLE_SELECTORS + isEditableField jsdom fallback */
+  CONTENTEDITABLE: "contenteditable" as const,
+  /** Disabled control flag — FOCUSABLE_SELECTORS exclusion (:not([disabled])) */
+  DISABLED: "disabled" as const,
+  /** Control type — value supplied by HTML_CONTROL_TYPES (type="hidden" in focus trap) */
+  TYPE: "type" as const,
+} as const;
+
+/**
+ * Data-Attribute Names (CSS selector / getAttribute pairing contract)
+ * Centralized source of truth for `data-*` attribute *names* that appear
+ * inside runtime CSS selector strings (`querySelector`/`closest`) or as
+ * `getAttribute` arguments. JSX prop names (`data-toast-id={...}`) must
+ * remain literal — React requires literal prop keys — so the write side
+ * stays a bare JSX attribute while the read side uses this family; tests
+ * pin byte-identity so the two can never drift apart.
+ *
+ * Pairing contracts (typo → silent focus/UX failure, zero type errors):
+ * - TOAST_ID: focus restore after single toast dismiss (Toast.tsx)
+ * - TOAST_DISMISS: clear-all focus hand-off + per-dismiss buttons (Toast.tsx)
+ * - VIEW_MODE: keyboard nav focus after view-mode switch (EditorToolbar)
+ * - AUTOFOCUS: focus after generation complete/error (StepGenerating)
+ * - EDITOR_TOGGLE: focus restore after editor panel unmount (App.tsx)
+ *
+ * Flexy says: No bare "data-*" attribute-name strings in selectors!
+ * Usage: import { DATA_ATTRIBUTE_NAMES } from "@blueprint/shared";
+ *        active.closest(`[${DATA_ATTRIBUTE_NAMES.TOAST_ID}]`)
+ *          ?.getAttribute(DATA_ATTRIBUTE_NAMES.TOAST_ID);
+ */
+export const DATA_ATTRIBUTE_NAMES = {
+  /** Toast identity — closest/getAttribute pair for focus restore on dismiss */
+  TOAST_ID: "data-toast-id" as const,
+  /** Toast dismiss button — querySelectorAll + getAttribute clear-all hand-off */
+  TOAST_DISMISS: "data-toast-dismiss" as const,
+  /** Editor view mode — querySelector focus after keyboard nav switch */
+  VIEW_MODE: "data-view-mode" as const,
+  /** Autofocus target marker — querySelector focus after generation complete/error */
+  AUTOFOCUS: "data-autofocus" as const,
+  /** Editor toggle button — querySelector focus after editor panel unmount */
+  EDITOR_TOGGLE: "data-editor-toggle" as const,
 } as const;
 
 /**

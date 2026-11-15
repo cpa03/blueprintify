@@ -63,6 +63,8 @@ import {
   ARIA_ROLES,
   BANNER_STATE_VALUES,
   CSS_VALUES,
+  DATA_ATTRIBUTE_NAMES,
+  DOM_ATTRIBUTES,
   FRAMER_TYPE,
   HTML_CONTROL_TYPES,
   KEYBOARD_EVENT_KEYS,
@@ -591,15 +593,17 @@ function ToastContainerComponent(): JSX.Element {
       if (!container || !(active instanceof Node) || !container.contains(active)) return;
       const activeToastId =
         active instanceof HTMLElement
-          ? active.closest("[data-toast-id]")?.getAttribute("data-toast-id")
+          ? active
+              .closest(`[${DATA_ATTRIBUTE_NAMES.TOAST_ID}]`)
+              ?.getAttribute(DATA_ATTRIBUTE_NAMES.TOAST_ID)
           : null;
       if (activeToastId !== removedId) return;
       const index = toasts.findIndex((t) => t.id === removedId);
       const neighborId = toasts[index + 1]?.id ?? toasts[index - 1]?.id;
       if (neighborId !== undefined) {
         const target = Array.from(
-          container.querySelectorAll<HTMLElement>("[data-toast-dismiss]")
-        ).find((button) => button.dataset.toastDismiss === neighborId);
+          container.querySelectorAll<HTMLElement>(`[${DATA_ATTRIBUTE_NAMES.TOAST_DISMISS}]`)
+        ).find((button) => button.getAttribute(DATA_ATTRIBUTE_NAMES.TOAST_DISMISS) === neighborId);
         if (target) {
           target.focus();
           return;
@@ -651,7 +655,7 @@ function ToastContainerComponent(): JSX.Element {
         // notification mid-interaction.
         if (
           document.querySelector(
-            `[role="${ARIA_ROLES.DIALOG}"][aria-modal="${ARIA_MODAL_VALUES.TRUE}"]`
+            `[${DOM_ATTRIBUTES.ROLE}="${ARIA_ROLES.DIALOG}"][${DOM_ATTRIBUTES.ARIA_MODAL}="${ARIA_MODAL_VALUES.TRUE}"]`
           )
         ) {
           return;

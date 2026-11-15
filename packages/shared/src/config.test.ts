@@ -200,6 +200,7 @@ import {
   ENTER_KEY_HINTS,
   HTML_TEXT_DIRECTION,
   DOM_ATTRIBUTES,
+  DATA_ATTRIBUTE_NAMES,
   TAB_INDEX_VALUES,
   ARIA_CURRENT_VALUES,
   HTML_LINK_TARGETS,
@@ -5805,16 +5806,22 @@ describe("HTML_CONTROL_TYPES (Flexy Iteration 212)", () => {
     expect(HTML_CONTROL_TYPES.BUTTON).toBe("button");
     expect(HTML_CONTROL_TYPES.SUBMIT).toBe("submit");
     expect(HTML_CONTROL_TYPES.TEXT).toBe("text");
+    expect(HTML_CONTROL_TYPES.HIDDEN).toBe("hidden");
   });
 
-  it("should have 3 unique control type values", () => {
-    expect(Object.keys(HTML_CONTROL_TYPES).length).toBe(3);
+  it("should have 4 unique control type values", () => {
+    expect(Object.keys(HTML_CONTROL_TYPES).length).toBe(4);
     const values = Object.values(HTML_CONTROL_TYPES);
     expect(new Set(values).size).toBe(values.length);
   });
 
   it("should keep BUTTON and SUBMIT distinct so neutral buttons never silently submit forms", () => {
     expect(HTML_CONTROL_TYPES.BUTTON).not.toBe(HTML_CONTROL_TYPES.SUBMIT);
+  });
+
+  it("should keep HIDDEN distinct so type=hidden stays excluded from focus-trap eligibility", () => {
+    expect(HTML_CONTROL_TYPES.HIDDEN).not.toBe(HTML_CONTROL_TYPES.TEXT);
+    expect(HTML_CONTROL_TYPES.HIDDEN).not.toBe(HTML_CONTROL_TYPES.BUTTON);
   });
 });
 
@@ -5903,10 +5910,14 @@ describe("DOM_ATTRIBUTES (Flexy Iteration 216)", () => {
     expect(DOM_ATTRIBUTES.ARIA_LIVE).toBe("aria-live");
     expect(DOM_ATTRIBUTES.ARIA_ATOMIC).toBe("aria-atomic");
     expect(DOM_ATTRIBUTES.PAGE_HIDDEN).toBe("data-page-hidden");
+    expect(DOM_ATTRIBUTES.ARIA_MODAL).toBe("aria-modal");
+    expect(DOM_ATTRIBUTES.CONTENTEDITABLE).toBe("contenteditable");
+    expect(DOM_ATTRIBUTES.DISABLED).toBe("disabled");
+    expect(DOM_ATTRIBUTES.TYPE).toBe("type");
   });
 
-  it("should have 8 unique attribute names", () => {
-    expect(Object.keys(DOM_ATTRIBUTES).length).toBe(8);
+  it("should have 12 unique attribute names", () => {
+    expect(Object.keys(DOM_ATTRIBUTES).length).toBe(12);
     const values = Object.values(DOM_ATTRIBUTES);
     expect(new Set(values).size).toBe(values.length);
   });
@@ -5926,6 +5937,54 @@ describe("DOM_ATTRIBUTES (Flexy Iteration 216)", () => {
       DOM_ATTRIBUTES.ARIA_HIDDEN,
     ];
     expect(new Set(valueBacked).size).toBe(valueBacked.length);
+  });
+
+  it("should keep Iteration 220 selector names distinct so each querySelector fragment pairs with its own value family", () => {
+    const selectorNames = [
+      DOM_ATTRIBUTES.ARIA_MODAL,
+      DOM_ATTRIBUTES.CONTENTEDITABLE,
+      DOM_ATTRIBUTES.DISABLED,
+      DOM_ATTRIBUTES.TYPE,
+    ];
+    expect(new Set(selectorNames).size).toBe(selectorNames.length);
+  });
+});
+
+describe("DATA_ATTRIBUTE_NAMES (Flexy Iteration 220)", () => {
+  it("should have exact data-attribute name values", () => {
+    expect(DATA_ATTRIBUTE_NAMES.TOAST_ID).toBe("data-toast-id");
+    expect(DATA_ATTRIBUTE_NAMES.TOAST_DISMISS).toBe("data-toast-dismiss");
+    expect(DATA_ATTRIBUTE_NAMES.VIEW_MODE).toBe("data-view-mode");
+    expect(DATA_ATTRIBUTE_NAMES.AUTOFOCUS).toBe("data-autofocus");
+    expect(DATA_ATTRIBUTE_NAMES.EDITOR_TOGGLE).toBe("data-editor-toggle");
+  });
+
+  it("should have 5 unique data-attribute names", () => {
+    expect(Object.keys(DATA_ATTRIBUTE_NAMES).length).toBe(5);
+    const values = Object.values(DATA_ATTRIBUTE_NAMES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should use lowercase hyphenated data-* names so selector and getAttribute serialize identically", () => {
+    for (const value of Object.values(DATA_ATTRIBUTE_NAMES)) {
+      expect(value.startsWith("data-")).toBe(true);
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan("data-".length);
+    }
+  });
+
+  it("should build valid attribute-presence selectors so querySelector never throws on a typo", () => {
+    for (const value of Object.values(DATA_ATTRIBUTE_NAMES)) {
+      const selector = `[${value}]`;
+      expect(selector).toBe(`[${value}]`);
+      expect(value.includes("[")).toBe(false);
+      expect(value.includes("]")).toBe(false);
+      expect(value.includes('"')).toBe(false);
+    }
+  });
+
+  it("should keep TOAST_ID and TOAST_DISMISS distinct so focus restore never targets the wrong button", () => {
+    expect(DATA_ATTRIBUTE_NAMES.TOAST_ID).not.toBe(DATA_ATTRIBUTE_NAMES.TOAST_DISMISS);
   });
 });
 
