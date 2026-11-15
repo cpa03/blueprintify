@@ -209,6 +209,7 @@ import {
   HTML_LINK_ELEMENT_RELS,
   HTML_LINK_ELEMENT_TYPES,
   HTML_LINK_MEDIA_VALUES,
+  DOM_ELEMENT_TAGS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -6080,5 +6081,31 @@ describe("HTML_LINK_MEDIA_VALUES (Flexy Iteration 218)", () => {
     expect(HTML_LINK_MEDIA_VALUES.PRINT).not.toBe(HTML_LINK_MEDIA_VALUES.ALL);
     expect(HTML_LINK_MEDIA_VALUES.PRINT).toBe(HTML_LINK_MEDIA_VALUES.PRINT.toLowerCase());
     expect(HTML_LINK_MEDIA_VALUES.ALL).toBe(HTML_LINK_MEDIA_VALUES.ALL.toLowerCase());
+  });
+});
+
+describe("DOM_ELEMENT_TAGS (Flexy Iteration 219)", () => {
+  it("should have the exact createElement tag-name values", () => {
+    expect(DOM_ELEMENT_TAGS.A).toBe("a");
+    expect(DOM_ELEMENT_TAGS.TEXTAREA).toBe("textarea");
+    expect(DOM_ELEMENT_TAGS.LINK).toBe("link");
+    expect(DOM_ELEMENT_TAGS.STYLE).toBe("style");
+    expect(DOM_ELEMENT_TAGS.DIV).toBe("div");
+  });
+
+  it("should have 5 unique entries", () => {
+    expect(Object.keys(DOM_ELEMENT_TAGS).length).toBe(5);
+    const values = Object.values(DOM_ELEMENT_TAGS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep every tag lowercase so createElement's ASCII tag matching stays stable", () => {
+    for (const tag of Object.values(DOM_ELEMENT_TAGS)) {
+      expect(tag).toBe(tag.toLowerCase());
+    }
+  });
+
+  it("should keep LINK byte-identical to the favicon selector's tag fragment", () => {
+    expect(`${DOM_ELEMENT_TAGS.LINK}[rel="icon"]`).toContain('link[rel="icon"]');
   });
 });

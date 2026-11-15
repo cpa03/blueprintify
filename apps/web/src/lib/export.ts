@@ -1,5 +1,6 @@
 import type JSZip from "jszip";
 import { EXPORT_ERROR_STRINGS } from "@blueprint/shared/config";
+import { DOM_ELEMENT_TAGS } from "@blueprint/shared";
 import {
   EXPORT_CONFIG,
   README_TEMPLATE,
@@ -70,7 +71,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   });
 
   const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+  const link = document.createElement(DOM_ELEMENT_TAGS.A);
   link.href = url;
   link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split(EXPORT_CONFIG.DATE_FORMAT_SEPARATOR)[0]}${EXPORT_CONFIG.ZIP_FILENAME_SUFFIX}`;
   document.body.appendChild(link);

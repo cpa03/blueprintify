@@ -38,6 +38,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   BANNER_STATE_VALUES,
+  DOM_ELEMENT_TAGS,
   NETWORK_DEFAULTS,
   STYLE_ID_STRINGS,
   TOAST_TYPES,
@@ -88,7 +89,7 @@ const bannerExitKeyframes = OFFLINE_ANIMATION.BANNER_EXIT_KEYFRAMES;
 if (typeof document !== "undefined") {
   const styleId = STYLE_ID_STRINGS.OFFLINE_BANNER;
   if (!document.getElementById(styleId)) {
-    const style = document.createElement("style");
+    const style = document.createElement(DOM_ELEMENT_TAGS.STYLE);
     style.id = styleId;
     style.textContent = [
       pulseKeyframes,

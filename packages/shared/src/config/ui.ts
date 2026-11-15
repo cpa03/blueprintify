@@ -1915,3 +1915,44 @@ export const HTML_LINK_MEDIA_VALUES = {
   /** Post-load flip target — stylesheet applies to all media (screen included) */
   ALL: "all" as const,
 } as const;
+
+/**
+ * `document.createElement` Tag-Name Literals
+ * Centralized source of truth for the tag-name argument passed to
+ * `document.createElement(...)` in runtime code.
+ *
+ * Pairing contract: each tag selects a *typed* DOM interface whose IDL
+ * surface the call site immediately depends on. `createElement` accepts
+ * any string and returns an element either way, so a typo (e.g. `"textara"`
+ * or `"lInk"`) does not throw — it silently constructs an unknown element
+ * whose specialized properties and behaviors are missing:
+ * - `"a"` → `HTMLAnchorElement`: without a real anchor, `download` + `click()`
+ *   never triggers the file save (export appears to run, no download lands).
+ * - `"textarea"` → `HTMLTextAreaElement`: without a real textarea, `.value`
+ *   / selection APIs used by the clipboard fallback do not engage — copy
+ *   silently no-ops on legacy browsers.
+ * - `"link"` → `HTMLLinkElement`: without a real link, `rel`/`type`/`href`/
+ *   `media` IDL writes are inert — favicon swaps and the mono-font print→all
+ *   loader never fetch or apply (Iteration 218's IDL pairing contracts).
+ * - `"style"` → `HTMLStyleElement`: without a real style, assigning
+ *   `textContent` does not inject CSSOM — keyframe animations never run.
+ * - `"div"` → `HTMLDivElement`: generic container; still required so
+ *   `className`/ARIA attribute pairing and `offsetWidth` measurement behave
+ *   as the live-region and scrollbar-probe call sites expect.
+ *
+ * Flexy says: No bare tag-name string literals in document.createElement!
+ * Usage: import { DOM_ELEMENT_TAGS } from "@blueprint/shared";
+ *        const link = document.createElement(DOM_ELEMENT_TAGS.LINK);
+ */
+export const DOM_ELEMENT_TAGS = {
+  /** Anchor element — download/click file-save contract in export.ts */
+  A: "a" as const,
+  /** Textarea element — clipboard fallback value/selection contract */
+  TEXTAREA: "textarea" as const,
+  /** Link element — rel/type/href/media IDL contract (favicon + font loader) */
+  LINK: "link" as const,
+  /** Style element — CSSOM textContent injection contract (keyframes) */
+  STYLE: "style" as const,
+  /** Generic container — live region + scrollbar width probe */
+  DIV: "div" as const,
+} as const;

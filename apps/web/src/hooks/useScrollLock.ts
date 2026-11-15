@@ -25,7 +25,7 @@
  */
 
 import { useEffect, useRef } from "react";
-import { CSS_VALUES } from "@blueprint/shared";
+import { CSS_VALUES, DOM_ELEMENT_TAGS } from "@blueprint/shared";
 
 /**
  * Detects the width of the browser's vertical scrollbar.
@@ -44,7 +44,7 @@ function getScrollbarWidth(): number {
   const cached = (document as unknown as Record<string, number>).__scrollbarWidth;
   if (cached !== undefined) return cached;
 
-  const div = document.createElement("div");
+  const div = document.createElement(DOM_ELEMENT_TAGS.DIV);
   div.style.cssText =
     "overflow:scroll;overflow-y:scroll;position:absolute;top:-9999px;width:100px;height:100px;";
   document.body.appendChild(div);

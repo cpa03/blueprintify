@@ -4,6 +4,43 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 219: Centralize `document.createElement` Tag-Name Literals
+
+**Problem**: 8 hardcoded `document.createElement` tag-name literals survived 218 iterations across 8 web runtime files, with no constant family anywhere — and Iteration 218's skipped list explicitly deferred the createElement category as the next candidate while it consumed the IDL-property assignment category (`link.rel`/`link.type`/`link.media`). Breakdown: 1× `export.ts` (`"a"` download anchor), 1× `clipboard.ts` (`"textarea"` legacy copy fallback), 2× `useFaviconStatus` + `main.tsx` (`"link"` ×2 — favicon status-swap link and mono-font stylesheet loader, both already pairing-contracted on the IDL side by Iteration 218), 2× `StepStack` + `OfflineBanner` (`"style"` ×2 keyframe injection), 2× `useFocusOnStepChange` + `useScrollLock` (`"div"` ×2 — ARIA live region and scrollbar-width probe). Each participates in a silent-failure pairing contract: `createElement` accepts any string and returns an element either way, so a typo does not throw — it constructs an unknown element whose specialized IDL surface is missing. (1) **`"a"`** — without a real `HTMLAnchorElement`, `download` + `click()` never triggers the file save (export appears to run, no download lands). (2) **`"textarea"`** — without a real `HTMLTextAreaElement`, the value/selection APIs the clipboard fallback relies on do not engage — legacy copy silently no-ops. (3) **`"link"`** — without a real `HTMLLinkElement`, the Iteration 218 `rel`/`type`/`href`/`media` IDL writes are inert — favicon swaps stack no-ops and the mono-font print→all loader never fetches. (4) **`"style"`** — without a real `HTMLStyleElement`, assigning `textContent` does not inject CSSOM — keyframe animations never run while the component looks healthy. (5) **`"div"`** — generic container, but required so `className`/ARIA pairing and `offsetWidth` measurement behave as the live-region and scrollbar-probe sites expect. Flexy says: no bare tag-name string literals in `document.createElement` where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `DOM_ELEMENT_TAGS` (A, TEXTAREA, LINK, STYLE, DIV — 5 entries, per-tag pairing-contract docblock covering the unknown-element silent-failure mode + Iteration 218 IDL cross-reference), placed after `HTML_LINK_MEDIA_VALUES` |
+| `packages/shared/src/index.ts` | Exported `DOM_ELEMENT_TAGS` on the root barrel |
+| `packages/shared/src/config.test.ts` | +4 tests (exact 5 values, entry count 5 + uniqueness, lowercase invariant, LINK byte-identity with favicon selector tag fragment) |
+| `apps/web/src/lib/export.ts` | 1 site: `document.createElement("a")` → `DOM_ELEMENT_TAGS.A` (ZIP download anchor) |
+| `apps/web/src/lib/clipboard.ts` | 1 site: `document.createElement("textarea")` → `DOM_ELEMENT_TAGS.TEXTAREA` (legacy copy fallback) |
+| `apps/web/src/main.tsx` | 1 site: `document.createElement("link")` → `DOM_ELEMENT_TAGS.LINK` (mono-font loader) |
+| `apps/web/src/hooks/useFaviconStatus.ts` | 1 site: `document.createElement("link")` → `DOM_ELEMENT_TAGS.LINK` (favicon status-swap) |
+| `apps/web/src/hooks/useFocusOnStepChange.ts` | 1 site: `document.createElement("div")` → `DOM_ELEMENT_TAGS.DIV` (ARIA live region) |
+| `apps/web/src/hooks/useScrollLock.ts` | 1 site: `document.createElement("div")` → `DOM_ELEMENT_TAGS.DIV` (scrollbar width probe) |
+| `apps/web/src/components/wizard/StepStack.tsx` | 1 site: `document.createElement("style")` → `DOM_ELEMENT_TAGS.STYLE` (attention keyframes) |
+| `apps/web/src/components/OfflineBanner.tsx` | 1 site: `document.createElement("style")` → `DOM_ELEMENT_TAGS.STYLE` (banner keyframes) |
+| `docs/flexy-plan.md` | Iteration 219 entry |
+
+Deliberately skipped: test files (`dom.test.ts` / hook tests / component tests construct fixture elements — Iteration 194/196/206/208/212/213/217/218 precedent); `React.createElement` call sites in tests only (`slug.test.ts`, `LazyCodeMirror.test.tsx`, `EditorToolbar.test.tsx`); `lib/templates/*` (generated templates embedding their own DOM/React construction); `SANITIZE_FORBIDDEN_TAG_NAMES` / `SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES` (DOMPurify policy lists, not createElement arguments); `FAVICON_CONFIG.LINK_SELECTOR` CSS selector (CSS-selector category — the new LINK constant's test pins byte-identity to its tag fragment); `index.html`-paired runtime IDs; JSDoc prose mentioning createElement; `node_modules`/`dist`.
+
+## Verification (Iteration 219)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+4 new shared)
+- ✅ Residual scan — 0 bare `document.createElement("…")` tag literals in runtime source (excluding tests, CSS selectors & generated templates)
+
+## PR (Iteration 219)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-219-create-element-tags` | refactor(flexy): centralize document.createElement tag-name literals (Iteration 219) |
+
 ### ✅ Flexy Iteration 218: Centralize HTML `loading`/`decoding` Attribute Values & `<link>` Element IDL Property Assignments
 
 **Problem**: 7 hardcoded HTML resource-loading literals survived 217 iterations across 3 web runtime files, with no constant family anywhere — and Iterations 216–217's skipped lists explicitly deferred IDL *property* assignments (`link.rel`/`link.type`) as the next candidate while 217 consumed the JSX-attribute-value category (`target`/`rel`/`aria-current`). Breakdown: 2× `MarkdownRenderer` (`loading="lazy"` + `decoding="async"` on user-generated markdown `<img>` — the only `<img>` in the app), 2× `useFaviconStatus` (`link.rel = "icon"` + `link.type = "image/svg+xml"` IDL writes on the created status-swap link), and 3× `main.tsx` (`link.rel = "stylesheet"` + `link.media = "print"` initial write + `link.media = "all"` onload flip on the mono-font loader). Each participates in a silent-failure pairing contract: (1) `loading`/`decoding` are HTML *enumerated* attributes — a typo'd `"lazy"` (e.g. `"layz"`) is invalid and the browser silently falls back to eager loading (bandwidth/LCP regression), and a typo'd `"async"` silently decodes synchronously on the main thread (scroll jank), both with zero type errors; (2) the favicon `rel`/`type` IDL writes must stay byte-identical to `FAVICON_CONFIG.LINK_SELECTOR` (`link[rel="icon"][type="image/svg+xml"]`) or `querySelector` never re-finds the link the hook itself appended — each generation-status transition stacks a *new* duplicate `<link>` in `<head>` while the original keeps showing the stale favicon; (3) the font loader's `media` print→all pair is a two-sided contract — a typo on the initial `"print"` write makes the browser never fetch the font, and a typo on the onload `"all"` flip leaves the stylesheet stuck print-only so the webfont never applies to screen, all while the `<link>` looks healthy in DevTools. Flexy says: no bare `loading="lazy"`/`decoding="async"` JSX values and no bare `link.rel`/`link.type`/`link.media` IDL property strings where a constant family exists!
