@@ -288,8 +288,13 @@
     <!-- Skeleton header bar - fixed at top fades out after React mounts.
            Hero content is directly in #root so the LCP element is visible immediately,
            not blocked by an overlay skeleton. -->
+    <!-- Decorative pre-hydration placeholder: aria-hidden keeps its <header>
+         brand bar out of the accessibility tree so screen readers don't hit a
+         phantom banner landmark that vanishes on mount (or lingers invisibly
+         at opacity:0 if JS never runs). Real content lives in #root below. -->
     <div
       id="skeleton-loader"
+      aria-hidden="true"
       style="
         position: fixed;
         top: 0;
