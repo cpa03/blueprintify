@@ -46,6 +46,7 @@ import {
   useBeforeUnload,
   useEditorPanelFocus,
   useTemplatesExitFocus,
+  usePageVisibilityAttribute,
 } from "./hooks";
 import {
   UI_CONTENT,
@@ -93,6 +94,9 @@ function App(): JSX.Element {
   // users on <body> — restore focus into the panel when that happens.
   // Pairs with handleHideEditorComplete, which refocuses the FAB on close.
   useEditorPanelFocus(showEditor);
+  // Mirror tab visibility onto <html data-page-hidden> so index.css can pause
+  // the decorative idle loops while the page is hidden (issue #3622 fix #2).
+  usePageVisibilityAttribute();
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   // Persisted so the header's one-shot attention-glow only fires for genuine
   // first-time visitors, not on every page load for returning users.
