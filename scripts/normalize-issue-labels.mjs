@@ -83,11 +83,16 @@ const OVERRIDES = {
   877: ["enhancement", "P3"],
   880: ["refactor", "P2"], // unsafe type assertions cleanup - code quality refactor
   890: ["security", "P2"], // canonical CORS issue (aligns with #930 MEDIUM)
+  891: ["security", "P2"], // production warning when API_KEY unset - pairs with #847
   892: ["security", "P2"], // ownership verification for share deletion - authz gap
+  905: ["security", "P1"], // share route ID validation injection - injection class flaw
+  906: ["security", "P2"], // export/import rate limiting - abuse surface
   911: ["test", "P2"], // OpenAI service missing tests (dup of #860)
+  928: ["security", "P2"], // blueprint content sanitization - XSS surface
   951: ["test", "P2"], // E2E tests for critical flows
   1015: ["test", "P2"], // missing playwright.config.ts - test infra
   1019: ["test", "P2"], // E2E test coverage gap
+  3622: ["bug", "P1"], // 13 infinite idle animations - prod perf defect (LH 52, p95 400ms)
 };
 
 /** Title priority markers (e.g. "[TESTING] HIGH: ...") mapped to canonical priorities. */
@@ -111,6 +116,10 @@ function gh(args) {
 /** Derives a canonical category from labels and title when none is present. */
 function deriveCategory(labels, title) {
   const low = title.toLowerCase().trim();
+  // OCR full-scan findings are code defects, not enhancement requests.
+  if (low.startsWith("[ocr scan]")) {
+    return "bug";
+  }
   if (
     labels.some((l) => l === "security" || l === "area:security-engineer" || l === "security-engineer") ||
     low.startsWith("[security")
@@ -184,6 +193,16 @@ function derivePriority(labels, title) {
     if (labels.includes(legacy)) {
       return p;
     }
+  }
+  // OCR scan severity: "(N high/critical)" — 0→P3, 1→P2, 2+→P1.
+  const ocr = title.toLowerCase().startsWith("[ocr scan]")
+    ? title.match(/\((\d+)\s+high\/critical\)/i)
+    : null;
+  if (ocr) {
+    const n = Number(ocr[1]);
+    if (n >= 2) return "P1";
+    if (n === 1) return "P2";
+    return "P3";
   }
   const match = TITLE_PRIORITY.exec(title);
   if (match) {

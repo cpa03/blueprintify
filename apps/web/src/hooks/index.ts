@@ -22,6 +22,7 @@ export { useTemplatesExitFocus } from "./useTemplatesExitFocus";
 export { useDocumentTitle } from "./useDocumentTitle";
 export { useOnlineStatus } from "./useOnlineStatus";
 export type { OnlineStatus } from "./useOnlineStatus";
+export { usePageVisibilityAttribute } from "./usePageVisibilityAttribute";
 export { useAutoScroll } from "./useAutoScroll";
 export { useScrollLock } from "./useScrollLock";
 export { useBeforeUnload } from "./useBeforeUnload";

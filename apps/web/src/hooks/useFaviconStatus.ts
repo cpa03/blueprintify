@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useEditorStore } from "../store";
 import { FAVICON_CONFIG, GENERATION_MESSAGES } from "../config/constants";
-import { DOM_ATTRIBUTES } from "@blueprint/shared/config";
+import {
+  DOM_ATTRIBUTES,
+  HTML_LINK_ELEMENT_RELS,
+  HTML_LINK_ELEMENT_TYPES,
+} from "@blueprint/shared/config";
 
 /**
  * Generation states mirrored by the favicon. Deriving this inside the selector
@@ -39,8 +43,8 @@ export function useFaviconStatus(): void {
       link = existing;
     } else {
       link = document.createElement("link");
-      link.rel = "icon";
-      link.type = "image/svg+xml";
+      link.rel = HTML_LINK_ELEMENT_RELS.ICON;
+      link.type = HTML_LINK_ELEMENT_TYPES.SVG_XML;
       document.head.appendChild(link);
       created = true;
     }

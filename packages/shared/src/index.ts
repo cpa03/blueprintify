@@ -285,6 +285,11 @@ export {
   ARIA_CURRENT_VALUES,
   HTML_LINK_TARGETS,
   HTML_LINK_RELS,
+  HTML_LOADING_VALUES,
+  HTML_DECODING_VALUES,
+  HTML_LINK_ELEMENT_RELS,
+  HTML_LINK_ELEMENT_TYPES,
+  HTML_LINK_MEDIA_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

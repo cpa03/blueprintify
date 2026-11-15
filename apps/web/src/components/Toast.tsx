@@ -369,6 +369,7 @@ const ToastItem = memo(
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
+        data-toast-id={toast.id}
         data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-pointer-down={isPointerDown ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
         data-paused={isPaused ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
@@ -524,6 +525,7 @@ const ToastItem = memo(
                 onClick={() => onRemove(toast.id)}
                 className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
                 aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+                data-toast-dismiss={toast.id}
               >
                 <Icon name="close" className="w-4 h-4" />
               </button>
@@ -540,6 +542,7 @@ const ToastItem = memo(
               onClick={() => onRemove(toast.id)}
               className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+              data-toast-dismiss={toast.id}
               initial={{ opacity: 0, scale: ANIMATION_SCALE.POP_IN }}
               animate={{ opacity: ANIMATION_OPACITY.FADED, scale: 1 }}
               transition={{
@@ -573,6 +576,48 @@ function ToastContainerComponent(): JSX.Element {
   const showDismissAll = toasts.length > 1;
   const shouldReduceMotion = useReducedMotion();
   const [dismissAnnouncement, setDismissAnnouncement] = useState("");
+  // tabIndex={-1}: focusable programmatically as the dismiss-focus fallback,
+  // but never a Tab stop.
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Must run BEFORE the store removal — the hand-off targets below have to
+  // still be in the DOM. No-op unless focus is inside the toast being
+  // removed, so unrelated auto-dismissals never steal focus
+  // (WCAG 2.4.3 Focus Order).
+  const restoreFocusForDismiss = useCallback(
+    (removedId: string) => {
+      const container = containerRef.current;
+      const active = document.activeElement;
+      if (!container || !(active instanceof Node) || !container.contains(active)) return;
+      const activeToastId =
+        active instanceof HTMLElement
+          ? active.closest("[data-toast-id]")?.getAttribute("data-toast-id")
+          : null;
+      if (activeToastId !== removedId) return;
+      const index = toasts.findIndex((t) => t.id === removedId);
+      const neighborId = toasts[index + 1]?.id ?? toasts[index - 1]?.id;
+      if (neighborId !== undefined) {
+        const target = Array.from(
+          container.querySelectorAll<HTMLElement>("[data-toast-dismiss]")
+        ).find((button) => button.dataset.toastDismiss === neighborId);
+        if (target) {
+          target.focus();
+          return;
+        }
+      }
+      container.focus();
+    },
+    [toasts]
+  );
+
+  // Batch dismissal unmounts every button focus could land on, so park focus
+  // on the region instead of letting it fall to <body> (WCAG 2.4.3).
+  const restoreFocusForClearAll = useCallback(() => {
+    const container = containerRef.current;
+    const active = document.activeElement;
+    if (!container || !(active instanceof Node) || !container.contains(active)) return;
+    container.focus();
+  }, []);
 
   // Wrapped remove function that also announces the dismissal to screen readers.
   // Without this, screen reader users hear the toast content when it appears
@@ -587,9 +632,10 @@ function ToastContainerComponent(): JSX.Element {
           ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_SINGLE(toast.message)
         );
       }
+      restoreFocusForDismiss(id);
       removeToast(id);
     },
-    [removeToast, toasts]
+    [removeToast, toasts, restoreFocusForDismiss]
   );
 
   // Dismiss the most recent toast (Escape) or all toasts (Shift+Escape).
@@ -613,6 +659,7 @@ function ToastContainerComponent(): JSX.Element {
         e.preventDefault();
         if (e.shiftKey) {
           const count = toasts.length;
+          restoreFocusForClearAll();
           clearAll();
           setDismissAnnouncement(ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_ALL(count));
         } else {
@@ -626,13 +673,14 @@ function ToastContainerComponent(): JSX.Element {
 
     document.addEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
     return () => document.removeEventListener(DOM_EVENTS.KEYDOWN, handleEscape);
-  }, [toasts, removeToast, clearAll, handleRemoveToast]);
+  }, [toasts, removeToast, clearAll, handleRemoveToast, restoreFocusForClearAll]);
 
   const handleClearAll = useCallback(() => {
     const count = toasts.length;
+    restoreFocusForClearAll();
     clearAll();
     setDismissAnnouncement(ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_ALL(count));
-  }, [clearAll, toasts.length]);
+  }, [clearAll, toasts.length, restoreFocusForClearAll]);
 
   // Clear the dismiss announcement after screen readers have had time to
   // announce it. A short timeout prevents the sr-only region from accumulating
@@ -661,6 +709,8 @@ function ToastContainerComponent(): JSX.Element {
 
   return (
     <motion.div
+      ref={containerRef}
+      tabIndex={-1}
       className={TOAST_SPRING.CONTAINER_CLASSES}
       role={ARIA_ROLES.REGION}
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}

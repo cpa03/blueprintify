@@ -1180,6 +1180,17 @@
   }
 }
 
+/* Pause the always-on decorative loops while the page is hidden (tab in the
+   background): ambient backdrop, header logo breathe, hero gradient shift.
+   Driven by usePageVisibilityAttribute, which mirrors document.visibilityState
+   onto <html data-page-hidden>. Covers issue #3622 suggested fix #2 — the
+   loops keep running (and burning idle frames) in background tabs otherwise. */
+html[data-page-hidden="true"] .ambient-glow,
+html[data-page-hidden="true"] .animate-logo-breathe,
+html[data-page-hidden="true"] .text-gradient {
+  animation-play-state: paused;
+}
+
 /* Brief red glow flash on form fields that fail validation — draws the eye to the
    specific field that needs attention when the user clicks "Continue" with invalid input,
    working together with the button shake animation for multi-modal feedback. */
@@ -1615,6 +1626,15 @@
   );
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
   pointer-events: none;
+}
+
+/* Static variant for placeholders that never resolve into content
+   (e.g. the deferred-wizard landing block). A perpetual shimmer on a
+   static page falsely implies loading and burns main-thread frames
+   (#3622: 6 idle loops removed by this modifier). */
+.skeleton-block--static::after {
+  animation: none;
+  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

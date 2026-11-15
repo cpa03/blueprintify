@@ -53,6 +53,7 @@ import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
 import { SVG_ICON_DEFAULTS, ICON_PATHS } from "@blueprint/shared/config";
 import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
+import { HTML_LOADING_VALUES, HTML_DECODING_VALUES } from "@blueprint/shared/config";
 
 /**
  * Props for the MarkdownRenderer component.
@@ -484,8 +485,8 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
             alt={getImageAccessibleName(src ?? "", alt ?? "", title ?? "")}
             title={title}
             className={MARKDOWN.IMAGE}
-            loading="lazy"
-            decoding="async"
+            loading={HTML_LOADING_VALUES.LAZY}
+            decoding={HTML_DECODING_VALUES.ASYNC}
           />
         );
       },
