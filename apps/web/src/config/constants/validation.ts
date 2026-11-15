@@ -5,7 +5,7 @@
 
 import { VALIDATION_LIMITS, VALIDATION_LABELS } from "@blueprint/shared/config";
 
-export { VALIDATION_LIMITS, VALIDATION_LABELS };
+export { VALIDATION_LABELS };
 
 // Form validation limits derived from shared config
 export const FORM_LIMITS = {

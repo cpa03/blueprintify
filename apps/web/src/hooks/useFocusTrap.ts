@@ -180,5 +180,3 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
     focusLast,
   };
 }
-
-export default useFocusTrap;

@@ -67,5 +67,3 @@ export function StartFromScratchButton({ onStart }: StartFromScratchButtonProps)
     </button>
   );
 }
-
-export default StartFromScratchButton;
