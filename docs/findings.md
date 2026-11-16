@@ -2,6 +2,26 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Dead-Code Scan — disabled request, sync-only (branch `agent/janitor`, 0 code changes)
+
+**Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — bare `disabled` token appended → standing precedent: **read-only report, zero deletions** (same pattern as prior disabled janitor cycles).
+**Scope**: branch recut from `origin/main` (`3b745ff6`, 0-ahead/0-behind) for a clean base; independent re-scan of **335** source files (`apps`/`packages`/`scripts`/`functions`/`config` `.ts|.tsx|.js|.jsx|.mjs`, excluding `node_modules`/`dist`/`.wrangler`).
+**Scans**:
+- **Never-imported non-test source files: 0 true** — raw stem cross-reference empty after excluding entrypoints (`index`/`main`/`App`), config files, barrels (`hooks/index.ts`, `store/index.ts`), framework entries (`functions/api/[[path]].ts`), package.json-wired scripts, and `*.test.*` vitest-glob discoveries.
+- **Unused exports** — word-boundary cross-ref excluding the defining file: **3 zero-external-ref hits**, all previously classified:
+  1. **`PasteTruncationResult`** (`apps/web/src/hooks/usePasteTruncation.ts:35`) — 0 external importers; declared return type of the live exported `usePasteTruncation()` → **KEEP** (same standing rule as `OnlineStatus`).
+  2. **`OnlineStatus`** (`apps/web/src/hooks/useOnlineStatus.ts:27`) — 0 external importers of the type itself; declared return type of the live exported `useOnlineStatus()` → **KEEP** (standing rule, prior cycles).
+  3. **`ShortcutModifier`** (`apps/web/src/lib/platform.ts:12`) — used in-file only (`:124`/`:137`), 0 external importers → `export` modifier droppable → **carried flag, NOT deleted (disabled)**.
+  Barrel-only re-exports with 0 non-barrel/non-test consumers of note: **`GenerationResultSchema`** (`packages/shared/src/schema.ts:195`, barrel `index.ts:24`) and **`ImportResultSchema`** (`schema.ts:290`, barrel `index.ts:18`) — standing **Zod-schema boundary rule** (encode domain rules, README catalog) → **report-only, NOT deleted**. Remaining barrel/test-only hits are test helpers, factories, or types re-exported for the public package surface (documented FP classes).
+- **Commented-out dead code: 0** — multi-line `//` + code-statement detector returned 1 candidate (`apps/web/src/store/editor.ts:53-55`), reviewed as **prose** explaining the background-import fall-through (not commented-out code). Block-comment detector 0. `debugger`/`.only(`/`@ts-ignore`/`@ts-expect-error`/`TODO`/`FIXME`/`XXX`/`HACK` **0** in non-test source.
+- **Redundant files: 0 removed** — duplicate-by-hash = **1 group only** (intentional dual Pages proxy `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts`, md5 `205c5877…`). Tracked temp artifacts (`*.tmp`/`*.bak`/`*.log`/`task_plan.md`/`notes.md`/root stubs/…) **0**. Untracked working tree clean at scan time.
+- **console.log non-test src**: all legitimate — `middleware/logger.ts` / `utils/secureLog.ts` implementations + JSDoc samples (`lib/api.ts`, `config/security.ts`, `secureLog.ts`), generated-output template strings (`lib/templates/node.ts`/`static.ts`), build script `packages/shared/fix-esm.mjs` (wired via `packages/shared/package.json` `build`).
+- **Deps**: root `package.json` crude mention-scan **0** unused; `knip`/`depcheck` not installed in this cycle (no manifest/lock changes) → **0 dep removals**.
+- **Prior flags re-checked**: `UI_FALLBACKS` **0 hits** in `ui.ts` (only mock-object key in `lib/api.test.ts`) · `storageManager` is a **module-local** `const` at `storage.ts:815` (not exported; feeds `wizardStorage`/`editorStorage`) · enabled-cycle removals on main (dead defaults, barrel prune, `external.ts`, etc.) still held.
+**Structural mess (report-only, per constraints)**: (1) drop `export` on `ShortcutModifier`; (2) team decision on `GenerationResultSchema`/`ImportResultSchema` (remove from barrel + schema + README rows 73/81 if not part of intended contract); (3) standing flags unchanged — dual Pages proxy pending dashboard root confirmation, 4 utils-like folders + `sanitizeHtml` split, `debounce.test.ts` placement, test-only helpers in `useReducedMotion.ts`, `zod` unlisted in `apps/web`, `.agent`↔`.opencode` canonical-loader pending, audits archive rotation for giants `findings.md`/`flexy-plan.md`/`CHANGELOG.md`.
+**Verify (baseline — 0 code lines changed)**: `git diff origin/main --stat` empty · typecheck/lint/build/tests N/A (no code edits; prior enabled cycle on main already green).
+**Result**: **0 files deleted, 0 exports removed, 0 deps changed** — request disabled; 3 zero-ref exports + 2 barrel-only Zod schemas documented for the next *enabled* janitor cycle.
+
 ## Janitor Dead-Code Cleanup — unused exports / dead default exports / redundant re-exports removed (branch `agent/janitor`, **enabled** request), 0 unused exports remaining
 
 **Request**: "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." — no `disabled` token, so removals **executed** (first janitor cycle to act on the carried dead-export flags instead of reporting only).
