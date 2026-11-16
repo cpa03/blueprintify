@@ -430,7 +430,9 @@ function App(): JSX.Element {
             </div>
           )}
 
-          {/* Step Indicator — slides up on page load with hero-adjacent timing */}
+          {/* Step Indicator — slides up on page load with hero-adjacent timing.
+              isWizardActive=false on the static landing suppresses the active
+              step's idle pulse until the wizard actually starts (#3622 P4). */}
           <div
             className="animate-slide-up"
             style={{
@@ -438,7 +440,7 @@ function App(): JSX.Element {
               animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
             }}
           >
-            <StepIndicator />
+            <StepIndicator isWizardActive={wizardActivated} />
           </div>
 
           {/* Split Pane Layout — slides up slightly after the step indicator for a staggered cascade */}

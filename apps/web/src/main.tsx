@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import {
+  DOM_ELEMENT_TAGS,
   DOM_EVENTS,
   HTML_LINK_ELEMENT_RELS,
   HTML_LINK_MEDIA_VALUES,
@@ -102,7 +103,7 @@ const MONO_FONT_HREF =
 function loadMonoFont(): void {
   if (typeof document === "undefined") return;
   if (document.getElementById("font-mono")) return;
-  const link = document.createElement("link");
+  const link = document.createElement(DOM_ELEMENT_TAGS.LINK);
   link.id = "font-mono";
   link.rel = HTML_LINK_ELEMENT_RELS.STYLESHEET;
   link.href = MONO_FONT_HREF;

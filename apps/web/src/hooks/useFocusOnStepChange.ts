@@ -21,6 +21,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DOM_ATTRIBUTES,
+  DOM_ELEMENT_TAGS,
 } from "@blueprint/shared";
 
 /** Configuration options for step change focus behavior */
@@ -137,7 +138,7 @@ export function useStepAnnouncer(stepId: string, stepLabel: string): void {
 
   useEffect(() => {
     if (!liveRegionRef.current) {
-      liveRegionRef.current = document.createElement("div");
+      liveRegionRef.current = document.createElement(DOM_ELEMENT_TAGS.DIV);
       liveRegionRef.current.setAttribute(DOM_ATTRIBUTES.ROLE, ARIA_ROLES.STATUS);
       liveRegionRef.current.setAttribute(DOM_ATTRIBUTES.ARIA_LIVE, ARIA_LIVE_VALUES.POLITE);
       liveRegionRef.current.setAttribute(DOM_ATTRIBUTES.ARIA_ATOMIC, ARIA_ATOMIC_VALUES.TRUE);

@@ -290,6 +290,7 @@ export {
   HTML_LINK_ELEMENT_RELS,
   HTML_LINK_ELEMENT_TYPES,
   HTML_LINK_MEDIA_VALUES,
+  DOM_ELEMENT_TAGS,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

@@ -399,5 +399,3 @@ export const HeadingAnchor = memo(function HeadingAnchor({
     </span>
   );
 });
-
-export default HeadingAnchor;

@@ -65,7 +65,18 @@ const STEPS: {
   shortcut: string;
 }[] = [...WIZARD_STEPS];
 
-function StepIndicatorComponent(): JSX.Element {
+interface StepIndicatorProps {
+  /**
+   * Whether the wizard session has started. When false — the static landing,
+   * where the wizard panel still shows skeleton placeholders — the active
+   * step's infinite pulse is suppressed so an inert tab doesn't imply live
+   * activity (issue #3622, suggested fix P4). Defaults to true so in-wizard
+   * behavior is unchanged for existing callers.
+   */
+  isWizardActive?: boolean;
+}
+
+function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
@@ -279,7 +290,7 @@ function StepIndicatorComponent(): JSX.Element {
                       : "bg-dark-800/50 border border-dark-700 text-dark-300 focus-visible:ring-2 focus-visible:ring-dark-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 }
                 ${isClickable ? "cursor-pointer hover:bg-dark-700 motion-safe:hover:scale-102 motion-safe:active:scale-98" : "cursor-default"}
-                ${isActive && !shouldReduceMotion ? "animate-step-pulse" : ""}
+                ${isActive && isWizardActive && !shouldReduceMotion ? "animate-step-pulse" : ""}
                 ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}
                 ${justCompletedStep === step.key && !shouldReduceMotion ? "step-complete-flash" : ""}
                 ${activatingStep === step.key && !shouldReduceMotion ? "step-activate" : ""}
