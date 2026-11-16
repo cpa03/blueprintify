@@ -131,5 +131,3 @@ export function useReducedMotionContext(): ReducedMotionContextType {
 
   return context;
 }
-
-export { ReducedMotionContext };

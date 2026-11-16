@@ -3,6 +3,7 @@ import { useEditorStore } from "../store";
 import { FAVICON_CONFIG, GENERATION_MESSAGES } from "../config/constants";
 import {
   DOM_ATTRIBUTES,
+  DOM_ELEMENT_TAGS,
   HTML_LINK_ELEMENT_RELS,
   HTML_LINK_ELEMENT_TYPES,
 } from "@blueprint/shared/config";
@@ -42,7 +43,7 @@ export function useFaviconStatus(): void {
     if (existing) {
       link = existing;
     } else {
-      link = document.createElement("link");
+      link = document.createElement(DOM_ELEMENT_TAGS.LINK);
       link.rel = HTML_LINK_ELEMENT_RELS.ICON;
       link.type = HTML_LINK_ELEMENT_TYPES.SVG_XML;
       document.head.appendChild(link);

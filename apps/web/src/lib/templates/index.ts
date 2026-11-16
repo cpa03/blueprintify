@@ -1,5 +1,4 @@
-export type { ExportFiles, PackageJson } from "./shared";
-export { generateProjectReadme } from "./shared";
+export type { ExportFiles } from "./shared";
 
 export { generateReactProject } from "./react";
 

@@ -338,4 +338,22 @@ describe("StepIndicator", () => {
     expect(stackButton).toHaveAttribute("data-reduced-motion", "true");
     expect(stackButton).not.toHaveClass("animate-step-pulse");
   });
+
+  it("suppresses the active-step pulse while the wizard is inactive (static landing)", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.INFO;
+    render(<StepIndicator isWizardActive={false} />);
+
+    const infoButton = screen.getByText("Project Info").closest("button");
+    expect(infoButton).toHaveAttribute("data-active", "true");
+    expect(infoButton).not.toHaveClass("animate-step-pulse");
+  });
+
+  it("pulses the active step by default (wizard active)", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.INFO;
+    render(<StepIndicator />);
+
+    const infoButton = screen.getByText("Project Info").closest("button");
+    expect(infoButton).toHaveAttribute("data-active", "true");
+    expect(infoButton).toHaveClass("animate-step-pulse");
+  });
 });

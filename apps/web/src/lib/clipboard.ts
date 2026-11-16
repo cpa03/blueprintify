@@ -3,6 +3,7 @@ import {
   ARIA_HIDDEN_VALUES,
   CSS_VALUES,
   DOM_ATTRIBUTES,
+  DOM_ELEMENT_TAGS,
   TAB_INDEX_VALUES,
 } from "@blueprint/shared";
 
@@ -19,7 +20,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    const textarea = document.createElement("textarea");
+    const textarea = document.createElement(DOM_ELEMENT_TAGS.TEXTAREA);
     textarea.value = text;
     textarea.readOnly = true;
     textarea.tabIndex = -1;

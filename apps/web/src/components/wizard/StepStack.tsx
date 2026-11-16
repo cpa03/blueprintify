@@ -40,6 +40,7 @@ import {
   ARIA_LIVE_VALUES,
   ARIA_ROLES,
   DISPLAY_SYMBOLS,
+  DOM_ELEMENT_TAGS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
   ICON_PATHS,
@@ -94,7 +95,7 @@ const attentionKeyframes = `@keyframes stack-card-attention {
 if (typeof document !== "undefined") {
   const styleId = STYLE_ID_STRINGS.STACK_CARD_ATTENTION;
   if (!document.getElementById(styleId)) {
-    const style = document.createElement("style");
+    const style = document.createElement(DOM_ELEMENT_TAGS.STYLE);
     style.id = styleId;
     style.textContent = attentionKeyframes;
     document.head.appendChild(style);

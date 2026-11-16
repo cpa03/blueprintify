@@ -112,5 +112,3 @@ export function useExportContext(): ExportContextType {
 
   return context;
 }
-
-export { ExportContext };
