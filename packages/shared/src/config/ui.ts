@@ -1956,3 +1956,68 @@ export const DOM_ELEMENT_TAGS = {
   /** Generic container — live region + scrollbar width probe */
   DIV: "div" as const,
 } as const;
+
+/**
+ * Toast `data-*` Attribute Names
+ * Centralized source of truth for the custom data attributes written on toast
+ * elements and their dismiss buttons, and for the selector/`getAttribute`/
+ * `dataset` call sites that read them back.
+ *
+ * Pairing contract (three-way, silent-failure): each attribute name is written
+ * as a JSX literal (`data-toast-*={...}` — JSX requires literal prop names,
+ * Iteration 206/216 precedent) and read back through a *different* surface:
+ * (1) `TOAST_SELECTORS.BY_ID` / `TOAST_SELECTORS.DISMISS_BUTTONS` feed
+ * `closest()`/`querySelectorAll()`; (2) `getAttribute(TOAST_DATA_ATTRIBUTES.*)`
+ * reads the content attribute; (3) `dataset.toastDismiss` reads the camelCase
+ * IDL form of `data-toast-dismiss`. A typo on any one side does not throw —
+ * the selector simply matches nothing (or the wrong nodes), `getAttribute`
+ * returns `null`, and the dataset property is `undefined`. Concretely:
+ * - `ID` typo → `restoreFocusForDismiss` never finds the active toast's id,
+ *   so focus after auto-dismiss falls to `<body>` instead of the neighbor
+ *   dismiss button (WCAG 2.4.3 Focus Order regression).
+ * - `DISMISS` typo → the neighbor-button lookup returns no target, so focus
+ *   parks on the container instead of the next toast's dismiss control.
+ * - `TYPE` typo → tests and any future type-scoped styling/selectors silently
+ *   stop matching while the toast still renders.
+ * The dataset IDL form is derived: strip the `data-` prefix, drop hyphens,
+ * capitalize following letters (`data-toast-dismiss` → `toastDismiss`). If a
+ * constant is renamed, the `dataset.*` property at the call site must be
+ * renamed in lockstep.
+ *
+ * Flexy says: No bare "data-toast-*" string literals in selectors, getAttribute
+ * calls, or dataset pairing docs where a constant family exists!
+ * Usage: import { TOAST_DATA_ATTRIBUTES, TOAST_SELECTORS } from "@blueprint/shared";
+ *        active.closest(TOAST_SELECTORS.BY_ID)?.getAttribute(TOAST_DATA_ATTRIBUTES.ID);
+ *        container.querySelectorAll(TOAST_SELECTORS.DISMISS_BUTTONS);
+ */
+export const TOAST_DATA_ATTRIBUTES = {
+  /** Toast variant (success/error/warning/info) — test/type-scoped styling key */
+  TYPE: "data-toast-type" as const,
+  /** Unique toast instance id — focus-restoration lookup key */
+  ID: "data-toast-id" as const,
+  /** Dismiss-button target id — neighbor-focus hand-off key */
+  DISMISS: "data-toast-dismiss" as const,
+} as const;
+
+/**
+ * Toast CSS Selectors
+ * Centralized selector strings built from `TOAST_DATA_ATTRIBUTES` so every
+ * `closest()`/`querySelectorAll()` call site stays byte-identical to the
+ * attribute names the JSX writes.
+ *
+ * Pairing contract: these selectors are the read side of the three-way toast
+ * data-attribute contract documented on `TOAST_DATA_ATTRIBUTES`. A selector
+ * that drifts from its attribute constant matches nothing and the associated
+ * focus-restoration path silently no-ops.
+ *
+ * Flexy says: No bare "[data-toast-*]" selector literals in components!
+ * Usage: import { TOAST_SELECTORS } from "@blueprint/shared";
+ *        active.closest(TOAST_SELECTORS.BY_ID);
+ *        container.querySelectorAll(TOAST_SELECTORS.DISMISS_BUTTONS);
+ */
+export const TOAST_SELECTORS = {
+  /** Nearest toast ancestor of the focused element (`data-toast-id` presence) */
+  BY_ID: `[${TOAST_DATA_ATTRIBUTES.ID}]` as const,
+  /** All dismiss buttons inside the toast container (`data-toast-dismiss` presence) */
+  DISMISS_BUTTONS: `[${TOAST_DATA_ATTRIBUTES.DISMISS}]` as const,
+} as const;
