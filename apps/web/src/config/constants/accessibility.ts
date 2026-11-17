@@ -149,10 +149,11 @@ export const ACCESSIBILITY_LABELS_SKIP = {
  * `aria-describedby`, `aria-controls`, `htmlFor`, skip-link `href`/`data-target`)
  * must share this single source so the pair can never drift apart.
  *
- * Deliberately excludes dynamic/template IDs (`tab-${activeTab}`,
- * `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`) and
- * `index.html`-paired runtime IDs (`root`, `skeleton-loader`), which cannot
- * import TypeScript constants.
+ * Dynamic/template IDs (`tab-${activeTab}`, `${step.key}-locked-hint`,
+ * `category-${category}`, `${id}-panel`) compose their affixes from
+ * `DYNAMIC_ID_AFFIXES` below so write and read sides stay in lockstep.
+ * Deliberately excludes `index.html`-paired runtime IDs (`root`,
+ * `skeleton-loader`), which cannot import TypeScript constants.
  *
  * Flexy says: No hardcoded DOM element ID literals in components!
  */
@@ -202,6 +203,43 @@ export const DOM_ELEMENT_IDS = {
   STEP_INFO_CONSTRAINTS: "constraints",
   /** Persistent character-count description for constraints; referenced by `aria-describedby`. */
   STEP_INFO_CONSTRAINTS_COUNTER: "constraints-counter",
+} as const;
+
+/**
+ * Dynamic DOM ID Affixes
+ * Centralized source of truth for the prefix/suffix fragments composed into
+ * template-literal DOM element IDs and their ARIA pairings. Each affix
+ * participates in a silent-failure pairing contract: the write side is an
+ * `id={...}` template and the read side is a *different* surface —
+ * `getElementById()`, `aria-labelledby`, `aria-describedby`, or
+ * `aria-controls`. A typo on either side does not throw — the lookup
+ * returns `null` and the ARIA reference dangles, so:
+ * - `TAB_PREFIX` typo → editor tab focus after mount/keyboard-nav/generation
+ *   silently no-ops (focus falls to `<body>`) and the tabpanel's
+ *   `aria-labelledby` dangles (WCAG 1.3.1 / 2.4.3 regression).
+ * - `CATEGORY_PREFIX` typo → tech-stack group `aria-labelledby` dangles so
+ *   the group's accessible name is lost.
+ * - `LOCKED_HINT_SUFFIX` typo → locked-step `aria-describedby` dangles so
+ *   the "step locked" explanation is never announced.
+ * - `PANEL_SUFFIX` typo → tab `aria-controls` dangles and the
+ *   `[id$="-panel"]` scroll target in StepGenerating matches nothing, so
+ *   post-generation focus/scroll silently no-ops.
+ *
+ * Flexy says: No bare "tab-"/"category-"/"-locked-hint"/"-panel" affix
+ * literals in id templates or ARIA references where a constant family exists!
+ * Usage: import { DYNAMIC_ID_AFFIXES } from "../config/constants";
+ *        id={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${id}`}
+ *        document.getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${tabId}`)
+ */
+export const DYNAMIC_ID_AFFIXES = {
+  /** Prefix for editor tab button IDs (`tab-blueprint`, `tab-tasks`) */
+  TAB_PREFIX: "tab-" as const,
+  /** Prefix for tech-stack category heading/group IDs (`category-frontend`, …) */
+  CATEGORY_PREFIX: "category-" as const,
+  /** Suffix for locked-step hint live-region IDs (`info-locked-hint`, …) */
+  LOCKED_HINT_SUFFIX: "-locked-hint" as const,
+  /** Suffix for editor tabpanel IDs (`blueprint-panel`, `tasks-panel`) */
+  PANEL_SUFFIX: "-panel" as const,
 } as const;
 
 // ============================================================================

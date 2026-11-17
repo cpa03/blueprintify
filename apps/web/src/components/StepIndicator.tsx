@@ -54,6 +54,7 @@ import {
   STEP_INDICATOR_CHARS,
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
+  DYNAMIC_ID_AFFIXES,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -276,7 +277,9 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
                   ? ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT(step.label, step.shortcut)
                   : TOAST_MESSAGES.STEP_LOCKED(step.label)
               }
-              aria-describedby={!isClickable ? `${step.key}-locked-hint` : undefined}
+              aria-describedby={
+                !isClickable ? `${step.key}${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}` : undefined
+              }
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? ARIA_CURRENT_VALUES.STEP : undefined}
               className={`
@@ -312,7 +315,10 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
             </button>
 
             {!isClickable && (
-              <span id={`${step.key}-locked-hint`} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+              <span
+                id={`${step.key}${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}`}
+                className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+              >
                 {TOAST_MESSAGES.STEP_LOCKED(step.label)}
               </span>
             )}

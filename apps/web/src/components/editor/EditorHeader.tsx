@@ -63,6 +63,7 @@ import {
   SCALE_PULSE,
   OPACITY,
   ENTRANCE_OFFSETS,
+  DYNAMIC_ID_AFFIXES,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -122,8 +123,8 @@ const TabButton = React.memo(function TabButton({
     <button
       role={ARIA_ROLES.TAB}
       aria-selected={isActive}
-      aria-controls={hasContent ? `${id}-panel` : undefined}
-      id={`tab-${id}`}
+      aria-controls={hasContent ? `${id}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}` : undefined}
+      id={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${id}`}
       onClick={onClick}
       tabIndex={isActive ? 0 : -1}
       className={clsx(
@@ -536,7 +537,7 @@ function EditorHeaderComponent({
       const nextTab = TAB_IDS[nextIndex];
       if (nextTab) {
         setActiveTab(nextTab);
-        const nextTabEl = document.getElementById(`tab-${nextTab}`);
+        const nextTabEl = document.getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${nextTab}`);
         nextTabEl?.focus();
       }
     },
