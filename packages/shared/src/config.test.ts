@@ -210,6 +210,8 @@ import {
   HTML_LINK_ELEMENT_TYPES,
   HTML_LINK_MEDIA_VALUES,
   DOM_ELEMENT_TAGS,
+  TOAST_DATA_ATTRIBUTES,
+  TOAST_SELECTORS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -6107,5 +6109,62 @@ describe("DOM_ELEMENT_TAGS (Flexy Iteration 219)", () => {
 
   it("should keep LINK byte-identical to the favicon selector's tag fragment", () => {
     expect(`${DOM_ELEMENT_TAGS.LINK}[rel="icon"]`).toContain('link[rel="icon"]');
+  });
+});
+
+describe("TOAST_DATA_ATTRIBUTES (Flexy Iteration 220)", () => {
+  it("should have the exact data-attribute name values", () => {
+    expect(TOAST_DATA_ATTRIBUTES.TYPE).toBe("data-toast-type");
+    expect(TOAST_DATA_ATTRIBUTES.ID).toBe("data-toast-id");
+    expect(TOAST_DATA_ATTRIBUTES.DISMISS).toBe("data-toast-dismiss");
+  });
+
+  it("should have 3 unique attribute names", () => {
+    expect(Object.keys(TOAST_DATA_ATTRIBUTES).length).toBe(3);
+    const values = Object.values(TOAST_DATA_ATTRIBUTES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep every attribute name lowercase so selector and getAttribute serialization stays stable", () => {
+    for (const value of Object.values(TOAST_DATA_ATTRIBUTES)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("should prefix every entry with data- so they remain custom data attributes", () => {
+    for (const value of Object.values(TOAST_DATA_ATTRIBUTES)) {
+      expect(value.startsWith("data-")).toBe(true);
+    }
+  });
+
+  it("should derive dataset.toastDismiss camelCase from DISMISS so the IDL pairing stays in lockstep", () => {
+    const derived = TOAST_DATA_ATTRIBUTES.DISMISS.replace(/^data-/, "").replace(
+      /-([a-z])/g,
+      (_, letter: string) => letter.toUpperCase()
+    );
+    expect(derived).toBe("toastDismiss");
+  });
+});
+
+describe("TOAST_SELECTORS (Flexy Iteration 220)", () => {
+  it("should build BY_ID from the ID attribute so selector and JSX write stay byte-identical", () => {
+    expect(TOAST_SELECTORS.BY_ID).toBe(`[${TOAST_DATA_ATTRIBUTES.ID}]`);
+    expect(TOAST_SELECTORS.BY_ID).toBe("[data-toast-id]");
+  });
+
+  it("should build DISMISS_BUTTONS from the DISMISS attribute so selector and JSX write stay byte-identical", () => {
+    expect(TOAST_SELECTORS.DISMISS_BUTTONS).toBe(`[${TOAST_DATA_ATTRIBUTES.DISMISS}]`);
+    expect(TOAST_SELECTORS.DISMISS_BUTTONS).toBe("[data-toast-dismiss]");
+  });
+
+  it("should have 2 unique selector strings", () => {
+    expect(Object.keys(TOAST_SELECTORS).length).toBe(2);
+    const values = Object.values(TOAST_SELECTORS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should keep BY_ID and DISMISS_BUTTONS distinct so each lookup targets its own attribute", () => {
+    expect(TOAST_SELECTORS.BY_ID).not.toBe(TOAST_SELECTORS.DISMISS_BUTTONS);
   });
 });
