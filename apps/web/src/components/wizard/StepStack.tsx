@@ -70,6 +70,7 @@ import {
   CSS_CLASSES,
   DOM_ELEMENT_IDS,
   FOCUS_ANNOUNCER,
+  DYNAMIC_ID_AFFIXES,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
@@ -379,7 +380,7 @@ export const StepStack = memo(function StepStack({
           <div key={category}>
             <h3
               className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2"
-              id={`category-${category}`}
+              id={`${DYNAMIC_ID_AFFIXES.CATEGORY_PREFIX}${category}`}
             >
               <span aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>{CATEGORY_ICONS[category] || "🔧"}</span>
               {category}
@@ -387,7 +388,7 @@ export const StepStack = memo(function StepStack({
             <div
               className="flex flex-wrap gap-2"
               role={ARIA_ROLES.GROUP}
-              aria-labelledby={`category-${category}`}
+              aria-labelledby={`${DYNAMIC_ID_AFFIXES.CATEGORY_PREFIX}${category}`}
             >
               {options.map((tech, chipIdx) => {
                 const globalIndex = (categoryStartIndices[category] ?? 0) + chipIdx;
