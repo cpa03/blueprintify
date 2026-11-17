@@ -324,6 +324,41 @@ describe("StepStack", () => {
 
   // ======== Accessibility ========
 
+  it("exposes selection progress bar as a progressbar with value semantics", () => {
+    render(<StepStack />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuemin", "0");
+    expect(progressbar).toHaveAttribute("aria-valuemax", String(MIN_REQUIREMENTS.TECH_STACK));
+    expect(progressbar).toHaveAttribute("aria-valuenow", "0");
+    expect(progressbar).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(0, MIN_REQUIREMENTS.TECH_STACK)
+    );
+  });
+
+  it("updates progressbar aria-valuenow when technologies are selected", () => {
+    mockStore.techStack = [{ name: "React", category: "frontend" }];
+    render(<StepStack />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuenow", "1");
+    expect(progressbar).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(1, MIN_REQUIREMENTS.TECH_STACK)
+    );
+  });
+
+  it("announces selection count via a polite live region separate from the bar", () => {
+    render(<StepStack />);
+    const liveRegion = screen.getByText(
+      ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(0, MIN_REQUIREMENTS.TECH_STACK)
+    );
+    expect(liveRegion).toHaveAttribute("role", "status");
+    expect(liveRegion).toHaveAttribute("aria-live", "polite");
+    expect(liveRegion).toHaveAttribute("aria-atomic", "true");
+    // Live region must not be the progressbar itself (progressbars are not live).
+    expect(liveRegion).not.toHaveAttribute("role", "progressbar");
+  });
+
   it("announces when the minimum selection is met", () => {
     const { rerender } = render(<StepStack direction="backward" />);
     expect(
