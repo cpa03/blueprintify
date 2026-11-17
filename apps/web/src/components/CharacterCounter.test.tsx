@@ -195,6 +195,13 @@ describe("CharacterCounterCompact", () => {
     expect(srStatus).toHaveTextContent("100 of 100 characters used — limit reached");
   });
 
+  it("announces limit reached instead of a negative remaining count when over max (#3591)", () => {
+    render(<CharacterCounterCompact current={105} max={100} />);
+    const srStatus = screen.getByRole("status");
+    expect(srStatus).toHaveTextContent("105 of 100 characters used — limit reached");
+    expect(srStatus).not.toHaveTextContent("remaining");
+  });
+
   it("sets data-state attribute on compact container", () => {
     const { container, rerender } = render(<CharacterCounterCompact current={90} max={100} />);
     let compactContainer = container.firstElementChild;
