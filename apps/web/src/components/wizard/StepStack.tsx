@@ -344,7 +344,21 @@ export const StepStack = memo(function StepStack({
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_STACK.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
-            <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
+            {/* Real progressbar semantics (WCAG 4.1.2): the fill bar alone was
+                purely visual, so screen-reader users had no role/value to
+                discover. aria-label carries the human-readable count; the
+                adjacent live region below handles polite change announcements
+                (progressbars are not live regions by default). Mirrors the
+                StepInfo form-progress pattern exactly. */}
+            <div
+              role={ARIA_ROLES.PROGRESSBAR}
+              aria-valuemin={0}
+              aria-valuemax={minRequired}
+              aria-valuenow={techStack.length}
+              aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
+              data-progress={Math.round(progressPercentage)}
+              className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden"
+            >
               <motion.div
                 className={`h-full transition-colors duration-300 ${
                   canProceed
@@ -354,15 +368,17 @@ export const StepStack = memo(function StepStack({
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercentage}%` }}
                 transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+                aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
               />
             </div>
+            {/* Visible count for sighted users — decorative to AT so it doesn't
+                double-speak with the progressbar's accessible name. The
+                milestone pulse stays on this span (purely visual). */}
             <motion.span
               animate={showMilestone ? { scale: [1, 1.35, 1] } : { scale: 1 }}
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
-              aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
-              aria-live={ARIA_LIVE_VALUES.POLITE}
-              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+              aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             >
               {techStack.length}/{minRequired}
             </motion.span>
@@ -562,6 +578,19 @@ export const StepStack = memo(function StepStack({
         aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {milestoneAnnouncement}
+      </div>
+      {/* Polite live region: announces selection-count changes without the
+          aria-label-on-live-region anti-pattern (the counter span mixed both,
+          which made announcement behavior SR-dependent — same fix StepInfo
+          applied). Progressbars are not live regions, so the spoken count
+          lives here while the bar above carries the ARIA value semantics. */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+      >
+        {ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
       </div>
     </motion.div>
   );
