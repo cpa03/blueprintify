@@ -65,6 +65,7 @@ import {
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
+  DYNAMIC_ID_AFFIXES,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
@@ -397,7 +398,9 @@ function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
   useEffect(() => {
     const tabId = initialTabRef.current;
     const focusTimer = setTimeout(() => {
-      document.getElementById(`tab-${tabId}`)?.focus({ preventScroll: true });
+      document
+        .getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${tabId}`)
+        ?.focus({ preventScroll: true });
     }, UI_TIMING.EDITOR_FOCUS_DELAY_MS);
     return () => clearTimeout(focusTimer);
   }, []);
@@ -595,9 +598,13 @@ function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
                       duration: ANIMATION.NORMAL,
                       ease: ANIMATION_TIMING.easing.easeOut,
                     }}
-                    id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
+                    id={
+                      activeTab === EDITOR_TABS.BLUEPRINT
+                        ? `${EDITOR_TABS.BLUEPRINT}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`
+                        : `${EDITOR_TABS.TASKS}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`
+                    }
                     role={ARIA_ROLES.TABPANEL}
-                    aria-labelledby={`tab-${activeTab}`}
+                    aria-labelledby={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${activeTab}`}
                     aria-busy={isGenerating || undefined}
                     className="h-full flex flex-col lg:flex-row"
                   >

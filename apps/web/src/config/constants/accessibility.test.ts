@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { CSS_CLASSES, ACCESSIBILITY_LABELS_SKIP, DOM_ELEMENT_IDS } from "./accessibility";
+import {
+  CSS_CLASSES,
+  ACCESSIBILITY_LABELS_SKIP,
+  DOM_ELEMENT_IDS,
+  DYNAMIC_ID_AFFIXES,
+} from "./accessibility";
 
 describe("CSS_CLASSES — Iteration 185 additions", () => {
   it("defines SCROLL_SHADOW_TOP with the editor/wizard top overlay classes", () => {
@@ -87,5 +92,45 @@ describe("DOM_ELEMENT_IDS — Iterations 197 + 211", () => {
     const values = Object.values(DOM_ELEMENT_IDS);
     expect(values).toHaveLength(27);
     expect(new Set(values).size).toBe(27);
+  });
+});
+
+describe("DYNAMIC_ID_AFFIXES — Iteration 221", () => {
+  it("defines the 4 dynamic ID affixes with exact byte values", () => {
+    expect(DYNAMIC_ID_AFFIXES.TAB_PREFIX).toBe("tab-");
+    expect(DYNAMIC_ID_AFFIXES.CATEGORY_PREFIX).toBe("category-");
+    expect(DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX).toBe("-locked-hint");
+    expect(DYNAMIC_ID_AFFIXES.PANEL_SUFFIX).toBe("-panel");
+  });
+
+  it("keeps every affix unique so composed IDs never collide", () => {
+    const values = Object.values(DYNAMIC_ID_AFFIXES);
+    expect(values).toHaveLength(4);
+    expect(new Set(values).size).toBe(4);
+  });
+
+  it("marks TAB_PREFIX and CATEGORY_PREFIX as prefixes and the other two as suffixes", () => {
+    expect(DYNAMIC_ID_AFFIXES.TAB_PREFIX.endsWith("-")).toBe(true);
+    expect(DYNAMIC_ID_AFFIXES.CATEGORY_PREFIX.endsWith("-")).toBe(true);
+    expect(DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX.startsWith("-")).toBe(true);
+    expect(DYNAMIC_ID_AFFIXES.PANEL_SUFFIX.startsWith("-")).toBe(true);
+    expect(DYNAMIC_ID_AFFIXES.TAB_PREFIX.startsWith("-")).toBe(false);
+    expect(DYNAMIC_ID_AFFIXES.CATEGORY_PREFIX.startsWith("-")).toBe(false);
+    expect(DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX.endsWith("-")).toBe(false);
+    expect(DYNAMIC_ID_AFFIXES.PANEL_SUFFIX.endsWith("-")).toBe(false);
+  });
+
+  it("composes byte-identical IDs with the historical bare literals", () => {
+    expect(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}blueprint`).toBe("tab-blueprint");
+    expect(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}tasks`).toBe("tab-tasks");
+    expect(`info${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}`).toBe("info-locked-hint");
+    expect(`frontend${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`).toBe("frontend-panel");
+    expect(`${DYNAMIC_ID_AFFIXES.CATEGORY_PREFIX}frontend`).toBe("category-frontend");
+    expect(`blueprint${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`).toBe("blueprint-panel");
+    expect(`tasks${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`).toBe("tasks-panel");
+  });
+
+  it("keeps PANEL_SUFFIX byte-identical to the StepGenerating [id$=] selector fragment", () => {
+    expect(`[id$="${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}"]`).toBe('[id$="-panel"]');
   });
 });

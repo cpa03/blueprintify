@@ -4,6 +4,39 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 221: Centralize Dynamic DOM ID Affix Literals (`tab-`, `category-`, `-locked-hint`, `-panel`)
+
+**Problem**: 12 hardcoded dynamic-ID affix literals survived 220 iterations across 5 web runtime files, with no constant family anywhere — and `DOM_ELEMENT_IDS`' own docblock explicitly deferred them with the incorrect claim that template IDs "cannot import TypeScript constants" (template literals interpolate constants perfectly fine). Breakdown: 5× `tab-` (EditorHeader `id` write + `getElementById` keyboard-nav read; Editor `getElementById` mount-focus read + `aria-labelledby` tabpanel read; StepGenerating `getElementById` post-generation focus read), 2× `category-` (StepStack `id` write + `aria-labelledby` read), 2× `-locked-hint` (StepIndicator `id` write + `aria-describedby` read), 3× `-panel` (EditorHeader `aria-controls` read + Editor tabpanel `id` write ×2 literal ternary branches + StepGenerating `[id$="-panel"]` scroll-target selector). Each participates in a silent-failure pairing contract: the write side is an `id={...}` template and the read side flows through a *different* surface — `getElementById()`, `aria-labelledby`, `aria-describedby`, `aria-controls`, or an attribute-ends-with CSS selector. A typo on any one side does not throw: the lookup returns `null` and the ARIA reference dangles. Concretely: (1) **`TAB_PREFIX`** typo → editor tab focus after mount/keyboard-nav/generation silently no-ops (focus falls to `<body>`) and the tabpanel's `aria-labelledby` dangles (WCAG 1.3.1 / 2.4.3 regression). (2) **`CATEGORY_PREFIX`** typo → tech-stack group `aria-labelledby` dangles so the group's accessible name is lost. (3) **`LOCKED_HINT_SUFFIX`** typo → locked-step `aria-describedby` dangles so the "step locked" explanation is never announced. (4) **`PANEL_SUFFIX`** typo → tab `aria-controls` dangles and the `[id$="-panel"]` scroll target in StepGenerating matches nothing, so post-generation focus/scroll silently no-ops. Flexy says: no bare affix literals in id templates or ARIA references where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | NEW `DYNAMIC_ID_AFFIXES` (TAB_PREFIX, CATEGORY_PREFIX, LOCKED_HINT_SUFFIX, PANEL_SUFFIX — 4 entries, pairing-contract docblock covering getElementById/aria-labelledby/aria-describedby/aria-controls/`[id$=]` silent-failure modes + WCAG 1.3.1/2.4.3 regressions), placed after `DOM_ELEMENT_IDS`; updated `DOM_ELEMENT_IDS` docblock — dynamic/template IDs now compose affixes from `DYNAMIC_ID_AFFIXES` instead of being "deliberately excluded" |
+| `apps/web/src/config/constants/accessibility.test.ts` | +5 tests: exact 4 values, entry count 4 + uniqueness, prefix/suffix shape invariants, byte-identity of composed IDs against historical bare literals (`tab-blueprint`, `tab-tasks`, `info-locked-hint`, `frontend-panel`, `category-frontend`, `blueprint-panel`, `tasks-panel`), `[id$="-panel"]` selector byte-identity |
+| `apps/web/src/components/editor/EditorHeader.tsx` | 3 sites: `id={`tab-${id}`}` → `id={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${id}`}`; `aria-controls={... `${id}-panel`}` → `${id}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`; `getElementById(`tab-${nextTab}`)` → `${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${nextTab}` |
+| `apps/web/src/components/Editor.tsx` | 3 sites: `getElementById(`tab-${tabId}`)` → `TAB_PREFIX`; tabpanel ternary `"blueprint-panel"` / `"tasks-panel"` → `${EDITOR_TABS.BLUEPRINT/TASKS}${PANEL_SUFFIX}`; `aria-labelledby={`tab-${activeTab}`}` → `TAB_PREFIX` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 2 sites: `querySelector('[id$="-panel"]')` → `[id$="${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}"]`; `getElementById(`tab-${activeEditorTab}`)` → `TAB_PREFIX` |
+| `apps/web/src/components/StepIndicator.tsx` | 2 sites: `aria-describedby={`${step.key}-locked-hint`}` → `${step.key}${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}`; matching `id` write → same suffix |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2 sites: `id={`category-${category}`}` + `aria-labelledby={`category-${category}`}` → `CATEGORY_PREFIX` |
+| `docs/flexy-plan.md` | Iteration 221 entry |
+
+Deliberately skipped: test files (`EditorHeader.test.tsx` `getElementById(`tab-${EDITOR_TABS.TASKS}`)` — constants preserve the identical byte value so the assertion stays green — Iteration 194/196/206/208/212/213/217/218/219/220 precedent); `index.html`-paired runtime IDs (`root`, `skeleton-loader` — HTML cannot import TypeScript constants); static full-ID templates not present in source (`${step.key}` step keys and `${category}` values are dynamic *values*, not affixes — only the affix fragments were bare); CSS custom-property writes (`"--glow-color"`, `"--tech-glow"` — CSS-variable category deferred by Iteration 220); `EDITOR_PANEL: "editor-panel"` static ID (already centralized in `DOM_ELEMENT_IDS`); JSDoc prose mentioning the affixes; `node_modules`/`dist`.
+
+## Verification (Iteration 221)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new web)
+- ✅ Residual scan — 0 bare `` `tab-` `` / `` `category-` `` / `` `-locked-hint` `` / `` `-panel` `` affix literals and 0 bare `"blueprint-panel"`/`"tasks-panel"` literals in runtime source (excluding tests, config docblocks & docs)
+
+## PR (Iteration 221)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-221-dynamic-id-affixes` | refactor(flexy): centralize dynamic DOM ID affix literals (Iteration 221) |
+
 ### ✅ Flexy Iteration 220: Centralize Toast `data-*` Attribute Name Literals
 
 **Problem**: 3 hardcoded toast data-attribute name literals survived 219 iterations in a single runtime file (`Toast.tsx`), participating in a three-way silent-failure pairing contract with no constant family anywhere. Breakdown: 1× `data-toast-type` (JSX write on the toast root — variant key for type-scoped styling/tests), 1× `data-toast-id` (JSX write on the toast root + `closest("[data-toast-id]")` selector + `getAttribute("data-toast-id")` read in `restoreFocusForDismiss`), 2× `data-toast-dismiss` (JSX writes on both dismiss-button variants + `querySelectorAll("[data-toast-dismiss]")` selector + `dataset.toastDismiss` IDL camelCase read). Each participates in a silent-failure pairing contract: JSX requires literal prop names (Iteration 206/216 precedent) so the write side stays a bare literal, while the read side flows through three *different* surfaces — CSS selector, `getAttribute` content-attribute read, and `dataset.*` IDL property. A typo on any one side does not throw: the selector matches nothing, `getAttribute` returns `null`, and the dataset property is `undefined`. Concretely: (1) **`ID`** typo → `restoreFocusForDismiss` never finds the active toast's id, so focus after auto-dismiss falls to `<body>` instead of the neighbor dismiss button (WCAG 2.4.3 Focus Order regression). (2) **`DISMISS`** typo → the neighbor-button lookup returns no target, so focus parks on the container instead of the next toast's dismiss control. (3) **`TYPE`** typo → tests and type-scoped styling/selectors silently stop matching while the toast still renders. The dataset IDL form is derived (`data-toast-dismiss` → `toastDismiss` by stripping `data-`, dropping hyphens, capitalizing following letters) and must be renamed in lockstep with the constant. Flexy says: no bare `data-toast-*` string literals in selectors, `getAttribute` calls, or dataset pairing where a constant family exists!
