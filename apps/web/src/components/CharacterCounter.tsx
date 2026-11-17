@@ -212,12 +212,14 @@ function CharacterCounterCompactComponent({
 
   // Mirrors the main counter's threshold-only announcement policy (see above).
   const compactCountLabel = `${current} of ${max} character${max !== 1 ? "s" : ""} used`;
-  const compactAnnouncement =
-    remaining === 0
-      ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED}`
-      : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
-        ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)}`
-        : "";
+  // isAtLimit (current >= max) covers the over-max case too: remaining === 0
+  // misses negative remaining counts and fell through to announce "-5 remaining"
+  // when pasted text exceeded the limit (issue #3591).
+  const compactAnnouncement = isAtLimit
+    ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED}`
+    : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
+      ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)}`
+      : "";
 
   return (
     <div
