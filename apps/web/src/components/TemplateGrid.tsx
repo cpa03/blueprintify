@@ -35,6 +35,7 @@ import {
   BREAKPOINT_DEFAULTS,
   TEMPLATE_STATE_VALUES,
   DATA_BOOLEAN_VALUES,
+  CSS_CUSTOM_PROPERTIES,
 } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -47,7 +48,13 @@ import {
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
 } from "../config/constants";
-import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
+import {
+  FORM,
+  FOCUS_VISIBLE_RING_CARD,
+  ICON,
+  SPINNER,
+  TECH_TAG_HOVER_GLOW,
+} from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
 import {
   ARIA_ATOMIC_VALUES,
@@ -225,7 +232,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
                   animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
                   animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
-                  "--tech-glow": TEMPLATE_GLOW_SHADOW,
+                  [CSS_CUSTOM_PROPERTIES.TECH_GLOW]: TEMPLATE_GLOW_SHADOW,
                 } as React.CSSProperties
               }
               className={`
@@ -318,7 +325,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
-                              : "bg-dark-800 text-dark-300 group-hover:[box-shadow:var(--tech-glow)]"
+                              : `bg-dark-800 text-dark-300 ${TECH_TAG_HOVER_GLOW}`
                           }
                         `}
                       >
