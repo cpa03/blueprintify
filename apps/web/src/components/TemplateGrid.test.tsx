@@ -123,6 +123,15 @@ describe("TemplateGrid", () => {
     expect(screen.getByText("Quick Start Templates")).toBeInTheDocument();
   });
 
+  it("does not claim a horizontal listbox orientation (multi-row 2D grid)", () => {
+    render(<TemplateGrid />);
+
+    const listbox = screen.getByRole("listbox");
+    // Declaring horizontal while ArrowUp/ArrowDown move by row misleads SR
+    // users into thinking only left/right navigation is available.
+    expect(listbox).not.toHaveAttribute("aria-orientation", "horizontal");
+  });
+
   it("renders all template cards", () => {
     render(<TemplateGrid />);
 

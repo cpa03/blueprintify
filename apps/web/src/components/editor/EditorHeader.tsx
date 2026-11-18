@@ -562,8 +562,9 @@ function EditorHeaderComponent({
           aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
           // Horizontal orientation: tabs are arranged in a row and navigated
           // with ArrowLeft/ArrowRight (see handleTabKeyDown). Matches the
-          // explicit orientation used by the other horizontal groups in the
-          // app (TemplateGrid listbox, PageScrollProgressBar).
+          // explicit orientation used by the other single-row horizontal
+          // groups in the app (EditorToolbar radiogroup,
+          // PageScrollProgressBar).
           aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
           aria-keyshortcuts={ARIA_KEYSHORTCUTS.EDITOR_TABS}
           id="editor-tabs"

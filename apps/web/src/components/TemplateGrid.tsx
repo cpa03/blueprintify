@@ -53,7 +53,6 @@ import {
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
-  ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
@@ -180,11 +179,13 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
         Choose a template to pre-fill your project configuration
       </p>
 
+      {/* No aria-orientation: this listbox reflows across rows
+          (grid-cols-1/2/3) and ArrowUp/ArrowDown move by row, so declaring
+          "horizontal" would tell screen-reader users only left/right work. */}
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
-        aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       >
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
