@@ -2021,3 +2021,43 @@ export const TOAST_SELECTORS = {
   /** All dismiss buttons inside the toast container (`data-toast-dismiss` presence) */
   DISMISS_BUTTONS: `[${TOAST_DATA_ATTRIBUTES.DISMISS}]` as const,
 } as const;
+
+/**
+ * CSS Custom Property Names
+ * Centralized source of truth for CSS custom-property (CSS variable) names
+ * written from TypeScript style objects and read back from stylesheets and
+ * Tailwind arbitrary-value utilities.
+ *
+ * Pairing contract (two-way, silent-failure): each name is written as a React
+ * style-object key (`[CSS_CUSTOM_PROPERTIES.*]: value`) and read back through a
+ * *different* surface that cannot import TypeScript constants:
+ * (1) `index.css` `var(--glow-color)` selectors (CSS files cannot import TS —
+ *     Iteration 211 index.html precedent); (2) Tailwind arbitrary utilities
+ *     (`group-hover:[box-shadow:var(--tech-glow)]`) whose full contiguous
+ *     literal must appear in scanned source for JIT to emit the rule.
+ * A typo on the write side does not throw — the custom property is simply never
+ * defined, so every `var(...)` read falls back to its fallback/initial value
+ * and the styled effect silently disappears while the component looks healthy.
+ * Concretely:
+ * - `GLOW_COLOR` typo → circular-progress `circular-complete-glow` /
+ *   `generate-progress-glow` keyframes in `index.css` lose their stroke-color
+ *   binding: the glow stops matching the active progress color (WCAG 1.4.11
+ *   non-text contrast / visual-state regression).
+ * - `TECH_GLOW` typo → template-card hover box-shadow never applies (the
+ *   `group-hover:[box-shadow:var(--tech-glow)]` utility resolves to nothing)
+ *   while the card still hovers/scales normally.
+ * The read-side literals live in CSS/Tailwind sources that cannot import this
+ * module; their byte-identity is pinned by the exact-value tests below and by
+ * the centralized `TECH_TAG_HOVER_GLOW` class constant in web `styles.ts`.
+ *
+ * Flexy says: No bare "--custom-property" string-literal style keys where a
+ * constant family exists!
+ * Usage: import { CSS_CUSTOM_PROPERTIES } from "@blueprint/shared";
+ *        style={{ [CSS_CUSTOM_PROPERTIES.GLOW_COLOR]: color }}
+ */
+export const CSS_CUSTOM_PROPERTIES = {
+  /** Circular-progress glow stroke color — bound by index.css `var(--glow-color)` keyframes */
+  GLOW_COLOR: "--glow-color" as const,
+  /** Template-card hover glow shadow — bound by Tailwind `var(--tech-glow)` arbitrary utility */
+  TECH_GLOW: "--tech-glow" as const,
+} as const;

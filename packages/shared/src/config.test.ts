@@ -212,6 +212,7 @@ import {
   DOM_ELEMENT_TAGS,
   TOAST_DATA_ATTRIBUTES,
   TOAST_SELECTORS,
+  CSS_CUSTOM_PROPERTIES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -6166,5 +6167,46 @@ describe("TOAST_SELECTORS (Flexy Iteration 220)", () => {
 
   it("should keep BY_ID and DISMISS_BUTTONS distinct so each lookup targets its own attribute", () => {
     expect(TOAST_SELECTORS.BY_ID).not.toBe(TOAST_SELECTORS.DISMISS_BUTTONS);
+  });
+});
+
+describe("CSS_CUSTOM_PROPERTIES (Flexy Iteration 222)", () => {
+  it("should have exact custom-property name values", () => {
+    expect(CSS_CUSTOM_PROPERTIES.GLOW_COLOR).toBe("--glow-color");
+    expect(CSS_CUSTOM_PROPERTIES.TECH_GLOW).toBe("--tech-glow");
+  });
+
+  it("should have 2 unique custom-property names", () => {
+    expect(Object.keys(CSS_CUSTOM_PROPERTIES).length).toBe(2);
+    const values = Object.values(CSS_CUSTOM_PROPERTIES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should start every name with the CSS custom-property -- prefix", () => {
+    for (const value of Object.values(CSS_CUSTOM_PROPERTIES)) {
+      expect(value.startsWith("--")).toBe(true);
+    }
+  });
+
+  it("should keep names lowercase kebab-case so var() lookups stay case-sensitive-stable", () => {
+    for (const value of Object.values(CSS_CUSTOM_PROPERTIES)) {
+      expect(value).toBe(value.toLowerCase());
+      expect(value).toMatch(/^--[a-z][a-z0-9-]*$/);
+    }
+  });
+
+  it("should compose var() reads byte-identical to the index.css glow keyframe selectors", () => {
+    expect(`var(${CSS_CUSTOM_PROPERTIES.GLOW_COLOR})`).toBe("var(--glow-color)");
+  });
+
+  it("should compose var() reads byte-identical to the Tailwind tech-glow arbitrary utility", () => {
+    expect(`var(${CSS_CUSTOM_PROPERTIES.TECH_GLOW})`).toBe("var(--tech-glow)");
+    expect(`group-hover:[box-shadow:var(${CSS_CUSTOM_PROPERTIES.TECH_GLOW})]`).toBe(
+      "group-hover:[box-shadow:var(--tech-glow)]"
+    );
+  });
+
+  it("should keep GLOW_COLOR and TECH_GLOW distinct so each binding targets its own stylesheet read", () => {
+    expect(CSS_CUSTOM_PROPERTIES.GLOW_COLOR).not.toBe(CSS_CUSTOM_PROPERTIES.TECH_GLOW);
   });
 });

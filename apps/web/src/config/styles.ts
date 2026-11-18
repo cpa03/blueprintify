@@ -175,8 +175,20 @@ export const BUTTON = {
   HIDE_EDITOR_DESKTOP: "hidden lg:flex absolute top-4 right-4 z-10 btn-ghost",
   /** Hide editor button (mobile) */
   HIDE_EDITOR_MOBILE:
-    "lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/90 backdrop-blur-sm",
+    "lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/60 backdrop-blur-sm",
   /** New Project floating button — positioned above SHOW_EDITOR_FAB (bottom-24) so both stay visible */
   NEW_PROJECT_FAB:
     "fixed bottom-40 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up group",
 } as const;
+
+// ============================================================================
+// Tech-stack tag classes
+// ============================================================================
+/**
+ * Hover glow utility for non-selected tech-stack tags. The full contiguous
+ * `group-hover:[box-shadow:var(--tech-glow)]` literal must appear in scanned
+ * source for Tailwind JIT to emit the rule — composing it from
+ * `CSS_CUSTOM_PROPERTIES.TECH_GLOW` at the call site would strip the class.
+ * Byte-identity to the constant is pinned in shared config tests.
+ */
+export const TECH_TAG_HOVER_GLOW = "group-hover:[box-shadow:var(--tech-glow)]" as const;
