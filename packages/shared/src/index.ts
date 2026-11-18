@@ -293,6 +293,7 @@ export {
   DOM_ELEMENT_TAGS,
   TOAST_DATA_ATTRIBUTES,
   TOAST_SELECTORS,
+  CSS_CUSTOM_PROPERTIES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

@@ -4,6 +4,38 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 222: Centralize CSS Custom-Property Name Literals (`--glow-color`, `--tech-glow`)
+
+**Problem**: 2 hardcoded CSS custom-property name literals survived 221 iterations across 2 web runtime files, with no constant family anywhere — and Iterations 220/221's skipped lists explicitly deferred the CSS-variable category as the next candidate while 221 consumed dynamic-ID affixes. Breakdown: 1× `CircularProgress` (`style={{ …, "--glow-color": color }}` — progress-stroke glow color binding consumed by 8 `var(--glow-color)` reads in `index.css` keyframes) and 1× `TemplateGrid` (`"--tech-glow": TEMPLATE_GLOW_SHADOW` card style write + the paired `group-hover:[box-shadow:var(--tech-glow)]` Tailwind arbitrary utility on the tech-stack tag). Each participates in a two-way silent-failure pairing contract: the write side is a React style-object key, while the read side flows through a *different* surface that cannot import TypeScript constants — (1) `index.css` `var(--glow-color)` selectors (CSS cannot import TS — Iteration 211 index.html precedent) and (2) a Tailwind JIT arbitrary utility whose full contiguous literal must appear in scanned source or the rule is purged. A typo on the write side does not throw: the custom property is simply never defined, every `var(...)` read resolves to its fallback/initial value, and the styled effect silently disappears while the component looks healthy. Concretely: (1) **`GLOW_COLOR`** typo → `circular-complete-glow` / `generate-progress-glow` keyframes lose their stroke-color binding, so the glow stops matching the active progress color (visual-state / WCAG 1.4.11 non-text contrast regression). (2) **`TECH_GLOW`** typo → the tag-hover box-shadow never applies while the card still hovers/scales normally. Flexy says: no bare `--custom-property` string-literal style keys where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `CSS_CUSTOM_PROPERTIES` (GLOW_COLOR, TECH_GLOW — 2 entries, two-way pairing-contract docblock covering style-key write vs index.css/Tailwind read silent-failure modes + WCAG 1.4.11 regression + JIT contiguous-literal constraint), placed after `TOAST_SELECTORS` |
+| `packages/shared/src/index.ts` | Exported `CSS_CUSTOM_PROPERTIES` on the root barrel |
+| `packages/shared/src/config.test.ts` | +7 tests: exact 2 values, entry count 2 + uniqueness, `--` prefix invariant, lowercase kebab-case invariant, `var()` byte-identity for both names, composed `group-hover:[box-shadow:var(--tech-glow)]` byte-identity, GLOW_COLOR≠TECH_GLOW distinctness |
+| `apps/web/src/components/CircularProgress.tsx` | 1 site: `"--glow-color": color` → `[CSS_CUSTOM_PROPERTIES.GLOW_COLOR]: color` (progress glow binding) |
+| `apps/web/src/components/TemplateGrid.tsx` | 2 sites: `"--tech-glow": TEMPLATE_GLOW_SHADOW` → `[CSS_CUSTOM_PROPERTIES.TECH_GLOW]: …`; bare `group-hover:[box-shadow:var(--tech-glow)]` className fragment → `TECH_TAG_HOVER_GLOW` constant |
+| `apps/web/src/config/styles.ts` | NEW `TECH_TAG_HOVER_GLOW` — full contiguous Tailwind arbitrary utility as a single literal (JIT content-scan safe; composing from the constant at the call site would strip the class) |
+| `docs/flexy-plan.md` | Iteration 222 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213/217/218/219/220/221 precedent); `index.css` `var(--glow-color)` read-side selectors (CSS cannot import TypeScript constants — Iteration 211 index.html precedent; byte-identity pinned by the composed-`var()` tests); other CSS custom properties declared in `:root`/stylesheet-only (no TypeScript write side — no pairing contract); `lib/templates/*` (generated templates); JSDoc prose mentioning the property names; `node_modules`/`dist`.
+
+## Verification (Iteration 222)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+7 new shared)
+- ✅ Residual scan — 0 bare `"--glow-color"` / `"--tech-glow"` style-key literals and 0 bare `group-hover:[box-shadow:var(--tech-glow)]` className literals in component/runtime source (excluding tests, the centralized `styles.ts` constant, config docblocks & docs)
+
+## PR (Iteration 222)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-222-css-custom-properties` | refactor(flexy): centralize CSS custom-property name literals (Iteration 222) |
+
 ### ✅ Flexy Iteration 221: Centralize Dynamic DOM ID Affix Literals (`tab-`, `category-`, `-locked-hint`, `-panel`)
 
 **Problem**: 12 hardcoded dynamic-ID affix literals survived 220 iterations across 5 web runtime files, with no constant family anywhere — and `DOM_ELEMENT_IDS`' own docblock explicitly deferred them with the incorrect claim that template IDs "cannot import TypeScript constants" (template literals interpolate constants perfectly fine). Breakdown: 5× `tab-` (EditorHeader `id` write + `getElementById` keyboard-nav read; Editor `getElementById` mount-focus read + `aria-labelledby` tabpanel read; StepGenerating `getElementById` post-generation focus read), 2× `category-` (StepStack `id` write + `aria-labelledby` read), 2× `-locked-hint` (StepIndicator `id` write + `aria-describedby` read), 3× `-panel` (EditorHeader `aria-controls` read + Editor tabpanel `id` write ×2 literal ternary branches + StepGenerating `[id$="-panel"]` scroll-target selector). Each participates in a silent-failure pairing contract: the write side is an `id={...}` template and the read side flows through a *different* surface — `getElementById()`, `aria-labelledby`, `aria-describedby`, `aria-controls`, or an attribute-ends-with CSS selector. A typo on any one side does not throw: the lookup returns `null` and the ARIA reference dangles. Concretely: (1) **`TAB_PREFIX`** typo → editor tab focus after mount/keyboard-nav/generation silently no-ops (focus falls to `<body>`) and the tabpanel's `aria-labelledby` dangles (WCAG 1.3.1 / 2.4.3 regression). (2) **`CATEGORY_PREFIX`** typo → tech-stack group `aria-labelledby` dangles so the group's accessible name is lost. (3) **`LOCKED_HINT_SUFFIX`** typo → locked-step `aria-describedby` dangles so the "step locked" explanation is never announced. (4) **`PANEL_SUFFIX`** typo → tab `aria-controls` dangles and the `[id$="-panel"]` scroll target in StepGenerating matches nothing, so post-generation focus/scroll silently no-ops. Flexy says: no bare affix literals in id templates or ARIA references where a constant family exists!
