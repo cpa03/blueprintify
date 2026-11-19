@@ -13199,3 +13199,19 @@ left to owning team per no-functionality-reduction constraint.
 
 **Result**: 0 issue mutations (blocked) · 0 labels changed · 0 code PRs (no non-blocked repair gap on selected P1) · baselines green (**3,062 tests**) · Step 4 patch prepared+rejected (workflows write) · #1082/#847 code-resolved re-verified · **0 new semantic duplicates** found · this docs-only log PR opened for human review.
 **Final state**: **blocked** — (1) Steps 1–3 need `issues: write`; (2) Step 4 AC3 needs `workflows: write`.
+
+## RepoKeeper Hygiene + Doc-Sync + Audit Retention Cycle (2026-11-19) — Cycle 48
+
+**Phase**:
+- Baseline: `main` @ `86d81fa6` (#4036 BugFixer 41), clean, up to date with `origin/main`.
+- Hygiene survey (direct; explore subagents failed `ProviderModelNotFoundError: muse-spark`): 0 temp/build/untracked/conflict/TODO/`as any` artifacts → **0 code deletions**.
+- `.agent/skills` vs `.opencode/skill` identical; standing deferrals untouched (giant-doc archive, `.agent`↔`.opencode` loader, dual `tui.json`, dual `[[path]].ts`, migrate.ts stub, unmerged branches, BUG-048, DOC-001/DOC-002).
+- **Audit retention purge**: 20 reports dated 2026-10-04→2026-10-19 (age > 30d as of 2026-11-19) `git rm`'d; 28 remain (2026-10-20 Run105 → 2026-10-30 Run132). Tracked files **655 → 635**. `docs/audits/README.md` table + header rewritten (28 rows, all links resolve).
+- Fatal gates (all exit 0): `typecheck` 0 · `eslint . --max-warnings=0` 0 · `build` (vite 1553 modules) · `build:api` (wrangler dry-run) · `test:all` **3,128/3,128** (web 1,463 + api 558 + shared 1,107) · `format:check` · `scan:secrets` 358 files · `validate:wrangler` · `validate:models` 56 agent files · `npm run audit` (prod, omit=dev, high) 0.
+- Full `npm audit --json`: **8 moderate / 0 high / 0 critical** — differs from held claim "7 mod/19 high"; **picomatch GHSA-fc5q-39xc-vjpf high chain no longer reported** by advisory DB. Remaining 8 moderates all `minimatch` globparts-amplification DoS via `@typescript-eslint/*`/`eslint`/`typescript-eslint`. Live fields synced in `docs/bugs.md` + `docs/knowledge-review.md`.
+- Test counts already in sync at 3,128 (bugs header, ci-configuration L85, knowledge-review Status) — no test-count edits.
+- `DOC-004` CHANGELOG re-counted **1,101 lines** unchanged.
+
+**Result**: 20 audit reports purged · 0 code deletions · 2 live audit-claim fields fixed (7 mod/19 high → 8 mod/0 high) · all fatal gates green · `docs/audits/README.md` synced · findings entry appended.
+
+**Final state**: **clean** — 635 tracked files, all gates green, audit retention enforced, live docs in sync with measured state.
