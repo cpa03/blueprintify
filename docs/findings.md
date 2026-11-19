@@ -13247,3 +13247,27 @@ left to owning team per no-functionality-reduction constraint.
 
 **Result**: 0 issue mutations (blocked) · 0 labels changed · 0 code PRs (no non-blocked repair gap on selected P1) · baselines green (**3,128 tests**) · Step 4 patch prepared+rejected (workflows write) · #1082/#847/#3622 code-resolved re-verified · **0 new semantic duplicates** found · this docs-only log PR opened for human review.
 **Final state**: **blocked** — (1) Steps 1–3 need `issues: write`; (2) Step 4 AC3 needs `workflows: write`.
+
+## PR Handler + Issue Manager ULW Loop — Cycle (2026-11-19)
+
+**Phase 0 (entry decision)**: 3 open PRs → **PR HANDLER MODE** (latest-first); after all 3 merged → 0 open PRs / 150 open issues → **ISSUE MANAGER MODE** (Phases 1–3 STOPPED). DEFAULT_BRANCH `main`.
+
+**PR HANDLER (all merged `--admin --squash`; merge-commit merges disabled repo-wide)**:
+- **#4040** repokeeper cycle 48 (docs retention): already synced to `main`, no conflicts; labels added (`docs`,`P3` — PR was unlabeled); gates green (typecheck/lint `--max-warnings=0`/format/build/build:api/`test:all` **3,128**/secrets/audit 0/validate:wrangler/validate:models) → merged `924d3754` → branch deleted.
+- **#4039** footer focus-visible rings: merged `origin/main` cleanly (ort, 0 conflicts); labels added (`bug`,`P2`); gates green (incl. pre-push full `npm run check`) → merged `85706a12` → branch deleted.
+- **#4038** issue-manager cycle log: merged `origin/main` → **1 conflict** (`docs/findings.md`, dual-history append-only) resolved union newest-first (main's RepoKeeper Cycle 48 entry first, then branch's Issue Manager entry; both verified present exactly once, **0 residual markers**, prettier clean) → commit `12c76e67` → gates green → first merge attempt blocked by required check `Cloudflare Pages` in-progress → waited for `COMPLETED/SUCCESS` → merged `2fff285c` → branch deleted. Linked-issue auto-close did NOT fire (PR body lacks `Closes #N` keywords): #847/#1082/#3622 close attempts → **403 `closeIssue`** (issues write still blocked).
+
+**ISSUE MANAGER Steps 1–3 (report-only — 171st consecutive `issues: write` block)**:
+- Step 1: `normalize-issue-labels.mjs` dry-run → **136/150** need category/priority changes (staged); `--apply` → `FAILED #3622 … 403 addLabelsToLabelable` (residue re-check: zero labels applied).
+- Step 2: title Jaccard ≥0.55 re-scan → 228 pairs = 226 OCR boilerplate (distinct paths) + 2 known non-OCR pairs (#911↔#860 OpenAI dups · #936↔#935 deliberately distinct) → **0 NEW semantic duplicates**; known canonical clusters unchanged.
+- Step 3: consolidation counts unchanged (OCR 49 · test-coverage 18 · CI-hardening 14 · share-route 15 · frontend-polish 7) — no mutations possible, report-only.
+
+**Step 4 (Repair) — P1 = {#1082, #1014}**:
+- **#1082 re-verified CODE-RESOLVED**: `useBlueprintStream.test.ts` ✅ · `useAutoSaveToast.test.ts` ✅ (issue named non-existent `useAutoSave.ts`) · `store/persistence.test.ts` ✅ (issue named non-existent `usePersistedStore.ts`) · 18/18 hook sibling tests. Close attempt → **403**.
+- **#1014 selected as repair target**: AC1 ✅ `playwright.config.ts` · AC2 ✅ **45/47** component `.tsx` have sibling tests (2 missing = entrypoints `App.tsx`/`main.tsx`, out of scope) · AC4 ✅ `docs/testing-procedures.md` · **AC3 ❌ platform-blocked**: fresh probe push of `.github/workflows/pr-gatekeeper.yml` → `! [remote rejected] … without workflows permission` → local patch reverted. Issue-comment progress report (contract Step 4.3 failure path) → **403 addComment** → recorded here instead.
+
+**Skills used**: `docs-update` (scope: dev-facing `docs/findings.md` cycle log; links/formatting verified) · project script `normalize-issue-labels.mjs` (Step 1 dry-run + failed `--apply` probe) · `code-review-checklist` (PR handler pass: each PR checked for labels, sync, gates, comments before merge).
+**Subagents used**: none this cycle (direct `gh`/git/node execution; all steps single-track).
+
+**Result**: 3 PRs merged (`924d3754`, `85706a12`, `2fff285c`) + 3 remote branches deleted · 0 issue mutations (blocked) · 0 new semantic duplicates · #1082/#847/#3622 code-resolved re-verified but unclosable · #1014 AC3 workflows-write re-probed and blocked · this docs-only log PR opened for human review.
+**Final state**: **blocked** — (1) Steps 1–3 + all issue closes/comments need `issues: write`; (2) Step 4 AC3 needs `workflows: write`. Both remain escalated as `docs/knowledge-review.md` DOC-001/DOC-002 (HUMAN ACTION REQUIRED).
