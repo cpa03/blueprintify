@@ -88,7 +88,7 @@ describe("bodyLimit middleware", () => {
       expect(res.status).toBe(HTTP_STATUS.OK);
     });
 
-    it("should allow requests without Content-Length header", async () => {
+    it("should allow requests without Content-Length header when body fits the limit", async () => {
       const app = new Hono();
       app.use("*", bodyLimit({ maxSize: 100 }));
       app.post("/", async (c) => c.json({ success: true }));
@@ -102,7 +102,40 @@ describe("bodyLimit middleware", () => {
       expect(res.status).toBe(HTTP_STATUS.OK);
     });
 
-    it("should handle invalid Content-Length header gracefully", async () => {
+    it("should reject oversized streamed bodies sent without Content-Length", async () => {
+      const app = new Hono();
+      app.use("*", bodyLimit({ maxSize: 100 }));
+      app.post("/", async (c) => c.json({ success: true }));
+
+      // A stream body carries no Content-Length header, so the header-based
+      // check cannot see it — the actual bytes must be counted instead.
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(encoder.encode("x".repeat(500)));
+          controller.close();
+        },
+      });
+      const init: RequestInit & { duplex?: "half" } = {
+        method: HTTP_METHODS.POST,
+        body: stream,
+        duplex: "half",
+      };
+
+      const res = await app.request("/", init);
+
+      expect(res.status).toBe(HTTP_STATUS.PAYLOAD_TOO_LARGE);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe(ERROR_CODES.PAYLOAD_TOO_LARGE);
+      expect(data.error.details).toBeDefined();
+      if (data.error.details) {
+        const details = data.error.details as Record<string, unknown>;
+        expect(details.maxSize).toBe(100);
+      }
+    });
+
+    it("should reject malformed Content-Length header", async () => {
       const app = new Hono();
       app.use("*", bodyLimit({ maxSize: 100 }));
       app.post("/", async (c) => c.json({ success: true }));
@@ -113,7 +146,29 @@ describe("bodyLimit middleware", () => {
         body: "small body",
       });
 
-      expect(res.status).toBe(HTTP_STATUS.OK);
+      expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
+    });
+
+    it("should reject negative Content-Length header", async () => {
+      const app = new Hono();
+      app.use("*", bodyLimit({ maxSize: 100 }));
+      app.post("/", async (c) => c.json({ success: true }));
+
+      // parseInt("-1") === -1, which fails `size > maxSize` — without the
+      // explicit sign check this value would bypass the limit entirely.
+      const res = await app.request("/", {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "-1" },
+        body: "small body",
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     });
 
     it("should pass through to next middleware on valid request", async () => {

@@ -9,6 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
+import { bodyLimit as enforceStreamedBodyLimit } from "hono/body-limit";
 import { NUMBER_RADIX } from "@blueprint/shared";
 import {
   HTTP_STATUS,
@@ -52,7 +53,10 @@ const DEFAULT_MAX_SIZE = BODY_SIZE_MAX.DEFAULT;
  *
  * @security
  * - Prevents DoS attacks via large request bodies
+ * - Rejects malformed (non-numeric / negative) Content-Length headers with 400
  * - Checks Content-Length header before body parsing
+ * - When Content-Length is absent or untrustworthy (chunked transfer), reads
+ *   the actual body stream and rejects once cumulative bytes exceed maxSize
  * - Returns standard 413 error for oversized payloads
  */
 export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
@@ -70,10 +74,25 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
     // Check Content-Length header
     const contentLength = c.req.header(API_HEADERS.REQUEST.CONTENT_LENGTH);
 
-    if (contentLength) {
-      const size = parseInt(contentLength, NUMBER_RADIX.DECIMAL);
+    if (contentLength !== undefined) {
+      const trimmed = contentLength.trim();
 
-      if (!isNaN(size) && size > maxSize) {
+      // Malformed values must not fall through: parseInt("-1") yields -1,
+      // which fails `size > maxSize` and would silently skip the limit check
+      // entirely (issue #3588). A non-numeric value parses to NaN and has the
+      // same fail-open effect. Reject both as invalid requests.
+      if (!/^\d+$/.test(trimmed)) {
+        return c.json(
+          createErrorJson(ErrorType.VALIDATION, "Invalid Content-Length header", {
+            code: ERROR_CODES.VALIDATION_ERROR,
+          }),
+          HTTP_STATUS.BAD_REQUEST
+        );
+      }
+
+      const size = parseInt(trimmed, NUMBER_RADIX.DECIMAL);
+
+      if (size > maxSize) {
         return c.json(
           createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.BODY_TOO_LARGE(maxSize), {
             code: ERROR_CODES.PAYLOAD_TOO_LARGE,
@@ -84,7 +103,21 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
       }
     }
 
-    await next();
+    // No trustworthy Content-Length (absent, or chunked transfer-encoding):
+    // the header cannot be relied on, so Hono's body-limit reads the actual
+    // stream and rejects once cumulative bytes exceed maxSize (issue #3588).
+    // Without this, an oversized chunked body bypassed the check entirely.
+    return enforceStreamedBodyLimit({
+      maxSize,
+      onError: (ctx) =>
+        ctx.json(
+          createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.BODY_TOO_LARGE(maxSize), {
+            code: ERROR_CODES.PAYLOAD_TOO_LARGE,
+            details: { maxSize },
+          }),
+          HTTP_STATUS.PAYLOAD_TOO_LARGE
+        ),
+    })(c, next);
   };
 };
 
