@@ -670,7 +670,9 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
               target={HTML_LINK_TARGETS.BLANK}
               rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
+              // WCAG 2.4.7 Focus Visible: match the Header external-link ring so
+              // keyboard users get the same affordance as every other control.
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.CLOUDFLARE_WORKERS}
             >
               Cloudflare Workers
@@ -684,7 +686,9 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.REACT}
               target={HTML_LINK_TARGETS.BLANK}
               rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
+              // WCAG 2.4.7 Focus Visible: match the Header external-link ring so
+              // keyboard users get the same affordance as every other control.
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.REACT}
             >
               React
