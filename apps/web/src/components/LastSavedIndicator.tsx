@@ -14,7 +14,7 @@ import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_SCALE, ANIMATION_X_OFFSET, ANIMATION_Y_OFFSET } from "@blueprint/shared";
-import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
 import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
@@ -154,7 +154,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             ) : (
               <>
                 <motion.span
-                  className={`relative flex h-3.5 w-3.5 items-center justify-center flex-shrink-0 ${showSavedGlow ? "saved-celebration-glow" : ""}`}
+                  className={`relative flex h-3.5 w-3.5 items-center justify-center flex-shrink-0 ${showSavedGlow ? CSS_CLASSES.SAVED_CELEBRATION_GLOW : ""}`}
                 >
                   <motion.svg
                     className="w-3.5 h-3.5 text-accent-emerald"

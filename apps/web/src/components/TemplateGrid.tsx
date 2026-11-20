@@ -236,7 +236,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                 } as React.CSSProperties
               }
               className={`
-                glass-card p-5 text-left relative group card-glow-hover
+                glass-card p-5 text-left relative group ${CSS_CLASSES.CARD_GLOW_HOVER}
                 will-change-transform
                 animate-card-entrance
                 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out

@@ -364,6 +364,10 @@ export const ACCESSIBILITY_LABELS = {
   STEP_ANNOUNCER: {
     STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
       `Step ${completedLabel} complete, now on Step ${activatedLabel}`,
+    /** Backward navigation (Alt+←, Back button, step-chip click): the
+     *  destination was not "just completed", so the forward wording would
+     *  mislead. Without any message, SR users get no feedback at all (WCAG 4.1.3). */
+    BACK_TO_STEP: (label: string) => `Now on Step ${label}`,
   },
   /** Step indicator aria-label format for keyboard shortcut display */
   STEP: {

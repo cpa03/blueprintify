@@ -907,7 +907,7 @@ export const StepGenerating = memo(function StepGenerating({
               >
                 <RippleButton
                   onClick={handleViewEditor}
-                  className="btn-primary flex items-center gap-2 attention-glow"
+                  className={`btn-primary flex items-center gap-2 ${CSS_CLASSES.ATTENTION_GLOW}`}
                   ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
                   data-autofocus={AUTOFOCUS_VALUES.COMPLETE}
                   aria-keyshortcuts={getAriaShortcutKey(
