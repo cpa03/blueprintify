@@ -367,7 +367,7 @@ function App(): JSX.Element {
     <div className={LAYOUT.PAGE_WRAPPER}>
       {/* Ambient background glow — slow drifting gradient behind all content */}
       <div
-        className="fixed inset-0 pointer-events-none z-0 ambient-glow"
+        className={`fixed inset-0 pointer-events-none z-0 ${CSS_CLASSES.AMBIENT_GLOW}`}
         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
 

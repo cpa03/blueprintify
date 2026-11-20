@@ -38,6 +38,7 @@ import {
   EXTERNAL_URLS,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
+  CSS_CLASSES,
   DOM_ELEMENT_IDS,
   FOCUS_ANNOUNCER,
   TIMEOUTS,
@@ -213,7 +214,7 @@ function HeaderComponent({
             >
               <RippleButton
                 onClick={onShowShortcuts}
-                className={`btn-ghost flex items-center justify-center w-10 h-10 ${!shortcutsDiscovered ? "attention-glow" : ""}`}
+                className={`btn-ghost flex items-center justify-center w-10 h-10 ${!shortcutsDiscovered ? CSS_CLASSES.ATTENTION_GLOW : ""}`}
                 ariaLabel={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
                 title={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
                 aria-keyshortcuts={SHORTCUT_LABELS.SHORTCUTS_MODAL}

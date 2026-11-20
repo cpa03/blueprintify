@@ -186,7 +186,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 ...SPRING_CONFIG.SNAPPY,
                 delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
               }}
-              className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1 attention-glow"
+              className={`inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1 ${CSS_CLASSES.ATTENTION_GLOW}`}
               // WCAG 2.5.3 Label in Name: accessible name must contain the
               // visible label verbatim. Visible text shows the filename via
               // tabLabels ("Switch to task.md tab"), so the aria-label must
