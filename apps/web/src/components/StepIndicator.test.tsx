@@ -49,6 +49,7 @@ vi.mock("../config/constants", async (importOriginal) => {
       STEP_ANNOUNCER: {
         STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
           `Step ${completedLabel} complete, now on Step ${activatedLabel}`,
+        BACK_TO_STEP: (label: string) => `Now on Step ${label}`,
       },
       STEP: {
         SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
@@ -355,5 +356,30 @@ describe("StepIndicator", () => {
     const infoButton = screen.getByText("Project Info").closest("button");
     expect(infoButton).toHaveAttribute("data-active", "true");
     expect(infoButton).toHaveClass("animate-step-pulse");
+  });
+
+  it("announces forward step transitions in the live region", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.INFO;
+    // isWizardActive flips between renders only to bust React.memo: the store
+    // is mocked (no subscription), so an identical-props rerender bails out
+    // and the transition effect never sees the new currentStep.
+    const { rerender } = render(<StepIndicator isWizardActive />);
+
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.STACK;
+    rerender(<StepIndicator isWizardActive={false} />);
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Step Project Info complete, now on Step Tech Stack"
+    );
+  });
+
+  it("announces backward step transitions in the live region (WCAG 4.1.3)", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.STACK;
+    const { rerender } = render(<StepIndicator isWizardActive />);
+
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.INFO;
+    rerender(<StepIndicator isWizardActive={false} />);
+
+    expect(screen.getByRole("status")).toHaveTextContent("Now on Step Project Info");
   });
 });

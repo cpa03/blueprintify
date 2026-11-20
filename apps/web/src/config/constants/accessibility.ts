@@ -93,6 +93,41 @@ export const CSS_CLASSES = {
    * ANIMATED_SPINNER (h-8 w-8, border-b-2) which is used for standalone loading states.
    * Flexy says: No hardcoded spinner Tailwind classes in components! */
   LOADING_SPINNER: "h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full" as const,
+
+  /**
+   * Glow / attention effect class names (Iteration 223).
+   *
+   * Pairing contract: the write side is a React `className` string in a
+   * component, while the read side flows through `index.css` selectors —
+   * the base rule, `::before`/`::after` pseudo-element rules, and the
+   * `@media (prefers-reduced-motion: reduce)` disable block. CSS cannot
+   * import TypeScript constants (Iteration 211 index.html / 222 CSS
+   * custom-property precedent), so the two sides are pinned byte-identical
+   * by these exact-value tests. A typo on the write side does not throw:
+   * the class simply never matches any rule, the glow/animation silently
+   * never applies (or the reduced-motion disable never engages, leaving
+   * motion running for users who opted out), and the component looks
+   * healthy. Multi-site families (ATTENTION_GLOW ×3) must stay identical
+   * across every call site or the effect drifts per-site with zero type
+   * errors. Flexy says: no bare glow/attention class literals in className
+   * strings where a constant family exists!
+   */
+  /** One-shot header attention glow — pairs with `.attention-glow::before` + reduced-motion disable. */
+  ATTENTION_GLOW: "attention-glow" as const,
+  /** Floating action button content-ready glow — pairs with `.glow-pulse` + reduced-motion disable. */
+  GLOW_PULSE: "glow-pulse" as const,
+  /** Progress ring full-completion glow — pairs with `.circular-complete-glow` + reduced-motion disable. */
+  CIRCULAR_COMPLETE_GLOW: "circular-complete-glow" as const,
+  /** Progress ring active-generation glow — pairs with `.generate-progress-glow` + reduced-motion disable. */
+  GENERATE_PROGRESS_GLOW: "generate-progress-glow" as const,
+  /** Progress ring 100% celebration burst — pairs with `.circular-complete-celebration` + reduced-motion disable. */
+  CIRCULAR_COMPLETE_CELEBRATION: "circular-complete-celebration" as const,
+  /** Page-wide ambient background glow — pairs with `.ambient-glow` + reduced-motion disable. */
+  AMBIENT_GLOW: "ambient-glow" as const,
+  /** Auto-save success checkmark glow — pairs with `.saved-celebration-glow` + reduced-motion disable. */
+  SAVED_CELEBRATION_GLOW: "saved-celebration-glow" as const,
+  /** Template card hover glow ring — pairs with `.card-glow-hover` / `::before` hover rules. */
+  CARD_GLOW_HOVER: "card-glow-hover" as const,
 } as const;
 
 // ============================================================================

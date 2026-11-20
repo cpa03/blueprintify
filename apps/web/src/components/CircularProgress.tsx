@@ -18,6 +18,7 @@ import {
   SVG_TRANSITION,
   ANIMATION,
   ACCESSIBILITY_LABELS,
+  CSS_CLASSES,
 } from "../config/constants";
 import {
   UI_TIMEOUTS,
@@ -175,7 +176,7 @@ function CircularProgressComponent({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : isAnimating ? "generate-progress-glow" : ""} ${celebrating ? "circular-complete-celebration" : ""} ${className}`}
+      className={`relative inline-flex items-center justify-center ${isComplete ? CSS_CLASSES.CIRCULAR_COMPLETE_GLOW : isAnimating ? CSS_CLASSES.GENERATE_PROGRESS_GLOW : ""} ${celebrating ? CSS_CLASSES.CIRCULAR_COMPLETE_CELEBRATION : ""} ${className}`}
       style={
         {
           width: size,
