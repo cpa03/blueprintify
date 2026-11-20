@@ -109,32 +109,42 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
   const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * PERCENT_SCALE;
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
-  // Detect forward step navigation and trigger a one-shot completion flash
-  // on the step that was just completed, giving a "checkpoint reached" feeling.
+  // Detect step navigation and announce it. Forward moves also trigger a
+  // one-shot completion flash on the step that was just completed, giving a
+  // "checkpoint reached" feeling; backward moves only announce — there is no
+  // completion to celebrate, but silence would leave screen reader users
+  // unaware the destination changed (WCAG 4.1.3).
   useEffect(() => {
     const prevIdx = STEPS.findIndex((s) => s.key === prevStepRef.current);
     const currIdx = STEPS.findIndex((s) => s.key === currentStep);
 
-    if (currIdx > prevIdx) {
-      const completedKey = prevStepRef.current;
-      const activatedKey = currentStep;
-      setJustCompletedStep(completedKey);
-      setActivatingStep(activatedKey);
-
-      const completedLabel = STEPS.find((s) => s.key === completedKey)?.label ?? "";
-      const activatedLabel = STEPS.find((s) => s.key === activatedKey)?.label ?? "";
-      setStepAnnouncement(
-        ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION(completedLabel, activatedLabel)
-      );
-
-      const timer = setTimeout(() => {
-        setJustCompletedStep(null);
-        setActivatingStep(null);
-      }, TIMEOUTS.STEP_COMPLETE_FLASH);
+    if (currIdx === prevIdx) {
       prevStepRef.current = currentStep;
-      return () => clearTimeout(timer);
+      return;
     }
+
+    const activatedLabel = STEPS.find((s) => s.key === currentStep)?.label ?? "";
+
+    if (currIdx < prevIdx) {
+      setStepAnnouncement(ACCESSIBILITY_LABELS.STEP_ANNOUNCER.BACK_TO_STEP(activatedLabel));
+      prevStepRef.current = currentStep;
+      return;
+    }
+
+    const completedKey = prevStepRef.current;
+    const completedLabel = STEPS.find((s) => s.key === completedKey)?.label ?? "";
+    setJustCompletedStep(completedKey);
+    setActivatingStep(currentStep);
+    setStepAnnouncement(
+      ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION(completedLabel, activatedLabel)
+    );
+
+    const timer = setTimeout(() => {
+      setJustCompletedStep(null);
+      setActivatingStep(null);
+    }, TIMEOUTS.STEP_COMPLETE_FLASH);
     prevStepRef.current = currentStep;
+    return () => clearTimeout(timer);
   }, [currentStep]);
 
   const canNavigateTo = useCallback(
