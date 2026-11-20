@@ -48,6 +48,65 @@ describe("CSS_CLASSES — Iteration 185 additions", () => {
   });
 });
 
+describe("CSS_CLASSES glow family — Iteration 223", () => {
+  it("defines the 8 glow/attention class names with exact byte values", () => {
+    expect(CSS_CLASSES.ATTENTION_GLOW).toBe("attention-glow");
+    expect(CSS_CLASSES.GLOW_PULSE).toBe("glow-pulse");
+    expect(CSS_CLASSES.CIRCULAR_COMPLETE_GLOW).toBe("circular-complete-glow");
+    expect(CSS_CLASSES.GENERATE_PROGRESS_GLOW).toBe("generate-progress-glow");
+    expect(CSS_CLASSES.CIRCULAR_COMPLETE_CELEBRATION).toBe("circular-complete-celebration");
+    expect(CSS_CLASSES.AMBIENT_GLOW).toBe("ambient-glow");
+    expect(CSS_CLASSES.SAVED_CELEBRATION_GLOW).toBe("saved-celebration-glow");
+    expect(CSS_CLASSES.CARD_GLOW_HOVER).toBe("card-glow-hover");
+  });
+
+  it("keeps every glow class unique so multi-site families never drift into collisions", () => {
+    const values = [
+      CSS_CLASSES.ATTENTION_GLOW,
+      CSS_CLASSES.GLOW_PULSE,
+      CSS_CLASSES.CIRCULAR_COMPLETE_GLOW,
+      CSS_CLASSES.GENERATE_PROGRESS_GLOW,
+      CSS_CLASSES.CIRCULAR_COMPLETE_CELEBRATION,
+      CSS_CLASSES.AMBIENT_GLOW,
+      CSS_CLASSES.SAVED_CELEBRATION_GLOW,
+      CSS_CLASSES.CARD_GLOW_HOVER,
+    ];
+    expect(values).toHaveLength(8);
+    expect(new Set(values).size).toBe(8);
+  });
+
+  it("marks every glow class as a lowercase kebab-case class token", () => {
+    const values = [
+      CSS_CLASSES.ATTENTION_GLOW,
+      CSS_CLASSES.GLOW_PULSE,
+      CSS_CLASSES.CIRCULAR_COMPLETE_GLOW,
+      CSS_CLASSES.GENERATE_PROGRESS_GLOW,
+      CSS_CLASSES.CIRCULAR_COMPLETE_CELEBRATION,
+      CSS_CLASSES.AMBIENT_GLOW,
+      CSS_CLASSES.SAVED_CELEBRATION_GLOW,
+      CSS_CLASSES.CARD_GLOW_HOVER,
+    ];
+    for (const value of values) {
+      expect(value).toMatch(/^[a-z][a-z0-9-]*$/);
+    }
+  });
+
+  it("pins ATTENTION_GLOW byte-identity for the multi-site Header/PreviewEmptyState/StepGenerating family", () => {
+    expect(` ${CSS_CLASSES.ATTENTION_GLOW}`).toBe(" attention-glow");
+    expect(`btn-primary flex items-center gap-2 ${CSS_CLASSES.ATTENTION_GLOW}`).toBe(
+      "btn-primary flex items-center gap-2 attention-glow"
+    );
+  });
+
+  it("pins CIRCULAR_COMPLETE_* byte-identity to the index.css reduced-motion selector group", () => {
+    expect(
+      `.${CSS_CLASSES.GLOW_PULSE},\n    .${CSS_CLASSES.CIRCULAR_COMPLETE_GLOW},\n    .${CSS_CLASSES.CIRCULAR_COMPLETE_CELEBRATION},\n    .${CSS_CLASSES.GENERATE_PROGRESS_GLOW}`
+    ).toBe(
+      ".glow-pulse,\n    .circular-complete-glow,\n    .circular-complete-celebration,\n    .generate-progress-glow"
+    );
+  });
+});
+
 describe("ACCESSIBILITY_LABELS_SKIP", () => {
   it("defines the skip-to-main-content screen reader label", () => {
     expect(ACCESSIBILITY_LABELS_SKIP.SKIP_TO_MAIN_CONTENT).toBe("Skip to main content");

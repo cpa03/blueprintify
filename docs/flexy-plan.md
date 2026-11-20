@@ -4,6 +4,42 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 223: Centralize Glow/Attention CSS Class Name Literals
+
+**Problem**: 10 hardcoded glow/attention CSS class-name literals survived 222 iterations across 8 web runtime files, bypassing the existing `CSS_CLASSES` family whose own docblock says "No hardcoded accessibility values - everything configurable!" — even though Iterations 157/168/176 already established `CSS_CLASSES` as the home for custom class names (`EDITOR_FOCUS_HIGHLIGHT`, `ARRIVAL_POP`, spinner/disabled families). Breakdown: 3× `CircularProgress` (`circular-complete-glow` / `generate-progress-glow` / `circular-complete-celebration` ternary on the progress-ring root), 3× `attention-glow` (Header one-shot shortcuts glow + PreviewEmptyState sibling-tab switch + StepGenerating view-editor CTA), 1× `ShowEditorButton` (`glow-pulse` FAB content-ready glow), 1× `App` (`ambient-glow` page backdrop), 1× `LastSavedIndicator` (`saved-celebration-glow` checkmark pulse), 1× `TemplateGrid` (`card-glow-hover` card ring). Each participates in a two-way silent-failure pairing contract: the write side is a React `className` string, while the read side flows through *different* surfaces that cannot import TypeScript constants — `index.css` base rules, `::before`/`::after` pseudo-element rules, and the `@media (prefers-reduced-motion: reduce)` disable block (Iteration 211 index.html / 222 CSS custom-property precedent). A typo on the write side does not throw: the class never matches any rule, so the glow/animation silently never applies — or the reduced-motion disable never engages, leaving motion running for users who opted out — while the component looks healthy. Concretely: (1) **`ATTENTION_GLOW`** drift across its 3 sites → Header/PreviewEmptyState/StepGenerating each glow (or not) independently with zero type errors. (2) **`CIRCULAR_COMPLETE_GLOW`/`GENERATE_PROGRESS_GLOW`/`CIRCULAR_COMPLETE_CELEBRATION`** typo → progress-ring completion/animation/celebration visuals silently vanish (visual-state regression) while `data-state` still reports the correct state. (3) **`GLOW_PULSE`** typo → FAB content-ready cue never appears while `data-glow-active` still flips. (4) **`AMBIENT_GLOW`/`SAVED_CELEBRATION_GLOW`/`CARD_GLOW_HOVER`** typo → backdrop/save-confirmation/card-hover affordances silently disappear. Flexy says: no bare glow/attention class literals in className strings where `CSS_CLASSES` exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | NEW 8 `CSS_CLASSES` glow entries (ATTENTION_GLOW, GLOW_PULSE, CIRCULAR_COMPLETE_GLOW, GENERATE_PROGRESS_GLOW, CIRCULAR_COMPLETE_CELEBRATION, AMBIENT_GLOW, SAVED_CELEBRATION_GLOW, CARD_GLOW_HOVER — pairing-contract docblock covering className-write vs index.css base/`::before`/reduced-motion-read silent-failure modes + multi-site drift), placed after `LOADING_SPINNER` |
+| `apps/web/src/config/constants/accessibility.test.ts` | +5 tests: exact 8 values, entry count 8 + uniqueness, lowercase kebab-case invariant, ATTENTION_GLOW multi-site byte-identity, reduced-motion selector-group byte-identity for the 4 CircularProgress/ShowEditorButton glow classes |
+| `apps/web/src/components/CircularProgress.tsx` | 3 sites: bare `circular-complete-glow`/`generate-progress-glow`/`circular-complete-celebration` ternary → `CSS_CLASSES.*` |
+| `apps/web/src/components/Header.tsx` | 1 site: bare `attention-glow` → `CSS_CLASSES.ATTENTION_GLOW` (+ import) |
+| `apps/web/src/components/PreviewEmptyState.tsx` | 1 site: bare `attention-glow` in static className → template + `CSS_CLASSES.ATTENTION_GLOW` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 1 site: bare `attention-glow` → `CSS_CLASSES.ATTENTION_GLOW` |
+| `apps/web/src/components/ShowEditorButton.tsx` | 1 site: bare `glow-pulse` → `CSS_CLASSES.GLOW_PULSE` |
+| `apps/web/src/App.tsx` | 1 site: bare `ambient-glow` → `CSS_CLASSES.AMBIENT_GLOW` |
+| `apps/web/src/components/LastSavedIndicator.tsx` | 1 site: bare `saved-celebration-glow` → `CSS_CLASSES.SAVED_CELEBRATION_GLOW` (+ import) |
+| `apps/web/src/components/TemplateGrid.tsx` | 1 site: bare `card-glow-hover` in multi-line className → `CSS_CLASSES.CARD_GLOW_HOVER` |
+| `docs/flexy-plan.md` | Iteration 223 entry |
+
+Deliberately skipped: test files (`CircularProgress.test.tsx` `className.toContain("circular-complete-glow")`, `ShowEditorButton.test.tsx` `toContain("glow-pulse")` — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213/217/218/219/220/221/222 precedent); `index.css` base/`::before`/reduced-motion selectors (CSS cannot import TypeScript constants — Iteration 211 index.html / 222 precedent; byte-identity pinned by the composed-selector test); other custom animation classes in the reduced-motion block with no glow/attention semantic or single-site status (`form-ready-pulse`, `stack-card-attention`, `progress-shimmer`, `step-activate`, `connector-flash`, `counter-celebrate-pop`, `content-dot-breathe`, `invalid-field-flash`, `animate-*` Tailwind keyframe utilities — separate non-glow categories); `SKIP_LINK_ANIMATION.GLOW_PULSE` (`skip-glow-pulse` keyframe shorthand — already centralized in `effects.ts`); `lib/templates/*` (generated templates); JSDoc prose mentioning the class names; `node_modules`/`dist`.
+
+## Verification (Iteration 223)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new web)
+- ✅ Residual scan — 0 bare `"circular-complete-glow"` / `"generate-progress-glow"` / `"circular-complete-celebration"` / `"attention-glow"` / `"glow-pulse"` / `"ambient-glow"` / `"saved-celebration-glow"` / `"card-glow-hover"` className literals in runtime source (excluding tests, the centralized `CSS_CLASSES` config, config docblocks, index.css & docs)
+
+## PR (Iteration 223)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-223-glow-css-classes` | refactor(flexy): centralize glow/attention CSS class name literals (Iteration 223) |
+
 ### ✅ Flexy Iteration 222: Centralize CSS Custom-Property Name Literals (`--glow-color`, `--tech-glow`)
 
 **Problem**: 2 hardcoded CSS custom-property name literals survived 221 iterations across 2 web runtime files, with no constant family anywhere — and Iterations 220/221's skipped lists explicitly deferred the CSS-variable category as the next candidate while 221 consumed dynamic-ID affixes. Breakdown: 1× `CircularProgress` (`style={{ …, "--glow-color": color }}` — progress-stroke glow color binding consumed by 8 `var(--glow-color)` reads in `index.css` keyframes) and 1× `TemplateGrid` (`"--tech-glow": TEMPLATE_GLOW_SHADOW` card style write + the paired `group-hover:[box-shadow:var(--tech-glow)]` Tailwind arbitrary utility on the tech-stack tag). Each participates in a two-way silent-failure pairing contract: the write side is a React style-object key, while the read side flows through a *different* surface that cannot import TypeScript constants — (1) `index.css` `var(--glow-color)` selectors (CSS cannot import TS — Iteration 211 index.html precedent) and (2) a Tailwind JIT arbitrary utility whose full contiguous literal must appear in scanned source or the rule is purged. A typo on the write side does not throw: the custom property is simply never defined, every `var(...)` read resolves to its fallback/initial value, and the styled effect silently disappears while the component looks healthy. Concretely: (1) **`GLOW_COLOR`** typo → `circular-complete-glow` / `generate-progress-glow` keyframes lose their stroke-color binding, so the glow stops matching the active progress color (visual-state / WCAG 1.4.11 non-text contrast regression). (2) **`TECH_GLOW`** typo → the tag-hover box-shadow never applies while the card still hovers/scales normally. Flexy says: no bare `--custom-property` string-literal style keys where a constant family exists!
