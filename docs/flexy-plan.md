@@ -38,7 +38,7 @@ Deliberately skipped: test files (`CircularProgress.test.tsx` `className.toConta
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-223-glow-css-classes` | refactor(flexy): centralize glow/attention CSS class name literals (Iteration 223) |
+| #4047 | `flexy/iteration-223-glow-css-classes` | refactor(flexy): centralize glow/attention CSS class name literals (Iteration 223) |
 
 ### ✅ Flexy Iteration 222: Centralize CSS Custom-Property Name Literals (`--glow-color`, `--tech-glow`)
 
