@@ -257,10 +257,14 @@ export const StepFeatures = memo(function StepFeatures({
                 // tokens ("auth", "SSO", "rate limiting"). Without these,
                 // iOS/Android autocapitalize each word and Safari autocorrect
                 // rewrites tokens ("auth" -> "author"), mangling the added
-                // feature. Matches the autoCapitalize/autoCorrect pattern on
-                // StepInfo's projectName/targetAudience inputs.
+                // feature. spellCheck={false} also matches the same inputs:
+                // without it the browser red-underlines acronyms and coined
+                // terms ("SSO", "OAuth", "rate-limiting") mid-typing.
+                // Matches the autoCapitalize/autoCorrect/spellCheck pattern
+                // on StepInfo's projectName/targetAudience inputs.
                 autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
                 autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
+                spellCheck={false}
                 enterKeyHint={ENTER_KEY_HINTS.DONE}
                 dir={HTML_TEXT_DIRECTION.AUTO}
                 value={newFeature}
