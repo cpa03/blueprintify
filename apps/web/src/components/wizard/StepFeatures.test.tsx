@@ -369,6 +369,28 @@ describe("StepFeatures", () => {
     expect(clearAllButton.className).toContain("py-1");
   });
 
+  it("announces when all features are cleared", () => {
+    mockStore.features = ["Auth", "API", "DB"];
+    render(<StepFeatures />);
+    const clearAllButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES
+    );
+    fireEvent.click(clearAllButton);
+    expect(
+      screen.getByText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_ANNOUNCEMENT)
+    ).toBeInTheDocument();
+  });
+
+  it("has an assertive live region for clear-all announcements", () => {
+    mockStore.features = ["Auth"];
+    render(<StepFeatures />);
+    const announcer = screen.getByTestId("clear-features-announcer");
+    expect(announcer).toHaveAttribute("role", "status");
+    expect(announcer).toHaveAttribute("aria-live", "assertive");
+    expect(announcer).toHaveAttribute("aria-atomic", "true");
+    expect(announcer).toBeEmptyDOMElement();
+  });
+
   // ======== Suggestions ========
 
   it("displays suggestion chips when suggestions remain", () => {

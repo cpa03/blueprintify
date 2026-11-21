@@ -434,6 +434,7 @@ export const ACCESSIBILITY_LABELS = {
     CLEAR_FEATURE_INPUT: "Clear feature input",
     ADD_FEATURE: "Add feature",
     CLEAR_ALL_FEATURES: "Clear all features",
+    CLEAR_ALL_ANNOUNCEMENT: "All features cleared",
     REMOVE_FEATURE: (feature: string) => `Remove ${feature}`,
     ADD_SUGGESTION: (feature: string) => `Add suggestion: ${feature}`,
     ADD_ALL_SUGGESTIONS: "Add all suggested features at once",
