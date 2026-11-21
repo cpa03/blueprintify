@@ -155,18 +155,30 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
     [currentIndex]
   );
 
+  // Shared locked-step feedback for click AND the Alt+N shortcut. The
+  // keyboard path previously no-op'd on a locked step, so sighted keyboard
+  // users pressing Alt+4 mid-wizard got zero feedback while a mouse click
+  // on the same chip showed a toast + shake — an input-modality parity gap
+  // (WCAG 4.1.3 Status Messages).
+  const notifyLockedStep = useCallback(
+    (stepKey: WizardStep, stepLabel: string) => {
+      setShakingStep(stepKey);
+      setTimeout(() => setShakingStep(null), TIMEOUTS.SHAKE_ANIMATION);
+      // Provide helpful feedback for locked steps
+      toast.info(TOAST_MESSAGES.STEP_LOCKED(stepLabel));
+    },
+    [toast]
+  );
+
   const handleStepClick = useCallback(
     (stepKey: WizardStep, stepLabel: string) => {
       if (canNavigateTo(stepKey)) {
         setStep(stepKey);
       } else {
-        setShakingStep(stepKey);
-        setTimeout(() => setShakingStep(null), TIMEOUTS.SHAKE_ANIMATION);
-        // Provide helpful feedback for locked steps
-        toast.info(TOAST_MESSAGES.STEP_LOCKED(stepLabel));
+        notifyLockedStep(stepKey, stepLabel);
       }
     },
-    [canNavigateTo, setStep, toast]
+    [canNavigateTo, setStep, notifyLockedStep]
   );
 
   useEffect(() => {
@@ -175,16 +187,19 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
         e.preventDefault();
         const stepIndex = parseInt(e.key, NUMBER_RADIX.DECIMAL) - 1;
         const targetStep = STEPS[stepIndex];
+        if (!targetStep) return;
 
-        if (targetStep && canNavigateTo(targetStep.key)) {
+        if (canNavigateTo(targetStep.key)) {
           setStep(targetStep.key);
+        } else {
+          notifyLockedStep(targetStep.key, targetStep.label);
         }
       }
     };
 
     window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
-  }, [setStep, canNavigateTo]);
+  }, [setStep, canNavigateTo, notifyLockedStep]);
 
   return (
     <div
