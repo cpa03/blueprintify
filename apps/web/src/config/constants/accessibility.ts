@@ -128,6 +128,50 @@ export const CSS_CLASSES = {
   SAVED_CELEBRATION_GLOW: "saved-celebration-glow" as const,
   /** Template card hover glow ring — pairs with `.card-glow-hover` / `::before` hover rules. */
   CARD_GLOW_HOVER: "card-glow-hover" as const,
+
+  /**
+   * Skeleton loading CSS class names (Iteration 224).
+   *
+   * Pairing contract: the write side is a React `className` string in a
+   * component, while the read side flows through `index.css` selectors —
+   * the base layout/shimmer rules (`.skeleton-block`, `.editor-skeleton*`,
+   * `.preview-skeleton*`), the `.skeleton-block--static::after` no-shimmer
+   * override, and the `@media (prefers-reduced-motion: reduce)` disable
+   * block. CSS cannot import TypeScript constants (Iteration 211 index.html
+   * / 222 CSS custom-property precedent), so the two sides are pinned
+   * byte-identical by these exact-value tests. A typo on the write side does
+   * not throw: the class simply never matches any rule, the skeleton renders
+   * unstyled (layout collapse, no shimmer), and the component looks healthy.
+   * Multi-site families (EDITOR_SKELETON_* ×2 files, SKELETON_BLOCK ×4 files)
+   * must stay identical across every call site or one skeleton looks styled
+   * while its twin does not, with zero type errors. Flexy says: no bare
+   * skeleton class literals in className strings where a constant family
+   * exists!
+   */
+  /** Base shimmer placeholder block — pairs with `.skeleton-block` + reduced-motion disable. */
+  SKELETON_BLOCK: "skeleton-block" as const,
+  /** Static (non-shimmering) skeleton variant — pairs with `.skeleton-block--static::after`. */
+  SKELETON_BLOCK_STATIC: "skeleton-block--static" as const,
+  /** Editor skeleton root layout — pairs with `.editor-skeleton` grid rules. */
+  EDITOR_SKELETON: "editor-skeleton" as const,
+  /** Editor skeleton line-number gutter — pairs with `.editor-skeleton-gutter`. */
+  EDITOR_SKELETON_GUTTER: "editor-skeleton-gutter" as const,
+  /** Editor skeleton individual line-number cell — pairs with `.editor-skeleton-line-number`. */
+  EDITOR_SKELETON_LINE_NUMBER: "editor-skeleton-line-number" as const,
+  /** Editor skeleton code column — pairs with `.editor-skeleton-code`. */
+  EDITOR_SKELETON_CODE: "editor-skeleton-code" as const,
+  /** Editor skeleton individual code-line row — pairs with `.editor-skeleton-code-line`. */
+  EDITOR_SKELETON_CODE_LINE: "editor-skeleton-code-line" as const,
+  /** Preview skeleton root layout — pairs with `.preview-skeleton`. */
+  PREVIEW_SKELETON: "preview-skeleton" as const,
+  /** Preview skeleton heading bar — pairs with `.preview-skeleton-heading`. */
+  PREVIEW_SKELETON_HEADING: "preview-skeleton-heading" as const,
+  /** Preview skeleton paragraph line — pairs with `.preview-skeleton-line`. */
+  PREVIEW_SKELETON_LINE: "preview-skeleton-line" as const,
+  /** Preview skeleton subheading bar — pairs with `.preview-skeleton-subheading`. */
+  PREVIEW_SKELETON_SUBHEADING: "preview-skeleton-subheading" as const,
+  /** Preview skeleton code-block placeholder — pairs with `.preview-skeleton-code-block`. */
+  PREVIEW_SKELETON_CODE_BLOCK: "preview-skeleton-code-block" as const,
 } as const;
 
 // ============================================================================
