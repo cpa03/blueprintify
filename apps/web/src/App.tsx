@@ -486,12 +486,24 @@ function App(): JSX.Element {
                   aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
                 >
                   <div aria-hidden={ARIA_HIDDEN_VALUES.TRUE} className="space-y-4">
-                    <div className="skeleton-block skeleton-block--static h-5 w-36" />
-                    <div className="skeleton-block skeleton-block--static h-10 w-full" />
-                    <div className="skeleton-block skeleton-block--static h-5 w-48" />
-                    <div className="skeleton-block skeleton-block--static h-24 w-full" />
-                    <div className="skeleton-block skeleton-block--static h-5 w-32" />
-                    <div className="skeleton-block skeleton-block--static h-10 w-full" />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-36`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-10 w-full`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-48`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-24 w-full`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-32`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-10 w-full`}
+                    />
                   </div>
                 </div>
               )}
