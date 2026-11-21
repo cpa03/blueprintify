@@ -382,4 +382,25 @@ describe("StepIndicator", () => {
 
     expect(screen.getByRole("status")).toHaveTextContent("Now on Step Project Info");
   });
+
+  it("gives the same locked-step feedback on Alt+N as on click (WCAG 4.1.3)", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
+    render(<StepIndicator />);
+
+    // Alt+4 targets Review, which is locked while on Features.
+    fireEvent.keyDown(window, { key: "4", altKey: true });
+
+    expect(mockWizardStore.setStep).not.toHaveBeenCalled();
+    expect(toast.info).toHaveBeenCalledWith('Complete previous steps to unlock "Review"');
+  });
+
+  it("navigates via Alt+N when the target step is unlocked", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
+    render(<StepIndicator />);
+
+    fireEvent.keyDown(window, { key: "1", altKey: true });
+
+    expect(mockWizardStore.setStep).toHaveBeenCalledWith(WIZARD_STEP_KEYS.INFO);
+    expect(toast.info).not.toHaveBeenCalled();
+  });
 });
