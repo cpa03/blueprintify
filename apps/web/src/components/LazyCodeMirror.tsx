@@ -4,7 +4,7 @@ import { EditorView } from "@codemirror/view";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
 import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
-import { FOCUS_ANNOUNCER } from "../config/constants/accessibility";
+import { FOCUS_ANNOUNCER, CSS_CLASSES } from "../config/constants/accessibility";
 import { ARIA_LIVE_VALUES, ARIA_ROLES, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 
 interface LazyCodeMirrorProps {
@@ -25,23 +25,23 @@ const GUTTER_NUMBERS = Array.from({ length: SKELETON_LAYOUT.EDITOR_LINE_COUNT },
 function EditorSkeleton(): JSX.Element {
   return (
     <div
-      className="editor-skeleton"
+      className={CSS_CLASSES.EDITOR_SKELETON}
       role={ARIA_ROLES.STATUS}
       aria-live={ARIA_LIVE_VALUES.POLITE}
       aria-label={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.LOADING}
     >
-      <div className="editor-skeleton-gutter" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
+      <div className={CSS_CLASSES.EDITOR_SKELETON_GUTTER} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {GUTTER_NUMBERS.map((n) => (
-          <div key={n} className="editor-skeleton-line-number">
+          <div key={n} className={CSS_CLASSES.EDITOR_SKELETON_LINE_NUMBER}>
             {n}
           </div>
         ))}
       </div>
-      <div className="editor-skeleton-code" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
+      <div className={CSS_CLASSES.EDITOR_SKELETON_CODE} aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
         {SKELETON_LAYOUT.EDITOR_LINE_WIDTHS.map((widthPct, i) => (
-          <div key={i} className="editor-skeleton-code-line">
+          <div key={i} className={CSS_CLASSES.EDITOR_SKELETON_CODE_LINE}>
             <div
-              className="skeleton-block"
+              className={CSS_CLASSES.SKELETON_BLOCK}
               style={{
                 width: `${widthPct}%`,
                 height: `${SKELETON_LAYOUT.EDITOR_LINE_HEIGHT_PX}px`,
