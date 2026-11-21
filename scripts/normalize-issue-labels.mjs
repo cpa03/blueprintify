@@ -69,6 +69,23 @@ const PRIORITY_MAP = {
 };
 
 /**
+ * Legacy labels that duplicate an axis the canonical contract already covers
+ * (category or priority). Once the canonical label has been derived, these
+ * are stripped so each issue ends with exactly one category and one priority
+ * and no stale synonyms (issue #3573 HIGH-2).
+ */
+const LEGACY_LABELS = [
+  ...Object.keys(PRIORITY_MAP),
+  "type:feature",
+  "type:refactor",
+  "type:docs",
+  "documentation",
+  "testing",
+  "area:security-engineer",
+  "security-engineer",
+];
+
+/**
  * Manual engineering-judgment overrides: { issueNumber: [category, priority] }.
  * These are cases where keyword heuristics are ambiguous or misleading
  * (e.g. an auth bypass must be P1/security even though its title lacks
@@ -140,7 +157,7 @@ function deriveCategory(labels, title) {
   }
   if (
     labels.some((l) => l === "ci" || l === "ci/cd") ||
-    low.startsWith("ci") ||
+    low.startsWith("ci:") ||
     low.startsWith("[ci") ||
     low.startsWith("[ci/cd") ||
     low.includes("workflow") ||
@@ -227,8 +244,9 @@ function mostSevere(priorities) {
 function computeChanges(number, title, labels) {
   const cats = labels.filter((l) => CATEGORIES.includes(l));
   const pris = labels.filter((l) => PRIORITIES.includes(l));
+  const legacyToRemove = labels.filter((l) => LEGACY_LABELS.includes(l));
   const add = [];
-  const remove = [];
+  const remove = [...legacyToRemove];
   const override = OVERRIDES[number];
 
   // Category
