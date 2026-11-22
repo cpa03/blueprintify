@@ -310,6 +310,12 @@ describe("StepFeatures", () => {
     expect(screen.getByText("Database")).toBeInTheDocument();
   });
 
+  it("sets dir=auto on added-feature chips so RTL user text keeps the ✓ prefix and remove button on the correct side", () => {
+    mockStore.features = ["المصادقة"];
+    render(<StepFeatures />);
+    expect(screen.getByRole("listitem")).toHaveAttribute("dir", "auto");
+  });
+
   it("shows 'Your features' section when features exist", () => {
     mockStore.features = ["Auth"];
     render(<StepFeatures />);
