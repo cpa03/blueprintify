@@ -436,6 +436,12 @@ export const StepFeatures = memo(function StepFeatures({
                           : "bg-primary-500/20 border border-primary-500/30 text-primary-300"
                       }`}
                       role={ARIA_ROLES.LISTITEM}
+                      // dir=auto: feature text is free-typed user input, so an
+                      // RTL entry (Arabic, Hebrew, …) must set the chip's base
+                      // direction itself — otherwise the ✓ prefix and remove
+                      // button render on the wrong side of the text. Matches
+                      // the feature input above and StepReview's list item.
+                      dir={HTML_TEXT_DIRECTION.AUTO}
                     >
                       <span className="text-accent-emerald" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                         ✓
