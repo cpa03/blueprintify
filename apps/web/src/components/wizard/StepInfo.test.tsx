@@ -341,6 +341,12 @@ describe("StepInfo", () => {
       "aria-label",
       ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(0, 2)
     );
+    // aria-valuetext (WCAG 4.1.2): bare aria-valuenow ("0") is announced as
+    // the human-readable count instead of a context-free number.
+    expect(progressbar).toHaveAttribute(
+      "aria-valuetext",
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(0, 2)
+    );
   });
 
   it("updates progressbar aria-valuenow when required fields are filled", () => {
@@ -351,6 +357,10 @@ describe("StepInfo", () => {
     expect(progressbar).toHaveAttribute("aria-valuenow", "2");
     expect(progressbar).toHaveAttribute(
       "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(2, 2)
+    );
+    expect(progressbar).toHaveAttribute(
+      "aria-valuetext",
       ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(2, 2)
     );
   });

@@ -430,6 +430,13 @@ export const StepInfo = memo(function StepInfo({
               aria-valuemin={0}
               aria-valuemax={formProgress.total}
               aria-valuenow={formProgress.completed}
+              // aria-valuetext (WAI-ARIA APG / WCAG 4.1.2): mirrors the
+              // CharacterCounterCompact / PageScrollProgressBar pattern so the
+              // bare count ("1") is announced as "1 of 2 fields completed".
+              aria-valuetext={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
+                formProgress.completed,
+                formProgress.total
+              )}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
                 formProgress.completed,
                 formProgress.total
