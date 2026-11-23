@@ -126,7 +126,7 @@ describe("SmartTooltip", () => {
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
-  it("shows tooltip on focus", () => {
+  it("shows tooltip on focus immediately without waiting for the hover delay", () => {
     render(
       <SmartTooltip content="Focus tooltip">
         <button>Focus me</button>
@@ -136,12 +136,13 @@ describe("SmartTooltip", () => {
     const container = screen.getByRole("button", { name: "Focus me" }).parentElement!;
     fireEvent.focus(container);
 
-    act(() => {
-      vi.advanceTimersByTime(500);
-    });
-
     expect(screen.getByRole("tooltip")).toBeInTheDocument();
     expect(screen.getByText("Focus tooltip")).toBeInTheDocument();
+    expect(container).toHaveAttribute("data-state", "visible");
+
+    const trigger = screen.getByRole("button", { name: "Focus me" });
+    const tooltipId = screen.getByRole("tooltip").getAttribute("id");
+    expect(trigger.getAttribute("aria-describedby")).toBe(tooltipId);
   });
 
   it("hides tooltip on blur", () => {
@@ -153,11 +154,7 @@ describe("SmartTooltip", () => {
 
     const container = screen.getByRole("button", { name: "Blur me" }).parentElement!;
 
-    // Show via focus
     fireEvent.focus(container);
-    act(() => {
-      vi.advanceTimersByTime(500);
-    });
     expect(screen.getByRole("tooltip")).toBeInTheDocument();
 
     // Blur to unrelated element
