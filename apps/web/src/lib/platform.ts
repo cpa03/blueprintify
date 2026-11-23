@@ -9,7 +9,7 @@
 import { MODIFIER_KEYS } from "@blueprint/shared";
 
 /** Derived modifier union — single source is MODIFIER_KEYS, never an inlined literal union. */
-export type ShortcutModifier = (typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS];
+type ShortcutModifier = (typeof MODIFIER_KEYS)[keyof typeof MODIFIER_KEYS];
 
 /**
  * Detect if the current browser is running on macOS.
