@@ -188,16 +188,6 @@ export const StreamChunkSchema = z.object({
   error: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
 });
 
-/**
- * Complete result of blueprint or task generation.
- * Contains the full generated content and metadata.
- */
-export const GenerationResultSchema = z.object({
-  blueprint: z.string().max(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH),
-  tasks: z.string().max(EXPORT_LIMITS.MAX_TASKS_LENGTH).optional(),
-  generatedAt: z.string(),
-});
-
 // ===== Success Response Schema =====
 
 /**
@@ -281,21 +271,6 @@ export const ImportRequestSchema = z.object({
     ),
   format: ExportFormatSchema.default("json"),
   overwrite: z.boolean().default(false),
-});
-
-/**
- * Result of an import operation.
- * Contains success status, imported data, and any warnings.
- */
-export const ImportResultSchema = z.object({
-  projectName: z
-    .string()
-    .min(VALIDATION_LIMITS.PROJECT_NAME.MIN)
-    .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
-  blueprint: z.string().max(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH),
-  tasks: z.string().max(EXPORT_LIMITS.MAX_TASKS_LENGTH).optional(),
-  importedAt: z.string(),
-  warnings: z.array(z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX)).optional(),
 });
 
 // ===== Storage Schemas (M2) =====
