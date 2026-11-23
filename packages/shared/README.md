@@ -70,7 +70,6 @@ import { RETRY_CONFIG, VALIDATION_LIMITS, STORAGE_CONFIG, SSE_CONFIG } from "@bl
 | `RefineRequestSchema`         | Request payload for content refinement                             |
 | `TemplateSchema`              | Predefined project template                                        |
 | `StreamChunkSchema`           | SSE chunk structure                                                |
-| `GenerationResultSchema`      | Complete generation result                                         |
 | `SuccessResponseSchema`       | Standard success response wrapper                                  |
 | `ErrorResponseSchema`         | Standard error response                                            |
 | `ErrorTypeSchema`             | Enum for error types                                               |
@@ -78,7 +77,6 @@ import { RETRY_CONFIG, VALIDATION_LIMITS, STORAGE_CONFIG, SSE_CONFIG } from "@bl
 | `ExportFormatSchema`          | Export format enum (json, zip, markdown)                           |
 | `ExportRequestSchema`         | Export request payload                                             |
 | `ImportRequestSchema`         | Import request payload                                             |
-| `ImportResultSchema`          | Import result with warnings                                        |
 | `StorageQuotaSchema`          | Storage quota information                                          |
 | `StorageClearRequestSchema`   | Storage clear confirmation request                                 |
 | `StorageReportRequestSchema`  | Client storage usage report request                                |
