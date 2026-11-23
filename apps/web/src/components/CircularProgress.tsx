@@ -188,6 +188,13 @@ function CircularProgressComponent({
       aria-valuenow={Math.round(animatedValue)}
       aria-valuemin={0}
       aria-valuemax={PERCENT_SCALE}
+      // aria-valuetext (WAI-ARIA APG / WCAG 4.1.2): the bare aria-valuenow
+      // number alone ("50") is meaningless when announced out of context.
+      // Mirrors the PageScrollProgressBar / CharacterCounterCompact pattern so
+      // screen readers announce "50% complete" (or the custom ariaLabel) instead
+      // of a bare count on value changes. Tracks animatedValue so the mount
+      // draw-in announces the same number the ring is currently showing.
+      aria-valuetext={ariaLabel ?? ACCESSIBILITY_LABELS.PROGRESS.PERCENT_COMPLETE(animatedValue)}
       aria-label={ariaLabel ?? ACCESSIBILITY_LABELS.PROGRESS.PERCENT_COMPLETE(clampedValue)}
       data-state={
         isComplete

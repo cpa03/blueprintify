@@ -193,6 +193,17 @@ describe("StepGenerating", () => {
     );
   });
 
+  it("exposes the phase progress bar with human-readable aria-valuetext (WCAG 4.1.2)", () => {
+    renderGenerating();
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuemin", "0");
+    expect(progressbar).toHaveAttribute("aria-valuemax", "100");
+    // Default mock state: isGenerating=true, generationProgress="" → STARTING phase.
+    expect(progressbar).toHaveAttribute("aria-valuenow", "5");
+    expect(progressbar).toHaveAttribute("aria-valuetext", "Starting: 5%");
+    expect(progressbar).toHaveAttribute("aria-label", "Starting: 5%");
+  });
+
   it("cancels once, shows one toast, and navigates to REVIEW on click", () => {
     renderGenerating();
     fireEvent.click(getCancelButton());
