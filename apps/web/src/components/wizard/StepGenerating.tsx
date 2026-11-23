@@ -138,6 +138,7 @@ import {
   FOCUS_ANNOUNCER,
   ELAPSED_ANNOUNCEMENT_INTERVAL_MS,
   KEYBOARD_SHORTCUTS,
+  DYNAMIC_ID_AFFIXES,
 } from "../../config/constants";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -362,7 +363,9 @@ export const StepGenerating = memo(function StepGenerating({
   }, [setStep]);
 
   const handleViewEditor = useCallback(() => {
-    const editorPanel = document.querySelector<HTMLElement>('[id$="-panel"]');
+    const editorPanel = document.querySelector<HTMLElement>(
+      `[id$="${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}"]`
+    );
     if (editorPanel) {
       editorPanel.scrollIntoView({
         behavior: getScrollBehavior(),
@@ -374,7 +377,9 @@ export const StepGenerating = memo(function StepGenerating({
       // wrapper which needs tabIndex=-1 and provides no focus indicator.
       // Falls back to the editor panel if the tab button isn't mounted yet.
       const activeEditorTab = useEditorStore.getState().activeTab;
-      const tabButton = document.getElementById(`tab-${activeEditorTab}`);
+      const tabButton = document.getElementById(
+        `${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${activeEditorTab}`
+      );
       const focusTarget = tabButton ?? editorPanel;
 
       const priorTabIndex =
@@ -902,7 +907,7 @@ export const StepGenerating = memo(function StepGenerating({
               >
                 <RippleButton
                   onClick={handleViewEditor}
-                  className="btn-primary flex items-center gap-2 attention-glow"
+                  className={`btn-primary flex items-center gap-2 ${CSS_CLASSES.ATTENTION_GLOW}`}
                   ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
                   data-autofocus={AUTOFOCUS_VALUES.COMPLETE}
                   aria-keyshortcuts={getAriaShortcutKey(

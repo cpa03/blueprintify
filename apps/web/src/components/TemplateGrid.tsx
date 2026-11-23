@@ -35,6 +35,7 @@ import {
   BREAKPOINT_DEFAULTS,
   TEMPLATE_STATE_VALUES,
   DATA_BOOLEAN_VALUES,
+  CSS_CUSTOM_PROPERTIES,
 } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -47,13 +48,18 @@ import {
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
 } from "../config/constants";
-import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
+import {
+  FORM,
+  FOCUS_VISIBLE_RING_CARD,
+  ICON,
+  SPINNER,
+  TECH_TAG_HOVER_GLOW,
+} from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
 import {
   ARIA_ATOMIC_VALUES,
   ARIA_HIDDEN_VALUES,
   ARIA_LIVE_VALUES,
-  ARIA_ORIENTATION_VALUES,
   ARIA_ROLES,
   ICON_PATHS,
   SVG_ICON_DEFAULTS,
@@ -180,11 +186,13 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
         Choose a template to pre-fill your project configuration
       </p>
 
+      {/* No aria-orientation: this listbox reflows across rows
+          (grid-cols-1/2/3) and ArrowUp/ArrowDown move by row, so declaring
+          "horizontal" would tell screen-reader users only left/right work. */}
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
-        aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
       >
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
@@ -224,11 +232,11 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
                   animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
                   animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
-                  "--tech-glow": TEMPLATE_GLOW_SHADOW,
+                  [CSS_CUSTOM_PROPERTIES.TECH_GLOW]: TEMPLATE_GLOW_SHADOW,
                 } as React.CSSProperties
               }
               className={`
-                glass-card p-5 text-left relative group card-glow-hover
+                glass-card p-5 text-left relative group ${CSS_CLASSES.CARD_GLOW_HOVER}
                 will-change-transform
                 animate-card-entrance
                 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
@@ -317,7 +325,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
-                              : "bg-dark-800 text-dark-300 group-hover:[box-shadow:var(--tech-glow)]"
+                              : `bg-dark-800 text-dark-300 ${TECH_TAG_HOVER_GLOW}`
                           }
                         `}
                       >

@@ -18,8 +18,14 @@ import {
   SVG_TRANSITION,
   ANIMATION,
   ACCESSIBILITY_LABELS,
+  CSS_CLASSES,
 } from "../config/constants";
-import { UI_TIMEOUTS, PROGRESS_STATE_VALUES, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+import {
+  UI_TIMEOUTS,
+  PROGRESS_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
+  CSS_CUSTOM_PROPERTIES,
+} from "@blueprint/shared";
 import {
   ARIA_ROLES,
   SVG_ICON_DEFAULTS,
@@ -170,8 +176,14 @@ function CircularProgressComponent({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : isAnimating ? "generate-progress-glow" : ""} ${celebrating ? "circular-complete-celebration" : ""} ${className}`}
-      style={{ width: size, height: size, "--glow-color": color } as React.CSSProperties}
+      className={`relative inline-flex items-center justify-center ${isComplete ? CSS_CLASSES.CIRCULAR_COMPLETE_GLOW : isAnimating ? CSS_CLASSES.GENERATE_PROGRESS_GLOW : ""} ${celebrating ? CSS_CLASSES.CIRCULAR_COMPLETE_CELEBRATION : ""} ${className}`}
+      style={
+        {
+          width: size,
+          height: size,
+          [CSS_CUSTOM_PROPERTIES.GLOW_COLOR]: color,
+        } as React.CSSProperties
+      }
       role={ARIA_ROLES.PROGRESSBAR}
       aria-valuenow={Math.round(animatedValue)}
       aria-valuemin={0}

@@ -181,6 +181,12 @@ describe("StepFeatures", () => {
     expect(input).toHaveAttribute("autocorrect", "off");
   });
 
+  it("disables spellcheck on the feature input so technical tokens stay unmarked", () => {
+    render(<StepFeatures />);
+    const input = screen.getByLabelText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME);
+    expect(input).toHaveAttribute("spellcheck", "false");
+  });
+
   it("shows feature count of 0 when no features added", () => {
     render(<StepFeatures />);
     expect(screen.getByText("0")).toBeInTheDocument();
@@ -304,6 +310,12 @@ describe("StepFeatures", () => {
     expect(screen.getByText("Database")).toBeInTheDocument();
   });
 
+  it("sets dir=auto on added-feature chips so RTL user text keeps the ✓ prefix and remove button on the correct side", () => {
+    mockStore.features = ["المصادقة"];
+    render(<StepFeatures />);
+    expect(screen.getByRole("listitem")).toHaveAttribute("dir", "auto");
+  });
+
   it("shows 'Your features' section when features exist", () => {
     mockStore.features = ["Auth"];
     render(<StepFeatures />);
@@ -361,6 +373,28 @@ describe("StepFeatures", () => {
     );
     expect(clearAllButton.className).toContain("px-2");
     expect(clearAllButton.className).toContain("py-1");
+  });
+
+  it("announces when all features are cleared", () => {
+    mockStore.features = ["Auth", "API", "DB"];
+    render(<StepFeatures />);
+    const clearAllButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES
+    );
+    fireEvent.click(clearAllButton);
+    expect(
+      screen.getByText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_ANNOUNCEMENT)
+    ).toBeInTheDocument();
+  });
+
+  it("has an assertive live region for clear-all announcements", () => {
+    mockStore.features = ["Auth"];
+    render(<StepFeatures />);
+    const announcer = screen.getByTestId("clear-features-announcer");
+    expect(announcer).toHaveAttribute("role", "status");
+    expect(announcer).toHaveAttribute("aria-live", "assertive");
+    expect(announcer).toHaveAttribute("aria-atomic", "true");
+    expect(announcer).toBeEmptyDOMElement();
   });
 
   // ======== Suggestions ========

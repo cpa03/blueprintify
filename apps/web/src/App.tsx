@@ -367,7 +367,7 @@ function App(): JSX.Element {
     <div className={LAYOUT.PAGE_WRAPPER}>
       {/* Ambient background glow — slow drifting gradient behind all content */}
       <div
-        className="fixed inset-0 pointer-events-none z-0 ambient-glow"
+        className={`fixed inset-0 pointer-events-none z-0 ${CSS_CLASSES.AMBIENT_GLOW}`}
         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
 
@@ -486,12 +486,24 @@ function App(): JSX.Element {
                   aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
                 >
                   <div aria-hidden={ARIA_HIDDEN_VALUES.TRUE} className="space-y-4">
-                    <div className="skeleton-block skeleton-block--static h-5 w-36" />
-                    <div className="skeleton-block skeleton-block--static h-10 w-full" />
-                    <div className="skeleton-block skeleton-block--static h-5 w-48" />
-                    <div className="skeleton-block skeleton-block--static h-24 w-full" />
-                    <div className="skeleton-block skeleton-block--static h-5 w-32" />
-                    <div className="skeleton-block skeleton-block--static h-10 w-full" />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-36`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-10 w-full`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-48`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-24 w-full`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-32`}
+                    />
+                    <div
+                      className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-10 w-full`}
+                    />
                   </div>
                 </div>
               )}
@@ -670,7 +682,9 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
               target={HTML_LINK_TARGETS.BLANK}
               rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
+              // WCAG 2.4.7 Focus Visible: match the Header external-link ring so
+              // keyboard users get the same affordance as every other control.
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.CLOUDFLARE_WORKERS}
             >
               Cloudflare Workers
@@ -684,7 +698,9 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.REACT}
               target={HTML_LINK_TARGETS.BLANK}
               rel={HTML_LINK_RELS.NOOPENER_NOREFERRER}
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
+              // WCAG 2.4.7 Focus Visible: match the Header external-link ring so
+              // keyboard users get the same affordance as every other control.
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.REACT}
             >
               React

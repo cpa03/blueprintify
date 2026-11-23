@@ -289,6 +289,9 @@ export {
   HTML_LINK_ELEMENT_TYPES,
   HTML_LINK_MEDIA_VALUES,
   DOM_ELEMENT_TAGS,
+  TOAST_DATA_ATTRIBUTES,
+  TOAST_SELECTORS,
+  CSS_CUSTOM_PROPERTIES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

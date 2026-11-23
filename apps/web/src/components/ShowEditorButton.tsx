@@ -130,7 +130,7 @@ function ShowEditorButtonComponent({
       >
         <RippleButton
           onClick={onClick}
-          className={`${BUTTON.SHOW_EDITOR_FAB} ${showGlow ? "glow-pulse" : ""}`}
+          className={`${BUTTON.SHOW_EDITOR_FAB} ${showGlow ? CSS_CLASSES.GLOW_PULSE : ""}`}
           aria-keyshortcuts={getAriaShortcutKey(
             KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
             MODIFIER_KEYS.CMD

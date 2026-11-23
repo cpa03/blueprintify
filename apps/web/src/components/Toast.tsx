@@ -38,6 +38,8 @@ import {
   ANIMATION_OPACITY,
   ANIMATION_Y_OFFSET,
   DATA_BOOLEAN_VALUES,
+  TOAST_DATA_ATTRIBUTES,
+  TOAST_SELECTORS,
 } from "@blueprint/shared";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import {
@@ -591,14 +593,14 @@ function ToastContainerComponent(): JSX.Element {
       if (!container || !(active instanceof Node) || !container.contains(active)) return;
       const activeToastId =
         active instanceof HTMLElement
-          ? active.closest("[data-toast-id]")?.getAttribute("data-toast-id")
+          ? active.closest(TOAST_SELECTORS.BY_ID)?.getAttribute(TOAST_DATA_ATTRIBUTES.ID)
           : null;
       if (activeToastId !== removedId) return;
       const index = toasts.findIndex((t) => t.id === removedId);
       const neighborId = toasts[index + 1]?.id ?? toasts[index - 1]?.id;
       if (neighborId !== undefined) {
         const target = Array.from(
-          container.querySelectorAll<HTMLElement>("[data-toast-dismiss]")
+          container.querySelectorAll<HTMLElement>(TOAST_SELECTORS.DISMISS_BUTTONS)
         ).find((button) => button.dataset.toastDismiss === neighborId);
         if (target) {
           target.focus();

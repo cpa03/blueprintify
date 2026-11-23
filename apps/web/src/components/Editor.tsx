@@ -65,6 +65,7 @@ import {
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
+  DYNAMIC_ID_AFFIXES,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
@@ -102,22 +103,22 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
   if (!isVisible) return null;
   return (
     <div
-      className="editor-skeleton"
+      className={CSS_CLASSES.EDITOR_SKELETON}
       role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.SKELETON_GENERATING}
     >
-      <div className="editor-skeleton-gutter">
+      <div className={CSS_CLASSES.EDITOR_SKELETON_GUTTER}>
         {LINE_NUMBERS.map((num) => (
-          <div key={num} className="editor-skeleton-line-number">
+          <div key={num} className={CSS_CLASSES.EDITOR_SKELETON_LINE_NUMBER}>
             {num}
           </div>
         ))}
       </div>
-      <div className="editor-skeleton-code">
+      <div className={CSS_CLASSES.EDITOR_SKELETON_CODE}>
         {SKELETON_DEFAULTS.EDITOR_LINE_WIDTHS.map((widthPct, i) => (
-          <div key={i} className="editor-skeleton-code-line">
+          <div key={i} className={CSS_CLASSES.EDITOR_SKELETON_CODE_LINE}>
             <div
-              className="skeleton-block"
+              className={CSS_CLASSES.SKELETON_BLOCK}
               style={{
                 width: `${widthPct}%`,
                 height: `${SKELETON_DEFAULTS.EDITOR_LINE_HEIGHT_PX}px`,
@@ -145,24 +146,28 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
 function PreviewSkeleton(): JSX.Element {
   return (
     <div
-      className="preview-skeleton"
+      className={CSS_CLASSES.PREVIEW_SKELETON}
       role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}
     >
-      <div className="skeleton-block preview-skeleton-heading" />
+      <div className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_HEADING}`} />
       {SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS.map((w, i) => (
-        <div key={i} className="skeleton-block preview-skeleton-line" style={{ width: w }} />
+        <div
+          key={i}
+          className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_LINE}`}
+          style={{ width: w }}
+        />
       ))}
-      <div className="skeleton-block preview-skeleton-subheading" />
+      <div className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_SUBHEADING}`} />
       {SKELETON_LAYOUT.PREVIEW_EXTRA_WIDTHS.map((w, i) => (
         <div
           key={`extra-${i}`}
-          className="skeleton-block preview-skeleton-line"
+          className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_LINE}`}
           style={{ width: w }}
         />
       ))}
       <div
-        className="skeleton-block preview-skeleton-code-block"
+        className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_CODE_BLOCK}`}
         style={{ width: SKELETON_LAYOUT.PREVIEW_CODE_WIDTH }}
       />
     </div>
@@ -397,7 +402,9 @@ function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
   useEffect(() => {
     const tabId = initialTabRef.current;
     const focusTimer = setTimeout(() => {
-      document.getElementById(`tab-${tabId}`)?.focus({ preventScroll: true });
+      document
+        .getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${tabId}`)
+        ?.focus({ preventScroll: true });
     }, UI_TIMING.EDITOR_FOCUS_DELAY_MS);
     return () => clearTimeout(focusTimer);
   }, []);
@@ -595,9 +602,13 @@ function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
                       duration: ANIMATION.NORMAL,
                       ease: ANIMATION_TIMING.easing.easeOut,
                     }}
-                    id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
+                    id={
+                      activeTab === EDITOR_TABS.BLUEPRINT
+                        ? `${EDITOR_TABS.BLUEPRINT}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`
+                        : `${EDITOR_TABS.TASKS}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`
+                    }
                     role={ARIA_ROLES.TABPANEL}
-                    aria-labelledby={`tab-${activeTab}`}
+                    aria-labelledby={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${activeTab}`}
                     aria-busy={isGenerating || undefined}
                     className="h-full flex flex-col lg:flex-row"
                   >

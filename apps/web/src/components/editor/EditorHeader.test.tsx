@@ -283,4 +283,45 @@ describe("EditorHeader", () => {
       ACCESSIBILITY_LABELS.EDITOR.STREAMING_CONTENT
     );
   });
+
+  // ======== Tab → Panel Relationship (aria-controls) ========
+
+  it("points aria-controls of the active tab at its mounted panel", () => {
+    render(<EditorHeader {...defaultProps} activeTab={EDITOR_TABS.BLUEPRINT} hasContent />);
+    const blueprintTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.BLUEPRINT) });
+    const tasksTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.TASKS) });
+    // Editor.tsx mounts only the ACTIVE tab's panel, so only that tab may
+    // reference it — a dangling ID breaks the tab→panel relationship (WCAG 4.1.2).
+    expect(blueprintTab).toHaveAttribute("aria-controls", "blueprint-panel");
+    expect(tasksTab).not.toHaveAttribute("aria-controls");
+  });
+
+  it("swaps aria-controls to the other tab's panel when the active tab changes", () => {
+    render(<EditorHeader {...defaultProps} activeTab={EDITOR_TABS.TASKS} hasContent />);
+    const blueprintTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.BLUEPRINT) });
+    const tasksTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.TASKS) });
+    expect(tasksTab).toHaveAttribute("aria-controls", "tasks-panel");
+    expect(blueprintTab).not.toHaveAttribute("aria-controls");
+  });
+
+  it("omits aria-controls on both tabs when the empty state replaces the panel", () => {
+    render(<EditorHeader {...defaultProps} activeTab={EDITOR_TABS.BLUEPRINT} hasContent={false} />);
+    const tabs = screen.getAllByRole("tab");
+    for (const tab of tabs) {
+      expect(tab).not.toHaveAttribute("aria-controls");
+    }
+  });
+
+  it("keeps aria-controls on the active tab while generating with no content yet", () => {
+    render(
+      <EditorHeader
+        {...defaultProps}
+        activeTab={EDITOR_TABS.BLUEPRINT}
+        hasContent={false}
+        isGenerating
+      />
+    );
+    const blueprintTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.BLUEPRINT) });
+    expect(blueprintTab).toHaveAttribute("aria-controls", "blueprint-panel");
+  });
 });

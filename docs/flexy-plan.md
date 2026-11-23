@@ -4,6 +4,169 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 224: Centralize Skeleton CSS Class Name Literals
+
+**Problem**: 12 hardcoded skeleton CSS class-name literals survived 223 iterations across 4 web runtime files, bypassing the existing `CSS_CLASSES` family whose own glow-section docblock (Iteration 223) established className↔index.css pairing contracts — even though the skeleton family is the largest remaining multi-site holdout (`SKELETON_BLOCK` alone appears in 16 className sites across Editor/LazyCodeMirror/LazyMarkdownRenderer/App). Breakdown: 6× `skeleton-block` bare + 6× `skeleton-block skeleton-block--static` composite (App deferred-wizard landing placeholders), 5× `editor-skeleton` family (`editor-skeleton` root + `-gutter` + `-line-number` + `-code` + `-code-line`, each ×2 in Editor + LazyCodeMirror), 5× `preview-skeleton` family (`preview-skeleton` root + `-heading` + `-line` ×2 + `-subheading` + `-code-block`, each ×2 in Editor + LazyMarkdownRenderer). Each participates in a two-way silent-failure pairing contract: the write side is a React `className` string, while the read side flows through *different* surfaces that cannot import TypeScript constants — `index.css` base layout/shimmer rules (`.skeleton-block`, `.editor-skeleton*`, `.preview-skeleton*`), the `.skeleton-block--static::after` no-shimmer override, and the `@media (prefers-reduced-motion: reduce)` disable block. A typo on the write side does not throw: the class never matches any rule, the skeleton renders unstyled (layout collapse, no shimmer) while the component looks healthy. Concretely: (1) **`SKELETON_BLOCK`** drift across its 16 sites → Editor/LazyCodeMirror code lines and App landing placeholders lose shimmer independently while the sibling pane still shimmers (visual-state regression with zero type errors). (2) **`EDITOR_SKELETON_*`** typo in either Editor or LazyCodeMirror → one editor skeleton collapses to unstyled divs while the other renders correctly (silent per-file drift). (3) **`PREVIEW_SKELETON_*`** typo in either Editor or LazyMarkdownRenderer → one preview skeleton collapses while the twin stays styled. (4) **`SKELETON_BLOCK_STATIC`** typo → App deferred-wizard landing placeholders shimmer perpetually instead of staying static (motion regression for reduced-motion users is separately handled by index.css, but the base `.skeleton-block--static::after { animation: none }` override silently never engages). Flexy says: no bare skeleton class literals in className strings where `CSS_CLASSES` exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | NEW 12 `CSS_CLASSES` skeleton entries (SKELETON_BLOCK, SKELETON_BLOCK_STATIC, EDITOR_SKELETON, EDITOR_SKELETON_GUTTER, EDITOR_SKELETON_LINE_NUMBER, EDITOR_SKELETON_CODE, EDITOR_SKELETON_CODE_LINE, PREVIEW_SKELETON, PREVIEW_SKELETON_HEADING, PREVIEW_SKELETON_LINE, PREVIEW_SKELETON_SUBHEADING, PREVIEW_SKELETON_CODE_BLOCK — pairing-contract docblock covering className-write vs index.css base/`::after`/reduced-motion-read silent-failure modes + multi-site drift), placed after `CARD_GLOW_HOVER` |
+| `apps/web/src/config/constants/accessibility.test.ts` | +6 tests: exact 12 values, entry count 12 + uniqueness, lowercase kebab-case invariant, SKELETON_BLOCK multi-site byte-identity (bare + 4 preview composites + App static composite), EDITOR_SKELETON_* / PREVIEW_SKELETON_* index.css selector-group byte-identity, SKELETON_BLOCK reduced-motion + static `::after` byte-identity |
+| `apps/web/src/components/Editor.tsx` | 12 sites: EditorSkeleton (root + gutter + line-number + code + code-line + skeleton-block) and PreviewSkeleton (root + 4× `skeleton-block preview-skeleton-*` composites + code-block) → `CSS_CLASSES.*` |
+| `apps/web/src/components/LazyCodeMirror.tsx` | 6 sites: EditorSkeleton (root + gutter + line-number + code + code-line + skeleton-block) → `CSS_CLASSES.*` (+ import) |
+| `apps/web/src/components/LazyMarkdownRenderer.tsx` | 4 sites: MarkdownPreviewSkeleton (root + heading + line + code-block composites) → `CSS_CLASSES.*` (+ import) |
+| `apps/web/src/App.tsx` | 6 sites: deferred-wizard landing `skeleton-block skeleton-block--static` composites → `CSS_CLASSES.SKELETON_BLOCK` + `CSS_CLASSES.SKELETON_BLOCK_STATIC` |
+| `docs/flexy-plan.md` | Iteration 224 entry |
+
+Deliberately skipped: test files (`LazyMarkdownRenderer.test.tsx` `querySelector(".preview-skeleton")` — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213/217/218/219/220/221/222/223 precedent); `index.css` base/`::after`/reduced-motion selectors (CSS cannot import TypeScript constants — Iteration 211 index.html / 222 precedent; byte-identity pinned by the composed-selector tests); React `key="editor-skeleton"` / `key="preview-skeleton"` reconciliation keys in Editor.tsx (React key identity domain, not a CSS class contract — Iteration 199/200/210/216 IDL-property precedent); other custom animation classes in the reduced-motion block with no skeleton semantic (`form-ready-pulse`, `stack-card-attention`, `progress-shimmer`, `step-activate`, `connector-flash`, `counter-celebrate-pop`, `content-dot-breathe`, `invalid-field-flash`, `tech-chip`, `animate-*` Tailwind keyframe utilities — separate non-skeleton categories deferred by Iteration 223); `lib/templates/*` (generated templates); JSDoc prose mentioning the class names; `node_modules`/`dist`.
+
+## Verification (Iteration 224)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+6 new web)
+- ✅ Residual scan — 0 bare `"skeleton-block"` / `"skeleton-block--static"` / `"editor-skeleton"` / `"editor-skeleton-gutter"` / `"editor-skeleton-line-number"` / `"editor-skeleton-code"` / `"editor-skeleton-code-line"` / `"preview-skeleton"` / `"preview-skeleton-heading"` / `"preview-skeleton-line"` / `"preview-skeleton-subheading"` / `"preview-skeleton-code-block"` className literals in runtime source (excluding tests, the centralized `CSS_CLASSES` config, config docblocks, index.css, React reconciliation keys & docs)
+
+## PR (Iteration 224)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-224-skeleton-css-classes` | refactor(flexy): centralize skeleton CSS class name literals (Iteration 224) |
+
+### ✅ Flexy Iteration 223: Centralize Glow/Attention CSS Class Name Literals
+
+**Problem**: 10 hardcoded glow/attention CSS class-name literals survived 222 iterations across 8 web runtime files, bypassing the existing `CSS_CLASSES` family whose own docblock says "No hardcoded accessibility values - everything configurable!" — even though Iterations 157/168/176 already established `CSS_CLASSES` as the home for custom class names (`EDITOR_FOCUS_HIGHLIGHT`, `ARRIVAL_POP`, spinner/disabled families). Breakdown: 3× `CircularProgress` (`circular-complete-glow` / `generate-progress-glow` / `circular-complete-celebration` ternary on the progress-ring root), 3× `attention-glow` (Header one-shot shortcuts glow + PreviewEmptyState sibling-tab switch + StepGenerating view-editor CTA), 1× `ShowEditorButton` (`glow-pulse` FAB content-ready glow), 1× `App` (`ambient-glow` page backdrop), 1× `LastSavedIndicator` (`saved-celebration-glow` checkmark pulse), 1× `TemplateGrid` (`card-glow-hover` card ring). Each participates in a two-way silent-failure pairing contract: the write side is a React `className` string, while the read side flows through *different* surfaces that cannot import TypeScript constants — `index.css` base rules, `::before`/`::after` pseudo-element rules, and the `@media (prefers-reduced-motion: reduce)` disable block (Iteration 211 index.html / 222 CSS custom-property precedent). A typo on the write side does not throw: the class never matches any rule, so the glow/animation silently never applies — or the reduced-motion disable never engages, leaving motion running for users who opted out — while the component looks healthy. Concretely: (1) **`ATTENTION_GLOW`** drift across its 3 sites → Header/PreviewEmptyState/StepGenerating each glow (or not) independently with zero type errors. (2) **`CIRCULAR_COMPLETE_GLOW`/`GENERATE_PROGRESS_GLOW`/`CIRCULAR_COMPLETE_CELEBRATION`** typo → progress-ring completion/animation/celebration visuals silently vanish (visual-state regression) while `data-state` still reports the correct state. (3) **`GLOW_PULSE`** typo → FAB content-ready cue never appears while `data-glow-active` still flips. (4) **`AMBIENT_GLOW`/`SAVED_CELEBRATION_GLOW`/`CARD_GLOW_HOVER`** typo → backdrop/save-confirmation/card-hover affordances silently disappear. Flexy says: no bare glow/attention class literals in className strings where `CSS_CLASSES` exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | NEW 8 `CSS_CLASSES` glow entries (ATTENTION_GLOW, GLOW_PULSE, CIRCULAR_COMPLETE_GLOW, GENERATE_PROGRESS_GLOW, CIRCULAR_COMPLETE_CELEBRATION, AMBIENT_GLOW, SAVED_CELEBRATION_GLOW, CARD_GLOW_HOVER — pairing-contract docblock covering className-write vs index.css base/`::before`/reduced-motion-read silent-failure modes + multi-site drift), placed after `LOADING_SPINNER` |
+| `apps/web/src/config/constants/accessibility.test.ts` | +5 tests: exact 8 values, entry count 8 + uniqueness, lowercase kebab-case invariant, ATTENTION_GLOW multi-site byte-identity, reduced-motion selector-group byte-identity for the 4 CircularProgress/ShowEditorButton glow classes |
+| `apps/web/src/components/CircularProgress.tsx` | 3 sites: bare `circular-complete-glow`/`generate-progress-glow`/`circular-complete-celebration` ternary → `CSS_CLASSES.*` |
+| `apps/web/src/components/Header.tsx` | 1 site: bare `attention-glow` → `CSS_CLASSES.ATTENTION_GLOW` (+ import) |
+| `apps/web/src/components/PreviewEmptyState.tsx` | 1 site: bare `attention-glow` in static className → template + `CSS_CLASSES.ATTENTION_GLOW` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 1 site: bare `attention-glow` → `CSS_CLASSES.ATTENTION_GLOW` |
+| `apps/web/src/components/ShowEditorButton.tsx` | 1 site: bare `glow-pulse` → `CSS_CLASSES.GLOW_PULSE` |
+| `apps/web/src/App.tsx` | 1 site: bare `ambient-glow` → `CSS_CLASSES.AMBIENT_GLOW` |
+| `apps/web/src/components/LastSavedIndicator.tsx` | 1 site: bare `saved-celebration-glow` → `CSS_CLASSES.SAVED_CELEBRATION_GLOW` (+ import) |
+| `apps/web/src/components/TemplateGrid.tsx` | 1 site: bare `card-glow-hover` in multi-line className → `CSS_CLASSES.CARD_GLOW_HOVER` |
+| `docs/flexy-plan.md` | Iteration 223 entry |
+
+Deliberately skipped: test files (`CircularProgress.test.tsx` `className.toContain("circular-complete-glow")`, `ShowEditorButton.test.tsx` `toContain("glow-pulse")` — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213/217/218/219/220/221/222 precedent); `index.css` base/`::before`/reduced-motion selectors (CSS cannot import TypeScript constants — Iteration 211 index.html / 222 precedent; byte-identity pinned by the composed-selector test); other custom animation classes in the reduced-motion block with no glow/attention semantic or single-site status (`form-ready-pulse`, `stack-card-attention`, `progress-shimmer`, `step-activate`, `connector-flash`, `counter-celebrate-pop`, `content-dot-breathe`, `invalid-field-flash`, `animate-*` Tailwind keyframe utilities — separate non-glow categories); `SKIP_LINK_ANIMATION.GLOW_PULSE` (`skip-glow-pulse` keyframe shorthand — already centralized in `effects.ts`); `lib/templates/*` (generated templates); JSDoc prose mentioning the class names; `node_modules`/`dist`.
+
+## Verification (Iteration 223)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new web)
+- ✅ Residual scan — 0 bare `"circular-complete-glow"` / `"generate-progress-glow"` / `"circular-complete-celebration"` / `"attention-glow"` / `"glow-pulse"` / `"ambient-glow"` / `"saved-celebration-glow"` / `"card-glow-hover"` className literals in runtime source (excluding tests, the centralized `CSS_CLASSES` config, config docblocks, index.css & docs)
+
+## PR (Iteration 223)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #4047 | `flexy/iteration-223-glow-css-classes` | refactor(flexy): centralize glow/attention CSS class name literals (Iteration 223) |
+
+### ✅ Flexy Iteration 222: Centralize CSS Custom-Property Name Literals (`--glow-color`, `--tech-glow`)
+
+**Problem**: 2 hardcoded CSS custom-property name literals survived 221 iterations across 2 web runtime files, with no constant family anywhere — and Iterations 220/221's skipped lists explicitly deferred the CSS-variable category as the next candidate while 221 consumed dynamic-ID affixes. Breakdown: 1× `CircularProgress` (`style={{ …, "--glow-color": color }}` — progress-stroke glow color binding consumed by 8 `var(--glow-color)` reads in `index.css` keyframes) and 1× `TemplateGrid` (`"--tech-glow": TEMPLATE_GLOW_SHADOW` card style write + the paired `group-hover:[box-shadow:var(--tech-glow)]` Tailwind arbitrary utility on the tech-stack tag). Each participates in a two-way silent-failure pairing contract: the write side is a React style-object key, while the read side flows through a *different* surface that cannot import TypeScript constants — (1) `index.css` `var(--glow-color)` selectors (CSS cannot import TS — Iteration 211 index.html precedent) and (2) a Tailwind JIT arbitrary utility whose full contiguous literal must appear in scanned source or the rule is purged. A typo on the write side does not throw: the custom property is simply never defined, every `var(...)` read resolves to its fallback/initial value, and the styled effect silently disappears while the component looks healthy. Concretely: (1) **`GLOW_COLOR`** typo → `circular-complete-glow` / `generate-progress-glow` keyframes lose their stroke-color binding, so the glow stops matching the active progress color (visual-state / WCAG 1.4.11 non-text contrast regression). (2) **`TECH_GLOW`** typo → the tag-hover box-shadow never applies while the card still hovers/scales normally. Flexy says: no bare `--custom-property` string-literal style keys where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `CSS_CUSTOM_PROPERTIES` (GLOW_COLOR, TECH_GLOW — 2 entries, two-way pairing-contract docblock covering style-key write vs index.css/Tailwind read silent-failure modes + WCAG 1.4.11 regression + JIT contiguous-literal constraint), placed after `TOAST_SELECTORS` |
+| `packages/shared/src/index.ts` | Exported `CSS_CUSTOM_PROPERTIES` on the root barrel |
+| `packages/shared/src/config.test.ts` | +7 tests: exact 2 values, entry count 2 + uniqueness, `--` prefix invariant, lowercase kebab-case invariant, `var()` byte-identity for both names, composed `group-hover:[box-shadow:var(--tech-glow)]` byte-identity, GLOW_COLOR≠TECH_GLOW distinctness |
+| `apps/web/src/components/CircularProgress.tsx` | 1 site: `"--glow-color": color` → `[CSS_CUSTOM_PROPERTIES.GLOW_COLOR]: color` (progress glow binding) |
+| `apps/web/src/components/TemplateGrid.tsx` | 2 sites: `"--tech-glow": TEMPLATE_GLOW_SHADOW` → `[CSS_CUSTOM_PROPERTIES.TECH_GLOW]: …`; bare `group-hover:[box-shadow:var(--tech-glow)]` className fragment → `TECH_TAG_HOVER_GLOW` constant |
+| `apps/web/src/config/styles.ts` | NEW `TECH_TAG_HOVER_GLOW` — full contiguous Tailwind arbitrary utility as a single literal (JIT content-scan safe; composing from the constant at the call site would strip the class) |
+| `docs/flexy-plan.md` | Iteration 222 entry |
+
+Deliberately skipped: test files (constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213/217/218/219/220/221 precedent); `index.css` `var(--glow-color)` read-side selectors (CSS cannot import TypeScript constants — Iteration 211 index.html precedent; byte-identity pinned by the composed-`var()` tests); other CSS custom properties declared in `:root`/stylesheet-only (no TypeScript write side — no pairing contract); `lib/templates/*` (generated templates); JSDoc prose mentioning the property names; `node_modules`/`dist`.
+
+## Verification (Iteration 222)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+7 new shared)
+- ✅ Residual scan — 0 bare `"--glow-color"` / `"--tech-glow"` style-key literals and 0 bare `group-hover:[box-shadow:var(--tech-glow)]` className literals in component/runtime source (excluding tests, the centralized `styles.ts` constant, config docblocks & docs)
+
+## PR (Iteration 222)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-222-css-custom-properties` | refactor(flexy): centralize CSS custom-property name literals (Iteration 222) |
+
+### ✅ Flexy Iteration 221: Centralize Dynamic DOM ID Affix Literals (`tab-`, `category-`, `-locked-hint`, `-panel`)
+
+**Problem**: 12 hardcoded dynamic-ID affix literals survived 220 iterations across 5 web runtime files, with no constant family anywhere — and `DOM_ELEMENT_IDS`' own docblock explicitly deferred them with the incorrect claim that template IDs "cannot import TypeScript constants" (template literals interpolate constants perfectly fine). Breakdown: 5× `tab-` (EditorHeader `id` write + `getElementById` keyboard-nav read; Editor `getElementById` mount-focus read + `aria-labelledby` tabpanel read; StepGenerating `getElementById` post-generation focus read), 2× `category-` (StepStack `id` write + `aria-labelledby` read), 2× `-locked-hint` (StepIndicator `id` write + `aria-describedby` read), 3× `-panel` (EditorHeader `aria-controls` read + Editor tabpanel `id` write ×2 literal ternary branches + StepGenerating `[id$="-panel"]` scroll-target selector). Each participates in a silent-failure pairing contract: the write side is an `id={...}` template and the read side flows through a *different* surface — `getElementById()`, `aria-labelledby`, `aria-describedby`, `aria-controls`, or an attribute-ends-with CSS selector. A typo on any one side does not throw: the lookup returns `null` and the ARIA reference dangles. Concretely: (1) **`TAB_PREFIX`** typo → editor tab focus after mount/keyboard-nav/generation silently no-ops (focus falls to `<body>`) and the tabpanel's `aria-labelledby` dangles (WCAG 1.3.1 / 2.4.3 regression). (2) **`CATEGORY_PREFIX`** typo → tech-stack group `aria-labelledby` dangles so the group's accessible name is lost. (3) **`LOCKED_HINT_SUFFIX`** typo → locked-step `aria-describedby` dangles so the "step locked" explanation is never announced. (4) **`PANEL_SUFFIX`** typo → tab `aria-controls` dangles and the `[id$="-panel"]` scroll target in StepGenerating matches nothing, so post-generation focus/scroll silently no-ops. Flexy says: no bare affix literals in id templates or ARIA references where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | NEW `DYNAMIC_ID_AFFIXES` (TAB_PREFIX, CATEGORY_PREFIX, LOCKED_HINT_SUFFIX, PANEL_SUFFIX — 4 entries, pairing-contract docblock covering getElementById/aria-labelledby/aria-describedby/aria-controls/`[id$=]` silent-failure modes + WCAG 1.3.1/2.4.3 regressions), placed after `DOM_ELEMENT_IDS`; updated `DOM_ELEMENT_IDS` docblock — dynamic/template IDs now compose affixes from `DYNAMIC_ID_AFFIXES` instead of being "deliberately excluded" |
+| `apps/web/src/config/constants/accessibility.test.ts` | +5 tests: exact 4 values, entry count 4 + uniqueness, prefix/suffix shape invariants, byte-identity of composed IDs against historical bare literals (`tab-blueprint`, `tab-tasks`, `info-locked-hint`, `frontend-panel`, `category-frontend`, `blueprint-panel`, `tasks-panel`), `[id$="-panel"]` selector byte-identity |
+| `apps/web/src/components/editor/EditorHeader.tsx` | 3 sites: `id={`tab-${id}`}` → `id={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${id}`}`; `aria-controls={... `${id}-panel`}` → `${id}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`; `getElementById(`tab-${nextTab}`)` → `${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${nextTab}` |
+| `apps/web/src/components/Editor.tsx` | 3 sites: `getElementById(`tab-${tabId}`)` → `TAB_PREFIX`; tabpanel ternary `"blueprint-panel"` / `"tasks-panel"` → `${EDITOR_TABS.BLUEPRINT/TASKS}${PANEL_SUFFIX}`; `aria-labelledby={`tab-${activeTab}`}` → `TAB_PREFIX` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 2 sites: `querySelector('[id$="-panel"]')` → `[id$="${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}"]`; `getElementById(`tab-${activeEditorTab}`)` → `TAB_PREFIX` |
+| `apps/web/src/components/StepIndicator.tsx` | 2 sites: `aria-describedby={`${step.key}-locked-hint`}` → `${step.key}${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}`; matching `id` write → same suffix |
+| `apps/web/src/components/wizard/StepStack.tsx` | 2 sites: `id={`category-${category}`}` + `aria-labelledby={`category-${category}`}` → `CATEGORY_PREFIX` |
+| `docs/flexy-plan.md` | Iteration 221 entry |
+
+Deliberately skipped: test files (`EditorHeader.test.tsx` `getElementById(`tab-${EDITOR_TABS.TASKS}`)` — constants preserve the identical byte value so the assertion stays green — Iteration 194/196/206/208/212/213/217/218/219/220 precedent); `index.html`-paired runtime IDs (`root`, `skeleton-loader` — HTML cannot import TypeScript constants); static full-ID templates not present in source (`${step.key}` step keys and `${category}` values are dynamic *values*, not affixes — only the affix fragments were bare); CSS custom-property writes (`"--glow-color"`, `"--tech-glow"` — CSS-variable category deferred by Iteration 220); `EDITOR_PANEL: "editor-panel"` static ID (already centralized in `DOM_ELEMENT_IDS`); JSDoc prose mentioning the affixes; `node_modules`/`dist`.
+
+## Verification (Iteration 221)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+5 new web)
+- ✅ Residual scan — 0 bare `` `tab-` `` / `` `category-` `` / `` `-locked-hint` `` / `` `-panel` `` affix literals and 0 bare `"blueprint-panel"`/`"tasks-panel"` literals in runtime source (excluding tests, config docblocks & docs)
+
+## PR (Iteration 221)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-221-dynamic-id-affixes` | refactor(flexy): centralize dynamic DOM ID affix literals (Iteration 221) |
+
+### ✅ Flexy Iteration 220: Centralize Toast `data-*` Attribute Name Literals
+
+**Problem**: 3 hardcoded toast data-attribute name literals survived 219 iterations in a single runtime file (`Toast.tsx`), participating in a three-way silent-failure pairing contract with no constant family anywhere. Breakdown: 1× `data-toast-type` (JSX write on the toast root — variant key for type-scoped styling/tests), 1× `data-toast-id` (JSX write on the toast root + `closest("[data-toast-id]")` selector + `getAttribute("data-toast-id")` read in `restoreFocusForDismiss`), 2× `data-toast-dismiss` (JSX writes on both dismiss-button variants + `querySelectorAll("[data-toast-dismiss]")` selector + `dataset.toastDismiss` IDL camelCase read). Each participates in a silent-failure pairing contract: JSX requires literal prop names (Iteration 206/216 precedent) so the write side stays a bare literal, while the read side flows through three *different* surfaces — CSS selector, `getAttribute` content-attribute read, and `dataset.*` IDL property. A typo on any one side does not throw: the selector matches nothing, `getAttribute` returns `null`, and the dataset property is `undefined`. Concretely: (1) **`ID`** typo → `restoreFocusForDismiss` never finds the active toast's id, so focus after auto-dismiss falls to `<body>` instead of the neighbor dismiss button (WCAG 2.4.3 Focus Order regression). (2) **`DISMISS`** typo → the neighbor-button lookup returns no target, so focus parks on the container instead of the next toast's dismiss control. (3) **`TYPE`** typo → tests and type-scoped styling/selectors silently stop matching while the toast still renders. The dataset IDL form is derived (`data-toast-dismiss` → `toastDismiss` by stripping `data-`, dropping hyphens, capitalizing following letters) and must be renamed in lockstep with the constant. Flexy says: no bare `data-toast-*` string literals in selectors, `getAttribute` calls, or dataset pairing where a constant family exists!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | NEW `TOAST_DATA_ATTRIBUTES` (TYPE, ID, DISMISS — 3 entries, three-way pairing-contract docblock covering selector/`getAttribute`/`dataset` silent-failure modes + WCAG 2.4.3 focus-order regression + dataset camelCase derivation rule); NEW `TOAST_SELECTORS` (BY_ID, DISMISS_BUTTONS — 2 entries built from the attribute constants, read-side pairing-contract docblock), both placed after `DOM_ELEMENT_TAGS` |
+| `packages/shared/src/index.ts` | Exported `TOAST_DATA_ATTRIBUTES` + `TOAST_SELECTORS` on the root barrel |
+| `packages/shared/src/config.test.ts` | +9 tests: 5 `TOAST_DATA_ATTRIBUTES` (exact 3 values, entry count 3 + uniqueness, lowercase invariant, `data-` prefix invariant, dataset camelCase derivation pin `toastDismiss`), 4 `TOAST_SELECTORS` (BY_ID byte-identity with `[data-toast-id]`, DISMISS_BUTTONS byte-identity with `[data-toast-dismiss]`, entry count 2 + uniqueness, BY_ID≠DISMISS_BUTTONS distinctness) |
+| `apps/web/src/components/Toast.tsx` | 3 sites: `closest("[data-toast-id]")?.getAttribute("data-toast-id")` → `closest(TOAST_SELECTORS.BY_ID)?.getAttribute(TOAST_DATA_ATTRIBUTES.ID)`; `querySelectorAll("[data-toast-dismiss]")` → `querySelectorAll(TOAST_SELECTORS.DISMISS_BUTTONS)`; `dataset.toastDismiss` left as IDL property (documented lockstep pairing in the constant docblock + pinned by the derivation test) |
+| `docs/flexy-plan.md` | Iteration 220 entry |
+
+Deliberately skipped: test files (`Toast.test.tsx` `querySelector('[data-toast-dismiss="toast-1"]')` selectors and `toHaveAttribute("data-toast-type", …)` assertions — constants preserve the identical byte value so assertions stay green — Iteration 194/196/206/208/212/213/217/218 precedent); JSX attribute *names* on the write side (`data-toast-type={…}` / `data-toast-id={…}` / `data-toast-dismiss={…}` — JSX requires literal prop names, Iteration 206/216 precedent; byte-identity pinned by the exact-value tests); `dataset.toastDismiss` IDL property access (numeric/boolean/IDL property domain, not a string-literal argument — Iteration 199/200/210/216 precedent; pairing documented + derivation test pins the camelCase contract); other `data-*` attribute names in JSX writes across components (single-write families with no selector/`getAttribute`/`dataset` read side — no three-way pairing contract); CSS custom properties (`"--glow-color"` in CircularProgress, `"--tech-glow"` in TemplateGrid — CSS-variable category, no multi-surface pairing contract yet); `lib/templates/*` (generated templates); JSDoc prose mentioning data-toast; `node_modules`/`dist`.
+
+## Verification (Iteration 220)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npx eslint . --ext .ts,.tsx --max-warnings 0` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` (dry-run) — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — all tests passing (+9 new shared)
+- ✅ Residual scan — 0 bare `"[data-toast-id]"` / `"[data-toast-dismiss]"` selector literals and 0 bare `getAttribute("data-toast-*")` string literals in runtime source (excluding tests)
+
+## PR (Iteration 220)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #4022 | `flexy/iteration-220-toast-data-attributes` | refactor(flexy): centralize toast data-attribute name literals (Iteration 220) |
+
 ### ✅ Flexy Iteration 219: Centralize `document.createElement` Tag-Name Literals
 
 **Problem**: 8 hardcoded `document.createElement` tag-name literals survived 218 iterations across 8 web runtime files, with no constant family anywhere — and Iteration 218's skipped list explicitly deferred the createElement category as the next candidate while it consumed the IDL-property assignment category (`link.rel`/`link.type`/`link.media`). Breakdown: 1× `export.ts` (`"a"` download anchor), 1× `clipboard.ts` (`"textarea"` legacy copy fallback), 2× `useFaviconStatus` + `main.tsx` (`"link"` ×2 — favicon status-swap link and mono-font stylesheet loader, both already pairing-contracted on the IDL side by Iteration 218), 2× `StepStack` + `OfflineBanner` (`"style"` ×2 keyframe injection), 2× `useFocusOnStepChange` + `useScrollLock` (`"div"` ×2 — ARIA live region and scrollbar-width probe). Each participates in a silent-failure pairing contract: `createElement` accepts any string and returns an element either way, so a typo does not throw — it constructs an unknown element whose specialized IDL surface is missing. (1) **`"a"`** — without a real `HTMLAnchorElement`, `download` + `click()` never triggers the file save (export appears to run, no download lands). (2) **`"textarea"`** — without a real `HTMLTextAreaElement`, the value/selection APIs the clipboard fallback relies on do not engage — legacy copy silently no-ops. (3) **`"link"`** — without a real `HTMLLinkElement`, the Iteration 218 `rel`/`type`/`href`/`media` IDL writes are inert — favicon swaps stack no-ops and the mono-font print→all loader never fetches. (4) **`"style"`** — without a real `HTMLStyleElement`, assigning `textContent` does not inject CSSOM — keyframe animations never run while the component looks healthy. (5) **`"div"`** — generic container, but required so `className`/ARIA pairing and `offsetWidth` measurement behave as the live-region and scrollbar-probe sites expect. Flexy says: no bare tag-name string literals in `document.createElement` where a constant family exists!

@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 import { isDev } from "../config/env";
 import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
-import { FOCUS_ANNOUNCER } from "../config/constants/accessibility";
+import { FOCUS_ANNOUNCER, CSS_CLASSES } from "../config/constants/accessibility";
 import { ARIA_LIVE_VALUES, ARIA_ROLES, ARIA_HIDDEN_VALUES } from "@blueprint/shared/config";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
@@ -12,25 +12,25 @@ interface LazyMarkdownRendererProps extends MarkdownRendererProps {
 function MarkdownPreviewSkeleton(): JSX.Element {
   return (
     <div
-      className="preview-skeleton"
+      className={CSS_CLASSES.PREVIEW_SKELETON}
       role={ARIA_ROLES.STATUS}
       aria-live={ARIA_LIVE_VALUES.POLITE}
       aria-label={ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.LOADING}
     >
       <div
-        className="skeleton-block preview-skeleton-heading"
+        className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_HEADING}`}
         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />
       {SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS.map((w, i) => (
         <div
           key={i}
-          className="skeleton-block preview-skeleton-line"
+          className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_LINE}`}
           style={{ width: w }}
           aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
         />
       ))}
       <div
-        className="skeleton-block preview-skeleton-code-block"
+        className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.PREVIEW_SKELETON_CODE_BLOCK}`}
         style={{ width: SKELETON_LAYOUT.PREVIEW_CODE_WIDTH }}
         aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
       />

@@ -89,6 +89,7 @@ export const StepFeatures = memo(function StepFeatures({
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const [showAllAddedMsg, setShowAllAddedMsg] = useState(false);
+  const [clearAnnouncement, setClearAnnouncement] = useState("");
   const featureInputRef = useRef<HTMLInputElement>(null);
   // Maps each added feature to its remove button so focus can be restored after
   // a suggestion chip is activated. The activated chip unmounts immediately
@@ -160,6 +161,23 @@ export const StepFeatures = memo(function StepFeatures({
     }
     prevFeaturesLengthRef.current = features.length;
   }, [features.length]);
+
+  const handleClearAllFeatures = useCallback(() => {
+    clearFeatures();
+    // The clear-all button unmounts as soon as the feature list empties
+    // (it's rendered under `features.length > 0`), so keyboard and
+    // screen-reader users get no confirmation the action landed. Announce
+    // it explicitly — mirrors StepInfo's clear-all live region.
+    setClearAnnouncement(ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_ANNOUNCEMENT);
+  }, [clearFeatures]);
+
+  // Clear the announcement after screen readers have had time to announce it,
+  // preventing stale text from accumulating in the live region.
+  useEffect(() => {
+    if (!clearAnnouncement) return;
+    const timer = setTimeout(() => setClearAnnouncement(""), TIMEOUTS.LIVE_REGION_CLEAR);
+    return () => clearTimeout(timer);
+  }, [clearAnnouncement]);
 
   const suggestedNotAdded = useMemo(
     () => SUGGESTED_FEATURES.filter((f: string) => !isInFeatures(f)),
@@ -257,10 +275,14 @@ export const StepFeatures = memo(function StepFeatures({
                 // tokens ("auth", "SSO", "rate limiting"). Without these,
                 // iOS/Android autocapitalize each word and Safari autocorrect
                 // rewrites tokens ("auth" -> "author"), mangling the added
-                // feature. Matches the autoCapitalize/autoCorrect pattern on
-                // StepInfo's projectName/targetAudience inputs.
+                // feature. spellCheck={false} also matches the same inputs:
+                // without it the browser red-underlines acronyms and coined
+                // terms ("SSO", "OAuth", "rate-limiting") mid-typing.
+                // Matches the autoCapitalize/autoCorrect/spellCheck pattern
+                // on StepInfo's projectName/targetAudience inputs.
                 autoCapitalize={HTML_AUTOCAPITALIZE_VALUES.OFF}
                 autoCorrect={HTML_AUTOCORRECT_VALUES.OFF}
+                spellCheck={false}
                 enterKeyHint={ENTER_KEY_HINTS.DONE}
                 dir={HTML_TEXT_DIRECTION.AUTO}
                 value={newFeature}
@@ -353,7 +375,7 @@ export const StepFeatures = memo(function StepFeatures({
                 {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} ({features.length})
               </label>
               <button
-                onClick={clearFeatures}
+                onClick={handleClearAllFeatures}
                 // px-2 py-1 grows the button to a 24×24 touch target (WCAG 2.2
                 // SC 2.5.8 AA); the previous px-1 with no vertical padding left
                 // it ~16px tall. Matches StepInfo's clear-all button, which pads
@@ -414,6 +436,12 @@ export const StepFeatures = memo(function StepFeatures({
                           : "bg-primary-500/20 border border-primary-500/30 text-primary-300"
                       }`}
                       role={ARIA_ROLES.LISTITEM}
+                      // dir=auto: feature text is free-typed user input, so an
+                      // RTL entry (Arabic, Hebrew, …) must set the chip's base
+                      // direction itself — otherwise the ✓ prefix and remove
+                      // button render on the wrong side of the text. Matches
+                      // the feature input above and StepReview's list item.
+                      dir={HTML_TEXT_DIRECTION.AUTO}
                     >
                       <span className="text-accent-emerald" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                         ✓
@@ -749,6 +777,19 @@ export const StepFeatures = memo(function StepFeatures({
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>
+      </div>
+      {/* Screen reader announcement for clear-all — the clear-all button
+          unmounts from the DOM when the list empties, so without this the
+          action is silent for screen-reader users. Assertive: matches
+          StepInfo's clear-all announcement (urgent, destructive feedback). */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+        data-testid="clear-features-announcer"
+      >
+        {clearAnnouncement}
       </div>
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}

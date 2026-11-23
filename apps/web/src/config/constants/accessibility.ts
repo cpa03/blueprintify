@@ -93,6 +93,85 @@ export const CSS_CLASSES = {
    * ANIMATED_SPINNER (h-8 w-8, border-b-2) which is used for standalone loading states.
    * Flexy says: No hardcoded spinner Tailwind classes in components! */
   LOADING_SPINNER: "h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full" as const,
+
+  /**
+   * Glow / attention effect class names (Iteration 223).
+   *
+   * Pairing contract: the write side is a React `className` string in a
+   * component, while the read side flows through `index.css` selectors —
+   * the base rule, `::before`/`::after` pseudo-element rules, and the
+   * `@media (prefers-reduced-motion: reduce)` disable block. CSS cannot
+   * import TypeScript constants (Iteration 211 index.html / 222 CSS
+   * custom-property precedent), so the two sides are pinned byte-identical
+   * by these exact-value tests. A typo on the write side does not throw:
+   * the class simply never matches any rule, the glow/animation silently
+   * never applies (or the reduced-motion disable never engages, leaving
+   * motion running for users who opted out), and the component looks
+   * healthy. Multi-site families (ATTENTION_GLOW ×3) must stay identical
+   * across every call site or the effect drifts per-site with zero type
+   * errors. Flexy says: no bare glow/attention class literals in className
+   * strings where a constant family exists!
+   */
+  /** One-shot header attention glow — pairs with `.attention-glow::before` + reduced-motion disable. */
+  ATTENTION_GLOW: "attention-glow" as const,
+  /** Floating action button content-ready glow — pairs with `.glow-pulse` + reduced-motion disable. */
+  GLOW_PULSE: "glow-pulse" as const,
+  /** Progress ring full-completion glow — pairs with `.circular-complete-glow` + reduced-motion disable. */
+  CIRCULAR_COMPLETE_GLOW: "circular-complete-glow" as const,
+  /** Progress ring active-generation glow — pairs with `.generate-progress-glow` + reduced-motion disable. */
+  GENERATE_PROGRESS_GLOW: "generate-progress-glow" as const,
+  /** Progress ring 100% celebration burst — pairs with `.circular-complete-celebration` + reduced-motion disable. */
+  CIRCULAR_COMPLETE_CELEBRATION: "circular-complete-celebration" as const,
+  /** Page-wide ambient background glow — pairs with `.ambient-glow` + reduced-motion disable. */
+  AMBIENT_GLOW: "ambient-glow" as const,
+  /** Auto-save success checkmark glow — pairs with `.saved-celebration-glow` + reduced-motion disable. */
+  SAVED_CELEBRATION_GLOW: "saved-celebration-glow" as const,
+  /** Template card hover glow ring — pairs with `.card-glow-hover` / `::before` hover rules. */
+  CARD_GLOW_HOVER: "card-glow-hover" as const,
+
+  /**
+   * Skeleton loading CSS class names (Iteration 224).
+   *
+   * Pairing contract: the write side is a React `className` string in a
+   * component, while the read side flows through `index.css` selectors —
+   * the base layout/shimmer rules (`.skeleton-block`, `.editor-skeleton*`,
+   * `.preview-skeleton*`), the `.skeleton-block--static::after` no-shimmer
+   * override, and the `@media (prefers-reduced-motion: reduce)` disable
+   * block. CSS cannot import TypeScript constants (Iteration 211 index.html
+   * / 222 CSS custom-property precedent), so the two sides are pinned
+   * byte-identical by these exact-value tests. A typo on the write side does
+   * not throw: the class simply never matches any rule, the skeleton renders
+   * unstyled (layout collapse, no shimmer), and the component looks healthy.
+   * Multi-site families (EDITOR_SKELETON_* ×2 files, SKELETON_BLOCK ×4 files)
+   * must stay identical across every call site or one skeleton looks styled
+   * while its twin does not, with zero type errors. Flexy says: no bare
+   * skeleton class literals in className strings where a constant family
+   * exists!
+   */
+  /** Base shimmer placeholder block — pairs with `.skeleton-block` + reduced-motion disable. */
+  SKELETON_BLOCK: "skeleton-block" as const,
+  /** Static (non-shimmering) skeleton variant — pairs with `.skeleton-block--static::after`. */
+  SKELETON_BLOCK_STATIC: "skeleton-block--static" as const,
+  /** Editor skeleton root layout — pairs with `.editor-skeleton` grid rules. */
+  EDITOR_SKELETON: "editor-skeleton" as const,
+  /** Editor skeleton line-number gutter — pairs with `.editor-skeleton-gutter`. */
+  EDITOR_SKELETON_GUTTER: "editor-skeleton-gutter" as const,
+  /** Editor skeleton individual line-number cell — pairs with `.editor-skeleton-line-number`. */
+  EDITOR_SKELETON_LINE_NUMBER: "editor-skeleton-line-number" as const,
+  /** Editor skeleton code column — pairs with `.editor-skeleton-code`. */
+  EDITOR_SKELETON_CODE: "editor-skeleton-code" as const,
+  /** Editor skeleton individual code-line row — pairs with `.editor-skeleton-code-line`. */
+  EDITOR_SKELETON_CODE_LINE: "editor-skeleton-code-line" as const,
+  /** Preview skeleton root layout — pairs with `.preview-skeleton`. */
+  PREVIEW_SKELETON: "preview-skeleton" as const,
+  /** Preview skeleton heading bar — pairs with `.preview-skeleton-heading`. */
+  PREVIEW_SKELETON_HEADING: "preview-skeleton-heading" as const,
+  /** Preview skeleton paragraph line — pairs with `.preview-skeleton-line`. */
+  PREVIEW_SKELETON_LINE: "preview-skeleton-line" as const,
+  /** Preview skeleton subheading bar — pairs with `.preview-skeleton-subheading`. */
+  PREVIEW_SKELETON_SUBHEADING: "preview-skeleton-subheading" as const,
+  /** Preview skeleton code-block placeholder — pairs with `.preview-skeleton-code-block`. */
+  PREVIEW_SKELETON_CODE_BLOCK: "preview-skeleton-code-block" as const,
 } as const;
 
 // ============================================================================
@@ -149,10 +228,11 @@ export const ACCESSIBILITY_LABELS_SKIP = {
  * `aria-describedby`, `aria-controls`, `htmlFor`, skip-link `href`/`data-target`)
  * must share this single source so the pair can never drift apart.
  *
- * Deliberately excludes dynamic/template IDs (`tab-${activeTab}`,
- * `${step.key}-locked-hint`, `category-${category}`, `${id}-panel`) and
- * `index.html`-paired runtime IDs (`root`, `skeleton-loader`), which cannot
- * import TypeScript constants.
+ * Dynamic/template IDs (`tab-${activeTab}`, `${step.key}-locked-hint`,
+ * `category-${category}`, `${id}-panel`) compose their affixes from
+ * `DYNAMIC_ID_AFFIXES` below so write and read sides stay in lockstep.
+ * Deliberately excludes `index.html`-paired runtime IDs (`root`,
+ * `skeleton-loader`), which cannot import TypeScript constants.
  *
  * Flexy says: No hardcoded DOM element ID literals in components!
  */
@@ -202,6 +282,43 @@ export const DOM_ELEMENT_IDS = {
   STEP_INFO_CONSTRAINTS: "constraints",
   /** Persistent character-count description for constraints; referenced by `aria-describedby`. */
   STEP_INFO_CONSTRAINTS_COUNTER: "constraints-counter",
+} as const;
+
+/**
+ * Dynamic DOM ID Affixes
+ * Centralized source of truth for the prefix/suffix fragments composed into
+ * template-literal DOM element IDs and their ARIA pairings. Each affix
+ * participates in a silent-failure pairing contract: the write side is an
+ * `id={...}` template and the read side is a *different* surface —
+ * `getElementById()`, `aria-labelledby`, `aria-describedby`, or
+ * `aria-controls`. A typo on either side does not throw — the lookup
+ * returns `null` and the ARIA reference dangles, so:
+ * - `TAB_PREFIX` typo → editor tab focus after mount/keyboard-nav/generation
+ *   silently no-ops (focus falls to `<body>`) and the tabpanel's
+ *   `aria-labelledby` dangles (WCAG 1.3.1 / 2.4.3 regression).
+ * - `CATEGORY_PREFIX` typo → tech-stack group `aria-labelledby` dangles so
+ *   the group's accessible name is lost.
+ * - `LOCKED_HINT_SUFFIX` typo → locked-step `aria-describedby` dangles so
+ *   the "step locked" explanation is never announced.
+ * - `PANEL_SUFFIX` typo → tab `aria-controls` dangles and the
+ *   `[id$="-panel"]` scroll target in StepGenerating matches nothing, so
+ *   post-generation focus/scroll silently no-ops.
+ *
+ * Flexy says: No bare "tab-"/"category-"/"-locked-hint"/"-panel" affix
+ * literals in id templates or ARIA references where a constant family exists!
+ * Usage: import { DYNAMIC_ID_AFFIXES } from "../config/constants";
+ *        id={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${id}`}
+ *        document.getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${tabId}`)
+ */
+export const DYNAMIC_ID_AFFIXES = {
+  /** Prefix for editor tab button IDs (`tab-blueprint`, `tab-tasks`) */
+  TAB_PREFIX: "tab-" as const,
+  /** Prefix for tech-stack category heading/group IDs (`category-frontend`, …) */
+  CATEGORY_PREFIX: "category-" as const,
+  /** Suffix for locked-step hint live-region IDs (`info-locked-hint`, …) */
+  LOCKED_HINT_SUFFIX: "-locked-hint" as const,
+  /** Suffix for editor tabpanel IDs (`blueprint-panel`, `tasks-panel`) */
+  PANEL_SUFFIX: "-panel" as const,
 } as const;
 
 // ============================================================================

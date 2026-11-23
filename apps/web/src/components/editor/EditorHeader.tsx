@@ -63,6 +63,7 @@ import {
   SCALE_PULSE,
   OPACITY,
   ENTRANCE_OFFSETS,
+  DYNAMIC_ID_AFFIXES,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -122,8 +123,18 @@ const TabButton = React.memo(function TabButton({
     <button
       role={ARIA_ROLES.TAB}
       aria-selected={isActive}
-      aria-controls={hasContent ? `${id}-panel` : undefined}
-      id={`tab-${id}`}
+      // Editor.tsx mounts only the ACTIVE tab's panel (a single swapped
+      // tabpanel), and only while content or generation is shown — the
+      // empty state replaces it otherwise. An aria-controls value whose
+      // ID is absent from the DOM leaves assistive tech with a broken
+      // tab→panel relationship (WCAG 4.1.2), so emit it only when that
+      // panel actually exists.
+      aria-controls={
+        isActive && (hasContent || isGenerating)
+          ? `${id}${DYNAMIC_ID_AFFIXES.PANEL_SUFFIX}`
+          : undefined
+      }
+      id={`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${id}`}
       onClick={onClick}
       tabIndex={isActive ? 0 : -1}
       className={clsx(
@@ -536,7 +547,7 @@ function EditorHeaderComponent({
       const nextTab = TAB_IDS[nextIndex];
       if (nextTab) {
         setActiveTab(nextTab);
-        const nextTabEl = document.getElementById(`tab-${nextTab}`);
+        const nextTabEl = document.getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${nextTab}`);
         nextTabEl?.focus();
       }
     },
@@ -561,8 +572,9 @@ function EditorHeaderComponent({
           aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
           // Horizontal orientation: tabs are arranged in a row and navigated
           // with ArrowLeft/ArrowRight (see handleTabKeyDown). Matches the
-          // explicit orientation used by the other horizontal groups in the
-          // app (TemplateGrid listbox, PageScrollProgressBar).
+          // explicit orientation used by the other single-row horizontal
+          // groups in the app (EditorToolbar radiogroup,
+          // PageScrollProgressBar).
           aria-orientation={ARIA_ORIENTATION_VALUES.HORIZONTAL}
           aria-keyshortcuts={ARIA_KEYSHORTCUTS.EDITOR_TABS}
           id="editor-tabs"

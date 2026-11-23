@@ -54,6 +54,7 @@ import {
   STEP_INDICATOR_CHARS,
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
+  DYNAMIC_ID_AFFIXES,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -108,32 +109,42 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
   const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * PERCENT_SCALE;
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
-  // Detect forward step navigation and trigger a one-shot completion flash
-  // on the step that was just completed, giving a "checkpoint reached" feeling.
+  // Detect step navigation and announce it. Forward moves also trigger a
+  // one-shot completion flash on the step that was just completed, giving a
+  // "checkpoint reached" feeling; backward moves only announce — there is no
+  // completion to celebrate, but silence would leave screen reader users
+  // unaware the destination changed (WCAG 4.1.3).
   useEffect(() => {
     const prevIdx = STEPS.findIndex((s) => s.key === prevStepRef.current);
     const currIdx = STEPS.findIndex((s) => s.key === currentStep);
 
-    if (currIdx > prevIdx) {
-      const completedKey = prevStepRef.current;
-      const activatedKey = currentStep;
-      setJustCompletedStep(completedKey);
-      setActivatingStep(activatedKey);
-
-      const completedLabel = STEPS.find((s) => s.key === completedKey)?.label ?? "";
-      const activatedLabel = STEPS.find((s) => s.key === activatedKey)?.label ?? "";
-      setStepAnnouncement(
-        ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION(completedLabel, activatedLabel)
-      );
-
-      const timer = setTimeout(() => {
-        setJustCompletedStep(null);
-        setActivatingStep(null);
-      }, TIMEOUTS.STEP_COMPLETE_FLASH);
+    if (currIdx === prevIdx) {
       prevStepRef.current = currentStep;
-      return () => clearTimeout(timer);
+      return;
     }
+
+    const activatedLabel = STEPS.find((s) => s.key === currentStep)?.label ?? "";
+
+    if (currIdx < prevIdx) {
+      setStepAnnouncement(ACCESSIBILITY_LABELS.STEP_ANNOUNCER.BACK_TO_STEP(activatedLabel));
+      prevStepRef.current = currentStep;
+      return;
+    }
+
+    const completedKey = prevStepRef.current;
+    const completedLabel = STEPS.find((s) => s.key === completedKey)?.label ?? "";
+    setJustCompletedStep(completedKey);
+    setActivatingStep(currentStep);
+    setStepAnnouncement(
+      ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION(completedLabel, activatedLabel)
+    );
+
+    const timer = setTimeout(() => {
+      setJustCompletedStep(null);
+      setActivatingStep(null);
+    }, TIMEOUTS.STEP_COMPLETE_FLASH);
     prevStepRef.current = currentStep;
+    return () => clearTimeout(timer);
   }, [currentStep]);
 
   const canNavigateTo = useCallback(
@@ -144,18 +155,30 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
     [currentIndex]
   );
 
+  // Shared locked-step feedback for click AND the Alt+N shortcut. The
+  // keyboard path previously no-op'd on a locked step, so sighted keyboard
+  // users pressing Alt+4 mid-wizard got zero feedback while a mouse click
+  // on the same chip showed a toast + shake — an input-modality parity gap
+  // (WCAG 4.1.3 Status Messages).
+  const notifyLockedStep = useCallback(
+    (stepKey: WizardStep, stepLabel: string) => {
+      setShakingStep(stepKey);
+      setTimeout(() => setShakingStep(null), TIMEOUTS.SHAKE_ANIMATION);
+      // Provide helpful feedback for locked steps
+      toast.info(TOAST_MESSAGES.STEP_LOCKED(stepLabel));
+    },
+    [toast]
+  );
+
   const handleStepClick = useCallback(
     (stepKey: WizardStep, stepLabel: string) => {
       if (canNavigateTo(stepKey)) {
         setStep(stepKey);
       } else {
-        setShakingStep(stepKey);
-        setTimeout(() => setShakingStep(null), TIMEOUTS.SHAKE_ANIMATION);
-        // Provide helpful feedback for locked steps
-        toast.info(TOAST_MESSAGES.STEP_LOCKED(stepLabel));
+        notifyLockedStep(stepKey, stepLabel);
       }
     },
-    [canNavigateTo, setStep, toast]
+    [canNavigateTo, setStep, notifyLockedStep]
   );
 
   useEffect(() => {
@@ -164,16 +187,19 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
         e.preventDefault();
         const stepIndex = parseInt(e.key, NUMBER_RADIX.DECIMAL) - 1;
         const targetStep = STEPS[stepIndex];
+        if (!targetStep) return;
 
-        if (targetStep && canNavigateTo(targetStep.key)) {
+        if (canNavigateTo(targetStep.key)) {
           setStep(targetStep.key);
+        } else {
+          notifyLockedStep(targetStep.key, targetStep.label);
         }
       }
     };
 
     window.addEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
     return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKeyDown);
-  }, [setStep, canNavigateTo]);
+  }, [setStep, canNavigateTo, notifyLockedStep]);
 
   return (
     <div
@@ -276,7 +302,9 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
                   ? ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT(step.label, step.shortcut)
                   : TOAST_MESSAGES.STEP_LOCKED(step.label)
               }
-              aria-describedby={!isClickable ? `${step.key}-locked-hint` : undefined}
+              aria-describedby={
+                !isClickable ? `${step.key}${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}` : undefined
+              }
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? ARIA_CURRENT_VALUES.STEP : undefined}
               className={`
@@ -312,7 +340,10 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
             </button>
 
             {!isClickable && (
-              <span id={`${step.key}-locked-hint`} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+              <span
+                id={`${step.key}${DYNAMIC_ID_AFFIXES.LOCKED_HINT_SUFFIX}`}
+                className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+              >
                 {TOAST_MESSAGES.STEP_LOCKED(step.label)}
               </span>
             )}
