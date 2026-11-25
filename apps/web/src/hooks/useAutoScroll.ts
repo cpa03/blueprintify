@@ -29,7 +29,8 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 import { DOM_EVENTS } from "@blueprint/shared/config";
-import { AUTO_SCROLL_DEFAULTS, SCROLL_BEHAVIOR } from "@blueprint/shared/config";
+import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared/config";
+import { getScrollBehavior } from "../utils/scroll";
 
 interface UseAutoScrollOptions {
   /** Ref to the scrollable container element */
@@ -87,7 +88,11 @@ export function useAutoScroll({
   }, [scrollContainerRef, threshold]);
 
   /**
-   * Scroll the container to the bottom smoothly.
+   * Scroll the container to the bottom, honoring prefers-reduced-motion.
+   * Streaming auto-scroll fires continuously during generation — an explicit
+   * `behavior: "smooth"` would animate every tick even for reduced-motion
+   * users (browsers ignore the CSS override for JS-driven scrolls), so this
+   * routes through getScrollBehavior() like every other programmatic scroll.
    */
   const scrollToBottom = useCallback(() => {
     const el = scrollContainerRef.current;
@@ -95,7 +100,7 @@ export function useAutoScroll({
 
     el.scrollTo({
       top: el.scrollHeight,
-      behavior: SCROLL_BEHAVIOR.SMOOTH,
+      behavior: getScrollBehavior(),
     });
   }, [scrollContainerRef]);
 
