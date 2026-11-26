@@ -9,6 +9,9 @@
  * - Exposes interactive slider semantics (role, orientation, values)
  * - Provides a visible focus indicator (WCAG 2.4.7)
  * - Reveals the thumb on keyboard focus for parity with hover
+ * - Reveals the scrub percentage label on keyboard focus (hover parity)
+ * - Keeps the scrub label hidden from assistive technology (aria-valuetext
+ *   already announces the value)
  * - Hides from assistive technology (aria-hidden) while not shown
  * - Retains visibility and keyboard interactivity while focused (WCAG 2.4.7)
  */
@@ -187,6 +190,43 @@ describe("PageScrollProgressBar", () => {
     const animate = thumb?.animate as { scale: number; opacity: number };
     expect(animate.scale).toBe(0);
     expect(animate.opacity).toBe(0);
+  });
+
+  it("reveals the scrub percentage label on keyboard focus for hover parity", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    // data-progress is 41 (scrollY 500 of a 1232px scrollable range)
+    expect(screen.queryByText("41%")).toBeNull();
+
+    const slider = screen.getByRole("slider");
+    fireEvent.focus(slider);
+
+    expect(screen.getByText("41%")).toBeInTheDocument();
+  });
+
+  it("hides the scrub label when focus leaves the bar", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    fireEvent.focus(slider);
+    expect(screen.getByText("41%")).toBeInTheDocument();
+
+    fireEvent.blur(slider);
+    expect(screen.queryByText("41%")).toBeNull();
+  });
+
+  it("keeps the scrub label hidden from assistive technology", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    fireEvent.focus(slider);
+
+    const label = screen.getByText("41%").closest("[aria-hidden]");
+    expect(label).not.toBeNull();
+    expect(label?.getAttribute("aria-hidden")).toBe("true");
   });
 
   it("exposes data-state, data-progress, data-hovered, data-focused, and data-reduced-motion DOM inspection attributes", () => {
