@@ -44,6 +44,27 @@ describe("CircularProgress", () => {
     expect(progressbar).toHaveAttribute("aria-valuemax", "100");
   });
 
+  it("exposes a human-readable aria-valuetext on the progressbar (WCAG 4.1.2)", () => {
+    render(<CircularProgress value={50} />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuetext", "50% complete");
+  });
+
+  it("keeps aria-valuetext in sync when the value changes", () => {
+    const { rerender } = render(<CircularProgress value={10} />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuetext", "10% complete");
+
+    rerender(<CircularProgress value={50} />);
+    expect(progressbar).toHaveAttribute("aria-valuetext", "50% complete");
+  });
+
+  it("uses custom ariaLabel as aria-valuetext when provided", () => {
+    render(<CircularProgress value={50} ariaLabel="Custom label" />);
+    const progressbar = screen.getByRole("progressbar");
+    expect(progressbar).toHaveAttribute("aria-valuetext", "Custom label");
+  });
+
   it("renders two SVG circles (track + progress)", () => {
     const { container } = render(<CircularProgress value={50} />);
     const circles = container.querySelectorAll("circle");

@@ -216,8 +216,11 @@ function SmartTooltipComponent({
 
   const handleFocus = useCallback(() => {
     if (isTouchDevice) return;
-    showTooltip();
-  }, [showTooltip, isTouchDevice]);
+    // Focus is intentional keyboard/AT navigation, not a pointer sweep —
+    // show immediately so aria-describedby is present on Tab (WCAG 1.4.13).
+    // The show delay exists only to prevent accidental hover tooltips.
+    showTooltipImmediate();
+  }, [showTooltipImmediate, isTouchDevice]);
 
   const handleBlur = useCallback(
     (e: React.FocusEvent) => {

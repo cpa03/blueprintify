@@ -11,13 +11,16 @@
  *
  * Interactive features:
  * - Click/tap anywhere on the bar to jump to that scroll position
- * - Hover reveals a thumb indicator for discoverability
+ * - Hover reveals a thumb indicator and a scrub label for discoverability
+ * - Keyboard focus reveals the same thumb + scrub label (mouse/keyboard parity)
  * - Keyboard accessible with proper ARIA slider role
  * - Visible focus indicator for keyboard users (WCAG 2.4.7)
  * - Stays visible while focused so keyboard users never strand focus on an
  *   invisible bar (WCAG 2.4.7), mirroring ScrollToTop's focus retention
  * - Hidden from assistive technology (aria-hidden) whenever it is not shown,
  *   so screen readers never encounter a phantom invisible slider
+ * - The scrub label is visual-only (aria-hidden): the slider's aria-valuetext
+ *   already announces the value, so AT never reads a duplicate percentage
  * - Smooth spring-based scroll animation
  * - Window scroll detection (no container ref needed)
  * - Gradient progress bar matching the app's design language
@@ -198,6 +201,13 @@ function PageScrollProgressBarComponent({
     ? SCROLL_PROGRESS_SPRING.PAGE_BAR_REDUCED
     : SCROLL_PROGRESS_SPRING.PAGE_BAR_NORMAL;
 
+  // Scrub label position: hover follows the cursor (the click target);
+  // keyboard focus pins to the current scroll position so focus gets the
+  // same percentage readout mouse users get (WCAG 2.1.1 / 1.4.13 parity).
+  const scrubLabelProgress =
+    isHovered && hoverProgress !== null ? hoverProgress : Math.round(scrollProgress);
+  const showScrubLabel = isBarVisible && ((isHovered && hoverProgress !== null) || isFocused);
+
   const smoothProgress = useSpring(0, springConfig);
   const width = useTransform(smoothProgress, [0, PERCENT_SCALE], ["0%", `${PERCENT_SCALE}%`]);
 
@@ -324,20 +334,25 @@ function PageScrollProgressBarComponent({
           transition={{ duration: prefersReducedMotion ? 0 : ANIMATION.MEDIUM }}
         />
 
-        {/* Hover scrub label — shows the scroll percentage at the cursor position
-            so users know exactly where they'll jump before clicking. Appears above
-            the bar during mouse movement, with a small arrow pointing down. */}
-        {isHovered && hoverProgress !== null && isBarVisible && (
+        {/* Scrub label — hover follows the cursor (click target); keyboard
+            focus pins to the current position for the same readout. Hidden
+            from AT: aria-valuetext already announces the value. */}
+        {showScrubLabel && (
           <motion.div
+            aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             className="absolute -top-8 transform -translate-x-1/2 pointer-events-none z-50"
-            style={{ left: `${hoverProgress}%` }}
-            initial={{ opacity: 0, y: ANIMATION_Y_OFFSET.DROP_TINY, scale: ANIMATION_SCALE.MODAL }}
+            style={{ left: `${scrubLabelProgress}%` }}
+            initial={{
+              opacity: 0,
+              y: ANIMATION_Y_OFFSET.DROP_TINY,
+              scale: ANIMATION_SCALE.MODAL,
+            }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: ANIMATION.HOVER_POPUP, ease: EASING.easeOut }}
           >
             <div className="bg-dark-800/90 backdrop-blur-sm border border-dark-600/60 rounded-md px-1.5 py-0.5 shadow-lg shadow-dark-950/40">
               <span className="text-2xs font-semibold tabular-nums text-primary-300">
-                {hoverProgress}%
+                {scrubLabelProgress}%
               </span>
             </div>
             {/* Small arrow pointing down to the bar */}
