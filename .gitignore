@@ -111,9 +111,12 @@ temp/
 .codegraph/
 .agent_memory/
 
-# Transient planning artifacts (agents are instructed to create task_plan.md;
-# it must never be committed — see RepoKeeper Cycle 352)
+# Transient planning artifacts (agents are instructed to create task_plan.md
+# and notes.md for context management; neither may be committed — task_plan.md
+# per RepoKeeper Cycle 352, notes.md added by RepoKeeper Cycle 54 after #4088
+# recommitted it following its Cycle 45 removal)
 task_plan.md
+notes.md
 
 # Large files that should be handled by Git LFS
 *.zip

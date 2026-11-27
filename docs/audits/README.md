@@ -12,8 +12,8 @@ purged report dated 2026-10-19, 31 days old). On 2026-11-24 a third retention pu
 purged report dated 2026-10-24, 31 days old). On 2026-11-25 a fourth retention purge removed
 5 reports dated 2026-10-25 (Runs 118–122, all 31 days old). On 2026-11-27 a fifth retention
 purge removed 5 reports dated 2026-10-26 through 2026-10-27 (Runs 123–127, ages 31–32 days;
-youngest purged report dated 2026-10-27, 31 days old). 16 reports dated 2026-10-28 through
-2026-11-26 (Runs 128–143) remain as of 2026-11-27 (reports aged ≥31 days are removed
+youngest purged report dated 2026-10-27, 31 days old). 17 reports dated 2026-10-28 through
+2026-11-27 (Runs 128–144) remain as of 2026-11-27 (reports aged ≥31 days are removed
 by the next retention purge).
 Full history remains recoverable via git log (`git log -- docs/audits/`)._
 
