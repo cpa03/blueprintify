@@ -334,6 +334,12 @@ describe("StepStack", () => {
       "aria-label",
       ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(0, MIN_REQUIREMENTS.TECH_STACK)
     );
+    // aria-valuetext (WCAG 4.1.2): bare aria-valuenow ("0") is announced as
+    // the human-readable count instead of a context-free number.
+    expect(progressbar).toHaveAttribute(
+      "aria-valuetext",
+      ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(0, MIN_REQUIREMENTS.TECH_STACK)
+    );
   });
 
   it("updates progressbar aria-valuenow when technologies are selected", () => {
@@ -343,6 +349,10 @@ describe("StepStack", () => {
     expect(progressbar).toHaveAttribute("aria-valuenow", "1");
     expect(progressbar).toHaveAttribute(
       "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(1, MIN_REQUIREMENTS.TECH_STACK)
+    );
+    expect(progressbar).toHaveAttribute(
+      "aria-valuetext",
       ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(1, MIN_REQUIREMENTS.TECH_STACK)
     );
   });

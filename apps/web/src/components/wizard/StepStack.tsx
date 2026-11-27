@@ -355,6 +355,14 @@ export const StepStack = memo(function StepStack({
               aria-valuemin={0}
               aria-valuemax={minRequired}
               aria-valuenow={techStack.length}
+              // aria-valuetext (WAI-ARIA APG / WCAG 4.1.2): mirrors the
+              // CharacterCounterCompact / PageScrollProgressBar pattern so the
+              // bare count ("1") is announced as "1 of at least 3 technologies
+              // selected" instead of a context-free number.
+              aria-valuetext={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(
+                techStack.length,
+                minRequired
+              )}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
               data-progress={Math.round(progressPercentage)}
               className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden"

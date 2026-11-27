@@ -9,6 +9,7 @@
  * - Programmatic scrollToBottom
  * - Disabled when not generating
  * - Cleanup on unmount
+ * - prefers-reduced-motion: instant instead of smooth scrolling
  */
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
@@ -300,5 +301,85 @@ describe("useAutoScroll", () => {
     unmount();
 
     expect(mockRemoveEventListener).toHaveBeenCalled();
+  });
+
+  it("should use instant scroll behavior when prefers-reduced-motion is active", () => {
+    const matchMediaMock = vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(prefers-reduced-motion: reduce)",
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+    vi.spyOn(window, "matchMedia").mockImplementation(
+      matchMediaMock as unknown as typeof window.matchMedia
+    );
+
+    try {
+      const { container, mockScrollTo } = createMockContainer({ scrollTop: 420 });
+      const scrollContainerRef = { current: container as unknown as HTMLElement };
+
+      const { result } = renderHook(() =>
+        useAutoScroll({
+          scrollContainerRef,
+          enabled: false,
+          trigger: "test",
+        })
+      );
+
+      act(() => {
+        result.current.scrollToBottom();
+      });
+
+      expect(mockScrollTo).toHaveBeenCalledWith({
+        top: container.scrollHeight,
+        behavior: SCROLL_BEHAVIOR.INSTANT,
+      });
+    } finally {
+      vi.restoreAllMocks();
+    }
+  });
+
+  it("should use smooth scroll behavior when reduced motion is not preferred", () => {
+    const matchMediaMock = vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+    vi.spyOn(window, "matchMedia").mockImplementation(
+      matchMediaMock as unknown as typeof window.matchMedia
+    );
+
+    try {
+      const { container, mockScrollTo } = createMockContainer({ scrollTop: 420 });
+      const scrollContainerRef = { current: container as unknown as HTMLElement };
+
+      const { result } = renderHook(() =>
+        useAutoScroll({
+          scrollContainerRef,
+          enabled: false,
+          trigger: "test",
+        })
+      );
+
+      act(() => {
+        result.current.scrollToBottom();
+      });
+
+      expect(mockScrollTo).toHaveBeenCalledWith({
+        top: container.scrollHeight,
+        behavior: SCROLL_BEHAVIOR.SMOOTH,
+      });
+    } finally {
+      vi.restoreAllMocks();
+    }
   });
 });

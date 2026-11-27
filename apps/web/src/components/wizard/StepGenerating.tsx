@@ -674,6 +674,15 @@ export const StepGenerating = memo(function StepGenerating({
             aria-valuenow={generationPhase.percent}
             aria-valuemin={0}
             aria-valuemax={PERCENT_SCALE}
+            // aria-valuetext (WAI-ARIA APG / WCAG 4.1.2): mirrors the
+            // CharacterCounterCompact / PageScrollProgressBar pattern so the
+            // bare percent ("30") is announced as "Generating blueprint: 30%"
+            // instead of a context-free number.
+            aria-valuetext={
+              isComplete
+                ? GENERATION_PHASE_LABELS.COMPLETE_ARIA
+                : generationPhase.label + ": " + generationPhase.percent + "%"
+            }
             aria-label={
               isComplete
                 ? GENERATION_PHASE_LABELS.COMPLETE_ARIA
