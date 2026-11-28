@@ -64,6 +64,7 @@ import {
   OPACITY,
   ENTRANCE_OFFSETS,
   DYNAMIC_ID_AFFIXES,
+  CSS_CLASSES,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -185,7 +186,7 @@ const TabButton = React.memo(function TabButton({
             <span
               className={clsx(
                 "absolute inset-0 rounded-full bg-accent-emerald",
-                "motion-safe:content-dot-breathe"
+                CSS_CLASSES.CONTENT_DOT_BREATHE
               )}
               aria-hidden={ARIA_HIDDEN_VALUES.TRUE}
             />
