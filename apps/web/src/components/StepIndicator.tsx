@@ -241,7 +241,7 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
           <div className="absolute inset-0 flex items-center justify-center motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:scale-110">
             <span
               key={`${currentStep}-${isGenerationComplete}`}
-              className="text-xs font-semibold step-count-pop"
+              className={`text-xs font-semibold ${CSS_CLASSES.STEP_COUNT_POP}`}
             >
               {isGenerationComplete
                 ? STEP_INDICATOR_CHARS.COMPLETE_CHECK
@@ -320,8 +320,8 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
                 ${isClickable ? "cursor-pointer hover:bg-dark-700 motion-safe:hover:scale-102 motion-safe:active:scale-98" : "cursor-default"}
                 ${isActive && isWizardActive && !shouldReduceMotion ? "animate-step-pulse" : ""}
                 ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}
-                ${justCompletedStep === step.key && !shouldReduceMotion ? "step-complete-flash" : ""}
-                ${activatingStep === step.key && !shouldReduceMotion ? "step-activate" : ""}
+                ${justCompletedStep === step.key && !shouldReduceMotion ? CSS_CLASSES.STEP_COMPLETE_FLASH : ""}
+                ${activatingStep === step.key && !shouldReduceMotion ? CSS_CLASSES.STEP_ACTIVATE : ""}
               `}
               style={{
                 animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,
@@ -352,7 +352,7 @@ function StepIndicatorComponent({ isWizardActive = true }: StepIndicatorProps): 
               <div
                 className={`w-3 sm:w-8 h-0.5 mx-1 sm:mx-2 shrink-0 rounded-full transition-all duration-500 ease-in-out animate-fade-in ${
                   isCompleted ? "bg-accent-emerald" : "bg-dark-700"
-                } ${justCompletedStep === step.key && !shouldReduceMotion ? "connector-flash" : ""}`}
+                } ${justCompletedStep === step.key && !shouldReduceMotion ? CSS_CLASSES.CONNECTOR_FLASH : ""}`}
                 style={{
                   ...(isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : {}),
                   animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,
