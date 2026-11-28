@@ -172,6 +172,57 @@ export const CSS_CLASSES = {
   PREVIEW_SKELETON_SUBHEADING: "preview-skeleton-subheading" as const,
   /** Preview skeleton code-block placeholder — pairs with `.preview-skeleton-code-block`. */
   PREVIEW_SKELETON_CODE_BLOCK: "preview-skeleton-code-block" as const,
+
+  /**
+   * Custom animation / effect CSS class names (Iteration 225).
+   *
+   * Pairing contract: the write side is a React `className` string in a
+   * component, while the read side flows through `index.css` selectors —
+   * the base animation/effect rules (`.form-ready-pulse`,
+   * `.stack-card-attention`, `.progress-shimmer::after`, `.tech-chip`, …)
+   * and the `@media (prefers-reduced-motion: reduce)` disable block. One
+   * family member (`STACK_CARD_ATTENTION`) additionally pairs with a
+   * runtime-injected `@keyframes` name in StepStack whose template literal
+   * must stay byte-identical to the `.stack-card-attention` animation
+   * shorthand. CSS cannot import TypeScript constants (Iteration 211
+   * index.html / 222 CSS custom-property precedent), so the two sides are
+   * pinned byte-identical by these exact-value tests. A typo on the write
+   * side does not throw: the class simply never matches any rule, the
+   * animation/shimmer/flash silently never applies (or the reduced-motion
+   * disable never engages, leaving motion running for users who opted out),
+   * and the component looks healthy. Multi-site families (PROGRESS_SHIMMER
+   * ×3, INVALID_FIELD_FLASH ×2, TECH_CHIP ×2) must stay identical across
+   * every call site or one element animates while its twin does not, with
+   * zero type errors. CONTENT_DOT_BREATHE carries its Tailwind
+   * `motion-safe:` variant prefix inline (Iteration 222
+   * TECH_TAG_HOVER_GLOW / ICON_HOVER_ROTATE_* contiguous-literal
+   * precedent — the JIT content scanner must find the full prefixed token
+   * in source or the variant is purged). Flexy says: no bare
+   * animation/effect class literals in className strings where a constant
+   * family exists!
+   */
+  /** Form-clear ready pulse on the StepInfo card — pairs with `.form-ready-pulse` + reduced-motion disable. */
+  FORM_READY_PULSE: "form-ready-pulse" as const,
+  /** StepStack card attention ring — pairs with `.stack-card-attention` + reduced-motion disable + StepStack's injected `@keyframes stack-card-attention`. */
+  STACK_CARD_ATTENTION: "stack-card-attention" as const,
+  /** Progress-bar shimmer sweep — pairs with `.progress-shimmer::after` + reduced-motion disable. */
+  PROGRESS_SHIMMER: "progress-shimmer" as const,
+  /** Wizard step activation animation — pairs with `.step-activate` + reduced-motion disable. */
+  STEP_ACTIVATE: "step-activate" as const,
+  /** Completed-step flash animation — pairs with `.step-complete-flash` + reduced-motion disable. */
+  STEP_COMPLETE_FLASH: "step-complete-flash" as const,
+  /** Step-number milestone pop — pairs with `.step-count-pop` + reduced-motion disable. */
+  STEP_COUNT_POP: "step-count-pop" as const,
+  /** Completed-step connector line flash — pairs with `.connector-flash` + reduced-motion disable. */
+  CONNECTOR_FLASH: "connector-flash" as const,
+  /** Character-counter limit celebration pop — pairs with `.counter-celebrate-pop` + reduced-motion disable. */
+  COUNTER_CELEBRATE_POP: "counter-celebrate-pop" as const,
+  /** Editor header availability dot breathing ring — full literal includes the Tailwind `motion-safe:` variant prefix; the bare token after the prefix pairs with `.content-dot-breathe` + reduced-motion disable. */
+  CONTENT_DOT_BREATHE: "motion-safe:content-dot-breathe" as const,
+  /** Invalid-field flash on StepInfo inputs — pairs with `.invalid-field-flash` + reduced-motion disable. */
+  INVALID_FIELD_FLASH: "invalid-field-flash" as const,
+  /** Tech-stack selection chip — pairs with `.tech-chip` / `.tech-chip.selected` index.css rules. */
+  TECH_CHIP: "tech-chip" as const,
 } as const;
 
 // ============================================================================

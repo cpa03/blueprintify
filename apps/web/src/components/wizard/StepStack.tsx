@@ -82,7 +82,7 @@ import clsx from "clsx";
 import { SVG_ICON_DEFAULTS, COLOR_MIX_OPACITY } from "@blueprint/shared/config";
 import { ANIMATE_PRESENCE_MODES } from "@blueprint/shared/config";
 
-const attentionKeyframes = `@keyframes stack-card-attention {
+const attentionKeyframes = `@keyframes ${CSS_CLASSES.STACK_CARD_ATTENTION} {
   0%, 100% {
     box-shadow: 0 0 0 0 transparent;
   }
@@ -134,7 +134,7 @@ const TechChip = memo(function TechChip({
       }}
       aria-pressed={isSelected}
       className={clsx(
-        "tech-chip relative overflow-hidden animate-fade-in",
+        `${CSS_CLASSES.TECH_CHIP} relative overflow-hidden animate-fade-in`,
         isSelected && "selected",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
@@ -370,7 +370,7 @@ export const StepStack = memo(function StepStack({
               <motion.div
                 className={`h-full transition-colors duration-300 ${
                   canProceed
-                    ? "bg-gradient-to-r from-accent-emerald to-primary-500 progress-shimmer relative"
+                    ? `bg-gradient-to-r from-accent-emerald to-primary-500 ${CSS_CLASSES.PROGRESS_SHIMMER} relative`
                     : "bg-gradient-to-r from-primary-500 to-accent-purple"
                 }`}
                 initial={{ width: 0 }}
@@ -396,7 +396,7 @@ export const StepStack = memo(function StepStack({
       </div>
 
       <div
-        className={`glass-card p-6 space-y-6 ${invalidField ? "stack-card-attention" : ""}`}
+        className={`glass-card p-6 space-y-6 ${invalidField ? CSS_CLASSES.STACK_CARD_ATTENTION : ""}`}
         role={ARIA_ROLES.GROUP}
         aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.TECH_STACK_SELECTION}
       >
