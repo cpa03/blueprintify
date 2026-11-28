@@ -237,6 +237,19 @@ function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
     [setActiveTab]
   );
 
+  // The empty-state "Switch to … tab" button unmounts as soon as the sibling
+  // tab (which has content) becomes active, dropping focus onto <body> and
+  // stranding keyboard/SR users mid-preview (WCAG 2.4.3). Hand focus to the
+  // target tab button — same destination EditorHeader uses for arrow-key tab
+  // navigation — before the empty state leaves the DOM. Both tab buttons stay
+  // mounted, so the focus target already exists at click time.
+  const handleEmptyStateSwitch = useCallback(() => {
+    const targetTab =
+      activeTab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT;
+    handleTabChange(targetTab);
+    document.getElementById(`${DYNAMIC_ID_AFFIXES.TAB_PREFIX}${targetTab}`)?.focus();
+  }, [activeTab, handleTabChange]);
+
   const blueprintContent = useEditorStore((s) => s.blueprintContent);
   const tasksContent = useEditorStore((s) => s.tasksContent);
   const setBlueprintContent = useEditorStore((s) => s.setBlueprintContent);
@@ -830,13 +843,7 @@ function EditorComponent({ onShowShortcuts }: EditorProps = {}): JSX.Element {
                                     ? tasksContent.length > 0
                                     : blueprintContent.length > 0
                                 }
-                                onSwitchTab={() =>
-                                  handleTabChange(
-                                    activeTab === EDITOR_TABS.BLUEPRINT
-                                      ? EDITOR_TABS.TASKS
-                                      : EDITOR_TABS.BLUEPRINT
-                                  )
-                                }
+                                onSwitchTab={handleEmptyStateSwitch}
                               />
                             </motion.div>
                           )}

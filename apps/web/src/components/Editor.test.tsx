@@ -38,13 +38,29 @@ vi.mock("../store", () => ({
 }));
 
 vi.mock("./editor/EditorHeader", () => ({
-  EditorHeader: vi.fn(() => (
-    <div data-testid="editor-header">
-      <div data-testid="copy-button">Copy</div>
-      <div data-testid="export-button">Export</div>
-      <div data-testid="new-button">New</div>
-    </div>
-  )),
+  EditorHeader: vi.fn(
+    ({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (tab: string) => void }) => (
+      <div data-testid="editor-header">
+        <button
+          id={`tab-${EDITOR_TABS.BLUEPRINT}`}
+          aria-current={activeTab === EDITOR_TABS.BLUEPRINT}
+          onClick={() => setActiveTab(EDITOR_TABS.BLUEPRINT)}
+        >
+          blueprint.md
+        </button>
+        <button
+          id={`tab-${EDITOR_TABS.TASKS}`}
+          aria-current={activeTab === EDITOR_TABS.TASKS}
+          onClick={() => setActiveTab(EDITOR_TABS.TASKS)}
+        >
+          task.md
+        </button>
+        <div data-testid="copy-button">Copy</div>
+        <div data-testid="export-button">Export</div>
+        <div data-testid="new-button">New</div>
+      </div>
+    )
+  ),
 }));
 
 vi.mock("./LazyCodeMirror", () => ({
@@ -158,6 +174,10 @@ const mockWizardStore: WizardStore = {
 describe("Editor", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+    mockEditorStore.blueprintContent = "";
+    mockEditorStore.tasksContent = "";
+    mockEditorStore.isGenerating = false;
     (useEditorStore as unknown as Mock & { getState: () => EditorStore }).mockImplementation(
       (selector: (state: EditorStore) => unknown) => selector(mockEditorStore)
     );
@@ -192,6 +212,42 @@ describe("Editor", () => {
     expect(screen.getByTestId("copy-button")).toBeInTheDocument();
     expect(screen.getByTestId("export-button")).toBeInTheDocument();
     expect(screen.getByTestId("new-button")).toBeInTheDocument();
+  });
+
+  it("moves focus to the target tab when switching from the preview empty state", () => {
+    mockEditorStore.blueprintContent = "";
+    mockEditorStore.tasksContent = "# Tasks Content";
+    mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
+
+    const switchButton = screen.getByRole("button", { name: /switch to task\.md tab/i });
+    switchButton.focus();
+    fireEvent.click(switchButton);
+
+    expect(mockEditorStore.setActiveTab).toHaveBeenCalledWith(EDITOR_TABS.TASKS);
+    expect(document.getElementById(`tab-${EDITOR_TABS.TASKS}`)).toHaveFocus();
+  });
+
+  it("moves focus to the blueprint tab when switching from an empty tasks preview", () => {
+    mockEditorStore.blueprintContent = "# Blueprint Content";
+    mockEditorStore.tasksContent = "";
+    mockEditorStore.activeTab = EDITOR_TABS.TASKS;
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
+
+    const switchButton = screen.getByRole("button", { name: /switch to blueprint\.md tab/i });
+    switchButton.focus();
+    fireEvent.click(switchButton);
+
+    expect(mockEditorStore.setActiveTab).toHaveBeenCalledWith(EDITOR_TABS.BLUEPRINT);
+    expect(document.getElementById(`tab-${EDITOR_TABS.BLUEPRINT}`)).toHaveFocus();
   });
 
   it("renders CodeMirror and preview when content exists", () => {
