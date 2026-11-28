@@ -445,7 +445,7 @@ export const StepInfo = memo(function StepInfo({
               className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden relative"
             >
               <motion.div
-                className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? "progress-shimmer relative" : ""}`}
+                className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? `${CSS_CLASSES.PROGRESS_SHIMMER} relative` : ""}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${formProgress.percentage}%` }}
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SMOOTH }}
@@ -490,7 +490,7 @@ export const StepInfo = memo(function StepInfo({
 
       <form
         onSubmit={handleSubmit}
-        className={`glass-card p-6 space-y-5 ${clearAnimation ? "form-ready-pulse" : ""}`}
+        className={`glass-card p-6 space-y-5 ${clearAnimation ? CSS_CLASSES.FORM_READY_PULSE : ""}`}
       >
         {/* Project Name */}
         <div>
@@ -520,7 +520,7 @@ export const StepInfo = memo(function StepInfo({
             />
           </div>
           <div
-            className={`relative ${invalidField === "projectName" ? "invalid-field-flash rounded-xl" : ""}`}
+            className={`relative ${invalidField === "projectName" ? `${CSS_CLASSES.INVALID_FIELD_FLASH} rounded-xl` : ""}`}
           >
             <motion.input
               ref={projectNameInputRef}
@@ -679,7 +679,7 @@ export const StepInfo = memo(function StepInfo({
             />
           </div>
           <div
-            className={`relative ${invalidField === "description" ? "invalid-field-flash rounded-xl" : ""}`}
+            className={`relative ${invalidField === "description" ? `${CSS_CLASSES.INVALID_FIELD_FLASH} rounded-xl` : ""}`}
           >
             <motion.textarea
               ref={descriptionRef}

@@ -107,7 +107,8 @@ function CharacterCounterComponent({
   const shakeClass = !shouldReduceMotion && showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
   const pulseClass =
     !shouldReduceMotion && shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
-  const celebrateClass = !shouldReduceMotion && showCelebrate ? "counter-celebrate-pop" : "";
+  const celebrateClass =
+    !shouldReduceMotion && showCelebrate ? CSS_CLASSES.COUNTER_CELEBRATE_POP : "";
 
   // Intentionally empty during normal typing: a live region that changes on
   // every keystroke makes screen readers announce each character typed.

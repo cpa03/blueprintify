@@ -690,7 +690,7 @@ export const StepGenerating = memo(function StepGenerating({
             }
           >
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink progress-shimmer relative"
+              className={`h-full rounded-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink ${CSS_CLASSES.PROGRESS_SHIMMER} relative`}
               initial={{ width: 0 }}
               animate={{
                 width: generationPhase.percent + "%",

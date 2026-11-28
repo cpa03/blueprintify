@@ -479,12 +479,14 @@ function App(): JSX.Element {
                   <Wizard />
                 </Suspense>
               ) : (
-                <div
-                  className="p-6 space-y-4"
-                  role={ARIA_ROLES.STATUS}
-                  aria-live={ARIA_LIVE_VALUES.POLITE}
-                  aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
-                >
+                // Not a loading state: this placeholder stays until the user
+                // picks a template, so a role=status live region here would
+                // announce a phantom "Loading wizard step" that never resolves
+                // (WCAG 4.1.3). #4012 removed its shimmer for the same reason;
+                // the real loading fallback is the Suspense branch above.
+                // Decorative preview — TemplateGrid/StartFromScratch label the
+                // actionable controls.
+                <div className="p-6 space-y-4" aria-hidden={ARIA_HIDDEN_VALUES.TRUE}>
                   <div aria-hidden={ARIA_HIDDEN_VALUES.TRUE} className="space-y-4">
                     <div
                       className={`${CSS_CLASSES.SKELETON_BLOCK} ${CSS_CLASSES.SKELETON_BLOCK_STATIC} h-5 w-36`}
