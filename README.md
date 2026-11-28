@@ -25,12 +25,15 @@ Generate production-ready `blueprint.md` and `task.md` files for your projects i
 
 ```
 blueprintify/
+├── .agent/              # Framework-agnostic agent catalog (mirror of .opencode/)
 ├── .github/             # CI workflows (ubuntu-24.04-arm) + PR/issue templates
+├── .husky/              # Git hooks (pre-commit + pre-push quality gates)
 ├── .opencode/           # AI agent system and skills
 │   ├── agent/           # Agent definitions (technical-writer, etc.)
 │   ├── skill/           # Reusable skills (docs-update, etc.)
 │   ├── command/         # Custom commands
 │   └── memory/          # Agent memory and patterns
+├── .vscode/             # Editor workspace settings (extensions.json)
 ├── config/              # Shared agent configuration (agent-models.json)
 ├── packages/
 │   └── shared/          # Zod schemas & TypeScript types
